@@ -1,5 +1,7 @@
 import { css, Global } from '@emotion/react';
 
+import { useThemeStore } from '@/hooks/useThemeStore';
+
 const resetCSS = css`
   *,
   *::before,
@@ -61,6 +63,20 @@ const resetCSS = css`
   }
 `;
 
-const GlobalStyle = () => <Global styles={resetCSS} />;
+const GlobalStyle = () => {
+  const cssVariables = useThemeStore((state) => state.cssVariables);
+
+  return (
+    <Global
+      styles={css`
+        ${resetCSS}
+
+        :root {
+          ${cssVariables}
+        }
+      `}
+    />
+  );
+};
 
 export default GlobalStyle;
