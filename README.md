@@ -44,23 +44,25 @@ yarn add -D <패키지명>
 
 ```bash
 project-root/
-├── index.html               # React 애플리케이션 진입점 HTML
+├── index.html              # 애플리케이션 진입점
 ├── src/
-│   ├── app/                 # React App Router 기반의 페이지 디렉터리
-│   │   ├── layout.tsx       # 공통 레이아웃 컴포넌트
-│   │   ├── page.tsx         # 루트 경로 페이지 컴포넌트
-│   │   └── ...              # 하위 경로별 페이지 및 컴포넌트
-│   ├── components/          # 전역 재사용 UI 컴포넌트
-│   ├── hooks/               # 전역 커스텀 훅
-│   ├── utils/               # 유틸 함수 및 공통 로직
-│   ├── services/            # API 호출 등 비즈니스 로직
-│   ├── styles/              # 글로벌 스타일 및 Emotion 테마
-│   ├── types/               # 타입 정의 파일
-│   ├── assets/              # src 내 정적 파일 (이미지 등)
-│   └── main.tsx             # React 앱 진입점 (루트 컴포넌트 마운트)
-├── vite.config.ts           # Vite 설정
-├── package.json             # 프로젝트 의존성 및 스크립트
-└── public/                  # 별도 정적 파일 (favicon 등)
+│   ├── pages/              # 자동으로 라우팅되는 페이지 디렉터리
+│   │   ├── index.tsx       # 루트 경로 ("/") 페이지
+│   │   ├── about.tsx       # "/about" 페이지
+│   │   └── dashboard/      # 중첩 라우트
+│   │       ├── index.tsx   # "/dashboard" 페이지
+│   │       ├── stats.tsx   # "/dashboard/stats" 페이지
+│   │       └── settings.tsx # "/dashboard/settings" 페이지
+│   ├── components/         # 재사용 가능한 UI 컴포넌트
+│   ├── hooks/              # 커스텀 React 훅
+│   ├── utils/              # 유틸리티 함수
+│   ├── services/           # API 로직
+│   ├── styles/             # 글로벌 스타일 및 테마
+│   ├── types/              # TypeScript 타입 정의
+│   ├── assets/             # 정적 리소스
+│   └── main.tsx            # 애플리케이션 진입 파일
+├── vite.config.ts          # Vite 설정 파일
+└── public/                 # 정적 파일 디렉터리
     ├── favicon.ico
     ├── robots.txt
     └── images/

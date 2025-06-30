@@ -71,10 +71,10 @@ const count = useRef<number>();
 
 ### 6. 타입 네이밍 컨벤션
 
-- 컴포넌트 내 Props 타입은 단순히 `Props`로 명명합니다.
+- 컴포넌트 내 Props 타입은 `컴포넌트명 + Props`로 명명합니다.
 
 ```tsx
-type Props = {
+type AboutProps = {
   // ...
 };
 ```
