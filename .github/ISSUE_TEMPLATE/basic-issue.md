@@ -1,7 +1,7 @@
 ---
 name: Basic Issue
 about: Describe this issue template's purpose here.
-title: '[] '
+title: ''
 ---
 
 ## 👩‍💻 작업 내용
