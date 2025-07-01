@@ -1,6 +1,11 @@
 import PageLayout from '@/components/PageLayout';
+import ReactCalendar from '@/components/ReactCalendar';
 
 const HomePage = () => {
-  return <PageLayout>.</PageLayout>;
+  return (
+    <PageLayout>
+      <ReactCalendar />
+    </PageLayout>
+  );
 };
 export default HomePage;
