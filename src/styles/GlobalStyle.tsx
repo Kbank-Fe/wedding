@@ -15,6 +15,8 @@ const resetCSS = css`
   #root {
     height: 100%;
     font-family: Arial, sans-serif;
+    background: var(--gray2);
+    color: var(--gray11);
   }
   ul,
   ol {

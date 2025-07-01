@@ -2,11 +2,13 @@ import * as RadixColors from '@radix-ui/colors';
 
 const lightColors = {
   ...RadixColors.gray,
+  ...RadixColors.amber,
   ...RadixColors.blue,
 };
 
 const darkColors = {
   ...RadixColors.grayDark,
+  ...RadixColors.amberDark,
   ...RadixColors.blueDark,
 };
 
