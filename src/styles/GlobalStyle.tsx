@@ -14,7 +14,7 @@ const resetCSS = css`
   body,
   #root {
     height: 100%;
-    font-family: 'Noto Sans KR', 'Inter', sans-serif;
+    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
     background: var(--gray2);
     color: var(--gray11);
   }
