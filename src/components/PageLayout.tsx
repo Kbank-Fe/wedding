@@ -17,7 +17,4 @@ const layoutStyle = () => css`
   height: 100vh;
   margin: 0 auto;
   background: var(--amber1);
-  scroll-snap-type: y proximity;
-  scroll-behavior: smooth;
-  overflow-y: scroll;
 `;
