@@ -14,9 +14,15 @@ const resetCSS = css`
   body,
   #root {
     height: 100%;
-    font-family: Arial, sans-serif;
+    font-family: 'Noto Sans KR', 'Inter', sans-serif;
     background: var(--gray2);
     color: var(--gray11);
+  }
+  body *:lang(ko) {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  body *:lang(en) {
+    font-family: 'Roboto', sans-serif;
   }
   ul,
   ol {
