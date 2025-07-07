@@ -2,36 +2,29 @@ import styled from '@emotion/styled';
 
 const Account = () => {
   return (
-    <Container>
-      <AccountArea>
-        <AccountNumber>123-456-789</AccountNumber>
-        <CopyButton>복사</CopyButton>
-      </AccountArea>
-    </Container>
+    <AccountArea>
+      <AccountNumber>123-456-789</AccountNumber>
+      <CopyButton>복사</CopyButton>
+    </AccountArea>
   );
 };
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
-
 const AccountArea = styled.div`
   background-color: red;
-  padding: 1rem 4rem;
+  width: 80%;
+  padding: 1rem 2rem;
   border-radius: 12px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
-const AccountNumber = styled.span`
-  background-color: white;
+const AccountNumber = styled.div`
+  background-color: #ddffb6;
 `;
 
 const CopyButton = styled.button`
   background-color: blue;
-  padding-left: 10px;
 `;
 
 export default Account;
