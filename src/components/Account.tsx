@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 
-type accountType = {
+type AccountType = {
   bankName: string;
   accountNumber: string;
 };
 
 type AccountProps = {
-  accountInfo: accountType;
+  accountInfo: AccountType;
 };
 
 const Account = ({ accountInfo }: AccountProps) => {
