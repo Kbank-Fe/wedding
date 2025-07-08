@@ -1,12 +1,14 @@
 import 'react-calendar/dist/Calendar.css';
-import '../styles/ReactCalendar.css';
+import '@styles/ReactCalendar.css';
 
-import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Calendar from 'react-calendar';
+import type { View } from 'react-calendar/dist/shared/types.js';
 
-import { getDayOfWeek } from '@/utils/date';
+import { getDayOfWeek, getDday, getDtime } from '@/utils/date';
 
+// TODO: types 디렉토리 이동
 type DateInfo = {
   year: number;
   month: number;
@@ -18,6 +20,7 @@ type DateInfo = {
 };
 
 // Date 객체 반환 (월 - 1)
+// TODO: types 디렉토리 이동
 const getDateObject = (dateInfo: DateInfo) =>
   new Date(
     dateInfo.year,
@@ -34,11 +37,24 @@ const ReactCalendar = () => {
   const dateInfo = {
     year: 2026,
     month: 6,
-    day: 20,
+    day: 14,
     hour: 13,
     min: 20,
     sec: 0,
     msec: 0,
+  };
+
+  // react-calendar tileClassName 속성 전달: highlight 설정
+  const setHighlight = ({ date, view }: { date: Date; view: View }) => {
+    if (
+      view === 'month' &&
+      date.getFullYear() === dateInfo.year &&
+      date.getMonth() === dateInfo.month - 1 &&
+      date.getDate() === dateInfo.day
+    ) {
+      return 'highlight';
+    }
+    return '';
   };
 
   // 한국어 여부
@@ -50,33 +66,16 @@ const ReactCalendar = () => {
     return getDayOfWeek(weddingDate, korean);
   }, [dateInfo, korean]);
 
-  // dDay 일자 계산
+  // D-Day 일자 계산
   const dDay = useMemo(() => {
     const weddingDate = getDateObject(dateInfo);
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const diffTime = weddingDate.getTime() - today.getTime();
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return getDday(weddingDate);
   }, [dateInfo]);
 
-  // dTime 계산 (useCallback: 컴포넌트 리렌더될 때마다 새로운 함수 객체 생성 방지)
+  // D-Time 계산 (useCallback: 컴포넌트 리렌더될 때마다 새로운 함수 객체 생성 방지)
   const calculateDtime = useCallback(() => {
-    const now = new Date();
     const weddingDate = getDateObject(dateInfo);
-    const diff = weddingDate.getTime() - now.getTime();
-
-    if (diff <= 0) {
-      return { d: 0, h: 0, m: 0, s: 0 };
-    }
-
-    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const m = Math.floor((diff / (1000 * 60)) % 60);
-    const s = Math.floor((diff / 1000) % 60);
-
-    return { d, h, m, s };
+    return getDtime(weddingDate);
   }, [dateInfo]); // 최초 1회만 생성
 
   const [dtime, setDtime] = useState(calculateDtime());
@@ -91,67 +90,44 @@ const ReactCalendar = () => {
 
   return (
     <div>
-      <Container>
-        <DateHeader>
-          {dateInfo.year + '년 ' + dateInfo.month + '월 ' + dateInfo.day + '일'}
-        </DateHeader>
-        <TimeHeader>
-          {dayOfWeek +
-            (korean ? '요일 ' : 'DAY ') +
-            dateInfo.hour +
-            '시 ' +
-            dateInfo.min +
-            '분'}
-        </TimeHeader>
-        <Calendar
-          calendarType="gregory"
-          formatDay={(locale, date) => `${date.getDate()}`}
-          minDetail="month" // 일/주/년 보기 제거
-          showNavigation={false} // 상단 타이틀 및 화살표 전부 안보이게
-          showNeighboringMonth={false}
-          view="month"
-          activeStartDate={
-            new Date(dateInfo.year, dateInfo.month - 1, dateInfo.day)
-          }
-          tileClassName={({ date, view }) => {
-            if (
-              view === 'month' &&
-              date.getFullYear() === dateInfo.year &&
-              date.getMonth() === dateInfo.month - 1 &&
-              date.getDate() === dateInfo.day
-            ) {
-              return 'highlight';
-            }
-          }}
-        />
-        <DdayDiv>
-          {dtime.d} 일 {dtime.h} 시 {dtime.m} 분 {dtime.s} 초
-        </DdayDiv>
-        <DdayDiv>결혼식이 {dDay} 일 남았습니다.</DdayDiv>
-      </Container>
+      <div css={dateHeader}>
+        {dateInfo.year + '년 ' + dateInfo.month + '월 ' + dateInfo.day + '일'}
+      </div>
+      <div css={timeHeader}>
+        {dayOfWeek +
+          (korean ? '요일 ' : 'DAY ') +
+          dateInfo.hour +
+          '시 ' +
+          dateInfo.min +
+          '분'}
+      </div>
+      <Calendar
+        activeStartDate={getDateObject(dateInfo)}
+        calendarType="gregory"
+        formatDay={(locale, date) => `${date.getDate()}`}
+        minDetail="month" // 일/주/년 보기 제거
+        showNavigation={false} // 상단 타이틀 및 화살표 전부 안보이게
+        showNeighboringMonth={false}
+        tileClassName={setHighlight}
+        view="month"
+      />
+      <div css={ddayDiv}>
+        {dtime.d} 일 {dtime.h} 시 {dtime.m} 분 {dtime.s} 초
+      </div>
+      <div css={ddayDiv}>결혼식이 {dDay} 일 남았습니다.</div>
     </div>
   );
 };
 
-const Container = styled.div`
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto; /* 수평 가운데 정렬 */
-  padding: 2rem; /* 좌우 여백 */
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const DateHeader = styled.div`
+const dateHeader = css`
   margin: 0 auto; /* 수평 가운데 정렬 */
 `;
 
-const TimeHeader = styled.div`
+const timeHeader = css`
   margin: 0 auto; /* 수평 가운데 정렬 */
 `;
 
-const DdayDiv = styled.div`
+const ddayDiv = css`
   margin: 0 auto; /* 수평 가운데 정렬 */
 `;
 
