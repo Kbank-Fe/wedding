@@ -1,5 +1,5 @@
+import ReactCalendar from '@/components/calendar/ReactCalendar';
 import PageLayout from '@/components/PageLayout';
-import ReactCalendar from '@/components/ReactCalendar';
 
 const HomePage = () => {
   return (
