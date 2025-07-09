@@ -14,15 +14,15 @@ const resetCSS = css`
   body,
   #root {
     height: 100%;
-    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+    font-family: 'Poppins', 'Nanum Myeongjo', sans-serif;
     background: var(--gray2);
-    color: var(--gray11);
+    color: var(--gray12);
   }
-  body *:lang(ko) {
-    font-family: 'Noto Sans KR', sans-serif;
+  :lang(ko) {
+    font-family: 'Nanum Myeongjo', serif;
   }
-  body *:lang(en) {
-    font-family: 'Roboto', sans-serif;
+  :lang(en) {
+    font-family: 'Poppins', sans-serif;
   }
   ul,
   ol {
