@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
-import Account from './Account';
+import Account from '@/components/Account';
 
 const accounts = [
   { bankName: '기업은행', accountNumber: '640-022316-01-011' },
@@ -10,15 +10,15 @@ const accounts = [
 
 const AccountList = () => {
   return (
-    <AccountListContainer>
+    <div css={accountListStyle}>
       {accounts.map((account, index) => (
-        <Account key={index} accountInfo={account} />
+        <Account key={index} {...account} />
       ))}
-    </AccountListContainer>
+    </div>
   );
 };
 
-const AccountListContainer = styled.div`
+const accountListStyle = css`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,40 +1,38 @@
-import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
 type AccountType = {
   bankName: string;
   accountNumber: string;
 };
 
-type AccountProps = {
-  accountInfo: AccountType;
-};
-
-const Account = ({ accountInfo }: AccountProps) => {
+const Account = ({ bankName, accountNumber }: AccountType) => {
   const handlerClickCopyButton = () => {
-    copyToClipboard(accountInfo.bankName + ' ' + accountInfo.accountNumber);
+    copyToClipboard(bankName + ' ' + accountNumber);
   };
 
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert('클립보드에 복사되었습니다!');
+      console.log('복사 성공');
     } catch (err) {
       console.error('복사 실패:', err);
     }
   };
 
   return (
-    <AccountContainer>
-      <AccountArea>
-        <BankName>{accountInfo.bankName}</BankName>
-        <AccountNumber>{accountInfo.accountNumber}</AccountNumber>
-      </AccountArea>
-      <CopyButton onClick={handlerClickCopyButton}>복사</CopyButton>
-    </AccountContainer>
+    <div css={accountStyle}>
+      <div css={accountInfoStyle}>
+        <div css={bankNameStyle}>{bankName}</div>
+        <div css={accountNumberStyle}>{accountNumber}</div>
+      </div>
+      <button css={copyButtonStyle} onClick={handlerClickCopyButton}>
+        복사
+      </button>
+    </div>
   );
 };
 
-const AccountContainer = styled.div`
+const accountStyle = css`
   background-color: #ffffff;
   width: 80%;
   max-width: 320px;
@@ -46,23 +44,22 @@ const AccountContainer = styled.div`
   align-items: center;
 `;
 
-const AccountArea = styled.div`
+const accountInfoStyle = css`
   display: flex;
   flex-direction: column;
 `;
 
-const BankName = styled.div`
+const bankNameStyle = css`
   font-weight: bold;
   font-size: 1rem;
   margin-bottom: 4px;
 `;
 
-const AccountNumber = styled.div`
-  font-family: 'Courier New', monospace;
+const accountNumberStyle = css`
   font-size: 0.95rem;
 `;
 
-const CopyButton = styled.button`
+const copyButtonStyle = css`
   background-color: #277dda;
   color: white;
   font-size: 0.9rem;
