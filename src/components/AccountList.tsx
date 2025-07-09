@@ -25,7 +25,6 @@ const accountListStyle = css`
 
   flex-direction: column;
   gap: 20px;
-  height: 100vh;
 `;
 
 export default AccountList;
