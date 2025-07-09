@@ -1,22 +1,15 @@
 import { css } from '@emotion/react';
 
-type AccountType = {
+import { copyToClipboard } from '@/utils/clipboard';
+
+type AccountProps = {
   bankName: string;
   accountNumber: string;
 };
 
-const Account = ({ bankName, accountNumber }: AccountType) => {
-  const handlerClickCopyButton = () => {
-    copyToClipboard(bankName + ' ' + accountNumber);
-  };
-
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      console.log('복사 성공');
-    } catch (err) {
-      console.error('복사 실패:', err);
-    }
+const Account = ({ bankName, accountNumber }: AccountProps) => {
+  const handleClickCopyButton = () => {
+    copyToClipboard({ text: bankName + ' ' + accountNumber });
   };
 
   return (
@@ -25,7 +18,7 @@ const Account = ({ bankName, accountNumber }: AccountType) => {
         <div css={bankNameStyle}>{bankName}</div>
         <div css={accountNumberStyle}>{accountNumber}</div>
       </div>
-      <button css={copyButtonStyle} onClick={handlerClickCopyButton}>
+      <button css={copyButtonStyle} onClick={handleClickCopyButton}>
         복사
       </button>
     </div>
