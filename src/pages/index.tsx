@@ -1,10 +1,10 @@
-import ReactCalendar from '@/components/calendar/ReactCalendar';
+import DateCalendar from '@/components/calendar/DateCalendar';
 import PageLayout from '@/components/PageLayout';
 
 const HomePage = () => {
   return (
     <PageLayout>
-      <ReactCalendar />
+      <DateCalendar />
     </PageLayout>
   );
 };

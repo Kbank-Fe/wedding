@@ -32,7 +32,7 @@ const getDateObject = (dateInfo: DateInfo) =>
     dateInfo.msec,
   );
 
-const ReactCalendar = () => {
+const DateCalendar = () => {
   // const [dateInfo, setDateInfo] = useState<DateInfo>();
   const dateInfo = {
     year: 2026,
@@ -131,4 +131,4 @@ const ddayDiv = css`
   margin: 0 auto; /* 수평 가운데 정렬 */
 `;
 
-export default ReactCalendar;
+export default DateCalendar;
