@@ -9,7 +9,7 @@ type AccountProps = {
 
 const Account = ({ bankName, accountNumber }: AccountProps) => {
   const handleClickCopyButton = () => {
-    copyToClipboard({ text: bankName + ' ' + accountNumber });
+    copyToClipboard({ text: `${bankName} ${accountNumber}` });
   };
 
   return (
