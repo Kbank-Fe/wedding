@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 
 import type { Intro } from '@/types/Intro';
+import { TextAlignment } from '@/types/TextAlignment';
 
 const Intro = () => {
   const weddingIntroData: Intro = {
@@ -55,7 +56,7 @@ const titleStyle = css`
   margin-bottom: 10px;
 `;
 
-const namesStyle = (alignment: 'left' | 'center' | 'right') => css`
+const namesStyle = (alignment: TextAlignment) => css`
   text-align: ${alignment};
   font-size: 13px;
   line-height: 1.5;
