@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
 import type { Intro } from '@/types/Intro';
-import { TextAlignment } from '@/types/TextAlignment';
+import type { TextAlignment } from '@/types/TextAlignment';
 
 const Intro = () => {
   const weddingIntroData: Intro = {
