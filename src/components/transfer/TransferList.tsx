@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
-import Header from '../Header';
-import TransferItem from './TransferItem';
+import Header from '@/components/Header';
+import TransferItem from '@/components/transfer/TransferItem';
 
 const tempList = [
   {
