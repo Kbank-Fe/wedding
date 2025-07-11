@@ -1,6 +1,11 @@
 import PageLayout from '@/components/PageLayout';
+import TransferList from '@/components/transfer/TransferList';
 
 const HomePage = () => {
-  return <PageLayout>.</PageLayout>;
+  return (
+    <PageLayout>
+      <TransferList />
+    </PageLayout>
+  );
 };
 export default HomePage;

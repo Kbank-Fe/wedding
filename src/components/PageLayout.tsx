@@ -6,15 +6,30 @@ type PageLayoutProps = {
 };
 
 const PageLayout = ({ children }: PageLayoutProps) => {
-  return <div css={layoutStyle}>{children}</div>;
+  return (
+    <div css={layoutStyle}>
+      <div css={wrapperStyle}>{children}</div>
+    </div>
+  );
 };
 
 export default PageLayout;
 
-const layoutStyle = () => css`
+const layoutStyle = css`
   width: 100%;
   max-width: 500px;
   height: 100vh;
   margin: 0 auto;
-  background: var(--amber1);
+  background: var(--gray1);
+`;
+
+const wrapperStyle = css`
+  min-width: 300px;
+  height: 100%;
+  min-height: fit-content;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
