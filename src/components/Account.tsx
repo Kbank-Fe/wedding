@@ -26,7 +26,7 @@ const Account = ({ bankName, accountNumber }: AccountProps) => {
 };
 
 const accountStyle = css`
-  background-color: #ffffff;
+  background-color: var(--gray1);
   width: 80%;
   max-width: 320px;
   padding: 1rem 1.5rem;
@@ -53,7 +53,7 @@ const accountNumberStyle = css`
 `;
 
 const copyButtonStyle = css`
-  background-color: #277dda;
+  background-color: var(--blue9);
   color: white;
   font-size: 0.9rem;
   border: none;
@@ -63,7 +63,7 @@ const copyButtonStyle = css`
   transition: background 0.2s ease;
 
   &:hover {
-    background-color: #1c5ca0;
+    background-color: var(--blue11);
   }
 `;
 
