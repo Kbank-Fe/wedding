@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import type { Intro } from '@/types/Intro';
 import type { TextAlignment } from '@/types/TextAlignment';
 
-const Intro = () => {
+const WeddingIntro = () => {
   const weddingIntroData: Intro = {
     title: '저희 결혼합니다',
     content: `
@@ -62,4 +62,4 @@ const namesStyle = (alignment: TextAlignment) => css`
   line-height: 1.5;
 `;
 
-export default Intro;
+export default WeddingIntro;

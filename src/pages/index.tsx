@@ -1,10 +1,10 @@
-import Intro from '@/components/Intro';
 import PageLayout from '@/components/PageLayout';
+import WeddingIntro from '@/components/WeddingIntro';
 
 const HomePage = () => {
   return (
     <PageLayout>
-      <Intro />
+      <WeddingIntro />
     </PageLayout>
   );
 };
