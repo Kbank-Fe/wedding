@@ -27,7 +27,7 @@ export const getDayOfWeek = (targetDate: Date, korean: boolean = true) => {
     },
     {
       kor: '토',
-      eng: 'SUN',
+      eng: 'SAT',
     },
   ];
   const day = targetDate.getDay();
