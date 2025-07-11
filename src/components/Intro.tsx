@@ -45,23 +45,19 @@ const Intro = () => {
 
 const introContainerStyle = css`
   padding: 24px;
-  background: #fff8f0;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const titleStyle = css`
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #333;
 `;
 
 const namesStyle = (alignment: 'left' | 'center' | 'right') => css`
   text-align: ${alignment};
-  font-size: 14px;
-  color: #444;
+  font-size: 13px;
   line-height: 1.5;
 `;
 
