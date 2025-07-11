@@ -42,7 +42,6 @@ const Intro = () => {
     </div>
   );
 };
-export default Intro;
 
 const introContainerStyle = css`
   padding: 24px;
@@ -65,3 +64,5 @@ const namesStyle = (alignment: 'left' | 'center' | 'right') => css`
   color: #444;
   line-height: 1.5;
 `;
+
+export default Intro;
