@@ -1,5 +1,7 @@
+import AccountList from '@/components/AccountList';
 import DateCalendar from '@/components/calendar/DateCalendar';
 import PageLayout from '@/components/PageLayout';
+import TransferList from '@/components/transfer/TransferList';
 
 const HomePage = () => {
   return (
@@ -13,6 +15,8 @@ const HomePage = () => {
         sec={0}
         year={2026}
       />
+      <TransferList />
+      <AccountList />
     </PageLayout>
   );
 };
