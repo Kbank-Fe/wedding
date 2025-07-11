@@ -26,6 +26,9 @@ const Intro = () => {
     femaleMotherName: '신부어머니',
   };
 
+  const maleNames = `${weddingIntroData.maleFatherName} · ${weddingIntroData.maleMotherName}의 아들 ${weddingIntroData.maleName}`;
+  const femaleNames = `${weddingIntroData.femaleFatherName} · ${weddingIntroData.femaleMotherName}의 딸 ${weddingIntroData.femaleName}`;
+
   return (
     <div css={introContainerStyle}>
       <p css={titleStyle}>{weddingIntroData.title}</p>
@@ -33,11 +36,7 @@ const Intro = () => {
       <br />
       {weddingIntroData.showNames && (
         <p css={namesStyle(weddingIntroData.alignment)}>
-          {weddingIntroData.maleFatherName} · {weddingIntroData.maleMotherName}
-          의 아들 {weddingIntroData.maleName}
-          <br />
-          {weddingIntroData.femaleFatherName} ·{' '}
-          {weddingIntroData.femaleMotherName}의 딸 {weddingIntroData.femaleName}
+          {maleNames} <br /> {femaleNames}
         </p>
       )}
     </div>
