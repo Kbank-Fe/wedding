@@ -1,8 +1,10 @@
-import AccountList from '@/components/AccountList';
+import { Toaster } from 'sonner';
+
+import AccountList from '@/components/account/AccountList';
 import DateCalendar from '@/components/calendar/DateCalendar';
 import PageLayout from '@/components/PageLayout';
-import WeddingIntro from '@/components/WeddingIntro';
 import TransferList from '@/components/transfer/TransferList';
+import WeddingIntro from '@/components/WeddingIntro';
 
 const HomePage = () => {
   return (
@@ -19,6 +21,7 @@ const HomePage = () => {
       />
       <TransferList />
       <AccountList />
+      <Toaster duration={2000} position="top-center" />
     </PageLayout>
   );
 };
