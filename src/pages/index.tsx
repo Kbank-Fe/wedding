@@ -1,4 +1,6 @@
-import AccountList from '@/components/AccountList';
+import { Toaster } from 'sonner';
+
+import AccountList from '@/components/account/AccountList';
 import DateCalendar from '@/components/calendar/DateCalendar';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
