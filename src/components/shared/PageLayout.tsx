@@ -13,8 +13,6 @@ const PageLayout = ({ children }: PageLayoutProps) => {
   );
 };
 
-export default PageLayout;
-
 const layoutStyle = css`
   width: 100%;
   max-width: 500px;
@@ -24,12 +22,12 @@ const layoutStyle = css`
 `;
 
 const wrapperStyle = css`
-  min-width: 300px;
-  height: 100%;
-  min-height: fit-content;
-  padding: 0 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 `;
+
+export default PageLayout;
