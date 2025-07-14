@@ -1,10 +1,12 @@
 import 'react-calendar/dist/Calendar.css';
+import '@/styles/test.css';
 
 import { css } from '@emotion/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Calendar from 'react-calendar';
 import type { View } from 'react-calendar/dist/shared/types.js';
 
+import Header from '@/components/Header';
 import { getDayOfWeek, getDday, getDtime } from '@/utils/date';
 
 // TODO: types 디렉토리 이동
@@ -84,7 +86,8 @@ const DateCalendar = (dateInfo: DateInfo) => {
   }, [calculateDtime]);
 
   return (
-    <div>
+    <>
+      <Header title="Calendar" />
       <div css={commonStyle}>{`${year}년 ${month}월 ${day}일`}</div>
       <div css={commonStyle}>
         {`${dayOfWeek}${korean ? '요일 ' : 'DAY '} ${hour}시 ${min}분`}
@@ -102,7 +105,7 @@ const DateCalendar = (dateInfo: DateInfo) => {
       />
       <div css={commonStyle}>{`${dtime.d}시 ${dtime.m} 분 ${dtime.s}초`}</div>
       <div css={commonStyle}>결혼식이 {dDay} 일 남았습니다.</div>
-    </div>
+    </>
   );
 };
 
@@ -132,29 +135,11 @@ const calendarStyle = css`
     color: white !important;
     border-radius: 90% !important;
   }
-
-  /* 오늘 날짜 기본 하이라이트 제거 */
-  /* .react-calendar__tile--now {
-  background: transparent;
-  color: inherit;
-} */
 `;
 
 const commonStyle = css`
   margin: 0 auto;
+  padding-bottom: 10px;
 `;
-
-// 추후 디자인 별도 설정 시 활용
-// const dateHeaderStyle = css`
-//   margin: 0 auto; /* 수평 가운데 정렬 */
-// `;
-
-// const timeHeaderStyle = css`
-//   margin: 0 auto; /* 수평 가운데 정렬 */
-// `;
-
-// const ddayStyle = css`
-//   margin: 0 auto; /* 수평 가운데 정렬 */
-// `;
 
 export default DateCalendar;

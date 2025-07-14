@@ -1,8 +1,8 @@
 import AccountList from '@/components/AccountList';
 import DateCalendar from '@/components/calendar/DateCalendar';
 import PageLayout from '@/components/PageLayout';
-import WeddingIntro from '@/components/WeddingIntro';
 import TransferList from '@/components/transfer/TransferList';
+import WeddingIntro from '@/components/WeddingIntro';
 
 const HomePage = () => {
   return (
@@ -15,7 +15,7 @@ const HomePage = () => {
         month={7}
         msec={0}
         sec={0}
-        year={2026}
+        year={2025}
       />
       <TransferList />
       <AccountList />
