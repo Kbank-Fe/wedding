@@ -1,7 +1,12 @@
 import { css } from '@emotion/react';
+import { animate, stagger } from 'motion';
+import { splitText } from 'motion-plus';
+import { useEffect, useRef } from 'react';
 
 import type { Intro } from '@/types/Intro';
 import type { TextAlignment } from '@/types/TextAlignment';
+
+import Header from './Header';
 
 const WeddingIntro = () => {
   const weddingIntroData: Intro = {
@@ -30,17 +35,88 @@ const WeddingIntro = () => {
   const maleNames = `${weddingIntroData.maleFatherName} · ${weddingIntroData.maleMotherName}의 아들 ${weddingIntroData.maleName}`;
   const femaleNames = `${weddingIntroData.femaleFatherName} · ${weddingIntroData.femaleMotherName}의 딸 ${weddingIntroData.femaleName}`;
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    document.fonts.ready.then(() => {
+      container.style.visibility = 'visible';
+
+      // data-ani 속성 값에 따른 타입 매핑
+      const typeMap = {
+        char: 'chars',
+        line: 'lines',
+        words: 'words',
+      } as const;
+
+      Object.entries(typeMap).forEach(([key, splitType]) => {
+        const elements = container.querySelectorAll(`[data-ani="${key}"]`);
+        elements.forEach((el) => {
+          const splitted = splitText(el as HTMLElement, { type: splitType });
+
+          // 'chars', 'lines', 'words' 중에서 대상 배열 가져오기
+          const targets = splitted[splitType];
+
+          switch (splitType) {
+            case 'chars':
+              animate(
+                targets,
+                { opacity: [0, 1], y: [10, 0] },
+                {
+                  type: 'spring',
+                  duration: 2,
+                  bounce: 0,
+                  delay: stagger(0.05),
+                },
+              );
+              break;
+            case 'words':
+              animate(
+                targets,
+                { opacity: [0, 3], y: [10, 0] },
+                {
+                  type: 'spring',
+                  duration: 1,
+                  delay: stagger(0.07),
+                  easing: 'ease-out',
+                },
+              );
+              break;
+            case 'lines':
+              animate(
+                targets,
+                { opacity: [0, 1], y: [20, 0] },
+                {
+                  duration: 0.8,
+                  delay: stagger(0.15),
+                  easing: 'ease-out',
+                },
+              );
+              break;
+          }
+        });
+      });
+    });
+  }, []);
+
   return (
-    <div css={introContainerStyle}>
-      <p css={titleStyle}>{weddingIntroData.title}</p>
-      <div dangerouslySetInnerHTML={{ __html: weddingIntroData.content }} />
-      <br />
-      {weddingIntroData.showNames && (
-        <p css={namesStyle(weddingIntroData.alignment)}>
-          {maleNames} <br /> {femaleNames}
+    <>
+      <Header title={'Wedding Day~!'} />
+      <div ref={containerRef} css={introContainerStyle}>
+        <p css={titleStyle} data-ani="words">
+          {weddingIntroData.title}
         </p>
-      )}
-    </div>
+        <div dangerouslySetInnerHTML={{ __html: weddingIntroData.content }} />
+        <br />
+        {weddingIntroData.showNames && (
+          <p css={namesStyle(weddingIntroData.alignment)}>
+            {maleNames} <br /> {femaleNames}
+          </p>
+        )}
+      </div>
+    </>
   );
 };
 
@@ -48,6 +124,13 @@ const introContainerStyle = css`
   padding: 24px;
   border-radius: 12px;
   text-align: center;
+
+  [data-split-char],
+  [data-split-line],
+  [data-split-words] {
+    display: inline-block;
+    white-space: pre;
+  }
 `;
 
 const titleStyle = css`
