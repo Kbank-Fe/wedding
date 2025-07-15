@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useState } from 'react';
 
 import { copyToClipboard } from '@/utils/clipboard';
 
@@ -8,8 +9,13 @@ type AccountProps = {
 };
 
 const Account = ({ bankName, accountNumber }: AccountProps) => {
+  const [copyButtonDisabled, setCopyButtonDisabled] = useState(false);
   const handleClickCopyButton = () => {
+    if (copyButtonDisabled) return;
+
+    setCopyButtonDisabled(true);
     copyToClipboard({ text: `${bankName} ${accountNumber}` });
+    setTimeout(() => setCopyButtonDisabled(false), 2200);
   };
 
   return (
@@ -18,7 +24,11 @@ const Account = ({ bankName, accountNumber }: AccountProps) => {
         <div css={bankNameStyle}>{bankName}</div>
         <div css={accountNumberStyle}>{accountNumber}</div>
       </div>
-      <button css={copyButtonStyle} onClick={handleClickCopyButton}>
+      <button
+        css={copyButtonStyle}
+        disabled={copyButtonDisabled}
+        onClick={handleClickCopyButton}
+      >
         복사
       </button>
     </div>
@@ -27,8 +37,6 @@ const Account = ({ bankName, accountNumber }: AccountProps) => {
 
 const accountStyle = css`
   background-color: var(--gray1);
-  width: 80%;
-  max-width: 320px;
   padding: 1rem 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
@@ -62,8 +70,14 @@ const copyButtonStyle = css`
   cursor: pointer;
   transition: background 0.2s ease;
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--blue11);
+  }
+
+  &:disabled {
+    background-color: var(--gray5);
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 `;
 
