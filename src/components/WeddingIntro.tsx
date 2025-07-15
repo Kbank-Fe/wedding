@@ -5,8 +5,7 @@ import { useEffect, useRef } from 'react';
 
 import type { Intro } from '@/types/Intro';
 import type { TextAlignment } from '@/types/TextAlignment';
-
-import Header from './Header';
+import Header from '@/components/Header';
 
 const WeddingIntro = () => {
   const weddingIntroData: Intro = {
