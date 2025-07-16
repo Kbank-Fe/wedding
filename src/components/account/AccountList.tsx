@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Toaster } from 'sonner';
 
 import Account from '@/components/account/Account';
+import Header from '@/components/Header';
 
 const accounts = [
   { bankName: '기업은행', accountNumber: '640-022316-01-011' },
@@ -13,6 +14,7 @@ const accounts = [
 const AccountList = () => {
   return (
     <>
+      <Header title="AccountList" />
       <Toaster duration={2000} position="top-center" />
       <motion.div
         animate="visible"
