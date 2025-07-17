@@ -2,33 +2,83 @@ import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 import { Toaster } from 'sonner';
 
+import { Accordion, AccordionItem } from '@/components/account/Accordion';
 import Account from '@/components/account/Account';
 import Header from '@/components/Header';
 
-const accounts = [
-  { bankName: '기업은행', accountNumber: '640-022316-01-011' },
-  { bankName: '국민은행', accountNumber: '123-456-789012' },
-  { bankName: '신한은행', accountNumber: '987-654-321098' },
+const groomSideAccounts = [
+  {
+    bankName: '카카오뱅크',
+    accountNumber: '123-456-789',
+    accountHolder: '김카뱅',
+  },
+  {
+    bankName: '케이뱅크',
+    accountNumber: '123-456-789',
+    accountHolder: '김케뱅',
+  },
+  {
+    bankName: '토스뱅크',
+    accountNumber: '123-456-789',
+    accountHolder: '이토스',
+  },
+];
+
+const brideSideAccounts = [
+  {
+    bankName: '국민은행',
+    accountNumber: '789-654-321',
+    accountHolder: '김국민',
+  },
+  {
+    bankName: '기업은행',
+    accountNumber: '789-654-321',
+    accountHolder: '김기업',
+  },
+  {
+    bankName: '신한은행',
+    accountNumber: '789-654-321',
+    accountHolder: '이신한',
+  },
 ];
 
 const AccountList = () => {
   return (
     <>
       <Header title="AccountList" />
-      <Toaster duration={2000} position="top-center" />
-      <motion.div
-        animate="visible"
-        css={accountListStyle}
-        initial="hidden"
-        variants={listVariants}
-        whileInView="visible"
-      >
-        {accounts.map((account, index) => (
-          <motion.div key={index} variants={itemVariants}>
-            <Account {...account} />
+      <Accordion>
+        <AccordionItem title="신랑측" value="groomSide">
+          <motion.div
+            animate="visible"
+            css={accountListStyle}
+            initial="hidden"
+            variants={listVariants}
+            whileInView="visible"
+          >
+            {groomSideAccounts.map((account, index) => (
+              <motion.div key={index} variants={itemVariants}>
+                <Account {...account} />
+              </motion.div>
+            ))}
           </motion.div>
-        ))}
-      </motion.div>
+        </AccordionItem>
+        <AccordionItem title="신부측" value="brideSide">
+          <motion.div
+            animate="visible"
+            css={accountListStyle}
+            initial="hidden"
+            variants={listVariants}
+            whileInView="visible"
+          >
+            {brideSideAccounts.map((account, index) => (
+              <motion.div key={index} variants={itemVariants}>
+                <Account {...account} />
+              </motion.div>
+            ))}
+          </motion.div>
+        </AccordionItem>
+      </Accordion>
+      <Toaster duration={2000} position="top-center" />
     </>
   );
 };

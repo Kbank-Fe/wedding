@@ -6,9 +6,10 @@ import { copyToClipboard } from '@/utils/clipboard';
 type AccountProps = {
   bankName: string;
   accountNumber: string;
+  accountHolder: string;
 };
 
-const Account = ({ bankName, accountNumber }: AccountProps) => {
+const Account = ({ bankName, accountNumber, accountHolder }: AccountProps) => {
   const [copyButtonDisabled, setCopyButtonDisabled] = useState(false);
   const handleClickCopyButton = () => {
     if (copyButtonDisabled) return;
@@ -21,8 +22,10 @@ const Account = ({ bankName, accountNumber }: AccountProps) => {
   return (
     <div css={accountStyle}>
       <div css={accountInfoStyle}>
-        <div css={bankNameStyle}>{bankName}</div>
-        <div css={accountNumberStyle}>{accountNumber}</div>
+        <div css={accountHolderNameStyle}>{accountHolder}</div>
+        <div css={accountNumberStyle}>
+          {bankName} {accountNumber}
+        </div>
       </div>
       <button
         css={copyButtonStyle}
@@ -50,7 +53,7 @@ const accountInfoStyle = css`
   flex-direction: column;
 `;
 
-const bankNameStyle = css`
+const accountHolderNameStyle = css`
   font-weight: bold;
   font-size: 1rem;
   margin-bottom: 4px;
