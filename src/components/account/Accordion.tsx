@@ -19,7 +19,7 @@ export const AccordionItem = ({
     <RadixAccodion.Header>
       <RadixAccodion.Trigger css={triggerStyle}>
         {title}
-        <ChevronDown className="icon" />
+        <ChevronDown className="icon" size={16} />
       </RadixAccodion.Trigger>
     </RadixAccodion.Header>
     <RadixAccodion.Content css={contentStyle}>{children}</RadixAccodion.Content>
@@ -48,7 +48,7 @@ const rootStyle = css`
 `;
 
 const itemStyle = css`
-  border: 1px solid #ddd;
+  border: 1px solid var(--gray3);
   border-radius: 6px;
   overflow: hidden;
   background: #f9f9f9;
@@ -59,7 +59,7 @@ const triggerStyle = css`
   padding: 12px 16px;
   background: var(--gray2);
   border: none;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 500;
   display: flex;
   justify-content: space-between;

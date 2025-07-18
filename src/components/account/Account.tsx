@@ -40,9 +40,8 @@ const Account = ({ bankName, accountNumber, accountHolder }: AccountProps) => {
 
 const accountStyle = css`
   background-color: var(--gray1);
-  padding: 1rem 1.5rem;
+  padding: 0.8rem 1.2rem;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -55,18 +54,18 @@ const accountInfoStyle = css`
 
 const accountHolderNameStyle = css`
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 14px;
   margin-bottom: 4px;
 `;
 
 const accountNumberStyle = css`
-  font-size: 0.95rem;
+  font-size: 12px;
 `;
 
 const copyButtonStyle = css`
   background-color: var(--blue9);
   color: white;
-  font-size: 0.9rem;
+  font-size: 12px;
   border: none;
   padding: 8px 12px;
   border-radius: 8px;
