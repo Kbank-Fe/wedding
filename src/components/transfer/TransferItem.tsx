@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
 type TransferProps = {
@@ -8,10 +9,16 @@ type TransferProps = {
 
 const TransferItem = ({ title, description }: TransferProps) => {
   return (
-    <div css={wrapperStyle}>
+    <motion.div
+      css={wrapperStyle}
+      initial={{ opacity: 0, y: 30 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      viewport={{ once: true, amount: 0.2 }}
+      whileInView={{ opacity: 1, y: 0 }}
+    >
       {title && <h2 css={titleStyle}>{title}</h2>}
       {description && <div css={descriptionStyle}>{description}</div>}
-    </div>
+    </motion.div>
   );
 };
 
