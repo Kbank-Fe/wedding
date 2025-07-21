@@ -8,9 +8,9 @@ import WeddingIntro from '@/components/WeddingIntro';
 const HomePage = () => {
   return (
     <PageLayout>
-      {/* <Section>
+      <Section>
         <WeddingIntro />
-      </Section> */}
+      </Section>
       <Section>
         <DateCalendar
           day={15}
