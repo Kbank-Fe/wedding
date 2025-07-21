@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
 import ContactItem from '@/components/contact/ContactItem';
-import Header from '@/components/Header';
+import Header from '@/components/shared/Header';
 
 const Contact = () => {
   return (
