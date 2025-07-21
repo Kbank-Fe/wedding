@@ -1,12 +1,12 @@
 import 'react-calendar/dist/Calendar.css';
-import '@/styles/test.css';
 
 import { css } from '@emotion/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Calendar from 'react-calendar';
 import type { View } from 'react-calendar/dist/shared/types.js';
 
 import Header from '@/components/Header';
+import { useHorizontalMotion, useVerticalMotion } from '@/hooks/useMotion';
 import { getDayOfWeek, getDday, getDtime } from '@/utils/date';
 
 // TODO: types 디렉토리 이동
@@ -57,6 +57,20 @@ const DateCalendar = (dateInfo: DateInfo) => {
   // 한국어 여부
   const korean = true;
 
+  // motion 적용
+  const dateRef = useRef<HTMLDivElement>(null);
+  const timeRef = useRef<HTMLDivElement>(null);
+  const calendarWrapperRef = useRef<HTMLDivElement>(null);
+  const dTimeRef = useRef<HTMLDivElement>(null);
+  const dDayRef = useRef<HTMLDivElement>(null);
+
+  // 모션 적용
+  useVerticalMotion(dateRef, { x: -20, duration: 1 });
+  useVerticalMotion(timeRef, { x: -20, duration: 1 });
+  useHorizontalMotion(calendarWrapperRef, { y: -10, duration: 1, delay: 0.5 });
+  useVerticalMotion(dTimeRef, { x: -30, duration: 1, delay: 1 });
+  useVerticalMotion(dDayRef, { x: -30, duration: 1, delay: 1 });
+
   // 요일 계산
   const dayOfWeek = useMemo(() => {
     const weddingDate = getDateObject(dateInfo);
@@ -88,28 +102,41 @@ const DateCalendar = (dateInfo: DateInfo) => {
   return (
     <>
       <Header title="Calendar" />
-      <div css={commonStyle}>{`${year}년 ${month}월 ${day}일`}</div>
-      <div css={commonStyle}>
+      <div
+        ref={dateRef}
+        css={commonStyle}
+      >{`${year}년 ${month}월 ${day}일`}</div>
+      <div ref={timeRef} css={commonStyle}>
         {`${dayOfWeek}${korean ? '요일 ' : 'DAY '} ${hour}시 ${min}분`}
       </div>
-      <Calendar
-        activeStartDate={getDateObject(dateInfo)}
-        calendarType="gregory"
-        css={calendarStyle}
-        formatDay={(locale, date) => `${date.getDate()}`}
-        minDetail="month" // 일/주/년 보기 제거
-        showNavigation={false} // 상단 타이틀 및 화살표 전부 안보이게
-        showNeighboringMonth={false}
-        tileClassName={setHighlight}
-        view="month"
-      />
-      <div css={commonStyle}>{`${dtime.d}시 ${dtime.m} 분 ${dtime.s}초`}</div>
-      <div css={commonStyle}>결혼식이 {dDay} 일 남았습니다.</div>
+      <div ref={calendarWrapperRef}>
+        <Calendar
+          activeStartDate={getDateObject(dateInfo)}
+          calendarType="gregory"
+          css={calendarStyle}
+          formatDay={(locale, date) => `${date.getDate()}`}
+          minDetail="month" // 일/주/년 보기 제거
+          showNavigation={false} // 상단 타이틀 및 화살표 전부 안보이게
+          showNeighboringMonth={false}
+          tileClassName={setHighlight}
+          view="month"
+        />
+      </div>
+      <div
+        ref={dTimeRef}
+        css={commonStyle}
+      >{`${dtime.d}시 ${dtime.m} 분 ${dtime.s}초`}</div>
+      <div ref={dDayRef} css={commonStyle}>
+        결혼식이 {dDay} 일 남았습니다.
+      </div>
     </>
   );
 };
 
 const calendarStyle = css`
+  margin: 0 auto;
+  padding-bottom: 10px;
+
   /* hover 색상 변화 제거 */
   .react-calendar__tile,
   .react-calendar__tile:enabled:hover {
