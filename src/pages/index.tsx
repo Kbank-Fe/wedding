@@ -1,5 +1,6 @@
 import AccountList from '@/components/AccountList';
 import DateCalendar from '@/components/calendar/DateCalendar';
+import Contact from '@/components/contact/Contact';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
 import TransferList from '@/components/transfer/TransferList';
@@ -8,6 +9,9 @@ import WeddingIntro from '@/components/WeddingIntro';
 const HomePage = () => {
   return (
     <PageLayout>
+      <Section>
+        <Contact />
+      </Section>
       <Section>
         <WeddingIntro />
       </Section>
