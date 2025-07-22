@@ -19,7 +19,7 @@ const childWrapperStyle = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 2rem;
+  padding: 0 2.5rem;
 `;
 
 export default Section;
