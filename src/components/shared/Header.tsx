@@ -11,8 +11,8 @@ const Header = ({ title }: HeaderProps) => {
 const headerStyle = css`
   text-align: center;
   font-family: 'Dynalight', cursive;
-  font-size: 40px;
-  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  margin-bottom: 1.8rem;
 `;
 
 export default Header;
