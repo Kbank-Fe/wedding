@@ -57,7 +57,7 @@ const itemStyle = css`
 const triggerStyle = css`
   width: 100%;
   padding: 12px 16px;
-  background: var(--gray2);
+  background: var(--gray3);
   border: none;
   font-size: 0.8rem;
   font-weight: 500;
@@ -78,14 +78,11 @@ const triggerStyle = css`
 const contentStyle = css`
   overflow: hidden;
   font-size: 0.95rem;
-  background: white;
+  background: var(--gray1);
   line-height: 1.5;
-  padding: 0 16px;
 
   &[data-state='open'] {
     animation: ${slideDown} 0.25s ease-out;
-    padding-top: 12px;
-    padding-bottom: 12px;
   }
 
   &[data-state='closed'] {

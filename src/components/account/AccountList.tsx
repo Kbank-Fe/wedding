@@ -86,7 +86,10 @@ const AccountList = () => {
 const accountListStyle = css`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+
+  > *:not(:last-of-type) {
+    border-bottom: 1px solid var(--gray3);
+  }
 `;
 
 const listVariants = {
