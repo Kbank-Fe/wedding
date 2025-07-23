@@ -1,12 +1,12 @@
 import 'react-calendar/dist/Calendar.css';
 
 import { css } from '@emotion/react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Calendar from 'react-calendar';
 import type { View } from 'react-calendar/dist/shared/types.js';
 
 import Header from '@/components/Header';
-import { useHorizontalMotion, useVerticalMotion } from '@/hooks/useMotion';
+import { MotionFadeDown } from '@/components/shared/MotionFadeDown';
 import { getDayOfWeek, getDday, getDtime } from '@/utils/date';
 
 // TODO: types 디렉토리 이동
@@ -57,20 +57,6 @@ const DateCalendar = (dateInfo: DateInfo) => {
   // 한국어 여부
   const korean = true;
 
-  // motion 적용
-  const dateRef = useRef<HTMLDivElement>(null);
-  const timeRef = useRef<HTMLDivElement>(null);
-  const calendarWrapperRef = useRef<HTMLDivElement>(null);
-  const dTimeRef = useRef<HTMLDivElement>(null);
-  const dDayRef = useRef<HTMLDivElement>(null);
-
-  // 모션 적용
-  useVerticalMotion(dateRef, { x: -20, duration: 1 });
-  useVerticalMotion(timeRef, { x: -20, duration: 1 });
-  useHorizontalMotion(calendarWrapperRef, { y: -10, duration: 1, delay: 0.5 });
-  useVerticalMotion(dTimeRef, { x: -30, duration: 1, delay: 1 });
-  useVerticalMotion(dDayRef, { x: -30, duration: 1, delay: 1 });
-
   // 요일 계산
   const dayOfWeek = useMemo(() => {
     const weddingDate = getDateObject(dateInfo);
@@ -102,14 +88,13 @@ const DateCalendar = (dateInfo: DateInfo) => {
   return (
     <>
       <Header title="Calendar" />
-      <div
-        ref={dateRef}
-        css={commonStyle}
-      >{`${year}년 ${month}월 ${day}일`}</div>
-      <div ref={timeRef} css={commonStyle}>
-        {`${dayOfWeek}${korean ? '요일 ' : 'DAY '} ${hour}시 ${min}분`}
-      </div>
-      <div ref={calendarWrapperRef}>
+      <MotionFadeDown css={commonStyle}>
+        <div>{`${year}년 ${month}월 ${day}일`}</div>
+        <div>
+          {`${dayOfWeek}${korean ? '요일 ' : 'DAY '} ${hour}시 ${min}분`}
+        </div>
+      </MotionFadeDown>
+      <MotionFadeDown css={calendarStyle}>
         <Calendar
           activeStartDate={getDateObject(dateInfo)}
           calendarType="gregory"
@@ -121,14 +106,11 @@ const DateCalendar = (dateInfo: DateInfo) => {
           tileClassName={setHighlight}
           view="month"
         />
-      </div>
-      <div
-        ref={dTimeRef}
-        css={commonStyle}
-      >{`${dtime.d}시 ${dtime.m} 분 ${dtime.s}초`}</div>
-      <div ref={dDayRef} css={commonStyle}>
-        결혼식이 {dDay} 일 남았습니다.
-      </div>
+      </MotionFadeDown>
+      <MotionFadeDown css={commonStyle}>
+        <div>{`${dtime.d}시 ${dtime.m} 분 ${dtime.s}초`}</div>
+        <div>결혼식이 {dDay} 일 남았습니다.</div>
+      </MotionFadeDown>
     </>
   );
 };
@@ -166,7 +148,8 @@ const calendarStyle = css`
 
 const commonStyle = css`
   margin: 0 auto;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
+  text-align: center; // 가운데 정렬
 `;
 
 export default DateCalendar;
