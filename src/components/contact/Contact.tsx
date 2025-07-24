@@ -1,86 +1,77 @@
-import * as Dialog from '@radix-ui/react-dialog';
-import { Phone, X } from 'lucide-react'; // X 아이콘 (lucide-react 추천, fontawesome도 OK)
+import { css } from '@emotion/react';
+
+import ContactItem from '@/components/contact/ContactItem';
+import Header from '@/components/Header';
 
 const Contact = () => {
   return (
-    <Dialog.Root>
-      <Dialog.Trigger
-        style={{
-          background: 'grey',
-          color: 'white',
-          padding: '10px 20px',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          fontSize: '16px',
-        }}
-      >
-        📞 연락하기
-      </Dialog.Trigger>
+    <>
+      <Header title="Contact" />
 
-      <Dialog.Portal>
-        <Dialog.Overlay
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 1000,
-          }}
-        />
-        <Dialog.Content
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0,0,0,0.85)',
-            padding: '2rem',
-            overflowY: 'auto',
-            color: 'white',
-            zIndex: 1001,
-            borderTopLeftRadius: '2rem',
-            borderBottomLeftRadius: '2rem',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
-          }}
-        >
-          <Dialog.Title>📌 연락하기</Dialog.Title>
-          <Dialog.Description asChild>
-            <div>
-              <div>
-                <span>신랑</span>
-                <a
-                  href="tel:01012345678"
-                  style={{ color: 'inherit', textDecoration: 'none' }}
-                >
-                  <Phone size={16} />
-                </a>
-              </div>
-              <div>
-                <span>신부</span>
-                <a
-                  href="tel:01012345678"
-                  style={{ color: 'inherit', textDecoration: 'none' }}
-                >
-                  <Phone size={16} />
-                </a>
-              </div>
-            </div>
-          </Dialog.Description>
-          <Dialog.Close asChild>
-            <button
-              aria-label="Close"
-              style={{
-                position: 'absolute',
-                top: '20px',
-                right: '20px',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-              }}
-            >
-              <X color="white" size={32} />
-            </button>
-          </Dialog.Close>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+      <span css={titleStyle}>신랑측</span>
+      <hr css={lineStyle} />
+      <ContactItem
+        email="pjhyng0125@naver.com"
+        name="박진형"
+        part="신랑"
+        phone="01012345678"
+      />
+      <ContactItem
+        email="pjhyng0125@naver.com"
+        name="박박박"
+        part="신랑 아버지"
+        phone="01012345678"
+      />
+      <ContactItem
+        email="pjhyng0125@naver.com"
+        name="진진진"
+        part="신랑 어머니"
+        phone="01012345678"
+      />
+
+      <hr css={gapHrStyle} />
+
+      <span css={titleStyle}>신부측</span>
+      <hr css={lineStyle} />
+      <ContactItem
+        email="pjhyng0125@naver.com"
+        name="형진박"
+        part="신부"
+        phone="01012345678"
+      />
+      <ContactItem
+        email="pjhyng0125@naver.com"
+        name="진형박진형입니다안녕하세요반갑습니다정말"
+        part="신부 아버지"
+        phone="01012345678"
+      />
+      <ContactItem
+        email="pjhyng0125@naver.com"
+        name="형형형형형"
+        part="신부 어머니"
+        phone="01012345678"
+      />
+    </>
   );
 };
+
+const gapHrStyle = css`
+  border: none;
+  height: 60px;
+  background: transparent;
+  margin: 0;
+  width: 100%;
+`;
+
+const titleStyle = css`
+  margin: 0 16px;
+`;
+
+const lineStyle = css`
+  border: none;
+  border-bottom: 1.5px solid var(--gray11);
+  margin: 20px 0 16px 0;
+  width: 100%;
+`;
 
 export default Contact;
