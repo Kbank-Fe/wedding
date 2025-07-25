@@ -1,12 +1,15 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
-type Props = {
+type MotionFadeDownProps = {
   children: ReactNode;
   className?: string;
 };
 
-export const MotionFadeDown = ({ children, className }: Props) => (
+export const MotionFadeDown = ({
+  children,
+  className,
+}: MotionFadeDownProps) => (
   <motion.div
     className={className}
     initial={{ opacity: 0, y: -60 }} // 더 위에서 시작
