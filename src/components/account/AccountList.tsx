@@ -5,7 +5,7 @@ import { Toaster } from 'sonner';
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
 import Account from '@/components/account/Account';
-import Header from '@/components/Header';
+import Header from '@/components/shared/Header';
 
 const groomSideAccounts = [
   {
