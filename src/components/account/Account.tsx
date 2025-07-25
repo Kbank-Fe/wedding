@@ -53,18 +53,18 @@ const accountInfoStyle = css`
 
 const accountHolderNameStyle = css`
   font-weight: bold;
-  font-size: 14px;
+  font-size: 0.85rem;
   margin-bottom: 4px;
 `;
 
 const accountNumberStyle = css`
-  font-size: 12px;
+  font-size: 0.75rem;
 `;
 
 const copyButtonStyle = css`
   background-color: var(--blue9);
   color: var(--gray1);
-  font-size: 12px;
+  font-size: 0.75rem;
   border: none;
   padding: 8px 12px;
   border-radius: 8px;

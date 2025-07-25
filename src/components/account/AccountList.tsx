@@ -2,7 +2,8 @@ import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 import { Toaster } from 'sonner';
 
-import { Accordion, AccordionItem } from '@/components/account/Accordion';
+import { Accordion } from '@/components/account/Accordion';
+import { AccordionItem } from '@/components/account/AccordionItem';
 import Account from '@/components/account/Account';
 import Header from '@/components/Header';
 
@@ -60,11 +61,12 @@ const AccountList = () => {
               initial="hidden"
               variants={listVariants}
             >
-              {groomSideAccounts.map((account, index) => (
-                <motion.div key={index} variants={itemVariants}>
-                  <Account {...account} />
-                </motion.div>
-              ))}
+              {groomSideAccounts.length > 0 &&
+                groomSideAccounts.map((account, index) => (
+                  <motion.div key={index} variants={itemVariants}>
+                    <Account {...account} />
+                  </motion.div>
+                ))}
             </motion.div>
           </AccordionItem>
           <AccordionItem title="신부측" value="brideSide">
@@ -75,11 +77,12 @@ const AccountList = () => {
               variants={listVariants}
               whileInView="visible"
             >
-              {brideSideAccounts.map((account, index) => (
-                <motion.div key={index} variants={itemVariants}>
-                  <Account {...account} />
-                </motion.div>
-              ))}
+              {brideSideAccounts.length > 0 &&
+                brideSideAccounts.map((account, index) => (
+                  <motion.div key={index} variants={itemVariants}>
+                    <Account {...account} />
+                  </motion.div>
+                ))}
             </motion.div>
           </AccordionItem>
         </Accordion>
