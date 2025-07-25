@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 
-import Header from '@/components/Header';
+import Header from '@/components/shared/Header';
 import type { Intro } from '@/types/Intro';
 import type { TextAlignment } from '@/types/TextAlignment';
 
