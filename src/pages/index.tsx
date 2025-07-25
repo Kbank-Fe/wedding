@@ -1,4 +1,4 @@
-import AccountList from '@/components/AccountList';
+import AccountList from '@/components/account/AccountList';
 import DateCalendar from '@/components/calendar/DateCalendar';
 import Contact from '@/components/contact/Contact';
 import PageLayout from '@/components/shared/PageLayout';
