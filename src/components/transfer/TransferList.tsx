@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import Header from '@/components/Header';
+import Header from '@/components/shared/Header';
 import TransferItem from '@/components/transfer/TransferItem';
 
 const tempList = [
@@ -55,7 +55,7 @@ const TransferList = () => {
 const groupStyle = css`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.2rem;
 `;
 
 export default TransferList;
