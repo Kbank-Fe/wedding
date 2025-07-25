@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Calendar from 'react-calendar';
 import type { View } from 'react-calendar/dist/shared/types.js';
 
-import Header from '@/components/Header';
+import Header from '@/components/shared/Header';
 import { MotionFadeDown } from '@/components/shared/MotionFadeDown';
 import { getDayOfWeek, getDday, getDtime } from '@/utils/date';
 
