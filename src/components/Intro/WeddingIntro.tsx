@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
+import { motion } from 'framer-motion';
 
+import Header from '@/components/shared/Header';
 import type { Intro } from '@/types/Intro';
 import type { TextAlignment } from '@/types/TextAlignment';
 
@@ -30,35 +32,60 @@ const WeddingIntro = () => {
   const maleNames = `${weddingIntroData.maleFatherName} · ${weddingIntroData.maleMotherName}의 아들 ${weddingIntroData.maleName}`;
   const femaleNames = `${weddingIntroData.femaleFatherName} · ${weddingIntroData.femaleMotherName}의 딸 ${weddingIntroData.femaleName}`;
 
+  const fadeUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  };
+
   return (
-    <div css={introContainerStyle}>
-      <p css={titleStyle}>{weddingIntroData.title}</p>
-      <div dangerouslySetInnerHTML={{ __html: weddingIntroData.content }} />
-      <br />
-      {weddingIntroData.showNames && (
-        <p css={namesStyle(weddingIntroData.alignment)}>
-          {maleNames} <br /> {femaleNames}
-        </p>
-      )}
-    </div>
+    <>
+      <Header title={'Wedding Day~!'} />
+      <motion.div
+        css={introContainerStyle}
+        initial="hidden"
+        variants={fadeUp}
+        viewport={{ amount: 0.5, once: true }}
+        whileInView="visible"
+      >
+        <motion.p css={titleStyle} variants={fadeUp}>
+          {weddingIntroData.title}
+        </motion.p>
+
+        <motion.div
+          dangerouslySetInnerHTML={{ __html: weddingIntroData.content }}
+          variants={fadeUp}
+        />
+
+        <br />
+
+        {weddingIntroData.showNames && (
+          <motion.p
+            css={namesStyle(weddingIntroData.alignment)}
+            variants={fadeUp}
+          >
+            {maleNames} <br /> {femaleNames}
+          </motion.p>
+        )}
+      </motion.div>
+    </>
   );
 };
 
 const introContainerStyle = css`
-  padding: 24px;
-  border-radius: 12px;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
   text-align: center;
 `;
 
 const titleStyle = css`
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
 `;
 
 const namesStyle = (alignment: TextAlignment) => css`
   text-align: ${alignment};
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.5;
 `;
 

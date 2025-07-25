@@ -1,9 +1,9 @@
-import AccountList from '@/components/AccountList';
+import AccountList from '@/components/account/AccountList';
 import DateCalendar from '@/components/calendar/DateCalendar';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
 import TransferList from '@/components/transfer/TransferList';
-import WeddingIntro from '@/components/WeddingIntro';
+import WeddingIntro from '@/components/Intro/WeddingIntro';
 
 const HomePage = () => {
   return (
