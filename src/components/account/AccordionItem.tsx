@@ -41,7 +41,6 @@ const itemStyle = css`
   border: 1px solid var(--gray3);
   border-radius: 6px;
   overflow: hidden;
-  background: #f9f9f9;
 `;
 
 const triggerStyle = css`
