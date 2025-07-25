@@ -32,22 +32,6 @@ const WeddingIntro = () => {
   const maleNames = `${weddingIntroData.maleFatherName} · ${weddingIntroData.maleMotherName}의 아들 ${weddingIntroData.maleName}`;
   const femaleNames = `${weddingIntroData.femaleFatherName} · ${weddingIntroData.femaleMotherName}의 딸 ${weddingIntroData.femaleName}`;
 
-  // split text 애니메이션 variants
-  const charVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  };
-  const titleContainerVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.07 } },
-  };
-
-  // names 영역 별도 애니메이션
-  const namesVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.7 } },
-  };
-
   const fadeUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
@@ -63,21 +47,10 @@ const WeddingIntro = () => {
         viewport={{ amount: 0.5, once: true }}
         whileInView="visible"
       >
-        {/* 1. split text 애니메이션 */}
-        <motion.p
-          animate="visible"
-          css={titleStyle}
-          initial="hidden"
-          variants={titleContainerVariants}
-        >
-          {weddingIntroData.title.split('').map((char, idx) => (
-            <motion.span key={idx} variants={charVariants}>
-              {char}
-            </motion.span>
-          ))}
+        <motion.p css={titleStyle} variants={fadeUp}>
+          {weddingIntroData.title}
         </motion.p>
 
-        {/* 2. content는 기존대로 유지 */}
         <motion.div
           dangerouslySetInnerHTML={{ __html: weddingIntroData.content }}
           variants={fadeUp}
@@ -85,13 +58,10 @@ const WeddingIntro = () => {
 
         <br />
 
-        {/* 3. names에 별도 애니메이션 적용 */}
         {weddingIntroData.showNames && (
           <motion.p
-            animate="visible"
             css={namesStyle(weddingIntroData.alignment)}
-            initial="hidden"
-            variants={namesVariants}
+            variants={fadeUp}
           >
             {maleNames} <br /> {femaleNames}
           </motion.p>
@@ -102,20 +72,20 @@ const WeddingIntro = () => {
 };
 
 const introContainerStyle = css`
-  padding: 24px;
-  border-radius: 12px;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
   text-align: center;
 `;
 
 const titleStyle = css`
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
 `;
 
 const namesStyle = (alignment: TextAlignment) => css`
   text-align: ${alignment};
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.5;
 `;
 
