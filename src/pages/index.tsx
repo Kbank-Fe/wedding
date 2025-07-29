@@ -1,5 +1,6 @@
 import AccountList from '@/components/AccountList';
 import DateCalendar from '@/components/calendar/DateCalendar';
+import Gallery from '@/components/gallery/Gallery';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
 import TransferList from '@/components/transfer/TransferList';
@@ -27,6 +28,9 @@ const HomePage = () => {
       </Section>
       <Section>
         <TransferList />
+      </Section>
+      <Section>
+        <Gallery />
       </Section>
     </PageLayout>
   );
