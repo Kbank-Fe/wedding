@@ -32,11 +32,11 @@ const contactRowStyle = css`
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  margin: 16px 20px;
+  margin: 12px 12px;
 `;
 
 const partStyle = css`
-  min-width: 140px;
+  min-width: 100px;
   text-align: left;
 `;
 
