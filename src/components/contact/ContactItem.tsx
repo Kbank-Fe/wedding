@@ -1,14 +1,14 @@
 import { css } from '@emotion/react';
 import { Mail, Phone } from 'lucide-react';
 
-type Props = {
+type ContactItemProps = {
   part: string;
   name: string;
   phone: string;
   email: string;
 };
 
-const ContactItem = ({ part, name, phone, email }: Props) => {
+const ContactItem = ({ part, name, phone, email }: ContactItemProps) => {
   return (
     <>
       <div css={contactRowStyle}>

@@ -57,7 +57,7 @@ const Contact = () => {
 
 const gapHrStyle = css`
   border: none;
-  height: 60px;
+  height: 40px;
   background: transparent;
   margin: 0;
   width: 100%;
@@ -65,12 +65,13 @@ const gapHrStyle = css`
 
 const titleStyle = css`
   margin: 0 16px;
+  font-size: 0.9rem;
 `;
 
 const lineStyle = css`
   border: none;
   border-bottom: 1.5px solid var(--gray11);
-  margin: 20px 0 16px 0;
+  margin: 10px 0 16px 0;
   width: 100%;
 `;
 
