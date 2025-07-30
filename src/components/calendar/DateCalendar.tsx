@@ -89,12 +89,10 @@ const DateCalendar = (dateInfo: DateInfo) => {
     <>
       <Header title="Calendar" />
       <MotionFade css={commonStyle}>
-        <div>{`${year}년 ${month}월 ${day}일`}</div>
-        <div>
-          {`${dayOfWeek}${korean ? '요일 ' : 'DAY '} ${hour}시 ${min}분`}
-        </div>
+        <div>{`${year}년 ${month}월 ${day}일 | ${dayOfWeek}${korean ? '요일 ' : 'DAY '} ${hour}시 ${min}분`}</div>
+        <div>{``}</div>
       </MotionFade>
-      <MotionFade css={calendarStyle}>
+      <MotionFade>
         <Calendar
           activeStartDate={getDateObject(dateInfo)}
           calendarType="gregory"
@@ -108,7 +106,24 @@ const DateCalendar = (dateInfo: DateInfo) => {
         />
       </MotionFade>
       <MotionFade css={commonStyle}>
-        <div>{`${dtime.d}시 ${dtime.m} 분 ${dtime.s}초`}</div>
+        <div css={dtimeRowStyle}>
+          <div css={dtimeBoxStyle}>
+            <span css={dtimeValueStyle}>{dtime.d}</span>
+            <span css={dtimeLabelStyle}>일</span>
+          </div>
+          <div css={dtimeBoxStyle}>
+            <span css={dtimeValueStyle}>{dtime.h}</span>
+            <span css={dtimeLabelStyle}>시</span>
+          </div>
+          <div css={dtimeBoxStyle}>
+            <span css={dtimeValueStyle}>{dtime.m}</span>
+            <span css={dtimeLabelStyle}>분</span>
+          </div>
+          <div css={dtimeBoxStyle}>
+            <span css={dtimeValueStyle}>{dtime.s}</span>
+            <span css={dtimeLabelStyle}>초</span>
+          </div>
+        </div>
         <div>결혼식이 {dDay} 일 남았습니다.</div>
       </MotionFade>
     </>
@@ -118,12 +133,14 @@ const DateCalendar = (dateInfo: DateInfo) => {
 const calendarStyle = css`
   margin: 0 auto;
   padding-bottom: 10px;
+  width: 100%; // 부모 요소 너비에 맞춤
+  max-width: 100%; // 요소 최대 너비 부모 맞춤
+  box-sizing: border-box; // 패딩, 보더 포함 요소 전체 너비와 높이 계산
 
   /* hover 색상 변화 제거 */
   .react-calendar__tile,
   .react-calendar__tile:enabled:hover {
     background: none;
-    /* color: inherit; */
     box-shadow: none;
     outline: none;
   }
@@ -150,6 +167,39 @@ const commonStyle = css`
   margin: 0 auto;
   padding-bottom: 20px;
   text-align: center; // 가운데 정렬
+`;
+
+// 스타일 추가
+const dtimeRowStyle = css`
+  display: flex;
+  justify-content: center;
+  gap: 1rem; // 간격 조정
+  margin: 1.5rem 0.8rem 1.5rem 0.8rem;
+`;
+
+const dtimeBoxStyle = css`
+  background: var(--gray1);
+  border-radius: 12px;
+  min-width: 56px;
+  min-height: 64px;
+  padding: 10px 12px; // ← 여백 추가
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 12px 0 var(--gray8);
+  position: relative;
+`;
+
+const dtimeValueStyle = css`
+  font-size: 1.2rem;
+  color: var(--gray12);
+`;
+
+const dtimeLabelStyle = css`
+  font-size: 0.8rem;
+  color: var(--gray9);
+  margin-top: 2px;
 `;
 
 export default DateCalendar;
