@@ -6,7 +6,7 @@ import Calendar from 'react-calendar';
 import type { View } from 'react-calendar/dist/shared/types.js';
 
 import Header from '@/components/shared/Header';
-import { MotionFadeDown } from '@/components/shared/MotionFadeDown';
+import { MotionFade } from '@/components/shared/MotionFade';
 import { getDayOfWeek, getDday, getDtime } from '@/utils/date';
 
 // TODO: types 디렉토리 이동
@@ -88,13 +88,13 @@ const DateCalendar = (dateInfo: DateInfo) => {
   return (
     <>
       <Header title="Calendar" />
-      <MotionFadeDown css={commonStyle}>
+      <MotionFade css={commonStyle}>
         <div>{`${year}년 ${month}월 ${day}일`}</div>
         <div>
           {`${dayOfWeek}${korean ? '요일 ' : 'DAY '} ${hour}시 ${min}분`}
         </div>
-      </MotionFadeDown>
-      <MotionFadeDown css={calendarStyle}>
+      </MotionFade>
+      <MotionFade css={calendarStyle}>
         <Calendar
           activeStartDate={getDateObject(dateInfo)}
           calendarType="gregory"
@@ -106,11 +106,11 @@ const DateCalendar = (dateInfo: DateInfo) => {
           tileClassName={setHighlight}
           view="month"
         />
-      </MotionFadeDown>
-      <MotionFadeDown css={commonStyle}>
+      </MotionFade>
+      <MotionFade css={commonStyle}>
         <div>{`${dtime.d}시 ${dtime.m} 분 ${dtime.s}초`}</div>
         <div>결혼식이 {dDay} 일 남았습니다.</div>
-      </MotionFadeDown>
+      </MotionFade>
     </>
   );
 };
