@@ -9,6 +9,8 @@ import { useState } from 'react';
 import ImageGallery from 'react-image-gallery';
 import PhotoAlbum from 'react-photo-album';
 
+import { useViewportStore } from '@/stores/useViewportStore';
+
 const photoList = [
   { src: '/images/image1.png', width: 600, height: 800 },
   { src: '/images/image2.png', width: 600, height: 800 },
@@ -37,6 +39,7 @@ const toGalleryItems = (photos: Photo[]) =>
 const GalleryView = () => {
   const [open, setOpen] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
+  const isMobile = useViewportStore((state) => state.isMobile);
 
   const handleClick = ({ index }: { index: number }) => {
     setStartIndex(index);
@@ -81,7 +84,7 @@ const GalleryView = () => {
                   lazyLoad={true}
                   showFullscreenButton={false}
                   showPlayButton={false}
-                  showThumbnails={true}
+                  showThumbnails={isMobile}
                   slideOnThumbnailOver={true}
                   startIndex={startIndex}
                 />
@@ -107,7 +110,7 @@ const contentStyle = css`
   left: 50%;
   background: var(--gray12);
   max-width: 90vw;
-  max-height: 90vh;
+  max-height: fit-content;
   width: 100%;
   height: 100%;
   padding: 0;
