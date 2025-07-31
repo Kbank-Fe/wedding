@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/react';
 
-import { useThemeStore } from '@/hooks/useThemeStore';
+import { useThemeStore } from '@/stores/useThemeStore';
 
 const resetCSS = css`
   *,
