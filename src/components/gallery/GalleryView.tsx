@@ -68,11 +68,13 @@ const GalleryView = () => {
             <Dialog.Overlay css={overlayStyle} />
             <Dialog.Content asChild forceMount>
               <motion.div
+                key="gallery-modal"
                 animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
                 css={contentStyle}
                 exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
                 initial={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
                 transition={{ duration: 0.3 }}
+                onContextMenu={(e) => e.preventDefault()}
               >
                 <Dialog.Close asChild>
                   <button css={closeButtonStyle}>
@@ -108,6 +110,7 @@ const contentStyle = css`
   position: fixed;
   top: 50%;
   left: 50%;
+  transform: none;
   background: var(--gray12);
   max-width: 90vw;
   max-height: fit-content;
@@ -117,6 +120,13 @@ const contentStyle = css`
   overflow: hidden;
   z-index: 100;
   border-radius: 8px;
+
+  /* 복사/드래그/확대 방지 */
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+  overscroll-behavior: none;
 `;
 
 const closeButtonStyle = css`
