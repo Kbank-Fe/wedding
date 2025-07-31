@@ -3,6 +3,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 
 import { css } from '@emotion/react';
 import * as Dialog from '@radix-ui/react-dialog';
+import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 import ImageGallery from 'react-image-gallery';
@@ -44,31 +45,51 @@ const GalleryView = () => {
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <PhotoAlbum
-        columns={3}
-        layout="columns"
-        photos={photoList.slice(0, 9)}
-        spacing={10}
-        onClick={handleClick}
-      />
-      <Dialog.Portal>
-        <Dialog.Overlay css={overlayStyle} />
-        <Dialog.Content css={contentStyle}>
-          <Dialog.Close asChild>
-            <button css={closeButtonStyle}>
-              <X color="white" />
-            </button>
-          </Dialog.Close>
-          <ImageGallery
-            items={toGalleryItems(photoList)}
-            showFullscreenButton={false}
-            showPlayButton={false}
-            showThumbnails={true}
-            slideOnThumbnailOver={true}
-            startIndex={startIndex}
-          />
-        </Dialog.Content>
-      </Dialog.Portal>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+        viewport={{ once: true, amount: 0.2 }}
+        whileInView={{ opacity: 1, y: 0 }}
+      >
+        <PhotoAlbum
+          columns={3}
+          layout="columns"
+          photos={photoList.slice(0, 9)}
+          spacing={10}
+          onClick={handleClick}
+        />
+      </motion.div>
+      <AnimatePresence>
+        {open && (
+          <Dialog.Portal>
+            <Dialog.Overlay css={overlayStyle} />
+            <Dialog.Content asChild forceMount>
+              <motion.div
+                animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
+                css={contentStyle}
+                exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+                initial={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
+                transition={{ duration: 0.3 }}
+              >
+                <Dialog.Close asChild>
+                  <button css={closeButtonStyle}>
+                    <X color="white" />
+                  </button>
+                </Dialog.Close>
+                <ImageGallery
+                  items={toGalleryItems(photoList)}
+                  lazyLoad={true}
+                  showFullscreenButton={false}
+                  showPlayButton={false}
+                  showThumbnails={true}
+                  slideOnThumbnailOver={true}
+                  startIndex={startIndex}
+                />
+              </motion.div>
+            </Dialog.Content>
+          </Dialog.Portal>
+        )}
+      </AnimatePresence>
     </Dialog.Root>
   );
 };
@@ -84,7 +105,6 @@ const contentStyle = css`
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   background: var(--gray12);
   max-width: 90vw;
   max-height: 90vh;
