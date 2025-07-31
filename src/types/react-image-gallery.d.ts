@@ -33,6 +33,14 @@ declare module 'react-image-gallery' {
     onImageLoad?: (
       event: React.SyntheticEvent<HTMLImageElement, Event>,
     ) => void;
+    renderLeftNav?: (
+      onClick: React.MouseEventHandler<HTMLElement>,
+      disabled: boolean,
+    ) => React.ReactNode;
+    renderRightNav?: (
+      onClick: React.MouseEventHandler<HTMLElement>,
+      disabled: boolean,
+    ) => React.ReactNode;
   }
 
   const ImageGallery: React.FC<ImageGalleryProps>;

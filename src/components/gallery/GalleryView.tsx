@@ -5,6 +5,7 @@ import { css } from '@emotion/react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import ImageGallery from 'react-image-gallery';
 import PhotoAlbum from 'react-photo-album';
@@ -30,7 +31,9 @@ type Photo = {
   height: number;
 };
 
-const toGalleryItems = (photos: Photo[]) =>
+type ButtonDirection = 'left' | 'right';
+
+const handleSetGalleryItems = (photos: Photo[]) =>
   photos.map(({ src }) => ({
     original: src,
     thumbnail: src,
@@ -41,7 +44,7 @@ const GalleryView = () => {
   const [startIndex, setStartIndex] = useState(0);
   const isMobile = useViewportStore((state) => state.isMobile);
 
-  const handleClick = ({ index }: { index: number }) => {
+  const handleClickAlbum = ({ index }: { index: number }) => {
     setStartIndex(index);
     setOpen(true);
   };
@@ -59,7 +62,7 @@ const GalleryView = () => {
           layout="columns"
           photos={photoList.slice(0, 9)}
           spacing={10}
-          onClick={handleClick}
+          onClick={handleClickAlbum}
         />
       </motion.div>
       <AnimatePresence>
@@ -78,17 +81,35 @@ const GalleryView = () => {
               >
                 <Dialog.Close asChild>
                   <button css={closeButtonStyle}>
-                    <X color="white" />
+                    <X color="white" size={24} />
                   </button>
                 </Dialog.Close>
                 <ImageGallery
-                  items={toGalleryItems(photoList)}
+                  items={handleSetGalleryItems(photoList)}
                   lazyLoad={true}
                   showFullscreenButton={false}
                   showPlayButton={false}
                   showThumbnails={isMobile}
                   slideOnThumbnailOver={true}
                   startIndex={startIndex}
+                  renderLeftNav={(onClick, disabled) => (
+                    <button
+                      css={navButtonStyle('left')}
+                      disabled={disabled}
+                      onClick={onClick}
+                    >
+                      <ChevronLeft color="white" size={28} />
+                    </button>
+                  )}
+                  renderRightNav={(onClick, disabled) => (
+                    <button
+                      css={navButtonStyle('right')}
+                      disabled={disabled}
+                      onClick={onClick}
+                    >
+                      <ChevronRight color="white" size={28} />
+                    </button>
+                  )}
                 />
               </motion.div>
             </Dialog.Content>
@@ -120,13 +141,6 @@ const contentStyle = css`
   overflow: hidden;
   z-index: 100;
   border-radius: 8px;
-
-  /* 복사/드래그/확대 방지 */
-  user-select: none;
-  -webkit-user-drag: none;
-  -webkit-touch-callout: none;
-  touch-action: none;
-  overscroll-behavior: none;
 `;
 
 const closeButtonStyle = css`
@@ -135,6 +149,17 @@ const closeButtonStyle = css`
   right: 16px;
   cursor: pointer;
   z-index: 10;
+`;
+
+const navButtonStyle = (direction: ButtonDirection) => css`
+  position: absolute;
+  top: 50%;
+  ${direction}: 16px;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default GalleryView;
