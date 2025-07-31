@@ -3,6 +3,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 
 import { css } from '@emotion/react';
 import * as Dialog from '@radix-ui/react-dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -79,6 +80,12 @@ const GalleryView = () => {
                 transition={{ duration: 0.3 }}
                 onContextMenu={(e) => e.preventDefault()}
               >
+                <VisuallyHidden>
+                  <Dialog.Title>사진 갤러리</Dialog.Title>
+                  <Dialog.Description>
+                    사진을 슬라이드로 볼 수 있는 모달입니다.
+                  </Dialog.Description>
+                </VisuallyHidden>
                 <Dialog.Close asChild>
                   <button css={closeButtonStyle}>
                     <X color="white" size={24} />
