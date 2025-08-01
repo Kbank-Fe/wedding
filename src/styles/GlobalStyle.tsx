@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/react';
 
-import { useThemeStore } from '@/hooks/useThemeStore';
+import { useThemeStore } from '@/stores/useThemeStore';
 
 const resetCSS = css`
   *,
@@ -36,6 +36,10 @@ const resetCSS = css`
     max-width: 100%;
     height: auto;
     display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+    pointer-events: none;
   }
   button {
     background: none;

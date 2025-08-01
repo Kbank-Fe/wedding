@@ -1,6 +1,7 @@
 import AccountList from '@/components/account/AccountList';
 import DateCalendar from '@/components/calendar/DateCalendar';
 import Contact from '@/components/contact/Contact';
+import Gallery from '@/components/gallery/Gallery';
 import WeddingIntro from '@/components/Intro/WeddingIntro';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
@@ -32,18 +33,9 @@ const HomePage = () => {
       <Section>
         <TransferList />
       </Section>
-      <WeddingIntro />
-      <DateCalendar
-        day={15}
-        hour={21}
-        min={30}
-        month={7}
-        msec={0}
-        sec={0}
-        year={2025}
-      />
-      <TransferList />
-      <AccountList />
+      <Section>
+        <Gallery />
+      </Section>
     </PageLayout>
   );
 };
