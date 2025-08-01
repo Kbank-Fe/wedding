@@ -1,12 +1,13 @@
 export type Intro = {
   title: string;
   content: string;
-  showNames: boolean;
-  alignment: 'left' | 'center' | 'right';
-  maleName?: string;
-  femaleName?: string;
-  maleFatherName?: string;
-  maleMotherName?: string;
-  femaleFatherName?: string;
-  femaleMotherName?: string;
+  alignment: TextAlignment;
+  basicInfo: UserBasicInfo[];
 };
+
+export type UserBasicInfo = {
+  maleNames: string;
+  femaleNames: string;
+};
+
+export type TextAlignment = 'left' | 'center' | 'right';
