@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 import UserInfo from '@/components/Intro/UserInfo';
 import Header from '@/components/shared/Header';
-import type { Intro } from '@/types/Intro';
+import type { Intro } from '@/types/weddingIntro';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },

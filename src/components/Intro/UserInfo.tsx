@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-import type { TextAlignment, UserBasicInfo } from '@/types/Intro';
+import type { TextAlignment, UserBasicInfo } from '@/types/weddingIntro';
 
 type UserInfoProps = UserBasicInfo & { alignment: TextAlignment };
 
