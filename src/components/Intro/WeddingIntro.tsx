@@ -1,9 +1,14 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 
+import UserInfo from '@/components/Intro/UserInfo';
 import Header from '@/components/shared/Header';
-import type { Intro } from '@/types/Intro';
-import type { TextAlignment } from '@/types/TextAlignment';
+import type { Intro } from '@/types/weddingIntro';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+};
 
 const WeddingIntro = () => {
   const weddingIntroData: Intro = {
@@ -19,22 +24,18 @@ const WeddingIntro = () => {
         <p>배려하며 살겠습니다.<br><br>오로지 믿음과 사랑을 약속하는 날<br>오셔서 축복해 주시면 더 없는 기쁨으로<br>간직하겠습니다.</p>
       </div>
     `,
+    alignment: 'center',
     showNames: true,
-    alignment: 'center' as const,
-    maleName: 'MMM',
-    femaleName: 'FFF',
-    maleFatherName: '신랑아버지',
-    maleMotherName: '신랑어머니',
-    femaleFatherName: '신부아버지',
-    femaleMotherName: '신부어머니',
-  };
-
-  const maleNames = `${weddingIntroData.maleFatherName} · ${weddingIntroData.maleMotherName}의 아들 ${weddingIntroData.maleName}`;
-  const femaleNames = `${weddingIntroData.femaleFatherName} · ${weddingIntroData.femaleMotherName}의 딸 ${weddingIntroData.femaleName}`;
-
-  const fadeUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+    basicInfo: [
+      {
+        maleName: 'MMM',
+        femaleName: 'FFF',
+        maleFatherName: '신랑아버지',
+        maleMotherName: '신랑어머니',
+        femaleFatherName: '신부아버지',
+        femaleMotherName: '신부어머니',
+      },
+    ],
   };
 
   return (
@@ -58,14 +59,19 @@ const WeddingIntro = () => {
 
         <br />
 
-        {weddingIntroData.showNames && (
-          <motion.p
-            css={namesStyle(weddingIntroData.alignment)}
-            variants={fadeUp}
-          >
-            {maleNames} <br /> {femaleNames}
-          </motion.p>
-        )}
+        {weddingIntroData.showNames &&
+          weddingIntroData.basicInfo.map((info, idx) => (
+            <UserInfo
+              key={idx}
+              alignment={weddingIntroData.alignment}
+              femaleFatherName={info.femaleFatherName}
+              femaleMotherName={info.femaleMotherName}
+              femaleName={info.femaleName}
+              maleFatherName={info.maleFatherName}
+              maleMotherName={info.maleMotherName}
+              maleName={info.maleName}
+            />
+          ))}
       </motion.div>
     </>
   );
@@ -81,12 +87,6 @@ const titleStyle = css`
   font-size: 1.375rem;
   font-weight: bold;
   margin-bottom: 0.625rem;
-`;
-
-const namesStyle = (alignment: TextAlignment) => css`
-  text-align: ${alignment};
-  font-size: 0.8125rem;
-  line-height: 1.5;
 `;
 
 export default WeddingIntro;
