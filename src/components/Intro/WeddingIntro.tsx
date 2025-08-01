@@ -25,10 +25,15 @@ const WeddingIntro = () => {
       </div>
     `,
     alignment: 'center',
+    showNames: true,
     basicInfo: [
       {
-        maleNames: '신랑아버지 · 신랑어머니의 아들 MMM',
-        femaleNames: '신부아버지 · 신부어머니의 딸 FFF',
+        maleName: 'MMM',
+        femaleName: 'FFF',
+        maleFatherName: '신랑아버지',
+        maleMotherName: '신랑어머니',
+        femaleFatherName: '신부아버지',
+        femaleMotherName: '신부어머니',
       },
     ],
   };
@@ -54,14 +59,19 @@ const WeddingIntro = () => {
 
         <br />
 
-        {weddingIntroData.basicInfo.map((info, idx) => (
-          <UserInfo
-            key={idx}
-            alignment={weddingIntroData.alignment}
-            femaleNames={info.femaleNames}
-            maleNames={info.maleNames}
-          />
-        ))}
+        {weddingIntroData.showNames &&
+          weddingIntroData.basicInfo.map((info, idx) => (
+            <UserInfo
+              key={idx}
+              alignment={weddingIntroData.alignment}
+              femaleFatherName={info.femaleFatherName}
+              femaleMotherName={info.femaleMotherName}
+              femaleName={info.femaleName}
+              maleFatherName={info.maleFatherName}
+              maleMotherName={info.maleMotherName}
+              maleName={info.maleName}
+            />
+          ))}
       </motion.div>
     </>
   );

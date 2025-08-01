@@ -9,9 +9,18 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
 };
 
-const UserInfo = ({ maleNames, femaleNames, alignment }: UserInfoProps) => (
+const UserInfo = ({
+  maleName,
+  maleFatherName,
+  maleMotherName,
+  femaleName,
+  femaleFatherName,
+  femaleMotherName,
+  alignment,
+}: UserInfoProps) => (
   <motion.p css={namesStyle(alignment)} variants={fadeUp}>
-    {maleNames} <br /> {femaleNames}
+    {maleFatherName} · {maleMotherName}의 아들 {maleName} <br />
+    {femaleFatherName} · {femaleMotherName}의 딸 {femaleName}
   </motion.p>
 );
 
