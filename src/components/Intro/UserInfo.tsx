@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 
 import type { TextAlignment, UserBasicInfo } from '@/types/weddingIntro';
@@ -24,10 +25,10 @@ const UserInfo = ({
   </motion.p>
 );
 
-const namesStyle = (alignment: TextAlignment) => ({
-  textAlign: alignment,
-  fontSize: '0.9rem',
-  lineHeight: 1.5,
-});
+const namesStyle = (alignment: TextAlignment) => css`
+  text-align: ${alignment};
+  font-size: 0.9rem;
+  line-height: 1.5;
+`;
 
 export default UserInfo;
