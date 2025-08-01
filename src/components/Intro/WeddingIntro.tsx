@@ -3,8 +3,12 @@ import { motion } from 'framer-motion';
 
 import UserInfo from '@/components/Intro/UserInfo';
 import Header from '@/components/shared/Header';
-import { fadeUp } from '@/styles/Animation';
 import type { Intro } from '@/types/Intro';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+};
 
 const WeddingIntro = () => {
   const weddingIntroData: Intro = {

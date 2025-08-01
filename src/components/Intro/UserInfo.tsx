@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion';
 
-import { fadeUp } from '@/styles/Animation';
 import type { TextAlignment, UserBasicInfo } from '@/types/Intro';
 
 type UserInfoProps = UserBasicInfo & { alignment: TextAlignment };
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+};
 
 const UserInfo = ({ maleNames, femaleNames, alignment }: UserInfoProps) => (
   <motion.p css={namesStyle(alignment)} variants={fadeUp}>
