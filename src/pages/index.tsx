@@ -1,16 +1,20 @@
-import AccountList from '@/components/AccountList';
+import AccountList from '@/components/account/AccountList';
 import DateCalendar from '@/components/calendar/DateCalendar';
+import Contact from '@/components/contact/Contact';
 import Gallery from '@/components/gallery/Gallery';
+import WeddingIntro from '@/components/Intro/WeddingIntro';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
 import TransferList from '@/components/transfer/TransferList';
-import WeddingIntro from '@/components/WeddingIntro';
 
 const HomePage = () => {
   return (
     <PageLayout>
       <Section>
         <WeddingIntro />
+      </Section>
+      <Section>
+        <Contact />
       </Section>
       <Section>
         <DateCalendar
