@@ -41,13 +41,13 @@ const WeddingMap = ({ address = '서울 중구 을지로 170' }: WeddingMapProps
   return (
     <>
       <Header title="Location" />
-      <h2 css={titleStyle}>{address}</h2>
+      <h3 css={titleStyle}>{address}</h3>
       <Map
         center={position}
         level={3}
-        style={{ width: '100%', height: '300px' }}
+        style={{ width: '100%', height: '40vh' }}
       >
-        <MapMarker position={position}>{address}</MapMarker>
+        <MapMarker position={position} title="예식 장소" />
       </Map>
       <MapBadge address={address} lat={position.lat} lng={position.lng} />
     </>
