@@ -46,7 +46,7 @@ const itemStyle = css`
 const triggerStyle = css`
   width: 100%;
   padding: 12px 16px;
-  background: var(--gray3);
+  background: var(--gray2);
   border: none;
   font-size: 0.8rem;
   font-weight: 500;
