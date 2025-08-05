@@ -98,7 +98,7 @@ const DateCalendar = (dateInfo: dateInfo) => {
           activeStartDate={getDateObject(dateInfo)}
           calendarType="gregory"
           css={calendarStyle}
-          formatDay={(locale, date) => `${date.getDate()}`}
+          formatDay={(_locale, date) => `${date.getDate()}`}
           minDetail="month" // 일/주/년 보기 제거
           showNavigation={false} // 상단 타이틀 및 화살표 전부 안보이게
           showNeighboringMonth={false}
