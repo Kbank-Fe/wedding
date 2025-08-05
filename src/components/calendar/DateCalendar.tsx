@@ -7,6 +7,7 @@ import type { View } from 'react-calendar/dist/shared/types.js';
 
 import DtimeItem from '@/components/calendar/DtimeItem';
 import Header from '@/components/shared/Header';
+import Line from '@/components/shared/Line';
 import { MotionFade } from '@/components/shared/MotionFade';
 import { getDayOfWeek, getDday, getDtime } from '@/utils/date';
 
@@ -43,16 +44,25 @@ const DateCalendar = (dateInfo: dateInfo) => {
   const { year, month, day, hour, min } = dateInfo;
 
   // react-calendar tileClassName 속성 전달: highlight 설정
-  const setHighlight = ({ date, view }: highlight) => {
+  const setTileClassName = ({ date, view }: highlight) => {
+    const classes: string[] = [];
+
+    // 1. 특정 날짜 강조
     if (
       view === 'month' &&
       date.getFullYear() === year &&
       date.getMonth() === month - 1 &&
       date.getDate() === day
     ) {
-      return 'highlight';
+      classes.push('highlight');
     }
-    return '';
+
+    // 2. 일요일은 빨간색
+    if (date.getDay() === 0) {
+      classes.push('sunday');
+    }
+
+    return classes.join(' ');
   };
 
   // 한국어 여부
@@ -90,10 +100,11 @@ const DateCalendar = (dateInfo: dateInfo) => {
   return (
     <>
       <Header title="Calendar" />
-      <MotionFade css={commonStyle}>
+      <MotionFade css={dateStyle}>
         <div>{`${year}년 ${month}월 ${day}일 | ${dayOfWeek}${dayText} ${hour}시 ${min}분`}</div>
       </MotionFade>
-      <MotionFade>
+      <MotionFade css={calendarContainerStyle}>
+        <Line />
         <Calendar
           activeStartDate={getDateObject(dateInfo)}
           calendarType="gregory"
@@ -102,11 +113,12 @@ const DateCalendar = (dateInfo: dateInfo) => {
           minDetail="month" // 일/주/년 보기 제거
           showNavigation={false} // 상단 타이틀 및 화살표 전부 안보이게
           showNeighboringMonth={false}
-          tileClassName={setHighlight}
+          tileClassName={setTileClassName}
           view="month"
         />
       </MotionFade>
-      <MotionFade css={commonStyle}>
+      <MotionFade css={dtimeStyle}>
+        <Line marginBottom={30} />
         <div css={dtimeRowStyle}>
           <DtimeItem dtimeNumber={dtime.d} dtimeText="일" />
           <DtimeItem dtimeNumber={dtime.h} dtimeText="시" />
@@ -118,6 +130,14 @@ const DateCalendar = (dateInfo: dateInfo) => {
     </>
   );
 };
+
+/* 달력 테두리 제거 */
+const calendarContainerStyle = css`
+  .react-calendar {
+    border: none;
+    box-shadow: none;
+  }
+`;
 
 const calendarStyle = css`
   margin: 0 auto;
@@ -144,17 +164,46 @@ const calendarStyle = css`
     outline: none !important;
   }
 
-  /* highlight 날짜 색상 설정 */
+  /* 기본 텍스트 색상: 검정 */
+  .react-calendar__tile {
+    color: var(--gray12) !important;
+  }
+
+  /* highlight 날짜 셀 스타일 설정 */
   .react-calendar__tile.highlight {
-    background: var(--gray11) !important;
-    color: white !important;
+    background: var(--gray10) !important;
+    color: var(--gray1) !important;
     border-radius: 90% !important;
+  }
+
+  /* sunday 날짜 셀에서 일요일은 빨간색 */
+  .react-calendar__tile.sunday {
+    color: red !important;
+  }
+
+  /* 요일 헤더에서 일요일만 빨간색 */
+  .react-calendar__month-view__weekdays__weekday:first-child {
+    color: red !important;
+  }
+
+  /* 날짜 클릭 방지 */
+  .react-calendar__tile {
+    pointer-events: none;
+  }
+
+  /* 요일 밑줄 제거 */
+  .react-calendar__month-view__weekdays__weekday abbr {
+    text-decoration: none;
   }
 `;
 
-const commonStyle = css`
+const dateStyle = css`
   margin: 0 auto;
-  padding-bottom: 20px;
+  text-align: center; // 가운데 정렬
+`;
+
+const dtimeStyle = css`
+  margin: 0 auto;
   text-align: center; // 가운데 정렬
 `;
 
@@ -163,7 +212,7 @@ const dtimeRowStyle = css`
   display: flex;
   justify-content: center;
   gap: 1rem; // 간격 조정
-  margin: 1.5rem 0.8rem 1.5rem 0.8rem;
+  margin: 0 0.8rem 1.5rem 0.8rem;
 `;
 
 export default DateCalendar;

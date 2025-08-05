@@ -13,11 +13,9 @@ const ContactItem = ({ part, name, phone }: ContactItemProps) => {
       <div css={contactRowStyle}>
         <span css={partStyle}>{part}</span>
         <span css={nameStyle}>{name}</span>
-        <span css={iconGroupStyle}>
-          <a href={'tel:' + phone}>
-            <Phone size={20} />
-          </a>
-        </span>
+        <a href={'tel:' + phone}>
+          <Phone size={20} />
+        </a>
       </div>
     </>
   );
@@ -33,23 +31,16 @@ const contactRowStyle = css`
 
 const partStyle = css`
   min-width: 110px;
-  text-align: left;
   font-size: 0.9rem;
 `;
 
 const nameStyle = css`
   flex: 1;
-  text-align: left;
+  /* text-align: left; */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 1.1rem;
-`;
-
-const iconGroupStyle = css`
-  display: flex;
-  gap: 20px;
-  align-items: center;
 `;
 
 export default ContactItem;
