@@ -146,24 +146,6 @@ const calendarStyle = css`
   max-width: 100%; // 요소 최대 너비 부모 맞춤
   box-sizing: border-box; // 패딩, 보더 포함 요소 전체 너비와 높이 계산
 
-  /* hover 색상 변화 제거 */
-  .react-calendar__tile,
-  .react-calendar__tile:enabled:hover {
-    background: none;
-    box-shadow: none;
-    outline: none;
-  }
-
-  /* click, focus 색상 변화 제거 */
-  .react-calendar__tile:focus,
-  .react-calendar__tile:active,
-  .react-calendar__tile--active {
-    background: none !important;
-    color: inherit !important;
-    box-shadow: none !important;
-    outline: none !important;
-  }
-
   /* 기본 텍스트 색상: 검정 */
   .react-calendar__tile {
     color: var(--gray12) !important;
