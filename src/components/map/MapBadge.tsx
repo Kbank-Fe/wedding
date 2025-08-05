@@ -1,5 +1,9 @@
 import { css } from '@emotion/react';
 
+import kakaoMap from '/images/icon/kakao_map.png';
+import naverMap from '/images/icon/naver_map.png';
+import tMap from '/images/icon/tmap.png';
+
 type MapBadgeProps = {
   address: string;
   lat: number;
@@ -21,11 +25,7 @@ const MapBadge = ({ address, lat, lng }: MapBadgeProps) => {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <img
-          alt="네이버지도"
-          css={iconStyle}
-          src="/images/icon/naver_map.png"
-        />
+        <img alt="네이버지도" css={iconStyle} src={naverMap} />
         네이버
       </a>
 
@@ -35,11 +35,7 @@ const MapBadge = ({ address, lat, lng }: MapBadgeProps) => {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <img
-          alt="카카오내비"
-          css={iconStyle}
-          src="/images/icon/kakao_map.png"
-        />
+        <img alt="카카오내비" css={iconStyle} src={kakaoMap} />
         카카오
       </a>
       <a
@@ -48,7 +44,7 @@ const MapBadge = ({ address, lat, lng }: MapBadgeProps) => {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <img alt="티맵" css={iconStyle} src="/images/icon/tmap.png" />
+        <img alt="티맵" css={iconStyle} src={tMap} />
         티맵
       </a>
     </div>

@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Map, MapMarker, useKakaoLoader } from 'react-kakao-maps-sdk';
 
@@ -41,18 +42,37 @@ const WeddingMap = ({ address = '서울 중구 을지로 170' }: WeddingMapProps
   return (
     <>
       <Header title="Location" />
-      <h3 css={titleStyle}>{address}</h3>
-      <Map
-        center={position}
-        level={3}
-        style={{ width: '100%', height: '40vh' }}
+      <motion.div
+        initial="hidden"
+        variants={containerVariants}
+        viewport={{ once: true, amount: 0.5 }}
+        whileInView="visible"
       >
-        <MapMarker position={position} title="예식 장소" />
-      </Map>
-      <MapBadge address={address} lat={position.lat} lng={position.lng} />
+        <h3 css={titleStyle}>{address}</h3>
+        <Map
+          center={position}
+          level={3}
+          style={{ width: '100%', height: '40vh' }}
+        >
+          <MapMarker position={position} title="예식 장소" />
+        </Map>
+        <MapBadge address={address} lat={position.lat} lng={position.lng} />
+      </motion.div>
     </>
   );
 };
+
+const containerVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.0,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  },
+} as const;
 
 const titleStyle = css`
   text-align: center;
