@@ -1,8 +1,7 @@
 import { css } from '@emotion/react';
 
-import kakaoMap from '/images/icon/kakao_map.png';
-import naverMap from '/images/icon/naver_map.png';
-import tMap from '/images/icon/tmap.png';
+import { MapIcons } from '@/utils/constants/images';
+import { MapUrls } from '@/utils/constants/urls';
 
 type MapBadgeProps = {
   address: string;
@@ -13,9 +12,9 @@ type MapBadgeProps = {
 const MapBadge = ({ address, lat, lng }: MapBadgeProps) => {
   const encodedName = encodeURIComponent(address);
 
-  const naverUrl = `https://map.naver.com/v5/search/${encodedName}`;
-  const kakaoUrl = `https://map.kakao.com/link/map/${encodedName},${lat},${lng}`;
-  const tmapUrl = `https://apis.openapi.sk.com/tmap/app/routes?appKey=${import.meta.env.VITE_TMAP_APP_KEY}&name=${encodedName}&lon=${lng}&lat=${lat}`;
+  const naverUrl = `${MapUrls.naver}/${encodedName}`;
+  const kakaoUrl = `${MapUrls.kakao}/${encodedName},${lat},${lng}`;
+  const tmapUrl = `${MapUrls.tmap}?appKey=${import.meta.env.VITE_TMAP_APP_KEY}&name=${encodedName}&lon=${lng}&lat=${lat}`;
 
   return (
     <div css={containerStyle}>
@@ -25,7 +24,7 @@ const MapBadge = ({ address, lat, lng }: MapBadgeProps) => {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <img alt="네이버지도" css={iconStyle} src={naverMap} />
+        <img alt="네이버지도" css={iconStyle} src={MapIcons.naver} />
         네이버
       </a>
 
@@ -35,7 +34,7 @@ const MapBadge = ({ address, lat, lng }: MapBadgeProps) => {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <img alt="카카오내비" css={iconStyle} src={kakaoMap} />
+        <img alt="카카오내비" css={iconStyle} src={MapIcons.kakao} />
         카카오
       </a>
       <a
@@ -44,7 +43,7 @@ const MapBadge = ({ address, lat, lng }: MapBadgeProps) => {
         rel="noopener noreferrer"
         target="_blank"
       >
-        <img alt="티맵" css={iconStyle} src={tMap} />
+        <img alt="티맵" css={iconStyle} src={MapIcons.tmap} />
         티맵
       </a>
     </div>
