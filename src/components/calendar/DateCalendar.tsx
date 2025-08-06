@@ -75,11 +75,22 @@ const DateCalendar = (dateInfo: dateInfo) => {
     return getDayOfWeek(weddingDate, korean);
   }, [dateInfo, korean]);
 
-  // D-Day 일자 계산
-  const dDay = useMemo(() => {
+  // D-Day 계산
+  const dDayRaw = useMemo(() => {
     const weddingDate = getDateObject(dateInfo);
     return getDday(weddingDate);
   }, [dateInfo]);
+
+  const dDay = Math.abs(dDayRaw);
+  let dDayMessage = '';
+
+  if (dDayRaw === 0) {
+    dDayMessage = '🎉 오늘은 결혼식 날입니다!';
+  } else if (dDayRaw < 0) {
+    dDayMessage = `결혼식이 ${dDay}일 지났습니다.`;
+  } else {
+    dDayMessage = `결혼식까지 D-${dDay}일 남았습니다.`;
+  }
 
   // D-Time 계산 (useCallback: 컴포넌트 리렌더될 때마다 새로운 함수 객체 생성 방지)
   const calculateDtime = useCallback(() => {
@@ -96,6 +107,12 @@ const DateCalendar = (dateInfo: dateInfo) => {
 
     return () => clearInterval(timer);
   }, [calculateDtime]);
+
+  const isDtimeShow = useMemo(() => {
+    return (
+      dDayRaw >= 0 && (dtime.d > 0 || dtime.h > 0 || dtime.m > 0 || dtime.s > 0)
+    );
+  }, [dDayRaw, dtime]);
 
   return (
     <>
@@ -118,14 +135,16 @@ const DateCalendar = (dateInfo: dateInfo) => {
         />
       </MotionFade>
       <MotionFade css={dtimeStyle}>
-        <Line marginBottom={30} />
-        <div css={dtimeRowStyle}>
-          <DtimeItem dtimeNumber={dtime.d} dtimeText="일" />
-          <DtimeItem dtimeNumber={dtime.h} dtimeText="시" />
-          <DtimeItem dtimeNumber={dtime.m} dtimeText="분" />
-          <DtimeItem dtimeNumber={dtime.s} dtimeText="초" />
-        </div>
-        <div>결혼식이 {dDay} 일 남았습니다.</div>
+        <Line marginBottom={30} marginTop={0} />
+        {isDtimeShow && (
+          <div css={dtimeRowStyle}>
+            <DtimeItem dtimeNumber={dtime.d} dtimeText="일" />
+            <DtimeItem dtimeNumber={dtime.h} dtimeText="시" />
+            <DtimeItem dtimeNumber={dtime.m} dtimeText="분" />
+            <DtimeItem dtimeNumber={dtime.s} dtimeText="초" />
+          </div>
+        )}
+        <div>{dDayMessage}</div>
       </MotionFade>
     </>
   );
@@ -177,6 +196,12 @@ const calendarStyle = css`
   .react-calendar__month-view__weekdays__weekday abbr {
     text-decoration: none;
   }
+
+  /* 오늘 날짜 셀 하이라이트 제거 */
+  .react-calendar__tile--now {
+    background: none !important;
+    color: inherit !important;
+  }
 `;
 
 const dateStyle = css`
@@ -187,6 +212,7 @@ const dateStyle = css`
 const dtimeStyle = css`
   margin: 0 auto;
   text-align: center; // 가운데 정렬
+  width: 100%;
 `;
 
 // 스타일 추가

@@ -13,6 +13,7 @@ const lineStyle = (mt: number, mb: number) => css`
   border: none;
   border-bottom: 1px solid var(--gray8);
   margin: ${mt}px 0 ${mb}px 0;
+  width: 100%;
 `;
 
 export default Line;
