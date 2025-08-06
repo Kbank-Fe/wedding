@@ -3,6 +3,7 @@ import DateCalendar from '@/components/calendar/DateCalendar';
 import Contact from '@/components/contact/Contact';
 import Gallery from '@/components/gallery/Gallery';
 import WeddingIntro from '@/components/Intro/WeddingIntro';
+import KakaoLogin from '@/components/login/KakaoLogin';
 import WeddingMap from '@/components/map/WeddingMap';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
@@ -11,6 +12,9 @@ import TransferList from '@/components/transfer/TransferList';
 const HomePage = () => {
   return (
     <PageLayout>
+      <Section>
+        <KakaoLogin />
+      </Section>
       <Section>
         <WeddingIntro />
       </Section>
