@@ -1,16 +1,20 @@
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
 import PageLayout from '@/components/shared/PageLayout';
-import TransportAdmin from '@/components/transport/TransportAdmin';
+import { adminList } from '@/utils/adminList';
 
 const AdminPage = () => {
   return (
     <PageLayout>
-      <Accordion>
-        <AccordionItem title="교통수단" value="transp">
-          <TransportAdmin />
-        </AccordionItem>
-      </Accordion>
+      {adminList.length > 0 && (
+        <Accordion>
+          {adminList.map(({ title, value, component: Component }) => (
+            <AccordionItem key={value} title={title} value={value}>
+              <Component />
+            </AccordionItem>
+          ))}
+        </Accordion>
+      )}
     </PageLayout>
   );
 };
