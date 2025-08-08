@@ -36,7 +36,6 @@ const partStyle = css`
 
 const nameStyle = css`
   flex: 1;
-  /* text-align: left; */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
