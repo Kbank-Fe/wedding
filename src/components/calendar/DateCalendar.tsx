@@ -179,12 +179,12 @@ const calendarStyle = css`
 
   /* sunday 날짜 셀에서 일요일은 빨간색 */
   .react-calendar__tile.sunday {
-    color: red !important;
+    color: var(--red9) !important;
   }
 
   /* 요일 헤더에서 일요일만 빨간색 */
   .react-calendar__month-view__weekdays__weekday:first-child {
-    color: red !important;
+    color: var(--red9) !important;
   }
 
   /* 날짜 클릭 방지 */
