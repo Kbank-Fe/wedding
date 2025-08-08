@@ -18,7 +18,7 @@ export const AccordionItem = ({
     <RadixAccordion.Header>
       <RadixAccordion.Trigger css={triggerStyle}>
         {title}
-        <ChevronDown className="icon" size={16} />
+        <ChevronDown className="icon" size={18} />
       </RadixAccordion.Trigger>
     </RadixAccordion.Header>
     <RadixAccordion.Content css={contentStyle}>
@@ -39,17 +39,17 @@ const slideUp = keyframes`
 
 const itemStyle = css`
   border: 1px solid var(--gray3);
-  border-radius: 6px;
+  border-radius: 10px;
   overflow: hidden;
+  background: var(--gray1);
 `;
 
 const triggerStyle = css`
   width: 100%;
-  padding: 12px 16px;
-  background: var(--gray2);
+  padding: 1rem 1.2rem;
   border: none;
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -68,7 +68,9 @@ const contentStyle = css`
   overflow: hidden;
   font-size: 0.95rem;
   background: var(--gray1);
-  line-height: 1.5;
+  border-top: 1px solid var(--gray3);
+  line-height: 17px;
+  padding: 1rem 1.3rem;
 
   &[data-state='open'] {
     animation: ${slideDown} 0.25s ease-out;

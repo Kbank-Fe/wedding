@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
 import Header from '@/components/shared/Header';
-import TransferItem from '@/components/transfer/TransferItem';
+import TransportItem from '@/components/transport/TransportItem';
 
 const tempList = [
   {
@@ -39,13 +39,13 @@ const tempList = [
   },
 ];
 
-const TransferList = () => {
+const TransportList = () => {
   return (
     <>
       <Header title="Transportation" />
       <div css={groupStyle}>
         {tempList.map((info, index) => (
-          <TransferItem key={index} {...info} />
+          <TransportItem key={index} {...info} />
         ))}
       </div>
     </>
@@ -58,4 +58,4 @@ const groupStyle = css`
   gap: 1.2rem;
 `;
 
-export default TransferList;
+export default TransportList;

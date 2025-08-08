@@ -2,12 +2,12 @@ import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
-type TransferProps = {
+type TransportProps = {
   title?: string;
   description?: ReactNode;
 };
 
-const TransferItem = ({ title, description }: TransferProps) => {
+const TransportItem = ({ title, description }: TransportProps) => {
   return (
     <motion.div
       css={wrapperStyle}
@@ -57,4 +57,4 @@ const descriptionStyle = css`
   }
 `;
 
-export default TransferItem;
+export default TransportItem;

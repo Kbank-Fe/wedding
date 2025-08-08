@@ -6,7 +6,7 @@ import WeddingIntro from '@/components/Intro/WeddingIntro';
 import WeddingMap from '@/components/map/WeddingMap';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
-import TransferList from '@/components/transfer/TransferList';
+import TransportList from '@/components/transport/TransportList';
 
 const HomePage = () => {
   return (
@@ -35,7 +35,7 @@ const HomePage = () => {
         <WeddingMap />
       </Section>
       <Section>
-        <TransferList />
+        <TransportList />
       </Section>
       <Section>
         <Gallery />

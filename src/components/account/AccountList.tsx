@@ -97,6 +97,8 @@ const accountListStyle = css`
   flex-direction: column;
 
   > *:not(:last-of-type) {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
     border-bottom: 1px solid var(--gray3);
   }
 `;

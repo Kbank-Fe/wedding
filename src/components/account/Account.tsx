@@ -40,7 +40,6 @@ const Account = ({ bankName, accountNumber, accountHolder }: AccountProps) => {
 
 const accountStyle = css`
   background-color: var(--gray1);
-  padding: 0.8rem 1.2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
