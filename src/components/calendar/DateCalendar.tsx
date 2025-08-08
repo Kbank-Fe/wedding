@@ -5,12 +5,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Calendar from 'react-calendar';
 import type { View } from 'react-calendar/dist/shared/types.js';
 
+import DtimeItem from '@/components/calendar/DtimeItem';
 import Header from '@/components/shared/Header';
-import { MotionFadeDown } from '@/components/shared/MotionFadeDown';
+import { MotionFade } from '@/components/shared/MotionFade';
 import { getDayOfWeek, getDday, getDtime } from '@/utils/date';
 
 // TODO: types 디렉토리 이동
-type DateInfo = {
+type dateInfo = {
   year: number;
   month: number;
   day: number;
@@ -20,14 +21,14 @@ type DateInfo = {
   msec?: number;
 };
 
-type Highlight = {
+type highlight = {
   date: Date;
   view: View;
 };
 
 // Date 객체 반환 (월 - 1)
 // TODO: types 디렉토리 이동
-const getDateObject = (dateInfo: DateInfo) =>
+const getDateObject = (dateInfo: dateInfo) =>
   new Date(
     dateInfo.year,
     dateInfo.month - 1,
@@ -38,11 +39,11 @@ const getDateObject = (dateInfo: DateInfo) =>
     dateInfo.msec,
   );
 
-const DateCalendar = (dateInfo: DateInfo) => {
+const DateCalendar = (dateInfo: dateInfo) => {
   const { year, month, day, hour, min } = dateInfo;
 
   // react-calendar tileClassName 속성 전달: highlight 설정
-  const setHighlight = ({ date, view }: Highlight) => {
+  const setHighlight = ({ date, view }: highlight) => {
     if (
       view === 'month' &&
       date.getFullYear() === year &&
@@ -56,6 +57,7 @@ const DateCalendar = (dateInfo: DateInfo) => {
 
   // 한국어 여부
   const korean = true;
+  const dayText = korean ? '요일 ' : 'DAY ';
 
   // 요일 계산
   const dayOfWeek = useMemo(() => {
@@ -88,29 +90,31 @@ const DateCalendar = (dateInfo: DateInfo) => {
   return (
     <>
       <Header title="Calendar" />
-      <MotionFadeDown css={commonStyle}>
-        <div>{`${year}년 ${month}월 ${day}일`}</div>
-        <div>
-          {`${dayOfWeek}${korean ? '요일 ' : 'DAY '} ${hour}시 ${min}분`}
-        </div>
-      </MotionFadeDown>
-      <MotionFadeDown css={calendarStyle}>
+      <MotionFade css={commonStyle}>
+        <div>{`${year}년 ${month}월 ${day}일 | ${dayOfWeek}${dayText} ${hour}시 ${min}분`}</div>
+      </MotionFade>
+      <MotionFade>
         <Calendar
           activeStartDate={getDateObject(dateInfo)}
           calendarType="gregory"
           css={calendarStyle}
-          formatDay={(locale, date) => `${date.getDate()}`}
+          formatDay={(_locale, date) => `${date.getDate()}`}
           minDetail="month" // 일/주/년 보기 제거
           showNavigation={false} // 상단 타이틀 및 화살표 전부 안보이게
           showNeighboringMonth={false}
           tileClassName={setHighlight}
           view="month"
         />
-      </MotionFadeDown>
-      <MotionFadeDown css={commonStyle}>
-        <div>{`${dtime.d}시 ${dtime.m} 분 ${dtime.s}초`}</div>
+      </MotionFade>
+      <MotionFade css={commonStyle}>
+        <div css={dtimeRowStyle}>
+          <DtimeItem dtimeNumber={dtime.d} dtimeText="일" />
+          <DtimeItem dtimeNumber={dtime.h} dtimeText="시" />
+          <DtimeItem dtimeNumber={dtime.m} dtimeText="분" />
+          <DtimeItem dtimeNumber={dtime.s} dtimeText="초" />
+        </div>
         <div>결혼식이 {dDay} 일 남았습니다.</div>
-      </MotionFadeDown>
+      </MotionFade>
     </>
   );
 };
@@ -118,12 +122,14 @@ const DateCalendar = (dateInfo: DateInfo) => {
 const calendarStyle = css`
   margin: 0 auto;
   padding-bottom: 10px;
+  width: 100%; // 부모 요소 너비에 맞춤
+  max-width: 100%; // 요소 최대 너비 부모 맞춤
+  box-sizing: border-box; // 패딩, 보더 포함 요소 전체 너비와 높이 계산
 
   /* hover 색상 변화 제거 */
   .react-calendar__tile,
   .react-calendar__tile:enabled:hover {
     background: none;
-    /* color: inherit; */
     box-shadow: none;
     outline: none;
   }
@@ -150,6 +156,14 @@ const commonStyle = css`
   margin: 0 auto;
   padding-bottom: 20px;
   text-align: center; // 가운데 정렬
+`;
+
+// 스타일 추가
+const dtimeRowStyle = css`
+  display: flex;
+  justify-content: center;
+  gap: 1rem; // 간격 조정
+  margin: 1.5rem 0.8rem 1.5rem 0.8rem;
 `;
 
 export default DateCalendar;

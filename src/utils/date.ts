@@ -40,7 +40,7 @@ export const getDday = (targetDate: Date) => {
   today.setHours(0, 0, 0, 0);
 
   const diffTime = targetDate.getTime() - today.getTime();
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return Math.floor(diffTime / (1000 * 60 * 60 * 24));
 };
 
 // D-Time 남은 일시 계산
