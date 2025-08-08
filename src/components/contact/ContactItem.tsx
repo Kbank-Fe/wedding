@@ -1,27 +1,21 @@
 import { css } from '@emotion/react';
-import { Mail, Phone } from 'lucide-react';
+import { Phone } from 'lucide-react';
 
 type ContactItemProps = {
   part: string;
   name: string;
   phone: string;
-  email: string;
 };
 
-const ContactItem = ({ part, name, phone, email }: ContactItemProps) => {
+const ContactItem = ({ part, name, phone }: ContactItemProps) => {
   return (
     <>
       <div css={contactRowStyle}>
         <span css={partStyle}>{part}</span>
         <span css={nameStyle}>{name}</span>
-        <span css={iconGroupStyle}>
-          <a href={'tel:' + phone}>
-            <Phone size={20} />
-          </a>
-          <a href={'mailto:' + email}>
-            <Mail size={18} />
-          </a>
-        </span>
+        <a href={'tel:' + phone}>
+          <Phone size={20} />
+        </a>
       </div>
     </>
   );
@@ -36,22 +30,16 @@ const contactRowStyle = css`
 `;
 
 const partStyle = css`
-  min-width: 100px;
-  text-align: left;
+  min-width: 110px;
+  font-size: 0.9rem;
 `;
 
 const nameStyle = css`
   flex: 1;
-  text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-`;
-
-const iconGroupStyle = css`
-  display: flex;
-  gap: 20px;
-  align-items: center;
+  font-size: 1.1rem;
 `;
 
 export default ContactItem;
