@@ -1,4 +1,11 @@
-import type { KakaoAuthResponse, KakaoUserProfile } from './kakao';
+export type KakaoAuthResponse = {
+  access_token: string;
+  token_type: string;
+  refresh_token: string;
+  expires_in: number;
+  scope: string;
+  refresh_token_expires_in: number;
+};
 
 declare global {
   interface Window {
@@ -7,21 +14,13 @@ declare global {
       isInitialized: () => boolean;
       Auth: {
         login: (options: {
-          scope: string;
+          scope?: string;
           success: (authObj: KakaoAuthResponse) => void;
-          fail: (err: Error) => void;
+          fail: (err: unknown) => void;
         }) => void;
         logout: (callback?: () => void) => void;
-      };
-      API: {
-        request: (options: {
-          url: string;
-          success: (res: KakaoUserProfile) => void;
-          fail: (err: Error) => void;
-        }) => void;
       };
     };
   }
 }
-
 export {};

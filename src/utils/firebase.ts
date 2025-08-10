@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { get, getDatabase, ref, set } from 'firebase/database';
+import { get, getDatabase, ref, set, update } from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAvdp-s3IV9K-F63iPlkY9WJWIIiZ9JpQ4',
@@ -16,18 +16,38 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getDatabase(app);
 
-export const writeUserData = async (userId: string, email: string) => {
-  await set(ref(db, `users/${userId}`), {
-    userId,
-    email,
-  });
-};
+export const getOrCreateUser = async (params: {
+  uid: string;
+  email?: string;
+  provider?: string;
+}) => {
+  const { uid, email, provider = 'kakao' } = params;
+  const userRef = ref(db, `users/${uid}`);
 
-export const readUserData = async (userId: string) => {
-  const snapshot = await get(ref(db, `users/${userId}`));
-  if (snapshot.exists()) {
-    return snapshot.val();
+  const snap = await get(userRef);
+  const now = Date.now();
+
+  if (!snap.exists()) {
+    await set(userRef, {
+      userId: uid,
+      ...(email ? { email } : {}),
+      provider,
+      createdAt: now,
+      lastLoginAt: now,
+    });
   } else {
-    return null;
+    const patch: Record<string, unknown> = { lastLoginAt: now };
+    if (email) patch.email = email;
+    await update(userRef, patch);
   }
+
+  const after = await get(userRef);
+  return after.val() as {
+    userId: string;
+    email?: string;
+    provider: string;
+    createdAt: number;
+    lastLoginAt: number;
+    [k: string]: unknown;
+  };
 };
