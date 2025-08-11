@@ -4,13 +4,11 @@ import { useState } from 'react';
 type BaseNumberKeypadTextInputProps = {
   onEmit: (value: string) => void;
   placeholder?: string;
-  className?: string;
 };
 
 const BaseNumberKeypadTextInput = ({
   onEmit,
   placeholder,
-  className,
 }: BaseNumberKeypadTextInputProps) => {
   const [displayValue, setDisplayValue] = useState('');
 
@@ -38,7 +36,6 @@ const BaseNumberKeypadTextInput = ({
     <input
       autoComplete="off" // 브라우저 자동 완성 기능 off
       autoCorrect="off" // 브라우저 (특히 IOS) 자동 교정 기능 off
-      className={className} // 기본 클래스와 추가 클래스 결합
       css={baseNumberKeypadTextInputStyle}
       inputMode="numeric" // 숫자 키패드 모드 활성화
       pattern="[0-9]*" // 숫자 입력 패턴

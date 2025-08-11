@@ -15,7 +15,6 @@ const ContactAdmin = () => {
   return (
     <>
       <BaseNumberKeypadTextInput
-        className=""
         placeholder="번호를 입력해주세요"
         onEmit={handleEmit}
       />
