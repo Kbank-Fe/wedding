@@ -38,6 +38,7 @@ const BaseNumberKeypadTextInput = ({
       autoCorrect="off" // 브라우저 (특히 IOS) 자동 교정 기능 off
       css={baseNumberKeypadTextInputStyle}
       inputMode="numeric" // 숫자 키패드 모드 활성화
+      maxLength={13} // 010-1234-5678 형태로 최대 13자
       pattern="[0-9]*" // 숫자 입력 패턴
       placeholder={placeholder}
       spellCheck="false" // 브라우저 스펠링 검사 기능 off
