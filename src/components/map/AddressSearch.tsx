@@ -44,11 +44,12 @@ export default function AddressSearch({
 }
 
 const btn = css`
-  padding: 8px 16px;
+  margin-top: 0.8rem;
+  padding: 0.5rem 1rem;
   border: 1px solid var(--gray6);
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: #fff;
-  font-size: 14px;
+  font-size: 0.9rem;
   color: var(--gray12);
   cursor: pointer;
   transition:
