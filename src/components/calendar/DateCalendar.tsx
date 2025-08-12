@@ -183,7 +183,7 @@ const calendarStyle = css`
   }
 
   /* 요일 헤더에서 일요일만 빨간색 */
-  .react-calendar__month-view__weekdays__weekday:first-child {
+  .react-calendar__month-view__weekdays__weekday:first-of-type {
     color: var(--red9) !important;
   }
 
