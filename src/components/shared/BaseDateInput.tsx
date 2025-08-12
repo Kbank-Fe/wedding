@@ -1,11 +1,12 @@
 import { css } from '@emotion/react';
-import { useRef } from 'react';
+import { useId, useRef } from 'react';
 
-type BaseDateInputProps = {
-  onChange: (date: string) => void;
-};
+// type BaseDateInputProps = {
+//   onChange: (date: string) => void;
+// };
 
-const BaseDateInput = ({ onChange }: BaseDateInputProps) => {
+const BaseDateInput = ({ ...rest }) => {
+  const id = useId();
   const dateRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -16,8 +17,9 @@ const BaseDateInput = ({ onChange }: BaseDateInputProps) => {
     <input
       ref={dateRef}
       css={baseDateInputStyle}
+      id={id}
       type="date"
-      onChange={(e) => onChange(e.target.value)}
+      {...rest}
       onClick={handleClick}
     />
   );
@@ -35,10 +37,9 @@ const baseDateInputStyle = css`
   appearance: none; /* 브라우저 기본 스타일 제거 */
   box-shadow: none; /* 기본 박스 그림자 제거 */
   color: var(--gray12); /* 기본 텍스트 색상 설정 */
-  /* 브라우저 기본 달력 아이콘 제거 */
-  /* &::-webkit-calendar-picker-indicator {
-    display: none;
-  } */
+  &::-webkit-calendar-picker-indicator {
+    display: none; /* 브라우저 기본 달력 아이콘 제거 */
+  }
 `;
 
 export default BaseDateInput;

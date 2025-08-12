@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import BaseNumberKeypadTextInput from '@/components/shared/BaseNumberKeypadTextInput';
+import Input from '@/components/shared/Input';
 
 const ContactAdmin = () => {
   const [phone, setPhone] = useState<string>('');
@@ -14,10 +15,12 @@ const ContactAdmin = () => {
   };
   return (
     <>
-      <BaseNumberKeypadTextInput
-        placeholder="번호를 입력해주세요"
-        onEmit={handleEmit}
-      />
+      <Input labelText="연락처">
+        <BaseNumberKeypadTextInput
+          placeholder="번호를 입력해주세요"
+          onBlur={handleEmit}
+        />
+      </Input>
     </>
   );
 };

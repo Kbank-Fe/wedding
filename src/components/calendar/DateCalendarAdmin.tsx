@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import BaseDateInput from '@/components/shared/BaseDateInput';
 import BaseSelect from '@/components/shared/BaseSelect';
+import Input from '@/components/shared/Input';
 
 const DateCalendarAdmin = () => {
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -22,8 +23,8 @@ const DateCalendarAdmin = () => {
     console.log('Selected value:', selectedValue);
   }, [selectedValue]);
 
-  const handleDateChange = (date: string) => {
-    setSelectedDate(date);
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDate(e.target.value);
   };
 
   const handleTextChange = (text: string) => {
@@ -31,13 +32,16 @@ const DateCalendarAdmin = () => {
   };
   return (
     <>
-      <BaseDateInput onChange={handleDateChange} />
-      <br />
-      <BaseSelect
-        options={optionList}
-        value={selectedValue}
-        onChange={handleTextChange}
-      />
+      <Input labelText="예식일자">
+        <BaseDateInput onChange={handleDateChange} />
+      </Input>
+      <Input labelText="예식시간">
+        <BaseSelect
+          options={optionList}
+          value={selectedValue}
+          onChange={handleTextChange}
+        />
+      </Input>
     </>
   );
 };
