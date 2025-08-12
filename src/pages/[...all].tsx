@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useEffect } from 'react';
+import { type MouseEventHandler, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const NotFoundPage = () => {
@@ -8,6 +8,14 @@ const NotFoundPage = () => {
   useEffect(() => {
     document.title = '404 Not Found | Wedding';
   }, []);
+
+  const handleClickHomeButton: MouseEventHandler<HTMLButtonElement> = () => {
+    navigate('/');
+  };
+
+  const handleClickPrevButton: MouseEventHandler<HTMLButtonElement> = () => {
+    navigate(-1);
+  };
 
   return (
     <main css={containerStyle}>
@@ -21,10 +29,16 @@ const NotFoundPage = () => {
           이동해 보세요.
         </p>
         <div css={buttonWrapperStyle}>
-          <button css={[buttonStyle, primary]} onClick={() => navigate('/')}>
+          <button
+            css={[buttonStyle, primaryStyle]}
+            onClick={handleClickHomeButton}
+          >
             홈으로 가기
           </button>
-          <button css={[buttonStyle, ghost]} onClick={() => navigate(-1)}>
+          <button
+            css={[buttonStyle, basicStyle]}
+            onClick={handleClickPrevButton}
+          >
             이전 페이지
           </button>
         </div>
@@ -96,7 +110,7 @@ const buttonStyle = css`
   }
 `;
 
-const primary = css`
+const primaryStyle = css`
   background: var(--blue9);
   color: var(--gray1);
   box-shadow: 0 6px 16px var(--gray6);
@@ -106,7 +120,7 @@ const primary = css`
   }
 `;
 
-const ghost = css`
+const basicStyle = css`
   background: transparent;
   color: inherit;
   border: 1px solid var(--gray4);
