@@ -1,20 +1,19 @@
 import { css } from '@emotion/react';
 
-// TODO: select option 노출 방식 고민 ex. 모션, 반팝업, 드롭다운
-
 type BaseSelectProps = {
   options: { title: string; value: string }[];
   value: string;
   onChange: (value: string) => void;
 };
 
-const BaseSelect = ({ options, value, onChange }: BaseSelectProps) => {
+const BaseSelect = ({ options, value, onChange, ...rest }: BaseSelectProps) => {
   return (
     <div css={wrapperStyle}>
       <select
         css={baseSelectStyle}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        {...rest}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>

@@ -1,11 +1,12 @@
 import { css } from '@emotion/react';
+import React, { type ReactElement, useId } from 'react';
 
 import { useViewportListener } from '@/hooks/useViewportListener';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 type InputProps = {
   labelText?: string;
-  children: React.ReactNode;
+  children: ReactElement; // input, select, textarea 등 하나의 ReactElement
 };
 
 const Input = ({ labelText, children }: InputProps) => {
@@ -13,12 +14,21 @@ const Input = ({ labelText, children }: InputProps) => {
 
   const isMobile = useViewportStore((state) => state.isMobile);
 
+  const generatedId = useId();
+
   return (
     <div css={wrapperStyle(isMobile)}>
       <div>
-        <label css={labelStyle(isMobile)}>{labelText}</label>
+        <label css={labelStyle(isMobile)} htmlFor={generatedId}>
+          {labelText}
+        </label>
       </div>
-      <div css={childrenStyle}>{children}</div>
+      <div css={childrenStyle}>
+        {React.cloneElement(
+          children as ReactElement<React.HTMLAttributes<HTMLElement>>,
+          { id: generatedId },
+        )}
+      </div>
     </div>
   );
 };

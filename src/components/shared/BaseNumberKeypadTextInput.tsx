@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useId, useState } from 'react';
+import { useState } from 'react';
 
 type BaseNumberKeypadTextInputProps = {
   onBlur: (value: string) => void;
@@ -9,8 +9,8 @@ type BaseNumberKeypadTextInputProps = {
 const BaseNumberKeypadTextInput = ({
   onBlur,
   placeholder,
+  ...rest
 }: BaseNumberKeypadTextInputProps) => {
-  const id = useId();
   const [displayValue, setDisplayValue] = useState('');
 
   function formatPhone(value: string) {
@@ -38,7 +38,6 @@ const BaseNumberKeypadTextInput = ({
       autoComplete="off" // 브라우저 자동 완성 기능 off
       autoCorrect="off" // 브라우저 (특히 IOS) 자동 교정 기능 off
       css={baseNumberKeypadTextInputStyle}
-      id={id}
       inputMode="numeric" // 숫자 키패드 모드 활성화
       maxLength={13} // 010-1234-5678 형태로 최대 13자
       pattern="[0-9]*" // 숫자 입력 패턴
@@ -48,6 +47,7 @@ const BaseNumberKeypadTextInput = ({
       value={displayValue}
       onBlur={handleBlur}
       onChange={(e) => handleChange(e)}
+      {...rest}
     />
   );
 };

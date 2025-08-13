@@ -1,12 +1,7 @@
 import { css } from '@emotion/react';
-import { useId, useRef } from 'react';
-
-// type BaseDateInputProps = {
-//   onChange: (date: string) => void;
-// };
+import { useRef } from 'react';
 
 const BaseDateInput = ({ ...rest }) => {
-  const id = useId();
   const dateRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -17,7 +12,6 @@ const BaseDateInput = ({ ...rest }) => {
     <input
       ref={dateRef}
       css={baseDateInputStyle}
-      id={id}
       type="date"
       {...rest}
       onClick={handleClick}
