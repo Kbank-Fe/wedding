@@ -10,7 +10,7 @@ const ContactAdmin = () => {
     console.log('Selected phone:', phone);
   }, [phone]);
 
-  const handleEmit = (text: string) => {
+  const handleBlur = (text: string) => {
     setPhone(text);
   };
   return (
@@ -18,7 +18,7 @@ const ContactAdmin = () => {
       <Input labelText="연락처">
         <BaseNumberKeypadTextInput
           placeholder="번호를 입력해주세요"
-          onBlur={handleEmit}
+          onBlur={handleBlur}
         />
       </Input>
     </>
