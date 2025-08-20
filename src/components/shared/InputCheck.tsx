@@ -25,13 +25,13 @@ const checkboxStyle = css`
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* 정확히 중앙정렬 */
+    transform: translate(-50%, -50%);
   }
 `;
 
 const labelStyle = css`
   display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
+  align-items: center;
   gap: 8px; /* 체크박스와 텍스트 사이 간격 */
   cursor: pointer;
 `;
@@ -62,3 +62,31 @@ const InputCheck = ({ checkboxLabel, checked, onChange }: CheckboxRowProps) => {
 };
 
 export default InputCheck;
+/*
+  [부모컴포넌트 예시]
+
+  import { useState } from 'react';
+  
+  import InputCheck from './InputCheck';
+  
+  const InputCheckTest = () => {
+    const [checked, setChecked] = useState(false);
+  
+    return (
+      <div>
+        <InputCheck
+          checkboxLabel="이메일 알림 받기"
+          checked={checked}
+          onChange={setChecked}
+        />
+        <br />
+        <p>현재 체크 상태 : {checked ? '체크됨' : '체크 안 됨'}</p>
+        <br />
+      </div>
+    );
+  };
+  
+  export default InputCheckTest;
+  
+
+*/
