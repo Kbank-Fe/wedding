@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 
-import type { TextAlignment, UserBasicInfo } from '@/types/weddingIntro';
+import type { TextAlignment, UserBasicInfo } from '@/types/wedding';
 
 type UserInfoProps = UserBasicInfo & { alignment: TextAlignment };
 
