@@ -1,39 +1,25 @@
 import { css } from '@emotion/react';
-import { type ComponentProps, useId } from 'react';
+import { type ComponentProps } from 'react';
 
 type TextInputProps = Omit<ComponentProps<'input'>, 'type'> & {
-  text: string;
-  handleChangeInput: () => void;
-  label: string;
   placeholder?: string;
   maxLength?: number;
 };
 
 const TextInput = ({
-  text,
-  handleChangeInput,
-  label,
   placeholder,
   maxLength,
   ref,
   ...rest
 }: TextInputProps) => {
-  const generatedId = useId();
-
   return (
     <div css={wrapperStyle}>
-      <label css={labelStyle} htmlFor={generatedId}>
-        {label}
-      </label>
       <input
         ref={ref}
         css={inputStyle}
-        id={generatedId}
         maxLength={maxLength}
         placeholder={placeholder}
         type="text"
-        value={text}
-        onChange={handleChangeInput}
         {...rest}
       />
     </div>
@@ -45,13 +31,6 @@ const wrapperStyle = css`
   align-items: center;
   gap: 8px;
   width: 100%;
-`;
-
-const labelStyle = css`
-  min-width: 60px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--grey7);
 `;
 
 const inputStyle = css`
