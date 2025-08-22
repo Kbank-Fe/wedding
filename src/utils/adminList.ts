@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 
-import BaseTextArea from '@/components/shared/BaseTextArea';
+import DateCalendarAdmin from '@/components/calendar/DateCalendarAdmin';
+import ContactAdmin from '@/components/contact/ContactAdmin';
 import TransportAdmin from '@/components/transport/TransportAdmin';
 
 type AdminList = {
@@ -11,13 +12,18 @@ type AdminList = {
 
 export const adminList: AdminList[] = [
   {
+    title: '예식일자',
+    value: 'calendar',
+    component: DateCalendarAdmin,
+  },
+  {
+    title: '연락하기',
+    value: 'contact',
+    component: ContactAdmin,
+  },
+  {
     title: '교통수단',
     value: 'transport',
     component: TransportAdmin,
-  },
-  {
-    title: 'textArea',
-    value: 'textArea',
-    component: BaseTextArea,
   },
 ];
