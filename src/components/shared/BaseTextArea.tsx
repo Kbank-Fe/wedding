@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import { useState } from 'react';
 
 type BaseTextAreaProps = {
@@ -29,6 +30,7 @@ const BaseTextArea = ({
 
   return (
     <textarea
+      css={textAreaStyle}
       placeholder={placeholder}
       rows={rows}
       value={text}
@@ -38,6 +40,10 @@ const BaseTextArea = ({
 };
 
 export default BaseTextArea;
+
+const textAreaStyle = css`
+  width: 100%;
+`;
 
 /*
 
