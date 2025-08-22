@@ -6,7 +6,7 @@ type TextInputProps = Omit<ComponentProps<'input'>, 'type'> & {
   maxLength?: number;
 };
 
-const TextInput = ({
+const BaseTextInput = ({
   placeholder,
   maxLength,
   ref,
@@ -47,4 +47,4 @@ const inputStyle = css`
   }
 `;
 
-export default TextInput;
+export default BaseTextInput;

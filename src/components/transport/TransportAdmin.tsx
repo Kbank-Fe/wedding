@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import TextInput from '@/components/shared/TextInput';
+import TextInput from '@/components/shared/BaseTextInput';
 
 const TransportAdmin = () => {
   const [text, setText] = useState('');
