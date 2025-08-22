@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import React, { type ReactElement, useId } from 'react';
 
-import { useViewportListener } from '@/hooks/useViewportListener';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 type InputProps = {
@@ -10,19 +9,17 @@ type InputProps = {
 };
 
 const Input = ({ labelText, children }: InputProps) => {
-  useViewportListener(); // 뷰포트 변화 감지 시작
-
   const isMobile = useViewportStore((state) => state.isMobile);
 
   const generatedId = useId();
 
   return (
     <div css={wrapperStyle(isMobile)}>
-      <div>
+      {labelText && (
         <label css={labelStyle(isMobile)} htmlFor={generatedId}>
           {labelText}
         </label>
-      </div>
+      )}
       <div css={childrenStyle}>
         {React.cloneElement(
           children as ReactElement<React.HTMLAttributes<HTMLElement>>,
