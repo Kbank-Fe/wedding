@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
 
 type BaseTextAreaProps = {
   rows?: number;
@@ -20,7 +20,7 @@ const BaseTextArea = ({
 
   const handleChange = ({
     target: { value },
-  }: React.ChangeEvent<HTMLTextAreaElement>) => {
+  }: ChangeEvent<HTMLTextAreaElement>) => {
     if (onChange) {
       onChange(value);
     } else {
