@@ -5,7 +5,7 @@ import { useState } from "react";
 import { API_BASE } from "@/utils/apiBase";
 import { auth, getOrCreateUser, waitForAuth } from "@/utils/firebase";
 import { openKakaoPopup } from "@/utils/kakaoPopup";
-import { createAndLinkShare, getShare, type ShareDoc } from "@/utils/shares";
+import { getShare, saveUserShare, type ShareDoc } from "@/utils/shares";
 
 type ExchangeResp = { firebaseCustomToken: string; email: string | null };
 type DummyData = {
@@ -57,7 +57,7 @@ const handleSave = async () => {
     random: Math.floor(Math.random() * 1000),
   };
 
-  const id = await createAndLinkShare(user.uid, dummy);
+  const id = await saveUserShare(user.uid, dummy);
   setShareId(id);
 
   const doc = await getShare<DummyData>(id);

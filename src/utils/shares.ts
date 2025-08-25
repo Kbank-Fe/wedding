@@ -10,62 +10,54 @@ export type ShareDoc<T extends object = Record<string, unknown>> = {
   updatedAt: number | object;
 };
 
-/** 새 Share 문서 생성 + 유저와 연결 */
-export async function createAndLinkShare<T extends object>(
-  uid: string,
-  data: T
-): Promise<string> {
+/** 유저의 shareId 조회 */
+export async function getUserShareId(uid: string): Promise<string | null> {
+  const snap = await get(ref(db, `users/${uid}/shareId`));
+  return snap.exists() ? (snap.val() as string) : null;
+}
+
+/** shareId → 데이터 조회 */
+export async function getShare<T extends object = Record<string, unknown>>(
+  id: string
+): Promise<ShareDoc<T> | null> {
+  const snap = await get(ref(db, `shares/${id}`));
+  return snap.exists() ? (snap.val() as ShareDoc<T>) : null;
+}
+
+/** 새 share 생성 + 유저 연결 */
+async function createShare<T extends object>(uid: string, data: T): Promise<string> {
   const id = nanoid();
   const now = serverTimestamp();
 
   const updates: Record<string, unknown> = {};
   updates[`users/${uid}/shareId`] = id;
-  updates[`shares/${id}`] = {
-    ownerUid: uid,
-    data,
-    createdAt: now,
-    updatedAt: now,
-  } as ShareDoc<T>;
+  updates[`shares/${id}`] = { ownerUid: uid, data, createdAt: now, updatedAt: now } as ShareDoc<T>;
 
   await update(ref(db, "/"), updates);
   return id;
 }
 
-/** 전체 data 교체 */
-export async function setShareData<T extends object>(
-  id: string,
-  data: T
-): Promise<void> {
+/** 기존 share 덮어쓰기 */
+async function overwriteShare<T extends object>(id: string, data: T): Promise<void> {
   await update(ref(db, `shares/${id}`), {
     data,
     updatedAt: serverTimestamp(),
   });
 }
 
-/** data 일부만 패치 */
-export async function patchShareData(
-  id: string,
-  patch: Record<string, unknown>
-): Promise<void> {
-  const updates: Record<string, unknown> = {
-    [`shares/${id}/updatedAt`]: serverTimestamp(),
-  };
-  for (const [k, v] of Object.entries(patch)) {
-    updates[`shares/${id}/data/${k}`] = v;
+/**
+ * 유저가 가진 shareId가 있으면 → 덮어쓰기
+ * 없으면 → 새로 생성
+ * 최종적으로 shareId 반환
+ */
+export async function saveUserShare<T extends object>(
+  uid: string,
+  data: T
+): Promise<string> {
+  const existing = await getUserShareId(uid);
+  if (existing) {
+    await overwriteShare(existing, data);
+    return existing;
   }
-  await update(ref(db, "/"), updates);
-}
-
-/** 유저 → 연결된 shareId 조회 */
-export async function getUserShareId(uid: string): Promise<string | null> {
-  const snap = await get(ref(db, `users/${uid}/shareId`));
-  return snap.exists() ? (snap.val() as string) : null;
-}
-
-/** 특정 share 문서 조회 */
-export async function getShare<T extends object = Record<string, unknown>>(
-  id: string
-): Promise<ShareDoc<T> | null> {
-  const snap = await get(ref(db, `shares/${id}`));
-  return snap.exists() ? (snap.val() as ShareDoc<T>) : null;
+  return await createShare(uid, data);
 }
