@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "dev:api": "vercel dev -l 3001 --yes",
-    "dev:web": "vite",
-    "dev": "concurrently -k \"yarn dev:api\" \"yarn dev:web\"",
-    "build": "tsc -b && vite build"
+    "dev:full": "concurrently -k \"yarn dev:api\" \"yarn dev\""
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -19,6 +19,7 @@
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-visually-hidden": "^1.2.3",
     "firebase": "^12.1.0",
+    "firebase-admin": "^13.4.0",
     "framer-motion": "^12.23.6",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.525.0",
@@ -42,7 +43,7 @@
     "@typescript-eslint/parser": "^8.35.0",
     "@vercel/node": "^5.3.11",
     "@vitejs/plugin-react": "^4.5.2",
-    "concurrently": "^9.2.0",
+    "concurrently": "^9.2.1",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-import-resolver-typescript": "^4.4.4",
