@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
 import PageLayout from '@/components/shared/PageLayout';
@@ -17,6 +19,9 @@ const AdminPage = () => {
             ))}
           </Accordion>
         )}
+      </Section>
+      <Section>
+        <Link to="/">미리보기</Link>
       </Section>
     </PageLayout>
   );

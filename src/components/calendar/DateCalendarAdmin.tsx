@@ -52,12 +52,12 @@ const DateCalendarAdmin = () => {
     store.setField('date', 'day', date.getDate());
   };
 
-  const handleHourChange = (value: number) => {
-    store.setField('date', 'hour', value);
+  const handleHourChange = (value: string) => {
+    store.setField('date', 'hour', Number(value));
   };
 
-  const handleMinChange = (value: number) => {
-    store.setField('date', 'min', value);
+  const handleMinChange = (value: string) => {
+    store.setField('date', 'min', Number(value));
   };
 
   return (
@@ -69,12 +69,12 @@ const DateCalendarAdmin = () => {
         <BaseSelect
           options={hourOptionList}
           value={hour}
-          onChange={(e) => handleHourChange(Number(e.target.value))}
+          onChange={(e) => handleHourChange(e.target.value)}
         />
         <BaseSelect
           options={minOptionList}
           value={min}
-          onChange={(e) => handleMinChange(Number(e.target.value))}
+          onChange={(e) => handleMinChange(e.target.value)}
         />
       </Group>
     </>
