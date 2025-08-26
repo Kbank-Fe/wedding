@@ -20,6 +20,7 @@ const AdminPage = () => {
           </Accordion>
         )}
       </Section>
+      {/* TODO: 임시 미리보기 라우터 제거 */}
       <Section>
         <Link to="/">미리보기</Link>
       </Section>
