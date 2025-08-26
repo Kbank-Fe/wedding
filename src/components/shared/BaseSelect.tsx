@@ -1,20 +1,15 @@
 import { css } from '@emotion/react';
 
-type BaseSelectProps = {
-  options: { title: string; value: string }[];
-  value: string;
-  onChange: (value: string) => void;
+// rest props로 select 속성 전달 가능 (예: onChange, disabled 등)
+type BaseSelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
+  options: { title: string; value: string | number }[];
+  value: string | number;
 };
 
-const BaseSelect = ({ options, value, onChange, ...rest }: BaseSelectProps) => {
+const BaseSelect = ({ options, value, ...rest }: BaseSelectProps) => {
   return (
     <div css={wrapperStyle}>
-      <select
-        css={baseSelectStyle}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        {...rest}
-      >
+      <select css={baseSelectStyle} value={value} {...rest}>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.title}
