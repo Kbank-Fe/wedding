@@ -7,9 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "dev:api": "vercel dev -l 3001 --yes",
-    "dev:full": "concurrently -k \"yarn dev:api\" \"yarn dev\""
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
