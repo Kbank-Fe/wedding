@@ -1,8 +1,3 @@
-/**
- * @typedef {import('@vercel/node').VercelRequest} VercelRequest
- * @typedef {import('@vercel/node').VercelResponse} VercelResponse
- */
-
 const { cert, getApps, initializeApp } = require('firebase-admin/app');
 const { getAuth } = require('firebase-admin/auth');
 
@@ -94,7 +89,6 @@ module.exports = async (req, res) => {
         ? `${required('PUBLIC_BASE_URL')}/login`
         : 'http://localhost:3000/login';
 
-    // 1) 카카오 토큰 요청
     const form = new URLSearchParams();
     form.set('grant_type', 'authorization_code');
     form.set('client_id', required('KAKAO_REST_API_KEY'));
