@@ -1,5 +1,5 @@
 type TransportList = {
-  transportList?: TransportItem[];
+  transportList: TransportItem[];
 };
 
 type TransportItem = {

@@ -33,6 +33,9 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     basicInfo: [],
   },
   transport: {
-    transportList: [],
+    transportList: Array.from({ length: 4 }, () => ({
+      title: '',
+      description: '',
+    })),
   },
 };
