@@ -20,8 +20,8 @@ const BaseTextArea = ({
   );
 };
 
-export default BaseTextArea;
-
 const textAreaStyle = css`
   width: 100%;
 `;
+
+export default BaseTextArea;
