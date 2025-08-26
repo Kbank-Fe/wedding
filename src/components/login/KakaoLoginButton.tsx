@@ -30,7 +30,7 @@ export default function KakaoLoginAndSaveTest() {
       await setPersistence(auth, browserLocalPersistence);
       const { code } = await openKakaoPopup();
 
-      const resp = await fetch(`/api/auth/kakao/exchange`, {
+      const resp = await fetch(`/api/exchange`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code }),
