@@ -1,5 +1,10 @@
-import { type FirebaseApp,getApp, getApps, initializeApp } from "firebase/app";
-import { type Auth, getAuth, onAuthStateChanged, type User } from "firebase/auth";
+import { type FirebaseApp, getApp, getApps, initializeApp } from 'firebase/app';
+import {
+  type Auth,
+  getAuth,
+  onAuthStateChanged,
+  type User,
+} from 'firebase/auth';
 import {
   type Database,
   get,
@@ -8,7 +13,7 @@ import {
   serverTimestamp,
   set,
   update,
-} from "firebase/database";
+} from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -20,9 +25,9 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 } as const;
 
-function getFirebaseApp(): FirebaseApp {
+const getFirebaseApp = (): FirebaseApp => {
   return getApps().length ? getApp() : initializeApp(firebaseConfig);
-}
+};
 
 const app = getFirebaseApp();
 export const auth: Auth = getAuth(app);
@@ -37,12 +42,12 @@ export type UserRow = {
   [k: string]: unknown;
 };
 
-export async function getOrCreateUser(params: {
+export const getOrCreateUser = async (params: {
   uid: string;
   email?: string;
   provider?: string;
-}): Promise<UserRow> {
-  const { uid, email, provider = "kakao" } = params;
+}): Promise<UserRow> => {
+  const { uid, email, provider = 'kakao' } = params;
   const userRef = ref(db, `users/${uid}`);
   const snap = await get(userRef);
 
@@ -63,31 +68,32 @@ export async function getOrCreateUser(params: {
 
   const after = await get(userRef);
   return after.val() as UserRow;
-}
+};
 
-export async function getJSON<T>(path: string, database: Database = db): Promise<T | null> {
+export const getJSON = async <T>(
+  path: string,
+  database: Database = db,
+): Promise<T | null> => {
   const snap = await get(ref(database, path));
   return snap.exists() ? (snap.val() as T) : null;
-}
+};
 
-export async function setJSON<T>(path: string, value: T, database: Database = db): Promise<void> {
-  await set(ref(database, path), value);
-}
-
-export async function updateJSON(path: string, patch: Record<string, unknown>, database: Database = db): Promise<void> {
+export const updateJSON = async (
+  path: string,
+  patch: Record<string, unknown>,
+  database: Database = db,
+): Promise<void> => {
   await update(ref(database, path), patch);
-}
+};
 
-export function getCurrentUser(): User | null {
-  return auth.currentUser;
-}
+export const getCurrentUser = (): User | null => auth.currentUser;
 
-export function isLogin(): boolean {
-  return !!auth.currentUser;
-}
+export const isLogin = (): boolean => !!auth.currentUser;
 
-export function waitForAuth(): Promise<User | null> {
-  return new Promise((resolve) => {
-    const off = onAuthStateChanged(auth, (u) => { off(); resolve(u); });
+export const waitForAuth = (): Promise<User | null> =>
+  new Promise((resolve) => {
+    const off = onAuthStateChanged(auth, (u) => {
+      off();
+      resolve(u);
+    });
   });
-}

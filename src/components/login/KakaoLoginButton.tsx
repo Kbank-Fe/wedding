@@ -1,11 +1,14 @@
-import { css } from "@emotion/react";
-import { browserLocalPersistence, setPersistence, signInWithCustomToken } from "firebase/auth";
-import { useState } from "react";
+import { css } from '@emotion/react';
+import {
+  browserLocalPersistence,
+  setPersistence,
+  signInWithCustomToken,
+} from 'firebase/auth';
+import { useState } from 'react';
 
-import { API_BASE } from "@/utils/apiBase";
-import { auth, getOrCreateUser, waitForAuth } from "@/utils/firebase";
-import { openKakaoPopup } from "@/utils/kakaoPopup";
-import { getShare, saveUserShare, type ShareDoc } from "@/utils/shares";
+import { auth, getOrCreateUser, waitForAuth } from '@/utils/firebase';
+import { openKakaoPopup } from '@/utils/kakaoPopup';
+import { getShare, saveUserShare, type ShareDoc } from '@/utils/shares';
 
 type ExchangeResp = { firebaseCustomToken: string; email: string | null };
 type DummyData = {
@@ -27,53 +30,63 @@ export default function KakaoLoginAndSaveTest() {
       await setPersistence(auth, browserLocalPersistence);
       const { code } = await openKakaoPopup();
 
-      const resp = await fetch(`${API_BASE}/api/auth/kakao/exchange`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const resp = await fetch(`/api/auth/kakao/exchange`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code }),
       });
       if (!resp.ok) throw new Error(await resp.text());
-      const { firebaseCustomToken, email } = (await resp.json()) as ExchangeResp;
+      const { firebaseCustomToken, email } =
+        (await resp.json()) as ExchangeResp;
 
       const cred = await signInWithCustomToken(auth, firebaseCustomToken);
-      await getOrCreateUser({ uid: cred.user.uid, email: email ?? undefined, provider: "kakao" });
+      await getOrCreateUser({
+        uid: cred.user.uid,
+        email: email ?? undefined,
+        provider: 'kakao',
+      });
 
       setUid(cred.user.uid);
     } catch (err) {
       console.error(err);
-      alert("카카오 로그인 실패");
     } finally {
       setLoading(false);
     }
   };
 
-const handleSave = async () => {
-  const user = await waitForAuth();
-  if (!user) return;
+  const handleSave = async () => {
+    const user = await waitForAuth();
+    if (!user) return;
 
-  const dummy: DummyData = {
-    title: "테스트 데이터",
-    savedAt: new Date().toISOString(),
-    random: Math.floor(Math.random() * 1000),
+    const dummy: DummyData = {
+      title: '테스트 데이터',
+      savedAt: new Date().toISOString(),
+      random: Math.floor(Math.random() * 1000),
+    };
+
+    const id = await saveUserShare(user.uid, dummy);
+    setShareId(id);
+
+    const doc = await getShare<DummyData>(id);
+    setShareDoc(doc);
   };
-
-  const id = await saveUserShare(user.uid, dummy);
-  setShareId(id);
-
-  const doc = await getShare<DummyData>(id);
-  setShareDoc(doc);
-};
 
   return (
     <div css={wrapper}>
       {!uid ? (
         <button css={button} disabled={loading} onClick={handleLogin}>
-          {loading ? "로그인 중…" : <img alt="카카오 로그인" src="/images/kakao_login.png" />}
+          {loading ? (
+            '로그인 중…'
+          ) : (
+            <img alt="카카오 로그인" src="/images/kakao_login.png" />
+          )}
         </button>
       ) : (
         <div css={panel}>
           <p>UID: {uid}</p>
-          <button css={button} onClick={handleSave}>데이터 저장</button>
+          <button css={button} onClick={handleSave}>
+            데이터 저장
+          </button>
           {shareId && (
             <div css={result}>
               <p>저장된 ID: {shareId}</p>
