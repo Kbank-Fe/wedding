@@ -12,9 +12,11 @@ function required(name: string): string {
   if (!v) throw new Error(`Missing env: ${name}`);
   return v;
 }
+
 function privateKey(): string {
   return required('FIREBASE_PRIVATE_KEY').replace(/\\n/g, '\n');
 }
+
 function initAdmin(): void {
   if (!getApps().length) {
     initializeApp({
@@ -26,6 +28,7 @@ function initAdmin(): void {
     });
   }
 }
+
 function applyCors(res: VercelResponse): void {
   const origin =
     process.env.NODE_ENV === 'production'
@@ -36,6 +39,7 @@ function applyCors(res: VercelResponse): void {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Vary', 'Origin');
 }
+
 function safeParseJSON<T>(t: string): T | null {
   try {
     return JSON.parse(t) as T;
@@ -48,13 +52,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     if (req.method === 'OPTIONS') {
       applyCors(res);
-      res.status(204).end();
-      return;
+      return res.status(204).end();
     }
     if (req.method !== 'POST') {
-      res.status(405).json({ error: 'method_not_allowed' });
-      return;
+      return res.status(405).json({
+        error: 'method_not_allowed',
+        message: 'Only POST method is allowed',
+      });
     }
+
     applyCors(res);
 
     [
@@ -68,11 +74,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     const code = body?.code as string | undefined;
     if (!code) {
-      res.status(400).json({ error: 'missing_code' });
-      return;
+      return res.status(400).json({
+        error: 'missing_code',
+        message: '카카오 인가 코드(code)가 누락되었습니다.',
+      });
     }
 
-    const redirectUri = `${required('PUBLIC_BASE_URL')}/login`;
+    const redirectUri =
+      process.env.NODE_ENV === 'production'
+        ? `${required('PUBLIC_BASE_URL')}/login`
+        : 'http://localhost:3000/login';
 
     const form = new URLSearchParams();
     form.set('grant_type', 'authorization_code');
@@ -89,16 +100,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
     const tokText = await tokRes.text();
     const tokJson = safeParseJSON<KakaoTokenResponse>(tokText);
-    if (!tokRes.ok) {
-      res
-        .status(400)
-        .json({ error: 'token_exchange_failed', detail: tokJson ?? tokText });
-      return;
+
+    if (!tokRes.ok || !tokJson?.access_token) {
+      return res.status(400).json({
+        error: 'token_exchange_failed',
+        message: '카카오 토큰 교환 실패',
+        detail: tokJson ?? tokText,
+      });
     }
-    if (!tokJson || typeof tokJson.access_token !== 'string') {
-      res.status(400).json({ error: 'missing_access_token_from_kakao' });
-      return;
-    }
+
     const access_token = tokJson.access_token;
 
     const meRes = await fetch('https://kapi.kakao.com/v2/user/me', {
@@ -106,13 +116,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
     const meText = await meRes.text();
     const meJson = safeParseJSON<KakaoMe>(meText);
-    if (!meRes.ok) {
-      res.status(400).json({ error: 'me_failed', detail: meJson ?? meText });
-      return;
-    }
-    if (!meJson || typeof meJson.id !== 'number') {
-      res.status(400).json({ error: 'invalid_kakao_me' });
-      return;
+
+    if (!meRes.ok || !meJson?.id) {
+      return res.status(400).json({
+        error: 'me_failed',
+        message: '카카오 사용자 정보 요청 실패',
+        detail: meJson ?? meText,
+      });
     }
 
     const kakaoId = String(meJson.id);
@@ -124,9 +134,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       { provider: 'kakao', email },
     );
 
-    res.status(200).json({ firebaseCustomToken, email });
+    return res.status(200).json({ firebaseCustomToken, email });
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : String(e);
-    res.status(500).json({ error: 'server_error', detail: msg });
+    console.error('EXCHANGE_ERROR', e);
+    return res.status(500).json({
+      error: 'server_error',
+      name: e instanceof Error ? e.name : 'unknown',
+      message: e instanceof Error ? e.message : String(e),
+      stack: e instanceof Error ? e.stack : null,
+    });
   }
 }
