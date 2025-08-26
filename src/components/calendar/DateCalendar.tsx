@@ -9,6 +9,7 @@ import DtimeItem from '@/components/calendar/DtimeItem';
 import Header from '@/components/shared/Header';
 import Line from '@/components/shared/Line';
 import { MotionFade } from '@/components/shared/MotionFade';
+import { useWeddingStore } from '@/stores/useWeddingStore';
 import { getDayOfWeek, getDday, getDtime } from '@/utils/date';
 
 // TODO: types 디렉토리 이동
@@ -29,19 +30,24 @@ type highlight = {
 
 // Date 객체 반환 (월 - 1)
 // TODO: types 디렉토리 이동
-const getDateObject = (dateInfo: dateInfo) =>
+const getDateObject = (dateInfo: dateInfo, hour: string, min: string) =>
   new Date(
     dateInfo.year,
     dateInfo.month - 1,
     dateInfo.day,
-    dateInfo.hour,
-    dateInfo.min,
+    Number(hour),
+    Number(min),
     dateInfo.sec,
     dateInfo.msec,
   );
 
 const DateCalendar = (dateInfo: dateInfo) => {
-  const { year, month, day, hour, min } = dateInfo;
+  const { year, month, day } = dateInfo;
+  const hour = useWeddingStore((state) => state.values.date.hour);
+  const min = useWeddingStore((state) => state.values.date.min) || '00';
+
+  console.log('hour :', hour);
+  console.log('min :', min);
 
   // react-calendar tileClassName 속성 전달: highlight 설정
   const setTileClassName = ({ date, view }: highlight) => {
@@ -71,13 +77,13 @@ const DateCalendar = (dateInfo: dateInfo) => {
 
   // 요일 계산
   const dayOfWeek = useMemo(() => {
-    const weddingDate = getDateObject(dateInfo);
+    const weddingDate = getDateObject(dateInfo, hour, min);
     return getDayOfWeek(weddingDate, korean);
   }, [dateInfo, korean]);
 
   // D-Day 계산
   const dDayRaw = useMemo(() => {
-    const weddingDate = getDateObject(dateInfo);
+    const weddingDate = getDateObject(dateInfo, hour, min);
     return getDday(weddingDate);
   }, [dateInfo]);
 
@@ -94,7 +100,7 @@ const DateCalendar = (dateInfo: dateInfo) => {
 
   // D-Time 계산 (useCallback: 컴포넌트 리렌더될 때마다 새로운 함수 객체 생성 방지)
   const calculateDtime = useCallback(() => {
-    const weddingDate = getDateObject(dateInfo);
+    const weddingDate = getDateObject(dateInfo, hour, min);
     return getDtime(weddingDate);
   }, [dateInfo]); // 최초 1회만 생성
 
@@ -123,7 +129,7 @@ const DateCalendar = (dateInfo: dateInfo) => {
       <MotionFade css={calendarContainerStyle}>
         <Line />
         <Calendar
-          activeStartDate={getDateObject(dateInfo)}
+          activeStartDate={getDateObject(dateInfo, hour, min)}
           calendarType="gregory"
           css={calendarStyle}
           formatDay={(_locale, date) => `${date.getDate()}`}
