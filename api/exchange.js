@@ -1,19 +1,17 @@
-const { cert, getApps, initializeApp } = require('firebase-admin/app');
-const { getAuth } = require('firebase-admin/auth');
+import { cert, getApps, initializeApp } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
 
 const KAKAO_TOKEN_URL = 'https://kauth.kakao.com/oauth/token';
 
-function required(name) {
+const required = (name) => {
   const v = process.env[name];
   if (!v) throw new Error(`Missing env: ${name}`);
   return v;
-}
+};
 
-function privateKey() {
-  return required('FIREBASE_PRIVATE_KEY').replace(/\\n/g, '\n');
-}
+const privateKey = () => required('FIREBASE_PRIVATE_KEY').replace(/\\n/g, '\n');
 
-function initAdmin() {
+const initAdmin = () => {
   if (!getApps().length) {
     initializeApp({
       credential: cert({
@@ -23,9 +21,9 @@ function initAdmin() {
       }),
     });
   }
-}
+};
 
-function applyCors(res) {
+const applyCors = (res) => {
   const origin =
     process.env.NODE_ENV === 'production'
       ? required('PUBLIC_BASE_URL')
@@ -34,21 +32,21 @@ function applyCors(res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Vary', 'Origin');
-}
+};
 
-function safeParseJSON(t) {
+const safeParseJSON = (t) => {
   try {
     return JSON.parse(t);
   } catch {
     return null;
   }
-}
+};
 
 /**
- * @param {VercelRequest} req
- * @param {VercelResponse} res
+ * @param {import('@vercel/node').VercelRequest} req
+ * @param {import('@vercel/node').VercelResponse} res
  */
-module.exports = async (req, res) => {
+const handler = async (req, res) => {
   try {
     if (req.method === 'OPTIONS') {
       applyCors(res);
@@ -154,3 +152,5 @@ module.exports = async (req, res) => {
     });
   }
 };
+
+export default handler;
