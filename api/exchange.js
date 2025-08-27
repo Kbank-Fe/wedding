@@ -1,5 +1,5 @@
-const { cert, getApps, initializeApp } = require('firebase-admin/app');
-const { getAuth } = require('firebase-admin/auth');
+import { cert, getApps, initializeApp } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
 
 const KAKAO_TOKEN_URL = 'https://kauth.kakao.com/oauth/token';
 
@@ -45,10 +45,10 @@ function safeParseJSON(t) {
 }
 
 /**
- * @param {VercelRequest} req
- * @param {VercelResponse} res
+ * @param {import('@vercel/node').VercelRequest} req
+ * @param {import('@vercel/node').VercelResponse} res
  */
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   try {
     if (req.method === 'OPTIONS') {
       applyCors(res);
@@ -153,4 +153,4 @@ module.exports = async (req, res) => {
       stack: e?.stack ?? null,
     });
   }
-};
+}
