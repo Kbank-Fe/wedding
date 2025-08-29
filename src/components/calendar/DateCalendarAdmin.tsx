@@ -76,7 +76,7 @@ const DateCalendarAdmin = () => {
         <BaseDateInput onChange={handleDateChange} onLoad={handleDateLoad} />
       </Field>
       <Field
-        description="예식일자를 선택해주세요."
+        description="예식시간을 선택해주세요."
         label="예식시간"
         mode="group"
       >
