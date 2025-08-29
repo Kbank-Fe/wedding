@@ -1,7 +1,6 @@
 import BaseDateInput from '@/components/shared/BaseDateInput';
 import BaseSelect from '@/components/shared/BaseSelect';
-import Group from '@/components/shared/Group';
-import Input from '@/components/shared/Input';
+import Field from '@/components/shared/Field';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const DateCalendarAdmin = () => {
@@ -62,10 +61,18 @@ const DateCalendarAdmin = () => {
 
   return (
     <>
-      <Input labelText="예식일자">
+      <Field
+        description="예식일자를 선택해주세요."
+        label="예식일자"
+        mode="single"
+      >
         <BaseDateInput onChange={handleDateChange} />
-      </Input>
-      <Group labelText="예식시간">
+      </Field>
+      <Field
+        description="예식일자를 선택해주세요."
+        label="예식시간"
+        mode="group"
+      >
         <BaseSelect
           options={hourOptionList}
           value={hour}
@@ -76,7 +83,7 @@ const DateCalendarAdmin = () => {
           value={min}
           onChange={(e) => handleMinChange(e.target.value)}
         />
-      </Group>
+      </Field>
     </>
   );
 };
