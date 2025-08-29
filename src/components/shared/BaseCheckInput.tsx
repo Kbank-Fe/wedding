@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import { useId } from 'react';
 
 type CheckboxRowProps = {
   checkboxLabel: string;
@@ -7,15 +6,12 @@ type CheckboxRowProps = {
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const InputCheck = ({ checkboxLabel, checked, ...rest }: CheckboxRowProps) => {
-  const id = useId();
-
   return (
     <div>
-      <label css={labelStyle} htmlFor={id}>
+      <label css={labelStyle}>
         <input
           checked={checked}
           css={checkboxStyle}
-          id={id}
           type="checkbox"
           {...rest}
         />
