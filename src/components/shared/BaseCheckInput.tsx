@@ -1,15 +1,15 @@
 import { css } from '@emotion/react';
 
-type CheckboxRowProps = {
+type BaseCheckBoxInputProps = {
   checkboxLabel: string;
   checked: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-const BaseCheckInput = ({
+const BaseCheckBoxInput = ({
   checkboxLabel,
   checked,
   ...rest
-}: CheckboxRowProps) => {
+}: BaseCheckBoxInputProps) => {
   return (
     <div>
       <label css={labelStyle}>
@@ -59,4 +59,4 @@ const labelStyle = css`
   gap: 8px; /* 체크박스와 텍스트 사이 간격 */
   cursor: pointer;
 `;
-export default BaseCheckInput;
+export default BaseCheckBoxInput;
