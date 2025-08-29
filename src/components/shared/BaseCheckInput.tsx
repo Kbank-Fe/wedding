@@ -5,7 +5,11 @@ type CheckboxRowProps = {
   checked: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-const InputCheck = ({ checkboxLabel, checked, ...rest }: CheckboxRowProps) => {
+const BaseCheckInput = ({
+  checkboxLabel,
+  checked,
+  ...rest
+}: CheckboxRowProps) => {
   return (
     <div>
       <label css={labelStyle}>
@@ -55,4 +59,4 @@ const labelStyle = css`
   gap: 8px; /* 체크박스와 텍스트 사이 간격 */
   cursor: pointer;
 `;
-export default InputCheck;
+export default BaseCheckInput;
