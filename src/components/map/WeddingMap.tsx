@@ -1,41 +1,58 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Map, MapMarker, useKakaoLoader } from 'react-kakao-maps-sdk';
 
+import AddressSearch from '@/components/map/AddressSearch';
 import MapBadge from '@/components/map/MapBadge';
 import Header from '@/components/shared/Header';
+import type {
+  Geocoder,
+  KakaoGeocode,
+  KakaoStatus,
+  KakaoWindow,
+  LatLng,
+  WeddingMapProps,
+} from '@/types/map.types';
 
-type LatLng = {
-  lat: number;
-  lng: number;
-};
+const DEFAULT_ADDRESS = '서울 중구 을지로 170';
 
-type WeddingMapProps = {
-  address?: string;
-};
-
-const WeddingMap = ({ address = '서울 중구 을지로 170' }: WeddingMapProps) => {
+export default function WeddingMap({
+  address = DEFAULT_ADDRESS,
+}: WeddingMapProps) {
   const [loading] = useKakaoLoader({
     appkey: import.meta.env.VITE_KAKAO_JS_KEY,
     libraries: ['services'],
   });
 
+  const [currentAddress, setCurrentAddress] = useState(address);
   const [position, setPosition] = useState<LatLng | null>(null);
+  const geocoderRef = useRef<Geocoder | null>(null);
 
   useEffect(() => {
-    if (loading || !window.kakao?.maps) return;
+    if (loading || geocoderRef.current) return;
 
-    const { maps } = window.kakao;
-    const geocoder = new maps.services.Geocoder();
+    const service = (window as KakaoWindow).kakao?.maps?.services;
+    if (!service) return;
 
-    geocoder.addressSearch(address, (result, status) => {
-      if (status === maps.services.Status.OK) {
-        const { x, y } = result[0];
-        setPosition({ lat: parseFloat(y), lng: parseFloat(x) });
-      }
-    });
-  }, [address, loading]);
+    geocoderRef.current = new service.Geocoder();
+  }, [loading]);
+
+  useEffect(() => {
+    if (loading || !geocoderRef.current) return;
+
+    const addr = currentAddress.trim();
+    if (!addr) return;
+
+    geocoderRef.current.addressSearch(
+      addr,
+      (res: KakaoGeocode[], status: KakaoStatus) => {
+        if (status !== 'OK' || !res[0]) return;
+        const { x, y } = res[0];
+        setPosition({ lat: Number(y), lng: Number(x) });
+      },
+    );
+  }, [currentAddress, loading]);
 
   if (!position) return null;
 
@@ -48,7 +65,7 @@ const WeddingMap = ({ address = '서울 중구 을지로 170' }: WeddingMapProps
         viewport={{ once: true, amount: 0.5 }}
         whileInView="visible"
       >
-        <h3 css={titleStyle}>{address}</h3>
+        <h3 css={titleStyle}>{currentAddress}</h3>
         <Map
           center={position}
           level={3}
@@ -56,11 +73,21 @@ const WeddingMap = ({ address = '서울 중구 을지로 170' }: WeddingMapProps
         >
           <MapMarker position={position} title="예식 장소" />
         </Map>
-        <MapBadge address={address} lat={position.lat} lng={position.lng} />
+        <MapBadge
+          address={currentAddress}
+          lat={position.lat}
+          lng={position.lng}
+        />
       </motion.div>
+
+      <AddressSearch
+        buttonText="주소 검색"
+        disabled={loading}
+        onSelect={setCurrentAddress}
+      />
     </>
   );
-};
+}
 
 const containerVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -79,5 +106,3 @@ const titleStyle = css`
   font-size: 1rem;
   margin-bottom: 1.8rem;
 `;
-
-export default WeddingMap;
