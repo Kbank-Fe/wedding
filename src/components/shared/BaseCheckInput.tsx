@@ -29,13 +29,13 @@ const checkboxStyle = css`
   width: 20px;
   height: 20px;
   border-radius: 4px;
-  background-color: #ccc; /* 기본 회색 */
+  background-color: var(--gray5);
   position: relative;
   cursor: pointer;
   transition: background-color 0.2s ease;
 
   &:checked {
-    background-color: #000; /* 검정 배경 */
+    background-color: var(--gray12);
   }
 
   &:checked::after {
