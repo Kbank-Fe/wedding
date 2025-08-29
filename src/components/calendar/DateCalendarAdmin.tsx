@@ -45,10 +45,17 @@ const DateCalendarAdmin = () => {
   ];
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const date = new Date(e.target.value);
-    store.setField('date', 'year', date.getFullYear());
-    store.setField('date', 'month', date.getMonth() + 1);
-    store.setField('date', 'day', date.getDate());
+    const dateObj = new Date(e.target.value);
+    store.setField('date', 'year', dateObj.getFullYear());
+    store.setField('date', 'month', dateObj.getMonth() + 1);
+    store.setField('date', 'day', dateObj.getDate());
+  };
+
+  const handleDateLoad = (date: string) => {
+    const dateObj = new Date(date);
+    store.setField('date', 'year', dateObj.getFullYear());
+    store.setField('date', 'month', dateObj.getMonth() + 1);
+    store.setField('date', 'day', dateObj.getDate());
   };
 
   const handleHourChange = (value: string) => {
@@ -66,7 +73,7 @@ const DateCalendarAdmin = () => {
         label="예식일자"
         mode="single"
       >
-        <BaseDateInput onChange={handleDateChange} />
+        <BaseDateInput onChange={handleDateChange} onLoad={handleDateLoad} />
       </Field>
       <Field
         description="예식일자를 선택해주세요."

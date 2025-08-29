@@ -1,12 +1,31 @@
 import { css } from '@emotion/react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-const BaseDateInput = ({ ...rest }) => {
+type BaseDateInputProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'onLoad' // 여기서 input 속성 onLoad 제거
+> & {
+  onLoad?: (value: string) => void;
+};
+
+const BaseDateInput = ({ onLoad, ...rest }: BaseDateInputProps) => {
   const dateRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
     dateRef.current?.showPicker(); // input click 시 달력 팝업 열기
   };
+
+  useEffect(() => {
+    if (dateRef.current) {
+      const todayKST = new Date(Date.now() + 9 * 60 * 60 * 1000) // UTC +9
+        .toISOString()
+        .split('T')[0];
+      dateRef.current.value = todayKST;
+
+      // 부모한테 로드 시점 전달
+      onLoad?.(todayKST);
+    }
+  }, [onLoad]);
 
   return (
     <input
