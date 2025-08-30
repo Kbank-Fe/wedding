@@ -4,8 +4,20 @@ import ContactItem from '@/components/contact/ContactItem';
 import Header from '@/components/shared/Header';
 import Line from '@/components/shared/Line';
 import { MotionFade } from '@/components/shared/MotionFade';
+import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const Contact = () => {
+  const contactList =
+    useWeddingStore((state) => state.values.contact.contactList) || [];
+
+  const groomFilteredList = contactList.filter(
+    (contact) => contact.type === 'G' && contact.phone !== '',
+  );
+
+  const bridgeFilteredList = contactList.filter(
+    (contact) => contact.type === 'B' && contact.phone !== '',
+  );
+
   return (
     <>
       <Header title="Contact" />
@@ -13,9 +25,17 @@ const Contact = () => {
       <MotionFade css={contactMotionStyle}>
         <span css={titleStyle}>신랑측</span>
         <Line />
-        <ContactItem name="박진형" part="신랑" phone="01012345678" />
-        <ContactItem name="박박박" part="신랑 아버지" phone="01012345678" />
-        <ContactItem name="진진진" part="신랑 어머니" phone="01012345678" />
+        {groomFilteredList.length === 0 ? (
+          <span css={textStyle}>등록된 연락처가 없습니다.</span>
+        ) : (
+          groomFilteredList.map((contact, index) => (
+            <ContactItem
+              key={index}
+              part={contact.part}
+              phone={contact.phone}
+            />
+          ))
+        )}
       </MotionFade>
 
       <hr css={gapHrStyle} />
@@ -23,13 +43,17 @@ const Contact = () => {
       <MotionFade css={contactMotionStyle}>
         <span css={titleStyle}>신부측</span>
         <Line />
-        <ContactItem name="형진박" part="신부" phone="01012345678" />
-        <ContactItem
-          name="진형박진형입니다안녕하세요반갑습니다정말"
-          part="신부 아버지"
-          phone="01012345678"
-        />
-        <ContactItem name="형형형형형" part="신부 어머니" phone="01012345678" />
+        {bridgeFilteredList.length === 0 ? (
+          <span css={textStyle}>등록된 연락처가 없습니다.</span>
+        ) : (
+          bridgeFilteredList.map((contact, index) => (
+            <ContactItem
+              key={index}
+              part={contact.part}
+              phone={contact.phone}
+            />
+          ))
+        )}
       </MotionFade>
     </>
   );
@@ -46,6 +70,12 @@ const gapHrStyle = css`
   background: transparent;
   margin: 0;
   width: 100%;
+`;
+
+const textStyle = css`
+  margin: 0 16px;
+  font-size: 0.9rem;
+  color: var(--gray11);
 `;
 
 const titleStyle = css`

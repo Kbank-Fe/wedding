@@ -1,36 +1,22 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
 
-type BaseNumberKeypadTextInputProps = {
-  onBlur: (value: string) => void;
-  placeholder?: string;
-};
+import { formatPhone } from '@/utils/format';
+
+type BaseNumberKeypadTextInputProps =
+  React.InputHTMLAttributes<HTMLInputElement> & {
+    placeholder?: string;
+  };
 
 const BaseNumberKeypadTextInput = ({
-  onBlur,
   placeholder,
   ...rest
 }: BaseNumberKeypadTextInputProps) => {
   const [displayValue, setDisplayValue] = useState('');
 
-  function formatPhone(value: string) {
-    const numbers = value.replace(/\D/g, ''); // 숫자만 추출
-
-    // 010-1234-5678 형태 포맷
-    if (numbers.length <= 3) return numbers;
-    if (numbers.length <= 7)
-      return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
-    return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`;
-  }
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/\D/g, '');
     setDisplayValue(formatPhone(rawValue)); // dash 포함 표시
-  };
-
-  const handleBlur = () => {
-    const rawValue = displayValue.replace(/\D/g, '');
-    onBlur(rawValue); // 부모에 dash 없는 값 전달
   };
 
   return (
@@ -45,7 +31,6 @@ const BaseNumberKeypadTextInput = ({
       spellCheck="false" // 브라우저 스펠링 검사 기능 off
       type="text"
       value={displayValue}
-      onBlur={handleBlur}
       onChange={(e) => handleChange(e)}
       {...rest}
     />

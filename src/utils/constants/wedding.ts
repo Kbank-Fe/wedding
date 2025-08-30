@@ -10,12 +10,12 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
   },
   contact: {
     contactList: [
-      { type: '신랑', phone: '' },
-      { type: '아버지', phone: '' },
-      { type: '어머니', phone: '' },
-      { type: '신부', phone: '' },
-      { type: '아버지', phone: '' },
-      { type: '어머니', phone: '' },
+      { type: 'G', part: '신랑', phone: '' },
+      { type: 'G', part: '아버지', phone: '' },
+      { type: 'G', part: '어머니', phone: '' },
+      { type: 'B', part: '신부', phone: '' },
+      { type: 'B', part: '아버지', phone: '' },
+      { type: 'B', part: '어머니', phone: '' },
     ],
   },
   account: {

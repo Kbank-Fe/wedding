@@ -16,8 +16,9 @@ type DateInfo = {
 };
 
 type ContactItem = {
-  phone: string;
   type: string;
+  part: string;
+  phone: string;
 };
 
 type ContactList = {
