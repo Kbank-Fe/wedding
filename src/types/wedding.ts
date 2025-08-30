@@ -8,16 +8,17 @@ type TransportItem = {
 };
 
 type DateInfo = {
-  year: string;
-  month: string;
-  day: string;
-  hour: string;
-  min?: string;
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  min: number;
 };
 
 type ContactItem = {
-  phone: string;
   type: string;
+  part: string;
+  phone: string;
 };
 
 type ContactList = {
