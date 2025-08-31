@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:web": "vite",
+    "dev:api": "vercel dev --listen 3001",
+    "dev:full": "concurrently \"yarn dev:web\" \"yarn dev:api\""
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -41,6 +44,7 @@
     "@typescript-eslint/parser": "^8.35.0",
     "@vercel/node": "^5.3.13",
     "@vitejs/plugin-react": "^4.5.2",
+    "concurrently": "^9.2.1",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-import-resolver-typescript": "^4.4.4",
