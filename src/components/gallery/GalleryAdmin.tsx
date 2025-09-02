@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { X } from 'lucide-react';
 
 import Input from '@/components/shared/Input';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { SavedImage } from '@/types/wedding';
 import { uploadImageAndSaveMetaRTDB } from '@/utils/storage';
@@ -11,6 +12,8 @@ import BaseImageInput from '../shared/BaseImageInput';
 const GalleryAdmin = () => {
   const { localImageList } = useWeddingStore((state) => state.values.gallery);
   const setDeep = useWeddingStore((state) => state.setDeep);
+
+  const { user } = useCurrentUser();
 
   const handleAddFiles = (files: File[]) => {
     setDeep((draft) => {
@@ -25,12 +28,13 @@ const GalleryAdmin = () => {
   };
 
   const handleSave = async () => {
+    if (!user) return;
+
     const metas: SavedImage[] = await Promise.all(
       localImageList.map((f) =>
-        uploadImageAndSaveMetaRTDB('uid', f, 'gallery'),
+        uploadImageAndSaveMetaRTDB(user.uid, f, 'gallery'),
       ),
     ).then((res) => res.map((m) => ({ url: m.url, name: m.name })));
-
     setDeep((draft) => {
       draft.gallery.savedImageList.push(...metas);
       draft.gallery.localImageList = [];
@@ -62,6 +66,11 @@ const GalleryAdmin = () => {
         </div>
       )}
       <button onClick={handleSave}>저장</button>
+      {user && (
+        <>
+          <p>{user.uid}</p>
+        </>
+      )}
     </>
   );
 };
