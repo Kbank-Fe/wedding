@@ -45,6 +45,16 @@ type Account = {
   kakaopayUrl?: string;
 };
 
+type Gallery = {
+  localImageList: File[];
+  savedImageList: SavedImage[];
+};
+
+export type SavedImage = {
+  url: string;
+  name: string;
+};
+
 export type Intro = {
   title: string;
   content: string;
@@ -70,4 +80,5 @@ export type WeddingInfo = {
   account: AccountList;
   intro: Intro;
   transport: TransportList;
+  gallery: Gallery;
 };
