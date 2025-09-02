@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import BaseDateInput from '@/components/shared/BaseDateInput';
 import BaseSelect from '@/components/shared/BaseSelect';
 import Field from '@/components/shared/Field';
@@ -5,6 +7,21 @@ import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const DateCalendarAdmin = () => {
   const store = useWeddingStore.getState();
+  // 부모가 자식의 input DOM을 직접 제어
+  const inputRef = useRef<HTMLInputElement>(null);
+  const calledRef = useRef(false);
+
+  useEffect(() => {
+    if (!calledRef.current && inputRef.current) {
+      const dateObj = new Date(inputRef.current.value);
+      store.setField('date', 'year', dateObj.getFullYear());
+      store.setField('date', 'month', dateObj.getMonth() + 1);
+      store.setField('date', 'day', dateObj.getDate());
+
+      // 최초 1회만 호출
+      calledRef.current = true;
+    }
+  }, [store]);
 
   const hour = useWeddingStore((state) => state.values.date.hour);
   const min = useWeddingStore((state) => state.values.date.min);
@@ -51,13 +68,6 @@ const DateCalendarAdmin = () => {
     store.setField('date', 'day', dateObj.getDate());
   };
 
-  const handleDateLoad = (date: string) => {
-    const dateObj = new Date(date);
-    store.setField('date', 'year', dateObj.getFullYear());
-    store.setField('date', 'month', dateObj.getMonth() + 1);
-    store.setField('date', 'day', dateObj.getDate());
-  };
-
   const handleHourChange = (value: string) => {
     store.setField('date', 'hour', Number(value));
   };
@@ -73,7 +83,7 @@ const DateCalendarAdmin = () => {
         label="예식일자"
         mode="single"
       >
-        <BaseDateInput onChange={handleDateChange} onLoad={handleDateLoad} />
+        <BaseDateInput ref={inputRef} onChange={handleDateChange} />
       </Field>
       <Field
         description="예식시간을 선택해주세요."
