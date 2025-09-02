@@ -38,4 +38,8 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
       description: '',
     })),
   },
+  gallery: {
+    localImageList: [],
+    savedImageList: [],
+  },
 };
