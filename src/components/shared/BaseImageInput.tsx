@@ -4,7 +4,7 @@ type BaseImageInputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   'type' | 'onChange'
 > & {
-  onChange: (files: File[]) => void; // 이벤트 대신 파일 배열
+  onChange: (files: File[]) => void;
 };
 
 const BaseImageInput = ({
@@ -17,7 +17,8 @@ const BaseImageInput = ({
     const list = event.currentTarget.files;
     if (!list) return;
     onChange(Array.from(list));
-    event.currentTarget.value = ''; // 같은 파일 재선택 허용
+    // 같은 파일 재선택 허용
+    event.currentTarget.value = '';
   };
 
   return (
