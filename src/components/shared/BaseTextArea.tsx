@@ -6,19 +6,8 @@ type BaseTextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   placeholder?: string;
 };
 
-const BaseTextArea = ({
-  rows = 5,
-  placeholder = '내용을 입력하세요',
-  ...rest
-}: BaseTextAreaProps) => {
-  return (
-    <textarea
-      css={textAreaStyle}
-      placeholder={placeholder}
-      rows={rows}
-      {...rest}
-    />
-  );
+const BaseTextArea = ({ rows = 4, ...rest }: BaseTextAreaProps) => {
+  return <textarea css={textAreaStyle} rows={rows} {...rest} />;
 };
 
 const textAreaStyle = css`
