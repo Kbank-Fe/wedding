@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
+import type { TextareaHTMLAttributes } from 'react';
 
-type BaseTextAreaProps = {
+type BaseTextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   rows?: number;
   placeholder?: string;
 };
