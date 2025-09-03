@@ -31,13 +31,13 @@ type AccountList = {
   brideSideAccounts?: AccountInfo;
 };
 
-type AccountInfo = {
+export type AccountInfo = {
   title?: string;
   accounts: Account[];
   isExpand: boolean;
 };
 
-type Account = {
+export type Account = {
   bankName: string;
   accountNumber: string;
   accountHolder: string;

@@ -1,49 +1,34 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router';
 import { Toaster } from 'sonner';
 
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
 import Account from '@/components/account/Account';
 import Header from '@/components/shared/Header';
-
-const groomSideAccounts = [
-  {
-    bankName: '카카오뱅크',
-    accountNumber: '123-456-789',
-    accountHolder: '김카뱅',
-  },
-  {
-    bankName: '케이뱅크',
-    accountNumber: '123-456-789',
-    accountHolder: '김케뱅',
-  },
-  {
-    bankName: '토스뱅크',
-    accountNumber: '123-456-789',
-    accountHolder: '이토스',
-  },
-];
-
-const brideSideAccounts = [
-  {
-    bankName: '국민은행',
-    accountNumber: '789-654-321',
-    accountHolder: '김국민',
-  },
-  {
-    bankName: '기업은행',
-    accountNumber: '789-654-321',
-    accountHolder: '김기업',
-  },
-  {
-    bankName: '신한은행',
-    accountNumber: '789-654-321',
-    accountHolder: '이신한',
-  },
-];
+import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const AccountList = () => {
+  const accountInfo = useWeddingStore((state) => state.values.account);
+  const groomSide = useWeddingStore(
+    (state) => state.values.account.groomSideAccounts,
+  );
+  const brideSide = useWeddingStore(
+    (state) => state.values.account.brideSideAccounts,
+  );
+
+  const accountListTitle = accountInfo.title ?? '';
+  const accountListSubTitle = accountInfo.subtitle ?? '';
+  const groomSideTitle = groomSide?.title ?? '';
+  const brideSideTitle = brideSide?.title ?? '';
+  const groomSideisExpand = groomSide?.isExpand ?? false;
+  const brideSideisExpand = brideSide?.isExpand ?? false;
+  const groomSideAccounts = groomSide?.accounts ?? [];
+  const brideSideAccounts = brideSide?.accounts ?? [];
+
+  const navigate = useNavigate();
+
   return (
     <>
       <Header title="AccountList" />
@@ -53,8 +38,16 @@ const AccountList = () => {
         viewport={{ once: true, amount: 0.5 }}
         whileInView="visible"
       >
-        <Accordion>
-          <AccordionItem title="신랑측" value="groomSide">
+        <p css={titleStyle}>{accountListTitle}</p>
+        <p css={subtitleStyle}>{accountListSubTitle}</p>
+
+        <Accordion
+          defaultValue={[
+            groomSideisExpand ? 'groomSide' : '',
+            brideSideisExpand ? 'brideSide' : '',
+          ].filter(Boolean)}
+        >
+          <AccordionItem title={groomSideTitle} value="groomSide">
             <motion.div
               animate="visible"
               css={accountListStyle}
@@ -69,7 +62,7 @@ const AccountList = () => {
                 ))}
             </motion.div>
           </AccordionItem>
-          <AccordionItem title="신부측" value="brideSide">
+          <AccordionItem title={brideSideTitle} value="brideSide">
             <motion.div
               animate="visible"
               css={accountListStyle}
@@ -88,9 +81,29 @@ const AccountList = () => {
         </Accordion>
       </motion.div>
       <Toaster duration={2000} position="top-center" />
+      <button onClick={() => navigate('/admin')}>어드민으로</button>
     </>
   );
 };
+
+const titleStyle = css`
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--gray12);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+`;
+
+const subtitleStyle = css`
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--gray11);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  white-space: pre-line;
+`;
 
 const accountListStyle = css`
   display: flex;

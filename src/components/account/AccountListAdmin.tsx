@@ -21,6 +21,8 @@ const AccountListAdmin = () => {
   const setDeep = useWeddingStore((state) => state.setDeep);
   const setField = useWeddingStore((state) => state.setField);
 
+  const accountInfo = useWeddingStore((state) => state.values.account);
+
   const groomSideAccounts = useWeddingStore(
     (state) => state.values.account.groomSideAccounts,
   );
@@ -33,7 +35,8 @@ const AccountListAdmin = () => {
   useEffect(() => {
     setDeep((draft) => {
       const ensureOne = (accounts?: { accounts: Account[] }) => {
-        if (accounts && accounts.accounts.length === 0) {
+        if (!accounts) return;
+        if (accounts.accounts.length === 0) {
           accounts.accounts.push(createEmptyAccount());
         }
       };
@@ -118,10 +121,16 @@ const AccountListAdmin = () => {
       <button onClick={() => navigate('/')}>홈으로</button>
 
       <Input labelText="제목">
-        <BaseTextInput onChange={handleChangeInput} />
+        <BaseTextInput
+          value={accountInfo.title ?? ''}
+          onChange={handleChangeInput}
+        />
       </Input>
       <Input labelText="내용">
-        <BaseTextArea onChange={handleChangeTextAreaInput} />
+        <BaseTextArea
+          value={accountInfo.subtitle ?? ''}
+          onChange={handleChangeTextAreaInput}
+        />
       </Input>
 
       <Line />
