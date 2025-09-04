@@ -1,13 +1,16 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { toast, Toaster } from 'sonner';
 
 import AccountGroup from '@/components/account/AccoutGroup';
 import BaseTextArea from '@/components/shared/BaseTextArea';
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Input from '@/components/shared/Input';
 import Line from '@/components/shared/Line';
+import useCurrentUser from '@/hooks/useCurrentUser';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { Account, AccountInfo } from '@/types/wedding';
+import type { Account, AccountInfo, WeddingInfo } from '@/types/wedding';
+import { getShare, getUserShareId, saveUserShare } from '@/utils/shares';
 import { isValid } from '@/utils/validate';
 
 const createEmptyAccount = (): Account => ({
@@ -19,25 +22,44 @@ const createEmptyAccount = (): Account => ({
 });
 
 const AccountListAdmin = () => {
-  const setDeep = useWeddingStore((state) => state.setDeep);
-  const setField = useWeddingStore((state) => state.setField);
+  const { user, uid, isLoading } = useCurrentUser();
+  const navigate = useNavigate();
 
-  const accountInfo = useWeddingStore((state) => state.values.account);
-
+  const setDeep = useWeddingStore((s) => s.setDeep);
+  const setField = useWeddingStore((s) => s.setField);
+  const values = useWeddingStore((s) => s.values);
+  const account = useWeddingStore((s) => s.values.account);
   const groomSideAccounts = useWeddingStore(
-    (state) => state.values.account.groomSideAccounts,
+    (s) => s.values.account.groomSideAccounts,
   );
   const brideSideAccounts = useWeddingStore(
-    (state) => state.values.account.brideSideAccounts,
+    (s) => s.values.account.brideSideAccounts,
   );
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (!uid) return;
+
+    (async () => {
+      try {
+        const id = await getUserShareId(uid);
+        if (!id) return;
+
+        const doc = await getShare<WeddingInfo>(id);
+        if (doc?.data) {
+          setDeep((draft) => {
+            Object.assign(draft, doc.data);
+          });
+        }
+      } catch (err) {
+        console.error('초기 데이터 불러오기 실패:', err);
+      }
+    })();
+  }, [uid, setDeep]);
 
   useEffect(() => {
     setDeep((draft) => {
       const ensureOne = (accounts?: { accounts: Account[] }) => {
-        if (!accounts) return;
-        if (accounts.accounts.length === 0) {
+        if (accounts && accounts.accounts.length === 0) {
           accounts.accounts.push(createEmptyAccount());
         }
       };
@@ -86,7 +108,7 @@ const AccountListAdmin = () => {
       });
     };
 
-  const handleAddAccount = (side: 'groom' | 'bride') => () => {
+  const handleAddAccount = (side: 'groom' | 'bride') => () =>
     setDeep((draft) => {
       const target =
         side === 'groom'
@@ -95,9 +117,8 @@ const AccountListAdmin = () => {
       if (!target) return;
       target.accounts.push(createEmptyAccount());
     });
-  };
 
-  const handleRemoveAccount = (side: 'groom' | 'bride') => (index: number) => {
+  const handleRemoveAccount = (side: 'groom' | 'bride') => (index: number) =>
     setDeep((draft) => {
       const target =
         side === 'groom'
@@ -108,7 +129,6 @@ const AccountListAdmin = () => {
         target.accounts.splice(index, 1);
       }
     });
-  };
 
   const handleChangeAccount =
     (side: 'groom' | 'bride') =>
@@ -135,62 +155,73 @@ const AccountListAdmin = () => {
       });
     };
 
+  const handleSave = async () => {
+    if (!user) return;
+
+    try {
+      await saveUserShare(uid!, values);
+      toast.success('데이터를 저장했어요!');
+    } catch (err) {
+      console.error(err);
+      toast.error('데이터 저장을 실패했어요.');
+    }
+  };
+
+  if (isLoading) return <p>로딩 중…</p>;
+  if (!user) return <p>로그인이 필요합니다.</p>;
+
   return (
     <>
       <button onClick={() => navigate('/')}>홈으로</button>
+      <br />
+      <button onClick={handleSave}>저장</button>
 
       <Input labelText="제목">
         <BaseTextInput
           maxLength={20}
-          value={accountInfo.title ?? ''}
+          value={account.title ?? ''}
           onChange={handleChangeInput}
         />
       </Input>
       <Input labelText="내용">
         <BaseTextArea
           maxLength={200}
-          value={accountInfo.subtitle ?? ''}
+          value={account.subtitle ?? ''}
           onChange={handleChangeTextAreaInput}
         />
       </Input>
 
       <Line />
 
-      <Input labelText="그룹명">
-        <BaseTextInput
-          maxLength={15}
-          value={groomSideAccounts?.title ?? ''}
-          onChange={handleChangeAccountInfo('groom', 'title')}
-        />
-      </Input>
-      <AccountGroup
-        accounts={groomSideAccounts?.accounts ?? []}
-        handleChange={handleChangeAccount('groom')}
-        isExpand={groomSideAccounts?.isExpand ?? false}
-        title={groomSideAccounts?.title || '신랑측'}
-        onAdd={handleAddAccount('groom')}
-        onRemove={handleRemoveAccount('groom')}
-        onToggleExpand={handleChangeAccountInfo('groom', 'isExpand')}
-      />
+      {(['groom', 'bride'] as const).map((side, idx, arr) => {
+        const accounts =
+          side === 'groom' ? groomSideAccounts : brideSideAccounts;
+        const label = side === 'groom' ? '신랑측' : '신부측';
 
-      <Line />
+        return (
+          <div key={side}>
+            <Input labelText="그룹명">
+              <BaseTextInput
+                maxLength={15}
+                value={accounts?.title ?? ''}
+                onChange={handleChangeAccountInfo(side, 'title')}
+              />
+            </Input>
+            <AccountGroup
+              accounts={accounts?.accounts ?? []}
+              handleChange={handleChangeAccount(side)}
+              isExpand={accounts?.isExpand ?? false}
+              title={accounts?.title || label}
+              onAdd={handleAddAccount(side)}
+              onRemove={handleRemoveAccount(side)}
+              onToggleExpand={handleChangeAccountInfo(side, 'isExpand')}
+            />
+            {idx < arr.length - 1 && <Line />}
+          </div>
+        );
+      })}
 
-      <Input labelText="그룹명">
-        <BaseTextInput
-          maxLength={15}
-          value={brideSideAccounts?.title ?? ''}
-          onChange={handleChangeAccountInfo('bride', 'title')}
-        />
-      </Input>
-      <AccountGroup
-        accounts={brideSideAccounts?.accounts ?? []}
-        handleChange={handleChangeAccount('bride')}
-        isExpand={brideSideAccounts?.isExpand ?? false}
-        title={brideSideAccounts?.title || '신부측'}
-        onAdd={handleAddAccount('bride')}
-        onRemove={handleRemoveAccount('bride')}
-        onToggleExpand={handleChangeAccountInfo('bride', 'isExpand')}
-      />
+      <Toaster duration={2000} position="top-center" />
     </>
   );
 };
