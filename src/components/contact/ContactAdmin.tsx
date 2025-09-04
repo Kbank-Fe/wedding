@@ -11,17 +11,6 @@ const ContactAdmin = () => {
   const contactList =
     useWeddingStore((state) => state.values.contact.contactList) || [];
 
-  const handleBlur = (index: number) => {
-    return (event: React.FocusEvent<HTMLInputElement>) => {
-      const rawValue = event.target.value.replace(/\D/g, ''); // 숫자가 아닌 문자 공백 처리
-
-      setDeep((dratf) => {
-        if (dratf.contact.contactList) {
-          dratf.contact.contactList[index].phone = rawValue;
-        }
-      });
-    };
-  };
   return (
     <>
       {contactList.map((contact, index) => (
@@ -34,7 +23,14 @@ const ContactAdmin = () => {
           >
             <BaseNumberKeypadTextInput
               placeholder="번호를 입력해주세요"
-              onBlur={handleBlur(index)}
+              value={contact.phone}
+              onBlurValue={(rawValue) =>
+                setDeep((draft) => {
+                  if (draft.contact.contactList) {
+                    draft.contact.contactList[index].phone = rawValue; // blur 때만 저장
+                  }
+                })
+              }
             />
           </Field>
           {index === 2 && <Line />} {/* 3번째 밑에만 Line 넣기 */}
