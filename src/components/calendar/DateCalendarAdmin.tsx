@@ -10,15 +10,20 @@ const DateCalendarAdmin = () => {
   const setField = useWeddingStore((state) => state.setField);
 
   // 부모가 자식의 input DOM을 직접 제어
-  const inputRef = useRef<HTMLInputElement>(null);
+  const dateInputRef = useRef<HTMLInputElement>(null);
+  const hourSelectRef = useRef<HTMLSelectElement>(null);
+  const minuteSelectRef = useRef<HTMLSelectElement>(null);
   const calledRef = useRef(false);
 
   useEffect(() => {
-    if (!calledRef.current && inputRef.current) {
-      const dateObject = new Date(inputRef.current.value);
+    if (!calledRef.current && dateInputRef.current) {
+      const dateObject = new Date(dateInputRef.current.value);
       setField('date', 'year', dateObject.getFullYear());
       setField('date', 'month', dateObject.getMonth() + 1);
       setField('date', 'day', dateObject.getDate());
+
+      setField('date', 'hour', Number(hourSelectRef.current?.value));
+      setField('date', 'min', Number(minuteSelectRef.current?.value));
 
       // 최초 1회만 호출
       calledRef.current = true;
@@ -50,7 +55,7 @@ const DateCalendarAdmin = () => {
         label="예식일자"
         mode="single"
       >
-        <BaseDateInput ref={inputRef} onChange={handleDateChange} />
+        <BaseDateInput ref={dateInputRef} onChange={handleDateChange} />
       </Field>
       <Field
         description="예식시간을 선택해주세요."
@@ -58,11 +63,13 @@ const DateCalendarAdmin = () => {
         mode="group"
       >
         <BaseSelect
+          ref={hourSelectRef}
           options={HOUR_OPTION_LIST}
           value={hour}
           onChange={handleChangeHour}
         />
         <BaseSelect
+          ref={minuteSelectRef}
           options={MINUTE_OPTION_LIST}
           value={minute}
           onChange={handleChangeMinute}
