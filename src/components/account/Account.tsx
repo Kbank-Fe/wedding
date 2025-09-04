@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import type { Account as AccountProps } from '@/types/wedding';
 import { copyToClipboard } from '@/utils/clipboard';
@@ -28,7 +29,12 @@ const Account = ({
 
     setKakaoButtonDisabled(true);
 
-    window.open(kakaopayUrl, '_blank', 'noopener,noreferrer');
+    if ((kakaopayUrl ?? '').indexOf('https://qr.kakaopay.com') > -1) {
+      window.open(kakaopayUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      toast.warning('송금 링크를 확인해 주세요.');
+    }
+
     setTimeout(() => setKakaoButtonDisabled(false), 2200);
   };
 

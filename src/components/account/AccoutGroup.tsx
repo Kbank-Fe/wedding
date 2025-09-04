@@ -11,6 +11,7 @@ type AccountGroupProps = {
   handleChange: (
     index: number,
     field: keyof Account,
+    type?: string,
   ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
   onAdd: () => void;
   onRemove: (index: number) => void;
@@ -56,31 +57,35 @@ const AccountGroup = ({
 
         <Input labelText="은행명">
           <BaseTextInput
+            maxLength={15}
             value={acc.bankName}
-            onChange={handleChange(i, 'bankName')}
+            onChange={handleChange(i, 'bankName', 'kor')}
           />
         </Input>
 
         <Input labelText="계좌번호">
           <BaseTextInput
+            maxLength={20}
             value={acc.accountNumber}
-            onChange={handleChange(i, 'accountNumber')}
+            onChange={handleChange(i, 'accountNumber', 'num')}
           />
         </Input>
 
         <Input labelText="예금주">
           <BaseTextInput
+            maxLength={10}
             value={acc.accountHolder}
-            onChange={handleChange(i, 'accountHolder')}
+            onChange={handleChange(i, 'accountHolder', 'kor')}
           />
         </Input>
 
         {acc.isKakaopay && (
           <Input labelText="송금 링크">
             <BaseTextInput
+              maxLength={50}
               placeholder="https://qr.kakaopay.com/..."
               value={acc.kakaopayUrl ?? ''}
-              onChange={handleChange(i, 'kakaopayUrl')}
+              onChange={handleChange(i, 'kakaopayUrl', 'url')}
             />
           </Input>
         )}

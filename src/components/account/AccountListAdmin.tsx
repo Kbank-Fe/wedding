@@ -8,6 +8,7 @@ import Input from '@/components/shared/Input';
 import Line from '@/components/shared/Line';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { Account, AccountInfo } from '@/types/wedding';
+import { isValid } from '@/utils/validate';
 
 const createEmptyAccount = (): Account => ({
   bankName: '',
@@ -46,18 +47,31 @@ const AccountListAdmin = () => {
   }, [setDeep]);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isValid(e.target.value, 'kor')) {
+      e.preventDefault();
+      return;
+    }
     setField('account', 'title', e.target.value);
   };
 
   const handleChangeTextAreaInput = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
+    if (!isValid(e.target.value, 'all')) {
+      e.preventDefault();
+      return;
+    }
     setField('account', 'subtitle', e.target.value);
   };
 
   const handleChangeAccountInfo =
     (side: 'groom' | 'bride', field: keyof AccountInfo) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (field === 'title' && !isValid(e.target.value, 'txt')) {
+        e.preventDefault();
+        return;
+      }
+
       setDeep((draft) => {
         const target =
           side === 'groom'
@@ -98,8 +112,13 @@ const AccountListAdmin = () => {
 
   const handleChangeAccount =
     (side: 'groom' | 'bride') =>
-    (index: number, field: keyof Account) =>
+    (index: number, field: keyof Account, type?: string) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (type && !isValid(e.target.value, type)) {
+        e.preventDefault();
+        return;
+      }
+
       setDeep((draft) => {
         const target =
           side === 'groom'
@@ -122,12 +141,14 @@ const AccountListAdmin = () => {
 
       <Input labelText="제목">
         <BaseTextInput
+          maxLength={20}
           value={accountInfo.title ?? ''}
           onChange={handleChangeInput}
         />
       </Input>
       <Input labelText="내용">
         <BaseTextArea
+          maxLength={200}
           value={accountInfo.subtitle ?? ''}
           onChange={handleChangeTextAreaInput}
         />
@@ -137,6 +158,7 @@ const AccountListAdmin = () => {
 
       <Input labelText="그룹명">
         <BaseTextInput
+          maxLength={15}
           value={groomSideAccounts?.title ?? ''}
           onChange={handleChangeAccountInfo('groom', 'title')}
         />
@@ -145,7 +167,7 @@ const AccountListAdmin = () => {
         accounts={groomSideAccounts?.accounts ?? []}
         handleChange={handleChangeAccount('groom')}
         isExpand={groomSideAccounts?.isExpand ?? false}
-        title={groomSideAccounts?.title || '신랑 계좌'}
+        title={groomSideAccounts?.title || '신랑측'}
         onAdd={handleAddAccount('groom')}
         onRemove={handleRemoveAccount('groom')}
         onToggleExpand={handleChangeAccountInfo('groom', 'isExpand')}
@@ -155,6 +177,7 @@ const AccountListAdmin = () => {
 
       <Input labelText="그룹명">
         <BaseTextInput
+          maxLength={15}
           value={brideSideAccounts?.title ?? ''}
           onChange={handleChangeAccountInfo('bride', 'title')}
         />
@@ -163,7 +186,7 @@ const AccountListAdmin = () => {
         accounts={brideSideAccounts?.accounts ?? []}
         handleChange={handleChangeAccount('bride')}
         isExpand={brideSideAccounts?.isExpand ?? false}
-        title={brideSideAccounts?.title || '신부 계좌'}
+        title={brideSideAccounts?.title || '신부측'}
         onAdd={handleAddAccount('bride')}
         onRemove={handleRemoveAccount('bride')}
         onToggleExpand={handleChangeAccountInfo('bride', 'isExpand')}
