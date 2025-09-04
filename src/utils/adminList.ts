@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import DateCalendarAdmin from '@/components/calendar/DateCalendarAdmin';
 import ContactAdmin from '@/components/contact/ContactAdmin';
 import GalleryAdmin from '@/components/gallery/GalleryAdmin';
+import TextEditorTest from '@/components/shared/TextEditorTest';
 import TransportAdmin from '@/components/transport/TransportAdmin';
 
 type AdminList = {
@@ -31,5 +32,10 @@ export const adminList: AdminList[] = [
     title: '갤러리',
     value: 'gallery',
     component: GalleryAdmin,
+  },
+    {
+    title: '텍스트 에디터 테스트',
+    value: 'editor',
+    component: TextEditorTest,
   },
 ];
