@@ -15,8 +15,10 @@ type DateInfo = {
   min: number;
 };
 
+type Contact = 'Groom' | 'Bride';
+
 type ContactItem = {
-  type: string;
+  type: Contact;
   part: string;
   phone: string;
 };

@@ -38,17 +38,13 @@ const Field = ({
   const isGroup = mode === 'group' || (mode === 'auto' && count > 1);
 
   if (isGroup) {
-    // ===== 복수 컨트롤 모드 =====
-    // 접근성: fieldset/legend를 유지. (legend는 SR 전용으로 숨길 수도)
     return (
       <fieldset aria-describedby={descId} css={fsCss}>
-        {/* 1) SR용 legend (항상 존재) */}
         <legend css={srOnly} id={labelId}>
           {label}
         </legend>
 
         <div css={rowCss}>
-          {/* 2) 화면용 라벨: flex 배치에 참여시켜 "label - input - input" 구성 */}
           {useVisualLabelInGroup && (
             <span css={labelCss(labelWidth, isMobile)} id={visualLabelId}>
               {label}
@@ -60,7 +56,6 @@ const Field = ({
               isValidElement<React.HTMLAttributes<HTMLElement>>(child)
                 ? React.cloneElement(child, {
                     id: child.props?.id ?? `${rootId}-ctrl-${i}`,
-                    // 가시 라벨이 있으면 그것을, 아니면 legend를 참조
                     'aria-labelledby': useVisualLabelInGroup
                       ? visualLabelId
                       : labelId,
@@ -74,7 +69,6 @@ const Field = ({
     );
   }
 
-  // ===== 단일 컨트롤 모드 =====
   const only = Children.only(children) as React.ReactElement<
     React.HTMLAttributes<HTMLElement>
   >;
@@ -99,7 +93,6 @@ const Field = ({
   );
 };
 
-/* ===== styles ===== */
 const singleRowCss = (isMobile: boolean) => css`
   display: flex;
   gap: 8px;

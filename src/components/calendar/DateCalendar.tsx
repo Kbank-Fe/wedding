@@ -20,11 +20,7 @@ type highlight = {
 const DateCalendar = () => {
   const date = useWeddingStore((state) => state.values.date);
 
-  const year = date.year;
-  const month = date.month;
-  const day = date.day;
-  const hour = date.hour;
-  const min = date.min;
+  const { year, month, day, hour, min } = date;
 
   // Date 객체 생성 시 useMemo 사용: year, month, day, hour, min 값이 바뀔 때만 새로운 Date 객체 생성
   const dateObject = useMemo(() => {

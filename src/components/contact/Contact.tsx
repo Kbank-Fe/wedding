@@ -11,11 +11,11 @@ const Contact = () => {
     useWeddingStore((state) => state.values.contact.contactList) || [];
 
   const groomFilteredList = contactList.filter(
-    (contact) => contact.type === 'G' && contact.phone !== '',
+    (contact) => contact.type === 'Groom' && contact.phone !== '',
   );
 
   const bridgeFilteredList = contactList.filter(
-    (contact) => contact.type === 'B' && contact.phone !== '',
+    (contact) => contact.type === 'Bride' && contact.phone !== '',
   );
 
   return (

@@ -14,7 +14,7 @@ const BaseNumberKeypadTextInput = ({
 }: BaseNumberKeypadTextInputProps) => {
   const [displayValue, setDisplayValue] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/\D/g, '');
     setDisplayValue(formatPhone(rawValue)); // dash 포함 표시
   };
@@ -31,7 +31,7 @@ const BaseNumberKeypadTextInput = ({
       spellCheck="false" // 브라우저 스펠링 검사 기능 off
       type="text"
       value={displayValue}
-      onChange={(e) => handleChange(e)}
+      onChange={handleChangeText}
       {...rest}
     />
   );

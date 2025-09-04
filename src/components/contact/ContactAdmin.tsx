@@ -6,16 +6,16 @@ import Line from '@/components/shared/Line';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const ContactAdmin = () => {
-  const store = useWeddingStore.getState();
+  const setDeep = useWeddingStore((state) => state.setDeep);
 
   const contactList =
     useWeddingStore((state) => state.values.contact.contactList) || [];
 
   const handleBlur = (index: number) => {
-    return (e: React.FocusEvent<HTMLInputElement>) => {
-      const rawValue = e.target.value.replace(/\D/g, ''); // 숫자가 아닌 문자 공백 처리
+    return (event: React.FocusEvent<HTMLInputElement>) => {
+      const rawValue = event.target.value.replace(/\D/g, ''); // 숫자가 아닌 문자 공백 처리
 
-      store.setDeep((dratf) => {
+      setDeep((dratf) => {
         if (dratf.contact.contactList) {
           dratf.contact.contactList[index].phone = rawValue;
         }
