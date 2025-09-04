@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 
+import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Input from '@/components/shared/Input';
 import type { Account } from '@/types/wedding';
@@ -30,10 +31,12 @@ const AccountGroup = ({
     <div css={groupHeaderStyle}>
       <span css={groupTitleStyle}>{title}</span>
       <div css={groupActionsStyle}>
-        <label css={expandLabelStyle}>
-          <input checked={isExpand} type="checkbox" onChange={onToggleExpand} />
-          펼치기
-        </label>
+        <BaseCheckBoxInput
+          checkboxLabel="펼치기"
+          checked={isExpand}
+          onChange={onToggleExpand}
+        />
+
         <button css={addButtonStyle} onClick={onAdd}>
           ＋
         </button>
@@ -82,14 +85,11 @@ const AccountGroup = ({
           </Input>
         )}
 
-        <label css={kakaopayLabelStyle}>
-          <input
-            checked={acc.isKakaopay ?? false}
-            type="checkbox"
-            onChange={handleChange(i, 'isKakaopay')}
-          />
-          카카오페이 사용
-        </label>
+        <BaseCheckBoxInput
+          checkboxLabel="카카오페이 사용"
+          checked={acc.isKakaopay ?? false}
+          onChange={handleChange(i, 'isKakaopay')}
+        />
       </div>
     ))}
   </div>
@@ -116,20 +116,6 @@ const groupActionsStyle = css`
   display: flex;
   align-items: center;
   gap: 0.75rem;
-`;
-
-const expandLabelStyle = css`
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.8rem;
-  color: var(--gray11);
-
-  input[type='checkbox'] {
-    width: 0.87rem;
-    height: 0.87rem;
-    cursor: pointer;
-  }
 `;
 
 const addButtonStyle = css`
@@ -171,21 +157,6 @@ const removeButtonStyle = css`
 
   &:hover {
     color: var(--red11);
-  }
-`;
-
-const kakaopayLabelStyle = css`
-  display: flex;
-  align-items: center;
-  gap: 0.37rem;
-  margin-top: 0.5rem;
-  font-size: 0.8rem;
-  color: var(--gray11);
-
-  input[type='checkbox'] {
-    width: 0.87rem;
-    height: 0.87rem;
-    cursor: pointer;
   }
 `;
 
