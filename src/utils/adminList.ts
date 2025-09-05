@@ -33,9 +33,4 @@ export const adminList: AdminList[] = [
     value: 'gallery',
     component: GalleryAdmin,
   },
-    {
-    title: '텍스트 에디터 테스트',
-    value: 'editor',
-    component: TextEditorTest,
-  },
 ];
