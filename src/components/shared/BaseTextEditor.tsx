@@ -1,6 +1,5 @@
 import 'react-quill-new/dist/quill.snow.css';
 
-import React from 'react';
 import ReactQuill from 'react-quill-new';
 
 type BaseTextEditorProps = {
@@ -14,14 +13,13 @@ const BaseTextEditor = ({
   value,
   onChange,
   placeholder,
-  height, 
-}: BaseTextEditorProps) => 
-{
+  height,
+}: BaseTextEditorProps) => {
   const modules = {
     toolbar: [
       ['bold', 'italic', 'underline'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
       [{ color: [] }, { background: [] }],
+      [{ align: [] }],
       ['clean'],
     ],
   };
