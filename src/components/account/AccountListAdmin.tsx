@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { toast, Toaster } from 'sonner';
 
@@ -8,9 +7,10 @@ import BaseTextInput from '@/components/shared/BaseTextInput';
 import Input from '@/components/shared/Input';
 import Line from '@/components/shared/Line';
 import useCurrentUser from '@/hooks/useCurrentUser';
+import useWeddingInfo from '@/hooks/useWeddingInfo';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { Account, AccountInfo, WeddingInfo } from '@/types/wedding';
-import { getShare, getUserShareId, saveUserShare } from '@/utils/shares';
+import type { Account, AccountInfo } from '@/types/wedding';
+import { saveUserShare } from '@/utils/shares';
 import { isValid } from '@/utils/validate';
 
 const createEmptyAccount = (): Account => ({
@@ -25,48 +25,18 @@ const AccountListAdmin = () => {
   const { user, uid, isLoading } = useCurrentUser();
   const navigate = useNavigate();
 
-  const setDeep = useWeddingStore((s) => s.setDeep);
-  const setField = useWeddingStore((s) => s.setField);
-  const values = useWeddingStore((s) => s.values);
-  const account = useWeddingStore((s) => s.values.account);
+  const setDeep = useWeddingStore((state) => state.setDeep);
+  const setField = useWeddingStore((state) => state.setField);
+  const values = useWeddingStore((state) => state.values);
+
+  const account = useWeddingStore((state) => state.values.account);
   const groomSideAccounts = useWeddingStore(
-    (s) => s.values.account.groomSideAccounts,
+    (state) => state.values.account.groomSideAccounts,
   );
   const brideSideAccounts = useWeddingStore(
-    (s) => s.values.account.brideSideAccounts,
+    (state) => state.values.account.brideSideAccounts,
   );
-
-  useEffect(() => {
-    if (!uid) return;
-
-    (async () => {
-      try {
-        const id = await getUserShareId(uid);
-        if (!id) return;
-
-        const doc = await getShare<WeddingInfo>(id);
-        if (doc?.data) {
-          setDeep((draft) => {
-            Object.assign(draft, doc.data);
-          });
-        }
-      } catch (err) {
-        console.error('초기 데이터 불러오기 실패:', err);
-      }
-    })();
-  }, [uid, setDeep]);
-
-  useEffect(() => {
-    setDeep((draft) => {
-      const ensureOne = (accounts?: { accounts: Account[] }) => {
-        if (accounts && accounts.accounts.length === 0) {
-          accounts.accounts.push(createEmptyAccount());
-        }
-      };
-      ensureOne(draft.account.groomSideAccounts);
-      ensureOne(draft.account.brideSideAccounts);
-    });
-  }, [setDeep]);
+  useWeddingInfo(uid, setDeep);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isValid(e.target.value, 'kor')) {

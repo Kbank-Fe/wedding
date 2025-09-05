@@ -16,12 +16,28 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     subtitle: '',
     groomSideAccounts: {
       title: '신랑측',
-      accounts: [],
+      accounts: [
+        {
+          bankName: '',
+          accountNumber: '',
+          accountHolder: '',
+          isKakaopay: false,
+          kakaopayUrl: '',
+        },
+      ],
       isExpand: false,
     },
     brideSideAccounts: {
       title: '신부측',
-      accounts: [],
+      accounts: [
+        {
+          bankName: '',
+          accountNumber: '',
+          accountHolder: '',
+          isKakaopay: false,
+          kakaopayUrl: '',
+        },
+      ],
       isExpand: false,
     },
   },
