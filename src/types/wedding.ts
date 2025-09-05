@@ -8,16 +8,19 @@ type TransportItem = {
 };
 
 type DateInfo = {
-  year: string;
-  month: string;
-  day: string;
-  hour: string;
-  min?: string;
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  min: number;
 };
 
+type Contact = 'Groom' | 'Bride';
+
 type ContactItem = {
+  type: Contact;
+  part: string;
   phone: string;
-  type: string;
 };
 
 type ContactList = {
@@ -45,6 +48,16 @@ export type Account = {
   kakaopayUrl?: string;
 };
 
+type Gallery = {
+  localImageList: File[];
+  savedImageList: SavedImage[];
+};
+
+export type SavedImage = {
+  url: string;
+  name: string;
+};
+
 export type Intro = {
   title: string;
   content: string;
@@ -70,4 +83,5 @@ export type WeddingInfo = {
   account: AccountList;
   intro: Intro;
   transport: TransportList;
+  gallery: Gallery;
 };

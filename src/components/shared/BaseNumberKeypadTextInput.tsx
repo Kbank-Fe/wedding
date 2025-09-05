@@ -1,52 +1,54 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-type BaseNumberKeypadTextInputProps = {
-  onBlur: (value: string) => void;
+import { formatPhone } from '@/utils/format';
+
+type BaseNumberKeypadTextInputProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'onChange'
+> & {
+  value: string; // 부모에서 내려오는 raw 값 (blur 이후 반영)
+  onBlurValue: (value: string) => void; // blur 될 때 부모에게 raw 값 올려줌
   placeholder?: string;
 };
 
 const BaseNumberKeypadTextInput = ({
-  onBlur,
+  value,
+  onBlurValue,
   placeholder,
   ...rest
 }: BaseNumberKeypadTextInputProps) => {
-  const [displayValue, setDisplayValue] = useState('');
+  const [displayValue, setDisplayValue] = useState(formatPhone(value ?? ''));
 
-  function formatPhone(value: string) {
-    const numbers = value.replace(/\D/g, ''); // 숫자만 추출
+  // 부모 value가 바뀌면 동기화 (blur 이후 store 값 반영 시)
+  useEffect(() => {
+    setDisplayValue(formatPhone(value ?? ''));
+  }, [value]);
 
-    // 010-1234-5678 형태 포맷
-    if (numbers.length <= 3) return numbers;
-    if (numbers.length <= 7)
-      return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
-    return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`;
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/\D/g, '');
-    setDisplayValue(formatPhone(rawValue)); // dash 포함 표시
+    setDisplayValue(formatPhone(rawValue)); // 로컬에서는 포맷된 값 유지
   };
 
   const handleBlur = () => {
-    const rawValue = displayValue.replace(/\D/g, '');
-    onBlur(rawValue); // 부모에 dash 없는 값 전달
+    const rawValue = displayValue.replace(/\D/g, ''); // 숫자만 추출
+    onBlurValue(rawValue); // blur 될 때만 부모에게 반영
   };
 
   return (
     <input
-      autoComplete="off" // 브라우저 자동 완성 기능 off
-      autoCorrect="off" // 브라우저 (특히 IOS) 자동 교정 기능 off
+      autoComplete="off"
+      autoCorrect="off"
       css={baseNumberKeypadTextInputStyle}
-      inputMode="numeric" // 숫자 키패드 모드 활성화
-      maxLength={13} // 010-1234-5678 형태로 최대 13자
-      pattern="[0-9]*" // 숫자 입력 패턴
+      inputMode="numeric"
+      maxLength={13}
+      pattern="[0-9]*"
       placeholder={placeholder}
-      spellCheck="false" // 브라우저 스펠링 검사 기능 off
+      spellCheck="false"
       type="text"
       value={displayValue}
       onBlur={handleBlur}
-      onChange={(e) => handleChange(e)}
+      onChange={handleChangeText}
       {...rest}
     />
   );

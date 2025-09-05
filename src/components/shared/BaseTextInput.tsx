@@ -1,27 +1,16 @@
 import { css } from '@emotion/react';
-import { type ComponentProps } from 'react';
 
-type TextInputProps = Omit<ComponentProps<'input'>, 'type'> & {
-  placeholder?: string;
-  maxLength?: number;
+type BaseTextInputProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'type'
+> & {
+  ref?: React.Ref<HTMLInputElement>;
 };
 
-const BaseTextInput = ({
-  placeholder,
-  maxLength,
-  ref,
-  ...rest
-}: TextInputProps) => {
+const BaseTextInput = ({ ref, ...rest }: BaseTextInputProps) => {
   return (
     <div css={wrapperStyle}>
-      <input
-        ref={ref}
-        css={inputStyle}
-        maxLength={maxLength}
-        placeholder={placeholder}
-        type="text"
-        {...rest}
-      />
+      <input ref={ref} css={inputStyle} type="text" {...rest} />
     </div>
   );
 };

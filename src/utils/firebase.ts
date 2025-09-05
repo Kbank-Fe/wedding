@@ -14,6 +14,7 @@ import {
   set,
   update,
 } from 'firebase/database';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -32,6 +33,7 @@ const getFirebaseApp = (): FirebaseApp => {
 const app = getFirebaseApp();
 export const auth: Auth = getAuth(app);
 export const db: Database = getDatabase(app);
+export const storage = getStorage(app);
 
 export type UserRow = {
   userId: string;

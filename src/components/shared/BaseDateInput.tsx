@@ -1,23 +1,41 @@
 import { css } from '@emotion/react';
-import { useRef } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 
-const BaseDateInput = ({ ...rest }) => {
-  const dateRef = useRef<HTMLInputElement>(null);
+type BaseDateInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-  const handleClick = () => {
-    dateRef.current?.showPicker(); // input click 시 달력 팝업 열기
-  };
+const BaseDateInput = forwardRef<HTMLInputElement, BaseDateInputProps>(
+  ({ ...rest }: BaseDateInputProps, ref) => {
+    // 자식 내부 input DOM 직접 제어
+    const dateRef = useRef<HTMLInputElement>(null);
 
-  return (
-    <input
-      ref={dateRef}
-      css={baseDateInputStyle}
-      type="date"
-      {...rest}
-      onClick={handleClick}
-    />
-  );
-};
+    // 부모 ref를 자식의 input DOM에 연결
+    useImperativeHandle(ref, () => dateRef.current!, []);
+
+    // input click 시 달력 팝업 열기 클릭 이벤트 바인딩
+    const handleClick = () => {
+      dateRef.current?.showPicker();
+    };
+
+    // 현재 날짜(KST) 가져오기
+    const todayKST = new Date(Date.now() + 9 * 60 * 60 * 1000)
+      .toISOString()
+      .split('T')[0];
+
+    return (
+      <input
+        ref={dateRef}
+        css={baseDateInputStyle}
+        type="date"
+        {...rest}
+        defaultValue={todayKST}
+        onClick={handleClick}
+      />
+    );
+  },
+);
+
+// forwardRef 적용 시 displayName 명시 필수
+BaseDateInput.displayName = 'BaseDateInput';
 
 const baseDateInputStyle = css`
   width: 100%;
