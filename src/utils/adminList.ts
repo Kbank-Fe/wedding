@@ -3,7 +3,6 @@ import type { FC } from 'react';
 import DateCalendarAdmin from '@/components/calendar/DateCalendarAdmin';
 import ContactAdmin from '@/components/contact/ContactAdmin';
 import GalleryAdmin from '@/components/gallery/GalleryAdmin';
-import TextEditorTest from '@/components/shared/TextEditorTest';
 import TransportAdmin from '@/components/transport/TransportAdmin';
 
 type AdminList = {
