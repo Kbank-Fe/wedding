@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router';
 import { Toaster } from 'sonner';
 
 import { Accordion } from '@/components/account/Accordion';
@@ -26,8 +25,6 @@ const AccountList = () => {
   const brideSideisExpand = brideSide?.isExpand ?? false;
   const groomSideAccounts = groomSide?.accounts ?? [];
   const brideSideAccounts = brideSide?.accounts ?? [];
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -81,7 +78,6 @@ const AccountList = () => {
         </Accordion>
       </motion.div>
       <Toaster duration={2000} position="top-center" />
-      <button onClick={() => navigate('/admin')}>어드민으로</button>
     </>
   );
 };

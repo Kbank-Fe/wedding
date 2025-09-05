@@ -1,16 +1,10 @@
-import { useNavigate } from 'react-router';
-import { toast, Toaster } from 'sonner';
-
 import AccountGroup from '@/components/account/AccoutGroup';
 import BaseTextArea from '@/components/shared/BaseTextArea';
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Input from '@/components/shared/Input';
 import Line from '@/components/shared/Line';
-import useCurrentUserTemp from '@/hooks/useCurrentUserTemp';
-import useWeddingInfo from '@/hooks/useWeddingInfo';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { Account, AccountInfo } from '@/types/wedding';
-import { saveUserShare } from '@/utils/shares';
 import { isValid } from '@/utils/validate';
 
 const createEmptyAccount = (): Account => ({
@@ -22,12 +16,8 @@ const createEmptyAccount = (): Account => ({
 });
 
 const AccountListAdmin = () => {
-  const { user, uid, isLoading } = useCurrentUserTemp();
-  const navigate = useNavigate();
-
   const setDeep = useWeddingStore((state) => state.setDeep);
   const setField = useWeddingStore((state) => state.setField);
-  const values = useWeddingStore((state) => state.values);
 
   const account = useWeddingStore((state) => state.values.account);
   const groomSideAccounts = useWeddingStore(
@@ -36,7 +26,6 @@ const AccountListAdmin = () => {
   const brideSideAccounts = useWeddingStore(
     (state) => state.values.account.brideSideAccounts,
   );
-  useWeddingInfo(uid, setDeep);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isValid(e.target.value, 'kor')) {
@@ -125,27 +114,8 @@ const AccountListAdmin = () => {
       });
     };
 
-  const handleSave = async () => {
-    if (!user) return;
-
-    try {
-      await saveUserShare(uid!, values);
-      toast.success('데이터를 저장했어요!');
-    } catch (err) {
-      console.error(err);
-      toast.error('데이터 저장을 실패했어요.');
-    }
-  };
-
-  if (isLoading) return <p>로딩 중…</p>;
-  if (!user) return <p>로그인이 필요합니다.</p>;
-
   return (
     <>
-      <button onClick={() => navigate('/')}>홈으로</button>
-      <br />
-      <button onClick={handleSave}>저장</button>
-
       <Input labelText="제목">
         <BaseTextInput
           maxLength={20}
@@ -190,8 +160,6 @@ const AccountListAdmin = () => {
           </div>
         );
       })}
-
-      <Toaster duration={2000} position="top-center" />
     </>
   );
 };
