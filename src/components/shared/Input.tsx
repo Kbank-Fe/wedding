@@ -5,13 +5,15 @@ import { useViewportStore } from '@/stores/useViewportStore';
 
 type InputProps = {
   labelText?: string;
+  ariaLabel?: string;
   children: ReactElement; // input, select, textarea 등 하나의 ReactElement
 };
 
-const Input = ({ labelText, children }: InputProps) => {
+const Input = ({ labelText, ariaLabel, children }: InputProps) => {
   const isMobile = useViewportStore((state) => state.isMobile);
 
   const generatedId = useId();
+  const inputProps = !labelText ? { 'aria-label': ariaLabel } : {};
 
   return (
     <div css={wrapperStyle(isMobile)}>
@@ -23,7 +25,7 @@ const Input = ({ labelText, children }: InputProps) => {
       <div css={childrenStyle}>
         {React.cloneElement(
           children as ReactElement<React.HTMLAttributes<HTMLElement>>,
-          { id: generatedId },
+          { id: generatedId, ...inputProps },
         )}
       </div>
     </div>

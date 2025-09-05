@@ -2,14 +2,21 @@ import type { WeddingInfo } from '@/types/wedding';
 
 export const WEDDING_INITIAL_INFO: WeddingInfo = {
   date: {
-    year: '',
-    month: '',
-    day: '',
-    hour: '',
-    min: '',
+    year: 0,
+    month: 0,
+    day: 0,
+    hour: 0,
+    min: 0,
   },
   contact: {
-    contactList: [],
+    contactList: [
+      { type: 'Groom', part: '신랑', phone: '' },
+      { type: 'Groom', part: '아버지', phone: '' },
+      { type: 'Groom', part: '어머니', phone: '' },
+      { type: 'Bride', part: '신부', phone: '' },
+      { type: 'Bride', part: '아버지', phone: '' },
+      { type: 'Bride', part: '어머니', phone: '' },
+    ],
   },
   account: {
     title: '',
