@@ -24,10 +24,10 @@ const layoutStyle = css`
 const wrapperStyle = css`
   width: 100%;
   height: 100vh;
-  overflow-y: scroll;
+  /* overflow-y: scroll;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch; */
 `;
 
 export default PageLayout;

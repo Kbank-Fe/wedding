@@ -1,10 +1,43 @@
+import { css } from '@emotion/react';
+import { useNavigate } from 'react-router';
+import { toast, Toaster } from 'sonner';
+
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
+import { useCurrentUser } from '@/hooks/useCurrentUser';
+import useWeddingInfo from '@/hooks/useWeddingInfo';
+import { useWeddingStore } from '@/stores/useWeddingStore';
 import { adminList } from '@/utils/adminList';
+import { getUserShareId, saveUserShare } from '@/utils/shares';
 
 const AdminPage = () => {
+  const navigate = useNavigate();
+  const { user, uid, isLoading } = useCurrentUser();
+
+  const values = useWeddingStore((state) => state.values);
+  const setDeep = useWeddingStore((state) => state.setDeep);
+  useWeddingInfo(uid, setDeep);
+
+  const handleSave = async () => {
+    if (!user) return;
+    try {
+      await saveUserShare(uid!, values);
+      toast.success('데이터를 저장했어요!');
+
+      const id = await getUserShareId(uid ?? '');
+      setTimeout(() => {
+        navigate(`/${id}`);
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+      toast.error('데이터 저장을 실패했어요.');
+    }
+  };
+
+  if (isLoading) return <p>로딩 중…</p>;
+
   return (
     <PageLayout>
       <Section>
@@ -17,9 +50,36 @@ const AdminPage = () => {
             ))}
           </Accordion>
         )}
+        <button css={buttonStyle} onClick={handleSave}>
+          데이터 저장
+        </button>
       </Section>
+      <Toaster duration={2000} position="top-center" />
     </PageLayout>
   );
 };
 
+const buttonStyle = css`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid var(--gray3);
+  background: var(--gray2);
+  color: var(--gray12);
+  cursor: pointer;
+  margin-top: 1rem;
+
+  &:hover {
+    background: var(--gray3);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;
 export default AdminPage;
