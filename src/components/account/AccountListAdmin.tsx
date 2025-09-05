@@ -6,7 +6,7 @@ import BaseTextArea from '@/components/shared/BaseTextArea';
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Input from '@/components/shared/Input';
 import Line from '@/components/shared/Line';
-import useCurrentUser from '@/hooks/useCurrentUser';
+import useCurrentUserTemp from '@/hooks/useCurrentUserTemp';
 import useWeddingInfo from '@/hooks/useWeddingInfo';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { Account, AccountInfo } from '@/types/wedding';
@@ -22,7 +22,7 @@ const createEmptyAccount = (): Account => ({
 });
 
 const AccountListAdmin = () => {
-  const { user, uid, isLoading } = useCurrentUser();
+  const { user, uid, isLoading } = useCurrentUserTemp();
   const navigate = useNavigate();
 
   const setDeep = useWeddingStore((state) => state.setDeep);

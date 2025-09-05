@@ -11,7 +11,7 @@ const fetchUser = (): Promise<User | null> => {
     });
   });
 };
-const useCurrentUser = () => {
+const useCurrentUserTemp = () => {
   const { data, error, isLoading, mutate } = useSWR<User | null>(
     'currentUser',
     fetchUser,
@@ -30,4 +30,4 @@ const useCurrentUser = () => {
   };
 };
 
-export default useCurrentUser;
+export default useCurrentUserTemp;
