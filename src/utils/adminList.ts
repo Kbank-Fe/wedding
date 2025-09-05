@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 
+import AccountListAdmin from '@/components/account/AccountListAdmin';
 import DateCalendarAdmin from '@/components/calendar/DateCalendarAdmin';
 import ContactAdmin from '@/components/contact/ContactAdmin';
 import GalleryAdmin from '@/components/gallery/GalleryAdmin';
@@ -31,5 +32,10 @@ export const adminList: AdminList[] = [
     title: '갤러리',
     value: 'gallery',
     component: GalleryAdmin,
+  },
+  {
+    title: '계좌정보',
+    value: 'account',
+    component: AccountListAdmin,
   },
 ];
