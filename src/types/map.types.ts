@@ -29,5 +29,3 @@ export type KakaoWindow = {
     };
   };
 };
-
-export type WeddingMapProps = { address?: string };
