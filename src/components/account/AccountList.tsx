@@ -25,6 +25,14 @@ const AccountList = () => {
   const brideSideisExpand = brideSide?.isExpand ?? false;
   const groomSideAccounts = groomSide?.accounts ?? [];
   const brideSideAccounts = brideSide?.accounts ?? [];
+  const groomSideDisplay =
+    groomSideAccounts[0].accountNumber &&
+    groomSideAccounts[0].accountHolder &&
+    groomSideAccounts[0].bankName;
+  const brideSideDisplay =
+    brideSideAccounts[0].accountNumber &&
+    brideSideAccounts[0].accountHolder &&
+    brideSideAccounts[0].bankName;
 
   return (
     <>
@@ -44,37 +52,42 @@ const AccountList = () => {
             brideSideisExpand ? 'brideSide' : '',
           ].filter(Boolean)}
         >
-          <AccordionItem title={groomSideTitle} value="groomSide">
-            <motion.div
-              animate="visible"
-              css={accountListStyle}
-              initial="hidden"
-              variants={listVariants}
-            >
-              {groomSideAccounts.length > 0 &&
-                groomSideAccounts.map((account, index) => (
-                  <motion.div key={index} variants={itemVariants}>
-                    <Account {...account} />
-                  </motion.div>
-                ))}
-            </motion.div>
-          </AccordionItem>
-          <AccordionItem title={brideSideTitle} value="brideSide">
-            <motion.div
-              animate="visible"
-              css={accountListStyle}
-              initial="hidden"
-              variants={listVariants}
-              whileInView="visible"
-            >
-              {brideSideAccounts.length > 0 &&
-                brideSideAccounts.map((account, index) => (
-                  <motion.div key={index} variants={itemVariants}>
-                    <Account {...account} />
-                  </motion.div>
-                ))}
-            </motion.div>
-          </AccordionItem>
+          {groomSideDisplay && (
+            <AccordionItem title={groomSideTitle} value="groomSide">
+              <motion.div
+                animate="visible"
+                css={accountListStyle}
+                initial="hidden"
+                variants={listVariants}
+              >
+                {groomSideAccounts.length > 0 &&
+                  groomSideAccounts.map((account, index) => (
+                    <motion.div key={index} variants={itemVariants}>
+                      <Account {...account} />
+                    </motion.div>
+                  ))}
+              </motion.div>
+            </AccordionItem>
+          )}
+
+          {brideSideDisplay && (
+            <AccordionItem title={brideSideTitle} value="brideSide">
+              <motion.div
+                animate="visible"
+                css={accountListStyle}
+                initial="hidden"
+                variants={listVariants}
+                whileInView="visible"
+              >
+                {brideSideAccounts.length > 0 &&
+                  brideSideAccounts.map((account, index) => (
+                    <motion.div key={index} variants={itemVariants}>
+                      <Account {...account} />
+                    </motion.div>
+                  ))}
+              </motion.div>
+            </AccordionItem>
+          )}
         </Accordion>
       </motion.div>
       <Toaster duration={2000} position="top-center" />
