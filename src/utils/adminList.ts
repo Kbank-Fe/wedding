@@ -4,6 +4,7 @@ import AccountListAdmin from '@/components/account/AccountListAdmin';
 import DateCalendarAdmin from '@/components/calendar/DateCalendarAdmin';
 import ContactAdmin from '@/components/contact/ContactAdmin';
 import GalleryAdmin from '@/components/gallery/GalleryAdmin';
+import WeddingMapAdmin from '@/components/map/WeddingMapAdmin';
 import TransportAdmin from '@/components/transport/TransportAdmin';
 
 type AdminList = {
@@ -37,5 +38,10 @@ export const adminList: AdminList[] = [
     title: '계좌정보',
     value: 'account',
     component: AccountListAdmin,
+  },
+  {
+    title: '예식장소',
+    value: 'Location',
+    component: WeddingMapAdmin,
   },
 ];
