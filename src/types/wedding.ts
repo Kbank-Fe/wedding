@@ -77,6 +77,14 @@ export type UserBasicInfo = {
   femaleMotherName?: string;
 };
 
+type WeddingMap = {
+  title: string;
+  venueName: string;
+  venueDetail: string;
+  address: string;
+  isMapVisible: boolean;
+};
+
 export type WeddingInfo = {
   date: DateInfo;
   contact: ContactList;
@@ -84,4 +92,5 @@ export type WeddingInfo = {
   intro: Intro;
   transport: TransportList;
   gallery: Gallery;
+  map: WeddingMap;
 };
