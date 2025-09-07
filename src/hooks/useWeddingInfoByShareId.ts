@@ -5,7 +5,6 @@ import type { WeddingInfo } from '@/types/wedding';
 import { getShare } from '@/utils/shares';
 import { isValidNanoId } from '@/utils/validateNanoId';
 
-// fetcher
 const fetchWeddingInfoByShareId = async (
   shareId: string,
 ): Promise<WeddingInfo | null> => {
