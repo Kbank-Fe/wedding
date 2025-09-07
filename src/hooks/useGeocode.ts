@@ -8,7 +8,7 @@ import type {
   LatLng,
 } from '@/types/map.types';
 
-export function useGeocode(address: string, loading: boolean) {
+export const useGeocode = (address: string, loading: boolean) => {
   const [position, setPosition] = useState<LatLng | null>(null);
   const geocoderRef = useRef<Geocoder | null>(null);
 
@@ -38,4 +38,4 @@ export function useGeocode(address: string, loading: boolean) {
   }, [address, loading]);
 
   return position;
-}
+};
