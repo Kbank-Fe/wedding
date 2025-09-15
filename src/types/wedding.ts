@@ -60,7 +60,14 @@ export type Intro = {
   content: string;
   showNames: boolean;
   alignment: TextAlignment;
-  basicInfo: UserBasicInfo[];
+  basicInfo: [{
+      maleName: '홍길동',
+      maleFatherName: '홍아버지',
+      maleMotherName: '홍어머니',
+      femaleName: '김영희',
+      femaleFatherName: '김아버지',
+      femaleMotherName: '김어머니',
+    }],
 };
 
 export type TextAlignment = 'left' | 'center' | 'right';
@@ -75,6 +82,7 @@ export type UserBasicInfo = {
 };
 
 export type WeddingInfo = {
+  draft: any;
   date: DateInfo;
   contact: ContactList;
   account: AccountList;

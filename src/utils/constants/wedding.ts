@@ -30,7 +30,16 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     content: '',
     showNames: true,
     alignment: 'center',
-    basicInfo: [],
+    basicInfo: [
+      {
+        maleName: '홍길동',
+        maleFatherName: '홍아버지',
+        maleMotherName: '홍어머니',
+        femaleName: '김영희',
+        femaleFatherName: '김아버지',
+        femaleMotherName: '김어머니',
+      },
+    ],
   },
   transport: {
     transportList: Array.from({ length: 4 }, () => ({
