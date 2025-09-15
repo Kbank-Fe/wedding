@@ -4,6 +4,7 @@ import { toast, Toaster } from 'sonner';
 
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
@@ -36,7 +37,7 @@ const AdminPage = () => {
     }
   };
 
-  if (isLoading) return <p>로딩 중…</p>;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <PageLayout>
