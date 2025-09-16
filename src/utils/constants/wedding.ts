@@ -32,12 +32,12 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     alignment: 'center',
     basicInfo: [
       {
-        maleName: '홍길동',
-        maleFatherName: '홍아버지',
-        maleMotherName: '홍어머니',
-        femaleName: '김영희',
-        femaleFatherName: '김아버지',
-        femaleMotherName: '김어머니',
+        maleName: '신랑 이름',
+        maleFatherName: '신랑 아버지',
+        maleMotherName: '신랑 어머니',
+        femaleName: '신부 이름',
+        femaleFatherName: '신부 아버지',
+        femaleMotherName: '신부 어머니',
       },
     ],
   },
