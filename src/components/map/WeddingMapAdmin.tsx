@@ -8,14 +8,15 @@ import Input from '@/components/shared/Input';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { isValid } from '@/utils/validate';
 
+type TextField = 'title' | 'venueName' | 'venueDetail';
+
 const WeddingMapAdmin = () => {
   const setField = useWeddingStore((state) => state.setField);
   const map = useWeddingStore((state) => state.values.map);
 
   const handleChangeText =
-    (field: 'title' | 'venueName' | 'venueDetail') =>
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target;
+    (field: TextField) => (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.currentTarget;
       if (!isValid(value, 'txt')) {
         e.preventDefault();
         return;
@@ -28,7 +29,7 @@ const WeddingMapAdmin = () => {
   };
 
   const handleChangeCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
-    setField('map', 'isMapVisible', e.target.checked);
+    setField('map', 'isMapVisible', e.currentTarget.checked);
   };
 
   return (

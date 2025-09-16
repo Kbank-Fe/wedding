@@ -7,6 +7,7 @@ import { AccordionItem } from '@/components/account/AccordionItem';
 import Account from '@/components/account/Account';
 import Header from '@/components/shared/Header';
 import { useWeddingStore } from '@/stores/useWeddingStore';
+import type { Account as AccountType } from '@/types/wedding';
 
 const AccountList = () => {
   const accountInfo = useWeddingStore((state) => state.values.account);
@@ -18,17 +19,13 @@ const AccountList = () => {
     brideSideAccounts: brideSide = { title: '', isExpand: false, accounts: [] },
   } = accountInfo;
 
-  const hasValidAccount = (accounts: typeof groomSide.accounts) =>
+  const hasValidAccount = (accounts: AccountType[]) =>
     accounts.length > 0 &&
     accounts[0].accountNumber &&
     accounts[0].accountHolder &&
     accounts[0].bankName;
 
-  const renderSide = (
-    value: string,
-    title: string,
-    accounts: typeof groomSide.accounts,
-  ) =>
+  const renderSide = (value: string, title: string, accounts: AccountType[]) =>
     hasValidAccount(accounts) && (
       <AccordionItem title={title} value={value}>
         <motion.div
