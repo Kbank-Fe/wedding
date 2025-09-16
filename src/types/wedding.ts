@@ -60,7 +60,7 @@ export type Intro = {
   content: string;
   showNames: boolean;
   alignment: TextAlignment;
-  basicInfo: [];
+  basicInfo: UserBasicInfo[];
 };
 
 export type TextAlignment = 'left' | 'center' | 'right';
