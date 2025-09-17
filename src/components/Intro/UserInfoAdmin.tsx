@@ -24,7 +24,6 @@ const UserInfoAdmin = () => {
     (key: keyof UserBasicInfo) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setDeep((draft) => {
-        // 기본값 세팅은 store에서만!
         draft.intro.basicInfo[0][key] = event.currentTarget.value;
       });
     };
