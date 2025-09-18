@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
 import { toast, Toaster } from 'sonner';
 
 import { Accordion } from '@/components/account/Accordion';
@@ -8,10 +8,10 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
-import useWeddingInfo from '@/hooks/useWeddingInfo';
+import { useWeddingInfoByUid } from '@/hooks/useWeddingInfoByUid';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { adminList } from '@/utils/adminList';
-import { getUserShareId, saveUserShare } from '@/utils/shares';
+import { saveUserShare } from '@/utils/shares';
 
 const AdminPage = () => {
   const navigate = useNavigate();
@@ -19,20 +19,22 @@ const AdminPage = () => {
 
   const values = useWeddingStore((state) => state.values);
   const setDeep = useWeddingStore((state) => state.setDeep);
-  useWeddingInfo(uid, setDeep);
+  const { notFound } = useWeddingInfoByUid(uid, setDeep);
+
+  if (notFound) {
+    return <Navigate replace to="/404" />;
+  }
 
   const handleSave = async () => {
     if (!user) return;
     try {
-      await saveUserShare(uid!, values);
+      const shareId = await saveUserShare(uid!, values);
       toast.success('데이터를 저장했어요!');
 
-      const id = await getUserShareId(uid ?? '');
       setTimeout(() => {
-        navigate(`/${id}`);
+        navigate(`/${shareId}`);
       }, 2000);
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error('데이터 저장을 실패했어요.');
     }
   };
