@@ -7,52 +7,55 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ImageGallery from 'react-image-gallery';
 import PhotoAlbum from 'react-photo-album';
 
+import { usePhotoList } from '@/hooks/usePhotoList';
 import { useViewportStore } from '@/stores/useViewportStore';
-
-const photoList = [
-  { src: '/images/image1.png', width: 600, height: 800 },
-  { src: '/images/image2.png', width: 600, height: 800 },
-  { src: '/images/image3.png', width: 600, height: 800 },
-  { src: '/images/image4.png', width: 600, height: 800 },
-  { src: '/images/image5.png', width: 600, height: 800 },
-  { src: '/images/image6.png', width: 600, height: 800 },
-  { src: '/images/image7.png', width: 600, height: 800 },
-  { src: '/images/image8.png', width: 600, height: 800 },
-  { src: '/images/image9.png', width: 600, height: 800 },
-  { src: '/images/image10.png', width: 600, height: 800 },
-];
-
-type Photo = {
-  src: string;
-  width: number;
-  height: number;
-};
+import { useWeddingStore } from '@/stores/useWeddingStore';
 
 type ButtonDirection = 'left' | 'right';
 
-const handleSetGalleryItems = (photos: Photo[]) =>
-  photos.map(({ src }) => ({
-    original: src,
-    thumbnail: src,
-  }));
+const MAX_HEIGHT = 600;
 
 const GalleryView = () => {
   const [open, setOpen] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
   const isMobile = useViewportStore((state) => state.isMobile);
 
+  const [showMoreButton, setShowMoreButton] = useState(false);
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const { localImageList } = useWeddingStore((state) => state.values.gallery);
+  const { photoList, handleSetGalleryItems } = usePhotoList(
+    localImageList,
+    'actual',
+  );
+
   const handleClickAlbum = ({ index }: { index: number }) => {
     setStartIndex(index);
     setOpen(true);
   };
 
+  const handleClickMore = () => {
+    setStartIndex(0);
+    setOpen(true);
+  };
+
+  useEffect(() => {
+    if (wrapperRef.current) {
+      const el = wrapperRef.current;
+      setShowMoreButton(el.scrollHeight > el.clientHeight);
+    }
+  }, [photoList]);
+
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <motion.div
+        ref={wrapperRef}
+        css={wrapperStyle}
         initial={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
         viewport={{ once: true, amount: 0.2 }}
@@ -65,7 +68,13 @@ const GalleryView = () => {
           spacing={10}
           onClick={handleClickAlbum}
         />
+        {showMoreButton && <div css={fadeOverlayStyle} />}
       </motion.div>
+      {showMoreButton && (
+        <button css={moreButtonStyle} onClick={handleClickMore}>
+          more
+        </button>
+      )}
       <AnimatePresence>
         {open && (
           <Dialog.Portal>
@@ -126,6 +135,38 @@ const GalleryView = () => {
     </Dialog.Root>
   );
 };
+
+const wrapperStyle = css`
+  position: relative;
+  max-height: ${`${MAX_HEIGHT}px`};
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+`;
+
+const fadeOverlayStyle = css`
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  pointer-events: none;
+`;
+
+const moreButtonStyle = css`
+  margin-top: 1rem;
+  width: 100%;
+  text-align: center;
+  padding: 8px 0;
+  border-radius: 6px;
+  color: var(--gray8);
+  cursor: pointer;
+`;
 
 const overlayStyle = css`
   position: fixed;
