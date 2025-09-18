@@ -77,6 +77,15 @@ export type UserBasicInfo = {
   femaleMotherName?: string;
 };
 
+export type ShowCheckbox = {
+  intro: boolean;
+  contact: boolean;
+  calendar: boolean;
+  account: boolean;
+  transport: boolean;
+  gallery: boolean;
+};
+
 export type WeddingInfo = {
   date: DateInfo;
   contact: ContactList;
@@ -84,4 +93,5 @@ export type WeddingInfo = {
   intro: Intro;
   transport: TransportList;
   gallery: Gallery;
+  showCheckbox: ShowCheckbox;
 };
