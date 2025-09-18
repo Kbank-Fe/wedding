@@ -124,7 +124,6 @@ const fsCss = css`
 const rowCss = css`
   display: flex;
   gap: 8px;
-  align-items: top;
   flex-wrap: wrap;
 `;
 
