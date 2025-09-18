@@ -37,52 +37,40 @@ export const openKakaoPopup = (): Promise<{ code: string; state: string }> => {
   );
 
   return new Promise<{ code: string; state: string }>((resolve, reject) => {
-    const expectedState = state;
     const allowedOrigin = location.origin;
 
-    let timer: number | null = null;
-    let onMsg: (ev: MessageEvent) => void = () => {};
-
-    const cleanup = (): void => {
-      if (timer !== null) {
-        window.clearInterval(timer);
-        timer = null;
-      }
+    const cleanup = () => {
       window.removeEventListener('message', onMsg);
-      try {
-        popup.close();
-      } catch {
-        console.error('popup close error');
-      }
+      if (!popup.closed) popup.close();
+      window.focus();
     };
 
-    onMsg = (ev: MessageEvent): void => {
+    const onMsg = (ev: MessageEvent) => {
       if (ev.origin !== allowedOrigin) return;
       const d = ev.data || {};
       if (d.type !== 'kakao_oauth_result') return;
 
-      const { code, state: gotState, error } = d;
-      if (error) {
-        cleanup();
-        reject(new Error(error));
-        return;
-      }
-      if (!code || gotState !== expectedState) {
-        cleanup();
-        reject(new Error('invalid_state_or_code'));
-        return;
-      }
       cleanup();
-      resolve({ code, state: gotState });
+
+      if (d.error) {
+        reject(new Error(d.error));
+      } else if (!d.code || d.state !== state) {
+        reject(new Error('invalid_state_or_code'));
+      } else {
+        resolve({ code: d.code, state: d.state });
+      }
     };
 
-    timer = window.setInterval(() => {
+    const checkClosed = () => {
       if (popup.closed) {
         cleanup();
         reject(new Error('사용자가 팝업을 닫았습니다.'));
+      } else {
+        setTimeout(checkClosed, 300);
       }
-    }, 300);
+    };
 
     window.addEventListener('message', onMsg);
+    checkClosed();
   });
 };
