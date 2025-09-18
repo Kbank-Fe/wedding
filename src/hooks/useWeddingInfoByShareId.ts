@@ -25,7 +25,7 @@ export const useWeddingInfoByShareId = (
 
   useEffect(() => {
     if (data && setDeep) {
-      setDeep(() => ({ ...data }));
+      setDeep(() => data);
     }
   }, [data, setDeep]);
 
