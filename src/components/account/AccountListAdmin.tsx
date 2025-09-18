@@ -1,7 +1,7 @@
 import AccountGroup from '@/components/account/AccoutGroup';
 import BaseTextArea from '@/components/shared/BaseTextArea';
 import BaseTextInput from '@/components/shared/BaseTextInput';
-import Input from '@/components/shared/Input';
+import Field from '@/components/shared/Field';
 import Line from '@/components/shared/Line';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { Account, AccountInfo } from '@/types/wedding';
@@ -116,20 +116,20 @@ const AccountListAdmin = () => {
 
   return (
     <>
-      <Input labelText="제목">
+      <Field label="제목">
         <BaseTextInput
           maxLength={20}
           value={account.title ?? ''}
           onChange={handleChangeInput}
         />
-      </Input>
-      <Input labelText="내용">
+      </Field>
+      <Field label="내용">
         <BaseTextArea
           maxLength={200}
           value={account.subtitle ?? ''}
           onChange={handleChangeTextAreaInput}
         />
-      </Input>
+      </Field>
 
       <Line />
 
@@ -140,13 +140,13 @@ const AccountListAdmin = () => {
 
         return (
           <div key={side}>
-            <Input labelText="그룹명">
+            <Field label="그룹명">
               <BaseTextInput
                 maxLength={15}
                 value={accounts?.title ?? ''}
                 onChange={handleChangeAccountInfo(side, 'title')}
               />
-            </Input>
+            </Field>
             <AccountGroup
               accounts={accounts?.accounts ?? []}
               handleChange={handleChangeAccount(side)}

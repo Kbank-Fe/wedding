@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import BaseTextInput from '@/components/shared/BaseTextInput';
-import Input from '@/components/shared/Input';
+import Field from '@/components/shared/Field';
 import type { Account } from '@/types/wedding';
 
 type AccountGroupProps = {
@@ -55,39 +55,39 @@ const AccountGroup = ({
           )}
         </div>
 
-        <Input labelText="은행명">
+        <Field label="은행명">
           <BaseTextInput
             maxLength={15}
             value={acc.bankName}
             onChange={handleChange(i, 'bankName', 'kor')}
           />
-        </Input>
+        </Field>
 
-        <Input labelText="계좌번호">
+        <Field label="계좌번호">
           <BaseTextInput
             maxLength={20}
             value={acc.accountNumber}
             onChange={handleChange(i, 'accountNumber', 'num')}
           />
-        </Input>
+        </Field>
 
-        <Input labelText="예금주">
+        <Field label="예금주">
           <BaseTextInput
             maxLength={10}
             value={acc.accountHolder}
             onChange={handleChange(i, 'accountHolder', 'kor')}
           />
-        </Input>
+        </Field>
 
         {acc.isKakaopay && (
-          <Input labelText="송금 링크">
+          <Field label="송금 링크">
             <BaseTextInput
               maxLength={50}
               placeholder="https://qr.kakaopay.com/..."
               value={acc.kakaopayUrl ?? ''}
               onChange={handleChange(i, 'kakaopayUrl', 'url')}
             />
-          </Input>
+          </Field>
         )}
 
         <BaseCheckBoxInput

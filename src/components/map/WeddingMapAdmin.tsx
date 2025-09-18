@@ -4,7 +4,6 @@ import AddressSearch from '@/components/map/AddressSearch';
 import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Field from '@/components/shared/Field';
-import Input from '@/components/shared/Input';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { isValid } from '@/utils/validate';
 
@@ -33,29 +32,29 @@ const WeddingMapAdmin = () => {
 
   return (
     <>
-      <Input labelText="제목">
+      <Field label="제목">
         <BaseTextInput
           maxLength={20}
           value={map.title ?? ''}
           onChange={handleChangeText('title')}
         />
-      </Input>
+      </Field>
 
-      <Input labelText="예식장명">
+      <Field label="예식장명">
         <BaseTextInput
           maxLength={20}
           value={map.venueName ?? ''}
           onChange={handleChangeText('venueName')}
         />
-      </Input>
+      </Field>
 
-      <Input labelText="층과 홀">
+      <Field label="층과 홀">
         <BaseTextInput
           maxLength={20}
           value={map.venueDetail ?? ''}
           onChange={handleChangeText('venueDetail')}
         />
-      </Input>
+      </Field>
 
       <Field label="주소" mode="group">
         <BaseTextInput readOnly value={map.address ?? ''} />
