@@ -7,24 +7,42 @@ import { AccordionItem } from '@/components/account/AccordionItem';
 import Account from '@/components/account/Account';
 import Header from '@/components/shared/Header';
 import { useWeddingStore } from '@/stores/useWeddingStore';
+import type { Account as AccountType } from '@/types/wedding';
 
 const AccountList = () => {
   const accountInfo = useWeddingStore((state) => state.values.account);
-  const groomSide = useWeddingStore(
-    (state) => state.values.account.groomSideAccounts,
-  );
-  const brideSide = useWeddingStore(
-    (state) => state.values.account.brideSideAccounts,
-  );
 
-  const accountListTitle = accountInfo.title ?? '';
-  const accountListSubTitle = accountInfo.subtitle ?? '';
-  const groomSideTitle = groomSide?.title ?? '';
-  const brideSideTitle = brideSide?.title ?? '';
-  const groomSideisExpand = groomSide?.isExpand ?? false;
-  const brideSideisExpand = brideSide?.isExpand ?? false;
-  const groomSideAccounts = groomSide?.accounts ?? [];
-  const brideSideAccounts = brideSide?.accounts ?? [];
+  const {
+    title: accountListTitle = '',
+    subtitle: accountListSubTitle = '',
+    groomSideAccounts: groomSide = { title: '', isExpand: false, accounts: [] },
+    brideSideAccounts: brideSide = { title: '', isExpand: false, accounts: [] },
+  } = accountInfo;
+
+  const hasValidAccount = (accounts: AccountType[]) =>
+    accounts.length > 0 &&
+    accounts[0].accountNumber &&
+    accounts[0].accountHolder &&
+    accounts[0].bankName;
+
+  const renderSide = (value: string, title: string, accounts: AccountType[]) =>
+    hasValidAccount(accounts) && (
+      <AccordionItem title={title} value={value}>
+        <motion.div
+          css={accountListStyle}
+          initial="hidden"
+          variants={listVariants}
+          viewport={{ once: true, amount: 0.3 }}
+          whileInView="visible"
+        >
+          {accounts.map((account) => (
+            <motion.div key={account.accountNumber} variants={itemVariants}>
+              <Account {...account} />
+            </motion.div>
+          ))}
+        </motion.div>
+      </AccordionItem>
+    );
 
   return (
     <>
@@ -40,41 +58,12 @@ const AccountList = () => {
 
         <Accordion
           defaultValue={[
-            groomSideisExpand ? 'groomSide' : '',
-            brideSideisExpand ? 'brideSide' : '',
+            groomSide.isExpand ? 'groomSide' : '',
+            brideSide.isExpand ? 'brideSide' : '',
           ].filter(Boolean)}
         >
-          <AccordionItem title={groomSideTitle} value="groomSide">
-            <motion.div
-              animate="visible"
-              css={accountListStyle}
-              initial="hidden"
-              variants={listVariants}
-            >
-              {groomSideAccounts.length > 0 &&
-                groomSideAccounts.map((account, index) => (
-                  <motion.div key={index} variants={itemVariants}>
-                    <Account {...account} />
-                  </motion.div>
-                ))}
-            </motion.div>
-          </AccordionItem>
-          <AccordionItem title={brideSideTitle} value="brideSide">
-            <motion.div
-              animate="visible"
-              css={accountListStyle}
-              initial="hidden"
-              variants={listVariants}
-              whileInView="visible"
-            >
-              {brideSideAccounts.length > 0 &&
-                brideSideAccounts.map((account, index) => (
-                  <motion.div key={index} variants={itemVariants}>
-                    <Account {...account} />
-                  </motion.div>
-                ))}
-            </motion.div>
-          </AccordionItem>
+          {renderSide('groomSide', groomSide.title ?? '', groomSide.accounts)}
+          {renderSide('brideSide', brideSide.title ?? '', brideSide.accounts)}
         </Accordion>
       </motion.div>
       <Toaster duration={2000} position="top-center" />

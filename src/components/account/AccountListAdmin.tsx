@@ -28,27 +28,27 @@ const AccountListAdmin = () => {
   );
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isValid(e.target.value, 'kor')) {
+    if (!isValid(e.currentTarget.value, 'kor')) {
       e.preventDefault();
       return;
     }
-    setField('account', 'title', e.target.value);
+    setField('account', 'title', e.currentTarget.value);
   };
 
   const handleChangeTextAreaInput = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
-    if (!isValid(e.target.value, 'all')) {
+    if (!isValid(e.currentTarget.value, 'all')) {
       e.preventDefault();
       return;
     }
-    setField('account', 'subtitle', e.target.value);
+    setField('account', 'subtitle', e.currentTarget.value);
   };
 
   const handleChangeAccountInfo =
     (side: 'groom' | 'bride', field: keyof AccountInfo) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (field === 'title' && !isValid(e.target.value, 'txt')) {
+      if (field === 'title' && !isValid(e.currentTarget.value, 'txt')) {
         e.preventDefault();
         return;
       }
@@ -60,9 +60,9 @@ const AccountListAdmin = () => {
             : draft.account.brideSideAccounts;
         if (!target) return;
         if (field === 'isExpand') {
-          target[field] = e.target.checked;
+          target[field] = e.currentTarget.checked;
         } else if (field === 'title') {
-          target[field] = e.target.value;
+          target[field] = e.currentTarget.value;
         }
       });
     };
@@ -93,7 +93,7 @@ const AccountListAdmin = () => {
     (side: 'groom' | 'bride') =>
     (index: number, field: keyof Account, type?: string) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (type && !isValid(e.target.value, type)) {
+      if (type && !isValid(e.currentTarget.value, type)) {
         e.preventDefault();
         return;
       }
@@ -105,11 +105,11 @@ const AccountListAdmin = () => {
             : draft.account.brideSideAccounts;
         if (!target) return;
         if (field === 'isKakaopay') {
-          const checked = e.target.checked;
+          const checked = e.currentTarget.checked;
           target.accounts[index].isKakaopay = checked;
           if (!checked) target.accounts[index].kakaopayUrl = '';
         } else {
-          target.accounts[index][field] = e.target.value;
+          target.accounts[index][field] = e.currentTarget.value;
         }
       });
     };
