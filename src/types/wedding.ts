@@ -71,10 +71,18 @@ export type TextAlignment = 'left' | 'center' | 'right';
 export type UserBasicInfo = {
   maleName?: string;
   femaleName?: string;
+
   maleFatherName?: string;
+  maleFatherDeceased?: boolean;
+
   maleMotherName?: string;
+  maleMotherDeceased?: boolean;
+
   femaleFatherName?: string;
+  femaleFatherDeceased?: boolean;
+
   femaleMotherName?: string;
+  femaleMotherDeceased?: boolean;
 };
 
 type WeddingMap = {
