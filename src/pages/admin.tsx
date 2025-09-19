@@ -54,7 +54,7 @@ const AdminPage = () => {
           </Accordion>
         )}
         <button css={buttonStyle} onClick={handleSave}>
-          데이터 저장
+          저장하기
         </button>
       </Section>
       <Toaster duration={2000} position="top-center" />
@@ -66,18 +66,20 @@ const buttonStyle = css`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0.7rem 1rem;
   font-size: 0.85rem;
   font-weight: 500;
-  border-radius: 6px;
+  border-radius: 10px;
   border: 1px solid var(--gray3);
   background: var(--gray2);
   color: var(--gray12);
   cursor: pointer;
   margin-top: 1rem;
+  color: var(--gray11);
 
   &:hover {
     background: var(--gray3);
+    font-weight: 600;
   }
 
   &:disabled {
