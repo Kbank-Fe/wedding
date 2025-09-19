@@ -1,5 +1,5 @@
 import BaseTextInput from '@/components/shared/BaseTextInput';
-import Input from '@/components/shared/Input';
+import Field from '@/components/shared/Field';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { UserBasicInfo } from '@/types/wedding';
 
@@ -31,13 +31,13 @@ const UserInfoAdmin = () => {
   return (
     <>
       {USER_LIST.map(({ label, key, placeholder }) => (
-        <Input key={key} labelText={label}>
+        <Field key={key} label={label}>
           <BaseTextInput
             placeholder={placeholder}
             value={basicInfo?.[key] ?? ''}
             onChange={handleChangeInput(key)}
           />
-        </Input>
+        </Field>
       ))}
     </>
   );
