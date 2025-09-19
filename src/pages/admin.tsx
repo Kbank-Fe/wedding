@@ -20,7 +20,6 @@ const AdminPage = () => {
   const { user, uid, isLoading } = useCurrentUser();
   const { localImageList } = useWeddingStore((state) => state.values.gallery);
 
-  const values = useWeddingStore((state) => state.values);
   const setDeep = useWeddingStore((state) => state.setDeep);
   const { notFound } = useWeddingInfoByUid(uid, setDeep);
 
@@ -44,6 +43,8 @@ const AdminPage = () => {
 
     try {
       await handleSetImageList(uid);
+
+      const values = useWeddingStore.getState().values;
       const shareId = await saveUserShare(uid, values);
 
       toast.success('데이터를 저장했어요!');
