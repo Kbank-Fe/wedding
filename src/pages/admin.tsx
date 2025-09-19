@@ -49,7 +49,7 @@ const AdminPage = () => {
       }
       handleSetImageList(shareId);
 
-      await saveUserShare(uid, values);
+      await saveUserShare(shareId, values);
 
       toast.success('데이터를 저장했어요!');
       setTimeout(() => navigate(`/${shareId}`), 2000);
