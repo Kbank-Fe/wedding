@@ -3,15 +3,11 @@ import { getDownloadURL, ref as sRef, uploadBytes } from 'firebase/storage';
 import { storage } from '@/utils/firebase';
 import { compressImage } from '@/utils/image.ts';
 
-export const uploadImageToStorage = async (
-  file: File,
-  shareId: string,
-  albumId = 'default',
-) => {
+export const uploadImageToStorage = async (file: File, uid: string) => {
   const blob = await compressImage(file, { maxWidth: 1920, quality: 0.8 });
 
   const fileName = `${Date.now()}_${crypto.randomUUID()}.webp`;
-  const path = `shares/${shareId}/images/${albumId}/${fileName}`;
+  const path = `gallery/${uid}/${fileName}`;
   const storageRef = sRef(storage, path);
 
   await uploadBytes(storageRef, blob, { contentType: blob.type });
@@ -23,6 +19,5 @@ export const uploadImageToStorage = async (
     size: blob.size,
     type: blob.type,
     createdAt: Date.now(),
-    albumId,
   };
 };

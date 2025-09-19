@@ -25,7 +25,7 @@ export const getShare = async <T extends object = Record<string, unknown>>(
 };
 
 /* 새 share 생성 + 유저 연결 */
-export const createShare = async <T extends object>(
+const createShare = async <T extends object>(
   uid: string,
   data: T,
 ): Promise<string> => {
@@ -62,9 +62,13 @@ const overwriteShare = async <T extends object>(
  * 최종적으로 shareId 반환
  */
 export const saveUserShare = async <T extends object>(
-  shareId: string,
+  uid: string,
   data: T,
 ): Promise<string> => {
-  await overwriteShare(shareId, data);
-  return shareId;
+  const existing = await getUserShareId(uid);
+  if (existing) {
+    await overwriteShare(existing, data);
+    return existing;
+  }
+  return await createShare(uid, data);
 };

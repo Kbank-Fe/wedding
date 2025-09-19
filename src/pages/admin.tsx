@@ -12,7 +12,7 @@ import { useWeddingInfoByUid } from '@/hooks/useWeddingInfoByUid';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { SavedImage } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
-import { createShare, getUserShareId, saveUserShare } from '@/utils/shares';
+import { saveUserShare } from '@/utils/shares';
 import { uploadImageToStorage } from '@/utils/storage';
 
 const AdminPage = () => {
@@ -28,9 +28,9 @@ const AdminPage = () => {
     return <Navigate replace to="/404" />;
   }
 
-  const handleSetImageList = async (shareId: string) => {
+  const handleSetImageList = async (uid: string) => {
     const metas: SavedImage[] = await Promise.all(
-      localImageList.map((f) => uploadImageToStorage(f, shareId!, 'gallery')),
+      localImageList.map((f) => uploadImageToStorage(f, uid!)),
     );
 
     setDeep((draft) => {
@@ -43,13 +43,8 @@ const AdminPage = () => {
     if (!user || !uid) return;
 
     try {
-      let shareId = await getUserShareId(uid);
-      if (!shareId) {
-        shareId = await createShare(uid, values);
-      }
-      handleSetImageList(shareId);
-
-      await saveUserShare(shareId, values);
+      await handleSetImageList(uid);
+      const shareId = await saveUserShare(uid, values);
 
       toast.success('데이터를 저장했어요!');
       setTimeout(() => navigate(`/${shareId}`), 2000);
