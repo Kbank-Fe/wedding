@@ -62,11 +62,13 @@ const WeddingMapAdmin = () => {
         <AddressSearch buttonText="검색" onSelect={handleSelectAddress} />
       </Field>
 
-      <BaseCheckBoxInput
-        checkboxLabel="지도 표시"
-        checked={map.isMapVisible ?? false}
-        onChange={handleChangeCheckbox}
-      />
+      <Field label="지도 표시" mode="group">
+        <BaseCheckBoxInput
+          checkboxLabel=""
+          checked={map.isMapVisible ?? false}
+          onChange={handleChangeCheckbox}
+        />
+      </Field>
     </>
   );
 };

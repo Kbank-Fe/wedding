@@ -90,11 +90,13 @@ const AccountGroup = ({
           </Field>
         )}
 
-        <BaseCheckBoxInput
-          checkboxLabel="카카오페이 사용"
-          checked={acc.isKakaopay ?? false}
-          onChange={handleChange(i, 'isKakaopay')}
-        />
+        <Field label="카카오페이">
+          <BaseCheckBoxInput
+            checkboxLabel=""
+            checked={acc.isKakaopay ?? false}
+            onChange={handleChange(i, 'isKakaopay')}
+          />
+        </Field>
       </div>
     ))}
   </div>
