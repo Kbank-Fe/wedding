@@ -28,8 +28,17 @@ const AdminPage = () => {
   }
 
   const handleSetImageList = async (uid: string) => {
+    const currentList =
+      useWeddingStore.getState().values.gallery.savedImageList;
+
+    const filteredImageList = localImageList.filter(
+      (file) =>
+        !currentList.some(
+          (img) => img.name === file.name && img.size === file.size,
+        ),
+    );
     const metas: SavedImage[] = await Promise.all(
-      localImageList.map((f) => uploadImageToStorage(f, uid!)),
+      filteredImageList.map((file) => uploadImageToStorage(file, uid!)),
     );
 
     setDeep((draft) => {
