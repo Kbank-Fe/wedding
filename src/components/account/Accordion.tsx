@@ -20,5 +20,5 @@ export const Accordion = ({ children, defaultValue }: AccordionProps) => (
 const rootStyle = css`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 `;
