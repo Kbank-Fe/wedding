@@ -34,7 +34,7 @@ const AdminPage = () => {
     const filteredImageList = localImageList.filter(
       (file) =>
         !currentList.some(
-          (img) => img.name === file.name && img.size === file.size,
+          (img) => img.name === file.name && img.type === file.type,
         ),
     );
     const metas: SavedImage[] = await Promise.all(
