@@ -12,8 +12,8 @@ import { useWeddingInfoByUid } from '@/hooks/useWeddingInfoByUid';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { SavedImage } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
-import { saveUserShare } from '@/utils/shares';
-import { uploadImageAndSaveMetaRTDB } from '@/utils/storage';
+import { createShare, getUserShareId, saveUserShare } from '@/utils/shares';
+import { uploadImageToStorage } from '@/utils/storage';
 
 const AdminPage = () => {
   const navigate = useNavigate();
@@ -28,12 +28,11 @@ const AdminPage = () => {
     return <Navigate replace to="/404" />;
   }
 
-  const handleSetImageList = async () => {
-    if (!uid) return;
-
+  const handleSetImageList = async (shareId: string) => {
     const metas: SavedImage[] = await Promise.all(
-      localImageList.map((f) => uploadImageAndSaveMetaRTDB(uid, f, 'gallery')),
-    ).then((res) => res.map((m) => ({ url: m.url, name: m.name })));
+      localImageList.map((f) => uploadImageToStorage(f, shareId!, 'gallery')),
+    );
+
     setDeep((draft) => {
       draft.gallery.savedImageList.push(...metas);
       draft.gallery.localImageList = [];
@@ -41,15 +40,19 @@ const AdminPage = () => {
   };
 
   const handleSave = async () => {
-    if (!user) return;
-    try {
-      await handleSetImageList();
-      const shareId = await saveUserShare(uid!, values);
-      toast.success('데이터를 저장했어요!');
+    if (!user || !uid) return;
 
-      setTimeout(() => {
-        navigate(`/${shareId}`);
-      }, 2000);
+    try {
+      let shareId = await getUserShareId(uid);
+      if (!shareId) {
+        shareId = await createShare(uid, values);
+      }
+      handleSetImageList(shareId);
+
+      await saveUserShare(uid, values);
+
+      toast.success('데이터를 저장했어요!');
+      setTimeout(() => navigate(`/${shareId}`), 2000);
     } catch {
       toast.error('데이터 저장을 실패했어요.');
     }
