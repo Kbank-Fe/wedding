@@ -1,10 +1,9 @@
 import { css } from '@emotion/react';
 import { X } from 'lucide-react';
 
+import BaseImageInput from '@/components/shared/BaseImageInput';
 import Input from '@/components/shared/Input';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-
-import BaseImageInput from '../shared/BaseImageInput';
 
 const GalleryAdmin = () => {
   const { localImageList } = useWeddingStore((state) => state.values.gallery);

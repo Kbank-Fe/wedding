@@ -10,12 +10,15 @@ import Section from '@/components/shared/Section';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useWeddingInfoByUid } from '@/hooks/useWeddingInfoByUid';
 import { useWeddingStore } from '@/stores/useWeddingStore';
+import type { SavedImage } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
 import { saveUserShare } from '@/utils/shares';
+import { uploadImageAndSaveMetaRTDB } from '@/utils/storage';
 
 const AdminPage = () => {
   const navigate = useNavigate();
   const { user, uid, isLoading } = useCurrentUser();
+  const { localImageList } = useWeddingStore((state) => state.values.gallery);
 
   const values = useWeddingStore((state) => state.values);
   const setDeep = useWeddingStore((state) => state.setDeep);
@@ -25,9 +28,22 @@ const AdminPage = () => {
     return <Navigate replace to="/404" />;
   }
 
+  const handleSetImageList = async () => {
+    if (!uid) return;
+
+    const metas: SavedImage[] = await Promise.all(
+      localImageList.map((f) => uploadImageAndSaveMetaRTDB(uid, f, 'gallery')),
+    ).then((res) => res.map((m) => ({ url: m.url, name: m.name })));
+    setDeep((draft) => {
+      draft.gallery.savedImageList.push(...metas);
+      draft.gallery.localImageList = [];
+    });
+  };
+
   const handleSave = async () => {
     if (!user) return;
     try {
+      await handleSetImageList();
       const shareId = await saveUserShare(uid!, values);
       toast.success('데이터를 저장했어요!');
 
