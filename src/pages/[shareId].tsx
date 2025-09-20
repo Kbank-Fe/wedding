@@ -7,12 +7,10 @@ import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { ShowCheckbox, WeddingInfo } from '@/types/wedding';
 import { mainList } from '@/utils/mainList';
 import { getShare } from '@/utils/shares';
-
-import { isValidNanoId } from '../utils/validateNanoId';
+import { isValidNanoId } from '@/utils/validateNanoId';
 
 const SharePage = () => {
   const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
-  console.log('showCheckbox : ' + JSON.stringify(showCheckbox));
   const setDeep = useWeddingStore((state) => state.setDeep);
   const { shareId } = useParams<{ shareId: string }>();
 
