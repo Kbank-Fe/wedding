@@ -18,13 +18,12 @@ const AdminPage = () => {
   const navigate = useNavigate();
   const { user, uid, isLoading } = useCurrentUser();
 
-  // s: checkbox 변수 선언
-  const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
-  const setField = useWeddingStore((state) => state.setField);
-  // e: checkbox 변수 선언
-
   const values = useWeddingStore((state) => state.values);
+  const showCheckbox = values.showCheckbox;
+
   const setDeep = useWeddingStore((state) => state.setDeep);
+  const setField = useWeddingStore((state) => state.setField);
+
   useWeddingInfo(uid, setDeep);
 
   const handleSave = async () => {
