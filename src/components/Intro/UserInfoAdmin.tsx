@@ -1,4 +1,4 @@
-import { type ChangeEvent, useState } from 'react';
+import { type ChangeEvent } from 'react';
 
 import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import BaseTextInput from '@/components/shared/BaseTextInput';
@@ -49,8 +49,6 @@ const UserInfoAdmin = () => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setDeep((draft) => {
         draft.intro.basicInfo[0][key] = event.currentTarget.value;
-        // 변경 직후 값 콘솔 출력
-        console.log('input changed:', draft.intro.basicInfo[0]);
       });
     };
 
@@ -59,8 +57,6 @@ const UserInfoAdmin = () => {
     (key: keyof UserBasicInfo) => (e: ChangeEvent<HTMLInputElement>) => {
       setDeep((draft) => {
         draft.intro.basicInfo[0][key] = e.currentTarget.checked;
-        // 변경 직후 값 콘솔 출력
-        console.log('checkbox changed:', draft.intro.basicInfo[0]);
       });
     };
 
@@ -70,7 +66,11 @@ const UserInfoAdmin = () => {
         <Field key={key as string} label={label}>
           <BaseTextInput
             placeholder={placeholder}
-            value={basicInfo?.[key] ?? ''}
+            value={
+              typeof basicInfo?.[key] === 'string'
+                ? (basicInfo[key] as string)
+                : ''
+            }
             onChange={handleChangeInput(key)}
           />
           {deceasedKey && (
