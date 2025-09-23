@@ -23,7 +23,7 @@ export const uploadImageToStorage = async (file: File, uid: string) => {
   return {
     url,
     name: file.name,
-    size: blob.size,
+    size: file.size,
     type: blob.type,
     createdAt: Date.now(),
   };
