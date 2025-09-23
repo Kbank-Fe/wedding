@@ -5,10 +5,13 @@ import DateCalendarAdmin from '@/components/calendar/DateCalendarAdmin';
 import ContactAdmin from '@/components/contact/ContactAdmin';
 import GalleryAdmin from '@/components/gallery/GalleryAdmin';
 import TransportAdmin from '@/components/transport/TransportAdmin';
+import type { ShowCheckbox } from '@/types/wedding';
+
+type ShowKey = keyof ShowCheckbox;
 
 type AdminList = {
   title: string;
-  value: string;
+  value: ShowKey;
   component: FC;
 };
 
@@ -38,4 +41,4 @@ export const adminList: AdminList[] = [
     value: 'account',
     component: AccountListAdmin,
   },
-];
+] as const;

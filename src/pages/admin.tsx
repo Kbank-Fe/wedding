@@ -42,9 +42,9 @@ const AdminPage = () => {
     }
   };
 
-  const handleCheckboxChange = (key: string) => {
-    const current = showCheckbox[key as keyof ShowCheckbox] ?? false;
-    setField('showCheckbox', key as keyof ShowCheckbox, !current);
+  const handleCheckboxChange = (key: keyof ShowCheckbox) => {
+    const current = showCheckbox[key] ?? false;
+    setField('showCheckbox', key, !current);
   };
 
   if (isLoading) return <LoadingSpinner />;
@@ -57,7 +57,7 @@ const AdminPage = () => {
             {adminList.map(({ title, value, component: Component }) => (
               <div key={value} css={divWrapStyle}>
                 <input
-                  checked={showCheckbox[value as keyof ShowCheckbox] ?? false}
+                  checked={showCheckbox[value] ?? false}
                   css={checkboxStyle}
                   type="checkbox"
                   onChange={() => handleCheckboxChange(value)}

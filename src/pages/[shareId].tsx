@@ -4,7 +4,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { ShowCheckbox, WeddingInfo } from '@/types/wedding';
+import type { WeddingInfo } from '@/types/wedding';
 import { mainList } from '@/utils/mainList';
 import { getShare } from '@/utils/shares';
 import { isValidNanoId } from '@/utils/validateNanoId';
@@ -40,7 +40,7 @@ const SharePage = () => {
         <div>
           {mainList.map(
             ({ key, alwaysVisible, component: Component }) =>
-              (alwaysVisible || showCheckbox[key as keyof ShowCheckbox]) && (
+              (alwaysVisible || showCheckbox[key]) && (
                 <Section key={key}>
                   <Component />
                 </Section>
