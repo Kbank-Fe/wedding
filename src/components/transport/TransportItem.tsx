@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
+import DOMPurify from 'dompurify';
 import { motion } from 'framer-motion';
-import type { ReactNode } from 'react';
 
 type TransportProps = {
   title?: string;
-  description?: ReactNode;
+  description?: string;
 };
 
 const TransportItem = ({ title, description }: TransportProps) => {
@@ -17,7 +17,14 @@ const TransportItem = ({ title, description }: TransportProps) => {
       whileInView={{ opacity: 1, y: 0 }}
     >
       {title && <h2 css={titleStyle}>{title}</h2>}
-      {description && <div css={descriptionStyle}>{description}</div>}
+      {description && (
+        <div
+          css={descriptionStyle}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(description),
+          }}
+        />
+      )}
     </motion.div>
   );
 };
