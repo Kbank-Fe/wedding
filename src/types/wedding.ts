@@ -63,18 +63,27 @@ export type Intro = {
   content: string;
   showNames: boolean;
   alignment: TextAlignment;
-  basicInfo: UserBasicInfo[];
+  basicInfo: UserBasicInfo;
 };
 
 export type TextAlignment = 'left' | 'center' | 'right';
 
-export type UserBasicInfo = {
+export type UserBasicInfo = UserBasicInfoString & UserBasicInfoBoolean;
+
+export type UserBasicInfoString = {
   maleName?: string;
   femaleName?: string;
   maleFatherName?: string;
   maleMotherName?: string;
   femaleFatherName?: string;
   femaleMotherName?: string;
+};
+
+export type UserBasicInfoBoolean = {
+  maleFatherDeceased?: boolean;
+  maleMotherDeceased?: boolean;
+  femaleFatherDeceased?: boolean;
+  femaleMotherDeceased?: boolean;
 };
 
 type WeddingMap = {
