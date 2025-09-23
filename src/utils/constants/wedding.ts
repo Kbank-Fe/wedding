@@ -53,20 +53,18 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     content: '',
     showNames: true,
     alignment: 'center',
-    basicInfo: [
-      {
-        maleName: '',
-        femaleName: '',
-        maleFatherName: '',
-        maleFatherDeceased: false,
-        maleMotherName: '',
-        maleMotherDeceased: false,
-        femaleFatherName: '',
-        femaleFatherDeceased: false,
-        femaleMotherName: '',
-        femaleMotherDeceased: false,
-      },
-    ],
+    basicInfo: {
+      maleName: '',
+      femaleName: '',
+      maleFatherName: '',
+      maleFatherDeceased: false,
+      maleMotherName: '',
+      maleMotherDeceased: false,
+      femaleFatherName: '',
+      femaleFatherDeceased: false,
+      femaleMotherName: '',
+      femaleMotherDeceased: false,
+    },
   },
   transport: {
     transportList: Array.from({ length: 4 }, () => ({

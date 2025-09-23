@@ -63,25 +63,26 @@ export type Intro = {
   content: string;
   showNames: boolean;
   alignment: TextAlignment;
-  basicInfo: UserBasicInfo[];
+  basicInfo: UserBasicInfo;
 };
 
 export type TextAlignment = 'left' | 'center' | 'right';
 
-export type UserBasicInfo = {
+export type UserBasicInfo = UserBasicInfoString & UserBasicInfoBoolean;
+
+export type UserBasicInfoString = {
   maleName?: string;
   femaleName?: string;
-
   maleFatherName?: string;
-  maleFatherDeceased?: boolean;
-
   maleMotherName?: string;
-  maleMotherDeceased?: boolean;
-
   femaleFatherName?: string;
-  femaleFatherDeceased?: boolean;
-
   femaleMotherName?: string;
+};
+
+export type UserBasicInfoBoolean = {
+  maleFatherDeceased?: boolean;
+  maleMotherDeceased?: boolean;
+  femaleFatherDeceased?: boolean;
   femaleMotherDeceased?: boolean;
 };
 

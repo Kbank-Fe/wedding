@@ -4,59 +4,62 @@ import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Field from '@/components/shared/Field';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { UserBasicInfo } from '@/types/wedding';
+import type {
+  UserBasicInfoBoolean,
+  UserBasicInfoString,
+} from '@/types/wedding';
 
 export const USER_LIST: {
   label: string;
-  key: keyof UserBasicInfo;
+  key: keyof UserBasicInfoString;
   placeholder: string;
-  deceasedKey?: keyof UserBasicInfo;
+  deceasedKey?: keyof UserBasicInfoBoolean;
 }[] = [
   { label: '🤵🏻 신랑', key: 'maleName', placeholder: '성함(OOO)' },
   {
-    label: '아버지',
+    label: '신랑 아버지',
     key: 'maleFatherName',
-    placeholder: '아버지 성함(OOO)',
+    placeholder: '신랑 아버지 성함(OOO)',
     deceasedKey: 'maleFatherDeceased',
   },
   {
-    label: '어머니',
+    label: '신랑 어머니',
     key: 'maleMotherName',
-    placeholder: '어머니 성함(OOO)',
+    placeholder: '신랑 어머니 성함(OOO)',
     deceasedKey: 'maleMotherDeceased',
   },
   { label: '👰🏻 신부', key: 'femaleName', placeholder: '신부 성함(OOO)' },
   {
-    label: '아버지',
+    label: '신부 아버지',
     key: 'femaleFatherName',
-    placeholder: '아버지 성함(OOO)',
+    placeholder: '신부 아버지 성함(OOO)',
     deceasedKey: 'femaleFatherDeceased',
   },
   {
-    label: '어머니',
+    label: '신부 어머니',
     key: 'femaleMotherName',
-    placeholder: '어머니 성함(OOO)',
+    placeholder: '신부 어머니 성함(OOO)',
     deceasedKey: 'femaleMotherDeceased',
   },
 ];
 
 const UserInfoAdmin = () => {
   const setDeep = useWeddingStore((state) => state.setDeep);
-  const basicInfo = useWeddingStore((state) => state.values.intro.basicInfo[0]);
+  const basicInfo = useWeddingStore((state) => state.values.intro.basicInfo);
 
   const handleChangeInput =
-    (key: keyof UserBasicInfo) =>
+    (key: keyof UserBasicInfoString) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setDeep((draft) => {
-        draft.intro.basicInfo[0][key] = event.currentTarget.value;
+        draft.intro.basicInfo[key] = event.currentTarget.value;
       });
     };
 
   // 체크박스 상태 변경 핸들러
   const handleChangeCheckbox =
-    (key: keyof UserBasicInfo) => (e: ChangeEvent<HTMLInputElement>) => {
+    (key: keyof UserBasicInfoBoolean) => (e: ChangeEvent<HTMLInputElement>) => {
       setDeep((draft) => {
-        draft.intro.basicInfo[0][key] = e.currentTarget.checked;
+        draft.intro.basicInfo[key] = e.currentTarget.checked;
       });
     };
 
