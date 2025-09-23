@@ -13,7 +13,7 @@ const childWrapperStyle = css`
   width: 100%;
   background-color: var(--gray1);
   margin: 0;
-  padding: 0 2.5rem;
+  padding: 2.5rem;
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
