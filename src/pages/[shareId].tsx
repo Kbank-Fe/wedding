@@ -37,7 +37,7 @@ const SharePage = () => {
   return (
     <PageLayout>
       {mainList.length > 0 && (
-        <div>
+        <>
           {mainList.map(
             ({ key, alwaysVisible, component: Component }) =>
               (alwaysVisible || showCheckbox[key]) && (
@@ -46,7 +46,7 @@ const SharePage = () => {
                 </Section>
               ),
           )}
-        </div>
+        </>
       )}
     </PageLayout>
   );
