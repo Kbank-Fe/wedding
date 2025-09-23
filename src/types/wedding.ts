@@ -56,6 +56,9 @@ type Gallery = {
 export type SavedImage = {
   url: string;
   name: string;
+  size: number;
+  type: string;
+  createdAt: number;
 };
 
 export type Intro = {

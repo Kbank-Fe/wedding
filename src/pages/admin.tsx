@@ -10,14 +10,16 @@ import Section from '@/components/shared/Section';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useWeddingInfoByUid } from '@/hooks/useWeddingInfoByUid';
 import { useWeddingStore } from '@/stores/useWeddingStore';
+import type { SavedImage } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
 import { saveUserShare } from '@/utils/shares';
+import { uploadImageToStorage } from '@/utils/storage';
 
 const AdminPage = () => {
   const navigate = useNavigate();
   const { user, uid, isLoading } = useCurrentUser();
+  const { localImageList } = useWeddingStore((state) => state.values.gallery);
 
-  const values = useWeddingStore((state) => state.values);
   const setDeep = useWeddingStore((state) => state.setDeep);
   const { notFound } = useWeddingInfoByUid(uid, setDeep);
 
@@ -25,15 +27,37 @@ const AdminPage = () => {
     return <Navigate replace to="/404" />;
   }
 
-  const handleSave = async () => {
-    if (!user) return;
-    try {
-      const shareId = await saveUserShare(uid!, values);
-      toast.success('데이터를 저장했어요!');
+  const handleSetImageList = async (uid: string) => {
+    const currentList =
+      useWeddingStore.getState().values.gallery.savedImageList;
 
-      setTimeout(() => {
-        navigate(`/${shareId}`);
-      }, 2000);
+    const filteredImageList = localImageList.filter(
+      (file) =>
+        !currentList.some(
+          (img) => img.name === file.name && img.size === file.size,
+        ),
+    );
+    const metas: SavedImage[] = await Promise.all(
+      filteredImageList.map((file) => uploadImageToStorage(file, uid!)),
+    );
+
+    setDeep((draft) => {
+      draft.gallery.savedImageList.push(...metas);
+      draft.gallery.localImageList = [];
+    });
+  };
+
+  const handleSave = async () => {
+    if (!user || !uid) return;
+
+    try {
+      await handleSetImageList(uid);
+
+      const values = useWeddingStore.getState().values;
+      const shareId = await saveUserShare(uid, values);
+
+      toast.success('데이터를 저장했어요!');
+      setTimeout(() => navigate(`/${shareId}`), 2000);
     } catch {
       toast.error('데이터 저장을 실패했어요.');
     }
@@ -54,7 +78,7 @@ const AdminPage = () => {
           </Accordion>
         )}
         <button css={buttonStyle} onClick={handleSave}>
-          데이터 저장
+          저장하기
         </button>
       </Section>
       <Toaster duration={2000} position="top-center" />
@@ -66,18 +90,20 @@ const buttonStyle = css`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0.7rem 1rem;
   font-size: 0.85rem;
   font-weight: 500;
-  border-radius: 6px;
+  border-radius: 10px;
   border: 1px solid var(--gray3);
   background: var(--gray2);
   color: var(--gray12);
   cursor: pointer;
   margin-top: 1rem;
+  color: var(--gray11);
 
   &:hover {
     background: var(--gray3);
+    font-weight: 600;
   }
 
   &:disabled {
