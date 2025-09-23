@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
 type BaseCheckBoxInputProps = {
-  checkboxLabel: string;
+  checkboxLabel?: string;
   checked: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
@@ -11,7 +11,7 @@ const BaseCheckBoxInput = ({
   ...rest
 }: BaseCheckBoxInputProps) => {
   return (
-    <div>
+    <>
       <label css={labelStyle}>
         <input
           checked={checked}
@@ -19,9 +19,9 @@ const BaseCheckBoxInput = ({
           type="checkbox"
           {...rest}
         />
-        <span>{checkboxLabel}</span>
+        {checkboxLabel && <span>{checkboxLabel}</span>}
       </label>
-    </div>
+    </>
   );
 };
 
@@ -35,7 +35,7 @@ const checkboxStyle = css`
   border-radius: 4px;
   background-color: var(--gray5);
   position: relative;
-  cursor: pointer;
+  /* cursor: pointer; */
   transition: background-color 0.2s ease;
 
   &:checked {

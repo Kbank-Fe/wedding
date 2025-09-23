@@ -4,6 +4,7 @@ import { toast, Toaster } from 'sonner';
 
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
+import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
@@ -56,10 +57,9 @@ const AdminPage = () => {
           <Accordion>
             {adminList.map(({ title, value, component: Component }) => (
               <div key={value} css={divWrapStyle}>
-                <input
+                <BaseCheckBoxInput
                   checked={showCheckbox[value] ?? false}
                   css={checkboxStyle}
-                  type="checkbox"
                   onChange={() => handleCheckboxChange(value)}
                 />
                 <div css={accordionItemStyle}>
