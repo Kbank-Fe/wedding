@@ -11,17 +11,10 @@ const BaseCheckBoxInput = ({
   ...rest
 }: BaseCheckBoxInputProps) => {
   return (
-    <>
-      <label css={labelStyle}>
-        <input
-          checked={checked}
-          css={checkboxStyle}
-          type="checkbox"
-          {...rest}
-        />
-        {checkboxLabel && <span>{checkboxLabel}</span>}
-      </label>
-    </>
+    <div css={wapperStyle}>
+      <input checked={checked} css={checkboxStyle} type="checkbox" {...rest} />
+      {checkboxLabel && <span>{checkboxLabel}</span>}
+    </div>
   );
 };
 
@@ -53,7 +46,7 @@ const checkboxStyle = css`
   }
 `;
 
-const labelStyle = css`
+const wapperStyle = css`
   display: flex;
   align-items: center;
   gap: 8px; /* 체크박스와 텍스트 사이 간격 */
