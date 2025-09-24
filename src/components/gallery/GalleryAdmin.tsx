@@ -57,8 +57,8 @@ const previewWrapperStyle = css`
 
 const previewImageWrapperStyle = css`
   position: relative;
-  width: 110px;
-  height: 110px;
+  width: 70px;
+  height: 70px;
   border: 1px solid var(--gray4);
   border-radius: 8px;
   overflow: hidden;
@@ -75,7 +75,7 @@ const previewNameStyle = css`
   color: var(--gray10);
   padding: 0.4rem 0.2rem 0;
   display: inline-block;
-  max-width: 110px;
+  max-width: 70px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
