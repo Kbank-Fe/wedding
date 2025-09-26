@@ -87,7 +87,9 @@ export type ShowCheckbox = {
   account: boolean;
   transport: boolean;
   gallery: boolean;
-}
+  basic: boolean;
+  location: boolean;
+};
 
 type WeddingMap = {
   title: string;

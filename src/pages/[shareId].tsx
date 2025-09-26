@@ -4,7 +4,6 @@ import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
 import { useWeddingInfoByShareId } from '@/hooks/useWeddingInfoByShareId';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { WeddingInfo } from '@/types/wedding';
 import { mainList } from '@/utils/mainList';
 
 const SharePage = () => {
