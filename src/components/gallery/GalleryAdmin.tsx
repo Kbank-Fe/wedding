@@ -28,15 +28,18 @@ const GalleryAdmin = () => {
       </Input>
       {localImageList.length > 0 && (
         <div css={previewWrapperStyle}>
-          {localImageList.map((file, i) => (
-            <div key={i}>
+          {localImageList.map((file, index) => (
+            <div key={index}>
               <div css={previewImageWrapperStyle}>
                 <img
                   alt={file.name}
                   css={previewImageStyle}
                   src={URL.createObjectURL(file)}
                 />
-                <button css={removeButtonStyle} onClick={handleRemoveFiles(i)}>
+                <button
+                  css={removeButtonStyle}
+                  onClick={handleRemoveFiles(index)}
+                >
                   <X size={10} />
                 </button>
               </div>
@@ -57,8 +60,8 @@ const previewWrapperStyle = css`
 
 const previewImageWrapperStyle = css`
   position: relative;
-  width: 110px;
-  height: 110px;
+  width: 70px;
+  height: 70px;
   border: 1px solid var(--gray4);
   border-radius: 8px;
   overflow: hidden;
@@ -75,7 +78,7 @@ const previewNameStyle = css`
   color: var(--gray10);
   padding: 0.4rem 0.2rem 0;
   display: inline-block;
-  max-width: 110px;
+  max-width: 70px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

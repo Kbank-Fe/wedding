@@ -1,3 +1,5 @@
+import type { SavedImage } from '@/types/wedding';
+
 export const compressImage = async (
   file: File,
   {
@@ -25,4 +27,20 @@ export const compressImage = async (
   );
 
   return blob!;
+};
+
+export const urlToFile = async (saved: SavedImage): Promise<File> => {
+  const res = await fetch(saved.url);
+  const blob = await res.blob();
+  return new File([blob], saved.name, {
+    type: saved.type,
+    lastModified: saved.createdAt,
+  });
+};
+
+export const initializeLocalImageList = async (
+  savedImageList: SavedImage[] = [],
+): Promise<File[]> => {
+  if (!savedImageList.length) return [];
+  return Promise.all(savedImageList.map((img) => urlToFile(img)));
 };

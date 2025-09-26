@@ -8,7 +8,7 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
-import { useWeddingInfoByUid } from '@/hooks/useWeddingInfoByUid';
+import { useWeddingInfo } from '@/hooks/useWeddingInfo';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { SavedImage } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
@@ -21,7 +21,7 @@ const AdminPage = () => {
   const { localImageList } = useWeddingStore((state) => state.values.gallery);
 
   const setDeep = useWeddingStore((state) => state.setDeep);
-  const { notFound } = useWeddingInfoByUid(uid, setDeep);
+  const { notFound } = useWeddingInfo({ uid }, setDeep);
 
   if (notFound) {
     return <Navigate replace to="/404" />;
