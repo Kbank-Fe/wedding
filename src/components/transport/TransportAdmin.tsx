@@ -1,16 +1,11 @@
-import { useMemo } from 'react';
-
+import BaseTextEditor from '@/components/shared/BaseTextEditor';
 import BaseTextInput from '@/components/shared/BaseTextInput';
-import Input from '@/components/shared/Input';
+import Field from '@/components/shared/Field';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const TransportAdmin = () => {
   const transportList = useWeddingStore(
     (state) => state.values.transport.transportList,
-  );
-  const titleList = useMemo(
-    () => transportList.map((item) => item.title),
-    [transportList],
   );
 
   const setDeep = useWeddingStore((state) => state.setDeep);
@@ -22,16 +17,27 @@ const TransportAdmin = () => {
       });
     };
 
+  const handleChangeEditor = (index: number) => (html: string) => {
+    setDeep((draft) => {
+      draft.transport.transportList[index].description = html;
+    });
+  };
+
   return (
     <>
-      {titleList.map((title, index) => (
-        <Input key={index} labelText={`교통수단${index + 1}`}>
+      {transportList.map((item, index) => (
+        <Field key={index} label={`교통수단${index + 1}`}>
           <BaseTextInput
             placeholder="교통수단 (지하철, 버스, 자가용 등)"
-            value={title}
+            value={item.title}
             onChange={handleChangeInput(index)}
           />
-        </Input>
+          <BaseTextEditor
+            height={120}
+            value={item.description}
+            onChange={handleChangeEditor(index)}
+          />
+        </Field>
       ))}
     </>
   );

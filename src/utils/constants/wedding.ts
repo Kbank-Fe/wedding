@@ -53,7 +53,16 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     content: '',
     showNames: true,
     alignment: 'center',
-    basicInfo: [],
+    basicInfo: [
+      {
+        maleName: '',
+        femaleName: '',
+        maleFatherName: '',
+        maleMotherName: '',
+        femaleFatherName: '',
+        femaleMotherName: '',
+      },
+    ],
   },
   transport: {
     transportList: Array.from({ length: 4 }, () => ({
@@ -72,5 +81,12 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     account: true,
     transport: true,
     gallery: true,
+  },
+  map: {
+    title: '',
+    venueName: '',
+    venueDetail: '',
+    address: '',
+    isMapVisible: false,
   },
 };

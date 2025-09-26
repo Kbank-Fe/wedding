@@ -56,6 +56,9 @@ type Gallery = {
 export type SavedImage = {
   url: string;
   name: string;
+  size: number;
+  type: string;
+  createdAt: number;
 };
 
 export type Intro = {
@@ -84,6 +87,14 @@ export type ShowCheckbox = {
   account: boolean;
   transport: boolean;
   gallery: boolean;
+}
+
+type WeddingMap = {
+  title: string;
+  venueName: string;
+  venueDetail: string;
+  address: string;
+  isMapVisible: boolean;
 };
 
 export type WeddingInfo = {
@@ -94,4 +105,5 @@ export type WeddingInfo = {
   transport: TransportList;
   gallery: Gallery;
   showCheckbox: ShowCheckbox;
+  map: WeddingMap;
 };
