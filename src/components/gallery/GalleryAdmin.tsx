@@ -28,15 +28,18 @@ const GalleryAdmin = () => {
       </Input>
       {localImageList.length > 0 && (
         <div css={previewWrapperStyle}>
-          {localImageList.map((file, i) => (
-            <div key={i}>
+          {localImageList.map((file, index) => (
+            <div key={index}>
               <div css={previewImageWrapperStyle}>
                 <img
                   alt={file.name}
                   css={previewImageStyle}
                   src={URL.createObjectURL(file)}
                 />
-                <button css={removeButtonStyle} onClick={handleRemoveFiles(i)}>
+                <button
+                  css={removeButtonStyle}
+                  onClick={handleRemoveFiles(index)}
+                >
                   <X size={10} />
                 </button>
               </div>
