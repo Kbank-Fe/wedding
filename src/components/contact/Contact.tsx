@@ -1,87 +1,109 @@
 import { css } from '@emotion/react';
+import * as Dialog from '@radix-ui/react-dialog';
 
-import ContactItem from '@/components/contact/ContactItem';
-import Header from '@/components/shared/Header';
-import Line from '@/components/shared/Line';
-import { MotionFade } from '@/components/shared/MotionFade';
-import { useWeddingStore } from '@/stores/useWeddingStore';
+import ContactModal from './ContactModal';
+
+// HEX → RGBA 변환 함수
+const hexToRgba = (hex: string, alpha: number) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
 
 const Contact = () => {
-  const contactList =
-    useWeddingStore((state) => state.values.contact.contactList) || [];
-
-  const groomFilteredList = contactList.filter(
-    (contact) => contact.type === 'Groom' && contact.phone !== '',
-  );
-
-  const bridgeFilteredList = contactList.filter(
-    (contact) => contact.type === 'Bride' && contact.phone !== '',
-  );
-
   return (
-    <>
-      <Header title="Contact" />
+    <Dialog.Root>
+      {/* 모달 열기 버튼 */}
+      <Dialog.Trigger asChild>
+        <button css={modalButtonStyle}>연락하기</button>
+      </Dialog.Trigger>
 
-      <MotionFade css={contactMotionStyle}>
-        <span css={titleStyle}>신랑측</span>
-        <Line />
-        {groomFilteredList.length === 0 ? (
-          <span css={textStyle}>등록된 연락처가 없습니다.</span>
-        ) : (
-          groomFilteredList.map((contact, index) => (
-            <ContactItem
-              key={index}
-              part={contact.part}
-              phone={contact.phone}
-            />
-          ))
-        )}
-      </MotionFade>
+      <Dialog.Portal>
+        {/* 검정 반투명 배경 */}
+        <Dialog.Overlay css={modalOverlayStyle} />
 
-      <hr css={gapHrStyle} />
+        {/* 전체 컨텐츠 */}
+        <Dialog.Content css={modalContentStyle}>
+          {/* 상단 헤더 */}
+          <header css={modalHeaderStyle}>
+            <Dialog.Title css={modalTitleStyle}>연락 하기</Dialog.Title>
 
-      <MotionFade css={contactMotionStyle}>
-        <span css={titleStyle}>신부측</span>
-        <Line />
-        {bridgeFilteredList.length === 0 ? (
-          <span css={textStyle}>등록된 연락처가 없습니다.</span>
-        ) : (
-          bridgeFilteredList.map((contact, index) => (
-            <ContactItem
-              key={index}
-              part={contact.part}
-              phone={contact.phone}
-            />
-          ))
-        )}
-      </MotionFade>
-    </>
+            <Dialog.Description css={modalDescriptionStyle}>
+              연락하기 모달창입니다
+            </Dialog.Description>
+
+            {/* 닫기 버튼 (우측 상단) */}
+            <Dialog.Close asChild>
+              <button css={modalCloseStyle}>✕</button>
+            </Dialog.Close>
+          </header>
+
+          {/* 본문 */}
+          <main
+            style={{
+              flex: 1,
+              padding: '2rem',
+            }}
+          >
+            <ContactModal />
+          </main>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 };
 
-const contactMotionStyle = css`
+const modalButtonStyle = css`
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--gray4);
+  color: var(--gray12);
+  border-radius: 1rem;
+  font-size: 1rem;
+`;
+
+const modalOverlayStyle = css`
+  position: fixed;
+  inset: 0;
+  /* background-color: var(--gray12); */
+  /* background-color: rgba(0, 0, 0, 0.8); */
+  background-color: ${hexToRgba('#111111', 0.8)};
+`;
+
+const modalContentStyle = css`
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
-`;
-
-const gapHrStyle = css`
-  border: none;
-  height: 40px;
+  color: white;
   background: transparent;
-  margin: 0;
-  width: 100%;
 `;
 
-const textStyle = css`
-  margin: 0 16px;
-  font-size: 0.9rem;
-  color: var(--gray11);
+const modalHeaderStyle = css`
+  position: relative;
+  padding: 1.5rem;
+  text-align: center;
 `;
 
-const titleStyle = css`
-  font-weight: 600;
-  margin: 0 16px;
-  font-size: 0.9rem;
+const modalTitleStyle = css`
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
+const modalDescriptionStyle = css`
+  display: none;
+`;
+
+const modalCloseStyle = css`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--gray1);
+  cursor: pointer;
 `;
 
 export default Contact;
