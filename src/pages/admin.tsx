@@ -4,13 +4,14 @@ import { toast, Toaster } from 'sonner';
 
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
+import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useWeddingInfoByUid } from '@/hooks/useWeddingInfoByUid';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { SavedImage } from '@/types/wedding';
+import type { SavedImage, ShowCheckbox } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
 import { saveUserShare } from '@/utils/shares';
 import { uploadImageToStorage } from '@/utils/storage';
@@ -20,7 +21,12 @@ const AdminPage = () => {
   const { user, uid, isLoading } = useCurrentUser();
   const { localImageList } = useWeddingStore((state) => state.values.gallery);
 
+  const values = useWeddingStore((state) => state.values);
+  const showCheckbox = values.showCheckbox;
+
   const setDeep = useWeddingStore((state) => state.setDeep);
+  const setField = useWeddingStore((state) => state.setField);
+      
   const { notFound } = useWeddingInfoByUid(uid, setDeep);
 
   if (notFound) {
@@ -63,6 +69,11 @@ const AdminPage = () => {
     }
   };
 
+  const handleCheckboxChange = (key: keyof ShowCheckbox) => {
+    const current = showCheckbox[key] ?? false;
+    setField('showCheckbox', key, !current);
+  };
+
   if (isLoading) return <LoadingSpinner />;
 
   return (
@@ -71,9 +82,18 @@ const AdminPage = () => {
         {adminList.length > 0 && (
           <Accordion>
             {adminList.map(({ title, value, component: Component }) => (
-              <AccordionItem key={value} title={title} value={value}>
-                <Component />
-              </AccordionItem>
+              <div key={value} css={divWrapStyle}>
+                <BaseCheckBoxInput
+                  checked={showCheckbox[value] ?? false}
+                  css={checkboxStyle}
+                  onChange={() => handleCheckboxChange(value)}
+                />
+                <div css={accordionItemStyle}>
+                  <AccordionItem title={title} value={value}>
+                    <Component />
+                  </AccordionItem>
+                </div>
+              </div>
             ))}
           </Accordion>
         )}
@@ -111,4 +131,20 @@ const buttonStyle = css`
     cursor: not-allowed;
   }
 `;
+
+const divWrapStyle = css`
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+`;
+
+const checkboxStyle = css`
+  flex-shrink: 0;
+  margin-top: 1.2rem;
+`;
+
+const accordionItemStyle = css`
+  flex: 1;
+`;
+
 export default AdminPage;

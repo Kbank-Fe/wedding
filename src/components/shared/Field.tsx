@@ -104,6 +104,7 @@ const singleRowCss = (isMobile: boolean) => css`
 
 const labelCss = (width: number, isMobile: boolean) => css`
   width: ${isMobile ? 'auto' : `${width}px`};
+  margin: 0.5rem 0;
   flex-shrink: 0;
   display: flex;
   align-items: flex-start;
@@ -123,7 +124,6 @@ const fsCss = css`
 const rowCss = css`
   display: flex;
   gap: 8px;
-  align-items: center;
   flex-wrap: wrap;
 `;
 

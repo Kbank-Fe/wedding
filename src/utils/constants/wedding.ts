@@ -74,6 +74,14 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     localImageList: [],
     savedImageList: [],
   },
+  showCheckbox: {
+    intro: true,
+    contact: false,
+    calendar: true,
+    account: true,
+    transport: true,
+    gallery: true,
+  },
   map: {
     title: '',
     venueName: '',

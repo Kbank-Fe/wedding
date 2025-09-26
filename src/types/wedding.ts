@@ -80,6 +80,15 @@ export type UserBasicInfo = {
   femaleMotherName?: string;
 };
 
+export type ShowCheckbox = {
+  intro: boolean;
+  contact: boolean;
+  calendar: boolean;
+  account: boolean;
+  transport: boolean;
+  gallery: boolean;
+}
+
 type WeddingMap = {
   title: string;
   venueName: string;
@@ -95,5 +104,6 @@ export type WeddingInfo = {
   intro: Intro;
   transport: TransportList;
   gallery: Gallery;
+  showCheckbox: ShowCheckbox;
   map: WeddingMap;
 };
