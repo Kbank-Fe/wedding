@@ -40,12 +40,7 @@ const Contact = () => {
           </header>
 
           {/* 본문 */}
-          <main
-            style={{
-              flex: 1,
-              padding: '2rem',
-            }}
-          >
+          <main css={modalMainStyle}>
             <ContactModal />
           </main>
         </Dialog.Content>
@@ -104,6 +99,11 @@ const modalCloseStyle = css`
   font-size: 1.5rem;
   color: var(--gray1);
   cursor: pointer;
+`;
+
+const modalMainStyle = css`
+  flex: 1;
+  padding: 2rem;
 `;
 
 export default Contact;
