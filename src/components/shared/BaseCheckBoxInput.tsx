@@ -11,7 +11,7 @@ const BaseCheckBoxInput = ({
   ...rest
 }: BaseCheckBoxInputProps) => {
   return (
-    <div css={wapperStyle}>
+    <div css={wrapperStyle}>
       <input checked={checked} css={checkboxStyle} type="checkbox" {...rest} />
       {checkboxLabel && <span>{checkboxLabel}</span>}
     </div>
@@ -28,7 +28,6 @@ const checkboxStyle = css`
   border-radius: 4px;
   background-color: var(--gray5);
   position: relative;
-  /* cursor: pointer; */
   transition: background-color 0.2s ease;
 
   &:checked {
@@ -46,7 +45,7 @@ const checkboxStyle = css`
   }
 `;
 
-const wapperStyle = css`
+const wrapperStyle = css`
   display: flex;
   align-items: center;
   gap: 8px; /* 체크박스와 텍스트 사이 간격 */
