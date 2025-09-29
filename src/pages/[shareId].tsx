@@ -17,7 +17,7 @@ const SharePage = () => {
   }
 
   return (
-    <PageLayout>
+    <PageLayout main>
       {mainList.length > 0 && (
         <>
           {mainList.map(
