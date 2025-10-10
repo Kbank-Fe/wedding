@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import DOMPurify from 'dompurify';
 import { motion } from 'framer-motion';
+import { IoCaretForwardOutline } from 'react-icons/io5';
 
 type TransportProps = {
   title?: string;
@@ -10,18 +11,22 @@ type TransportProps = {
 const TransportItem = ({ title, description }: TransportProps) => {
   return (
     <motion.div
-      css={wrapperStyle}
       initial={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
       viewport={{ once: true, amount: 0.2 }}
       whileInView={{ opacity: 1, y: 0 }}
     >
-      {title && <h2 css={titleStyle}>{title}</h2>}
+      {title && (
+        <div css={titleContainerStyle}>
+          <IoCaretForwardOutline color="#87BBBA" size={12} />
+          <h2 css={titleStyle}>{title}</h2>
+        </div>
+      )}
       {description && (
         <div
           css={descriptionStyle}
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(description),
+            __html: DOMPurify.sanitize(description, { ADD_TAGS: ['br'] }),
           }}
         />
       )}
@@ -29,39 +34,28 @@ const TransportItem = ({ title, description }: TransportProps) => {
   );
 };
 
-const wrapperStyle = css`
-  border: 1px solid var(--gray5);
-  border-radius: 0.7rem;
-  padding: 0.8rem 1rem;
-  background-color: var(--gray2);
-  transition: box-shadow 0.2s;
+const titleContainerStyle = css`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 
-  &:hover {
-    box-shadow: 0 3px 7px rgba(48, 48, 48, 0.08);
+  svg {
+    flex-shrink: 0;
   }
 `;
 
 const titleStyle = css`
-  font-size: 0.9rem;
+  color: var(--gray11);
+  font-size: 13px;
   font-weight: 700;
-  margin-bottom: 0.4rem;
+  margin-left: 0.3rem;
 `;
 
 const descriptionStyle = css`
-  color: var(--gray11);
-  font-size: 0.8rem;
+  color: var(--gray10);
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.2rem;
-
-  strong {
-    font-weight: 600;
-  }
-
-  em {
-    color: var(--gray10);
-    font-style: normal;
-    font-weight: 600;
-  }
 `;
 
 export default TransportItem;
