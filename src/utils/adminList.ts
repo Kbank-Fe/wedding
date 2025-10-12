@@ -50,7 +50,7 @@ export const adminList: AdminList[] = [
   },
   {
     title: '예식장소',
-    value: 'location',
+    value: 'map',
     component: WeddingMapAdmin,
   },
 ] as const;
