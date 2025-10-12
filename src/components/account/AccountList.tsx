@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
+import { TfiLayoutLineSolid } from 'react-icons/tfi';
 import { Toaster } from 'sonner';
 
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
 import Account from '@/components/account/Account';
-import Header from '@/components/shared/Header';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { Account as AccountType } from '@/types/wedding';
 
@@ -46,7 +46,9 @@ const AccountList = () => {
 
   return (
     <>
-      <Header title="AccountList" />
+      <div css={headerStyle}>
+        <TfiLayoutLineSolid size={24} />
+      </div>
       <motion.div
         initial="hidden"
         variants={containerVariants}
@@ -71,11 +73,18 @@ const AccountList = () => {
   );
 };
 
+const headerStyle = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--teal7);
+`;
+
 const titleStyle = css`
   text-align: center;
   font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--gray12);
+  font-weight: 500;
+  color: var(--gray11);
   margin-bottom: 0.5rem;
   letter-spacing: -0.01em;
 `;

@@ -38,10 +38,10 @@ const slideUp = keyframes`
 `;
 
 const itemStyle = css`
-  border: 1px solid var(--gray3);
+  border: 1px solid var(--gray4);
   border-radius: 10px;
   overflow: hidden;
-  background: var(--gray1);
+  background: var(--gray4);
 `;
 
 const triggerStyle = css`
@@ -67,10 +67,10 @@ const triggerStyle = css`
 const contentStyle = css`
   overflow: hidden;
   font-size: 0.95rem;
-  background: var(--gray1);
+  background: var(--gray2);
   border-top: 1px solid var(--gray3);
   line-height: 17px;
-  padding: 1rem 1.3rem;
+  padding: 1rem;
 
   &[data-state='open'] {
     animation: ${slideDown} 0.25s ease-out;

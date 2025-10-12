@@ -1,9 +1,13 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
-import { Map, MapMarker, useKakaoLoader } from 'react-kakao-maps-sdk';
+import { MdLocationOn } from 'react-icons/md';
+import {
+  Map as KakaoMap,
+  MapMarker,
+  useKakaoLoader,
+} from 'react-kakao-maps-sdk';
 
 import MapBadge from '@/components/map/MapBadge';
-import Header from '@/components/shared/Header';
 import { useGeocode } from '@/hooks/useGeocode';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { LatLng } from '@/types/map.types';
@@ -21,7 +25,10 @@ const WeddingMap = () => {
 
   return (
     <>
-      <Header title="Location" />
+      <div css={headerStyle}>
+        <MdLocationOn size={24} />
+      </div>
+
       <motion.div
         initial="hidden"
         variants={containerVariants}
@@ -42,13 +49,13 @@ const WeddingMap = () => {
 
             {mapInfo.isMapVisible && (
               <>
-                <Map
+                <KakaoMap
                   center={position}
                   level={3}
                   style={{ width: '100%', height: '40vh' }}
                 >
                   <MapMarker position={position} title="예식 장소" />
-                </Map>
+                </KakaoMap>
                 <MapBadge
                   address={mapInfo.address}
                   lat={position.lat}
@@ -71,6 +78,14 @@ const containerVariants = {
     transition: { duration: 1.0, ease: [0.25, 0.1, 0.25, 1] },
   },
 } as const;
+
+const headerStyle = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--teal7);
+  margin-bottom: 1rem;
+`;
 
 const titleStyle = css`
   text-align: center;
