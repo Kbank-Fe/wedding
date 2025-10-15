@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import type { LocalImage } from '@/types/wedding';
+
 type Photo = {
   src: string;
   width: number;
@@ -11,39 +13,32 @@ type Mode = 'fixed' | 'actual';
 const MAX_SIZE = 700;
 
 export const usePhotoList = (
-  files: File[],
+  images: LocalImage[],
   mode: Mode = 'fixed',
   defaultWidth = 600,
   defaultHeight = 800,
 ) => {
   const [photoList, setPhotoList] = useState<Photo[]>([]);
 
-  const handleSetGalleryItems = (photos: Photo[]) =>
-    photos.map(({ src }) => ({
-      original: src,
-      thumbnail: src,
-    }));
-
   const applyMaxLimit = (width: number, height: number) => {
     const longerSide = Math.max(width, height);
-
     if (longerSide > MAX_SIZE) {
       const ratio = MAX_SIZE / longerSide;
       width = Math.round(width * ratio);
       height = Math.round(height * ratio);
     }
-    console.log(width, height);
-
     return { width, height };
   };
 
   useEffect(() => {
-    if (!files || files.length === 0) {
+    if (!images || images.length === 0) {
       setPhotoList([]);
       return;
     }
 
-    const urls = files.map((file) => URL.createObjectURL(file));
+    const urls = images.map((img) =>
+      img instanceof File ? URL.createObjectURL(img) : img.url,
+    );
 
     if (mode === 'fixed') {
       setPhotoList(
@@ -62,6 +57,13 @@ export const usePhotoList = (
                 const { width, height } = applyMaxLimit(img.width, img.height);
                 resolve({ src: url, width, height });
               };
+              img.onerror = () => {
+                resolve({
+                  src: url,
+                  width: defaultWidth,
+                  height: defaultHeight,
+                });
+              };
               img.src = url;
             }),
         ),
@@ -69,9 +71,14 @@ export const usePhotoList = (
     }
 
     return () => {
-      urls.forEach((url) => URL.revokeObjectURL(url));
+      images.forEach((img) => {
+        if (img instanceof File) {
+          const url = URL.createObjectURL(img);
+          URL.revokeObjectURL(url);
+        }
+      });
     };
-  }, [files, mode, defaultWidth, defaultHeight]);
+  }, [images, mode, defaultWidth, defaultHeight]);
 
-  return { photoList, handleSetGalleryItems };
+  return { photoList };
 };

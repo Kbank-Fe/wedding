@@ -3,11 +3,15 @@ import { X } from 'lucide-react';
 
 import BaseImageInput from '@/components/shared/BaseImageInput';
 import Input from '@/components/shared/Input';
+import { useImagePreview } from '@/hooks/useImagePreview';
 import { useWeddingStore } from '@/stores/useWeddingStore';
+import type { LocalImage } from '@/types/wedding';
 
 const GalleryAdmin = () => {
   const { localImageList } = useWeddingStore((state) => state.values.gallery);
   const setDeep = useWeddingStore((state) => state.setDeep);
+
+  const imagePreviewList = useImagePreview(localImageList);
 
   const handleAddFiles = (files: File[]) => {
     setDeep((draft) => {
@@ -15,9 +19,16 @@ const GalleryAdmin = () => {
     });
   };
 
-  const handleRemoveFiles = (index: number) => () => {
+  const handleRemoveImage = (target: LocalImage) => {
     setDeep((draft) => {
-      draft.gallery.localImageList.splice(index, 1);
+      draft.gallery.localImageList = draft.gallery.localImageList.filter(
+        (img) => {
+          if (img instanceof File && target instanceof File)
+            return img.name !== target.name || img.size !== target.size;
+          if ('url' in img && 'url' in target) return img.url !== target.url;
+          return true;
+        },
+      );
     });
   };
 
@@ -34,11 +45,11 @@ const GalleryAdmin = () => {
                 <img
                   alt={file.name}
                   css={previewImageStyle}
-                  src={URL.createObjectURL(file)}
+                  src={imagePreviewList[index]}
                 />
                 <button
                   css={removeButtonStyle}
-                  onClick={handleRemoveFiles(index)}
+                  onClick={() => handleRemoveImage(file)}
                 >
                   <X size={10} />
                 </button>
