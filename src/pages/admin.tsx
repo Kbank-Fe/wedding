@@ -18,7 +18,6 @@ import { uploadImageToStorage } from '@/utils/storage';
 const AdminPage = () => {
   const navigate = useNavigate();
   const { user, uid, isLoading } = useCurrentUser();
-  const { localImageList } = useWeddingStore((state) => state.values.gallery);
 
   const setDeep = useWeddingStore((state) => state.setDeep);
   const { notFound } = useWeddingInfo({ uid }, setDeep);
@@ -28,23 +27,43 @@ const AdminPage = () => {
   }
 
   const handleSetImageList = async (uid: string) => {
-    const currentList =
-      useWeddingStore.getState().values.gallery.savedImageList;
+    const { savedImageList, localImageList } =
+      useWeddingStore.getState().values.gallery;
 
-    const filteredImageList = localImageList.filter(
-      (file) =>
-        !currentList.some(
-          (img) => img.name === file.name && img.size === file.size,
+    // 새로 추가된 파일만 추출
+    const addedFiles = localImageList.filter(
+      (img): img is File => img instanceof File,
+    );
+
+    // 삭제된 SavedImage 추출
+    const deletedSavedImages = savedImageList.filter(
+      (saved) =>
+        !localImageList.some(
+          (img) => !(img instanceof File) && img.url === saved.url,
         ),
     );
-    const metas: SavedImage[] = await Promise.all(
-      filteredImageList.map((file) => uploadImageToStorage(file, uid!)),
-    );
 
-    setDeep((draft) => {
-      draft.gallery.savedImageList.push(...metas);
-      draft.gallery.localImageList = [];
-    });
+    if (addedFiles.length === 0 && deletedSavedImages.length === 0) return; // 변화 없으면 skip
+
+    try {
+      // 새 파일 업로드
+      const metas: SavedImage[] = await Promise.all(
+        addedFiles.map((file) => uploadImageToStorage(file, uid)),
+      );
+
+      // DB 반영 (삭제 제외 + 신규 추가)
+      setDeep((draft) => {
+        draft.gallery.savedImageList = [
+          ...savedImageList.filter(
+            (img) => !deletedSavedImages.some((del) => del.url === img.url),
+          ),
+          ...metas,
+        ];
+      });
+    } catch (error) {
+      console.error('이미지 업로드 중 오류 발생', error);
+      throw new Error('image_upload_failed');
+    }
   };
 
   const handleSave = async () => {
@@ -57,8 +76,9 @@ const AdminPage = () => {
       const shareId = await saveUserShare(uid, values);
 
       toast.success('데이터를 저장했어요!');
-      setTimeout(() => navigate(`/${shareId}`), 2000);
-    } catch {
+      setTimeout(() => navigate(`/${shareId}`), 1500);
+    } catch (error) {
+      console.error(error);
       toast.error('데이터 저장을 실패했어요.');
     }
   };
