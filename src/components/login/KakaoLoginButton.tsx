@@ -56,38 +56,35 @@ export default function KakaoLoginAndSaveTest() {
   }, [navigate, uid]);
 
   return (
-    <div css={wrapper}>
-      {!uid ? (
-        <button css={button} disabled={loading} onClick={handleLogin}>
-          {loading ? (
-            '로그인 중…'
-          ) : (
-            <img alt="카카오 로그인" src="/images/kakao_login.png" />
-          )}
+    <div css={wrapperStyle}>
+      {!uid && (
+        <button css={buttonStyle} disabled={loading} onClick={handleLogin}>
+          <img alt="카카오 로그인" src="/images/kakao_login.png" />
         </button>
-      ) : (
-        <p>로그인 성공! 이동 중…</p>
       )}
     </div>
   );
 }
 
-const wrapper = css`
+const wrapperStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding: 1rem;
 `;
 
-const button = css`
-  padding: 0.6rem 1rem;
-  border: none;
-  border-radius: 6px;
-  background: #fce000;
-  font-weight: bold;
-  cursor: pointer;
+const buttonStyle = css`
+  transition:
+    opacity 0.2s ease,
+    filter 0.2s ease;
+
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    filter: grayscale(100%) brightness(95%);
+  }
+
+  img {
+    width: 300px;
   }
 `;

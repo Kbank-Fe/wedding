@@ -11,15 +11,12 @@ const Section = ({ children }: SectionProps) => {
 
 const childWrapperStyle = css`
   width: 100%;
-  height: 100vh;
-  background-color: var(--gray1);
   margin: 0;
-  padding: 0;
+  padding: 0 2.5rem;
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 2.5rem;
 `;
 
 export default Section;

@@ -7,10 +7,13 @@ import GalleryAdmin from '@/components/gallery/GalleryAdmin';
 import UserInfoAdmin from '@/components/Intro/UserInfoAdmin';
 import WeddingMapAdmin from '@/components/map/WeddingMapAdmin';
 import TransportAdmin from '@/components/transport/TransportAdmin';
+import type { ShowCheckbox } from '@/types/wedding';
+
+type ShowKey = keyof ShowCheckbox;
 
 type AdminList = {
   title: string;
-  value: string;
+  value: ShowKey;
   component: FC;
 };
 
@@ -47,7 +50,7 @@ export const adminList: AdminList[] = [
   },
   {
     title: '예식장소',
-    value: 'Location',
+    value: 'location',
     component: WeddingMapAdmin,
   },
-];
+] as const;

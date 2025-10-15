@@ -1,33 +1,37 @@
 import { css } from '@emotion/react';
 import type { ReactNode } from 'react';
 
+type PageType = 'basic' | 'main' | 'login';
+
 type PageLayoutProps = {
   children: ReactNode;
+  pageType?: PageType;
 };
 
-const PageLayout = ({ children }: PageLayoutProps) => {
+const PageLayout = ({ children, pageType = 'basic' }: PageLayoutProps) => {
   return (
-    <div css={layoutStyle}>
-      <div css={wrapperStyle}>{children}</div>
+    <div css={layoutStyle({ pageType })}>
+      <div css={wrapperStyle({ pageType })}>{children}</div>
     </div>
   );
 };
 
-const layoutStyle = css`
+const layoutStyle = ({ pageType }: { pageType: PageType }) => css`
   width: 100%;
+  min-height: 100vh;
   max-width: 500px;
-  height: 100vh;
   margin: 0 auto;
-  background: var(--gray1);
+  background: ${pageType === 'main' || pageType === 'login'
+    ? '#F8F6F1'
+    : 'var(--gray1)'};
+  font-family: ${pageType === 'main' || pageType === 'login'
+    ? "'Wedding', sans-serif"
+    : 'inherit'};
 `;
 
-const wrapperStyle = css`
+const wrapperStyle = ({ pageType }: { pageType: PageType }) => css`
   width: 100%;
-  height: 100vh;
-  /* overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch; */
+  padding: ${pageType === 'login' ? 0 : '3rem 0'};
 `;
 
 export default PageLayout;

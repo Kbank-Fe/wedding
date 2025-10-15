@@ -56,6 +56,9 @@ type Gallery = {
 export type SavedImage = {
   url: string;
   name: string;
+  size: number;
+  type: string;
+  createdAt: number;
 };
 
 export type Intro = {
@@ -84,6 +87,17 @@ export type UserBasicInfoBoolean = {
   maleMotherDeceased?: boolean;
   femaleFatherDeceased?: boolean;
   femaleMotherDeceased?: boolean;
+}
+
+export type ShowCheckbox = {
+  intro: boolean;
+  contact: boolean;
+  calendar: boolean;
+  account: boolean;
+  transport: boolean;
+  gallery: boolean;
+  basic: boolean;
+  location: boolean;
 };
 
 type WeddingMap = {
@@ -101,5 +115,6 @@ export type WeddingInfo = {
   intro: Intro;
   transport: TransportList;
   gallery: Gallery;
+  showCheckbox: ShowCheckbox;
   map: WeddingMap;
 };
