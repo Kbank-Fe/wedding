@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
 import { MdOutlineContentCopy } from 'react-icons/md';
-import { toast } from 'sonner';
 
 import type { Account as AccountProps } from '@/types/wedding';
 import { copyToClipboard } from '@/utils/clipboard';
@@ -39,11 +38,7 @@ const Account = ({
 
   const handleClickKakaoButton = () =>
     triggerKakao(() => {
-      if ((kakaopayUrl ?? '').includes('https://qr.kakaopay.com')) {
-        window.open(kakaopayUrl, '_blank', 'noopener,noreferrer');
-      } else {
-        toast.warning('송금 링크를 확인해 주세요.');
-      }
+      window.open(kakaopayUrl, '_blank', 'noopener,noreferrer');
     });
 
   if (!showAccount) return null;
@@ -51,8 +46,8 @@ const Account = ({
   return (
     <div css={accountStyle}>
       <div css={accountRowStyle}>
-        <div css={accountHolderStyle}>{accountHolder}</div>
-        {isKakaopay && (
+        <h4>{accountHolder}</h4>
+        {isKakaopay && kakaopayUrl && (
           <button css={kakaoButtonStyle} onClick={handleClickKakaoButton}>
             <img
               alt="카카오페이"
@@ -64,8 +59,9 @@ const Account = ({
       </div>
 
       <div css={accountRowStyle}>
-        <div css={accountTextStyle}>{bankName}</div>
-        <div css={accountTextStyle}>{accountNumber}</div>
+        <p>
+          {bankName} {accountNumber}
+        </p>
         <MdOutlineContentCopy
           aria-label="계좌번호 복사"
           css={copyIconStyle}
@@ -78,43 +74,37 @@ const Account = ({
 };
 
 const accountStyle = css`
-  background-color: var(--gray2);
   display: flex;
-  flex-direction: row;
   gap: 4px;
   justify-content: space-between;
 `;
 
 const accountRowStyle = css`
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 6px;
-`;
 
-const textBase = css`
-  margin-bottom: 2px;
-`;
+  h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray11);
+  }
 
-const accountHolderStyle = css`
-  ${textBase};
-  font-weight: bold;
-  font-size: 0.85rem;
-`;
-
-const accountTextStyle = css`
-  ${textBase};
-  font-size: 0.8rem;
+  p {
+    font-size: 11px;
+    margin-bottom: 2px;
+    color: var(--gray10);
+  }
 `;
 
 const copyIconStyle = css`
+  color: var(--gray10);
   cursor: pointer;
 `;
 
 const kakaoButtonStyle = css`
   display: inline-flex;
-  width: 40px;
-  height: 20px;
+  width: 35px;
 `;
 
 const kakaoPayImageStyle = css`

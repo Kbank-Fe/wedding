@@ -26,33 +26,36 @@ const WeddingMap = () => {
   return (
     <>
       <div css={headerStyle}>
-        <MdLocationOn size={24} />
+        <MdLocationOn color="#87BBBA" size={24} />
       </div>
 
       <motion.div
+        css={textStyle}
         initial="hidden"
         variants={containerVariants}
         viewport={{ once: true, amount: 0.5 }}
         whileInView="visible"
       >
-        {mapInfo.title && <h3 css={titleStyle}>{mapInfo.title}</h3>}
-
         {mapInfo.venueName && (
-          <p css={venueInfoStyle}>
+          <h3>
             {mapInfo.venueName} {mapInfo.venueDetail}
-          </p>
+          </h3>
         )}
 
         {mapInfo.address && (
           <>
-            <p css={addressStyle}>{mapInfo.address}</p>
+            <p>{mapInfo.address}</p>
 
             {mapInfo.isMapVisible && (
               <>
                 <KakaoMap
                   center={position}
                   level={3}
-                  style={{ width: '100%', height: '40vh' }}
+                  style={{
+                    width: '100%',
+                    height: '40vh',
+                    margin: '3rem 0 2.5rem',
+                  }}
                 >
                   <MapMarker position={position} title="예식 장소" />
                 </KakaoMap>
@@ -80,32 +83,24 @@ const containerVariants = {
 } as const;
 
 const headerStyle = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--teal7);
-  margin-bottom: 1rem;
+  margin: 0 auto 1rem;
 `;
 
-const titleStyle = css`
+const textStyle = css`
   text-align: center;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-`;
+  color: var(--gray11);
 
-const venueInfoStyle = css`
-  text-align: center;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-  color: var(--gray12);
-`;
+  h3,
+  h4 {
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+  }
 
-const addressStyle = css`
-  text-align: center;
-  font-size: 0.9rem;
-  margin-bottom: 1.2rem;
-  color: var(--gray10);
+  p {
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--gray10);
+  }
 `;
 
 export default WeddingMap;

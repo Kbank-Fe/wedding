@@ -53,23 +53,23 @@ const MapBadge = ({ address, lat, lng }: MapBadgeProps) => {
 
 const containerStyle = css`
   display: flex;
-  justify-content: space-around;
-  margin-top: 1.2rem;
+  justify-content: center;
+  gap: 3.2rem;
 `;
 
 const badgeStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  font-size: 0.9rem;
-  color: var(--gray10);
+  gap: 8px;
+  font-size: 13px;
+  color: var(--gray9);
 `;
 
 const iconStyle = css`
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 5px;
 `;
 
 export default MapBadge;

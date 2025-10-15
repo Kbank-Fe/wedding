@@ -47,7 +47,7 @@ const AccountList = () => {
   return (
     <>
       <div css={headerStyle}>
-        <TfiLayoutLineSolid size={24} />
+        <TfiLayoutLineSolid color="#87BBBA" size={24} strokeWidth={1} />
       </div>
       <motion.div
         initial="hidden"
@@ -55,7 +55,7 @@ const AccountList = () => {
         viewport={{ once: true, amount: 0.5 }}
         whileInView="visible"
       >
-        <p css={titleStyle}>{accountListTitle}</p>
+        <h3 css={titleStyle}>{accountListTitle}</h3>
         <p css={subtitleStyle}>{accountListSubTitle}</p>
 
         <Accordion
@@ -74,26 +74,20 @@ const AccountList = () => {
 };
 
 const headerStyle = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--teal7);
+  margin: 0 auto 1rem;
 `;
 
 const titleStyle = css`
   text-align: center;
-  font-size: 1.2rem;
-  font-weight: 500;
   color: var(--gray11);
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.01em;
+  margin-bottom: 0.8rem;
 `;
 
 const subtitleStyle = css`
   text-align: center;
-  font-size: 1rem;
+  font-size: 13px;
   font-weight: 400;
-  color: var(--gray11);
+  color: var(--gray10);
   margin-bottom: 2rem;
   line-height: 1.6;
   white-space: pre-line;
