@@ -1,5 +1,6 @@
 import type { SavedImage } from '@/types/wedding';
 
+// 이미지 압축: File → Blob 변환 (저장 전 용도)
 export const compressImage = async (
   file: File,
   {
@@ -29,18 +30,9 @@ export const compressImage = async (
   return blob!;
 };
 
-export const urlToFile = async (saved: SavedImage): Promise<File> => {
-  const res = await fetch(saved.url);
-  const blob = await res.blob();
-  return new File([blob], saved.name, {
-    type: saved.type,
-    lastModified: saved.createdAt,
-  });
-};
-
-export const initializeLocalImageList = async (
+// 서버에서 불러온 savedImageList를 그대로 localImageList로 반환
+export const initializeLocalImageList = (
   savedImageList: SavedImage[] = [],
-): Promise<File[]> => {
-  if (!savedImageList.length) return [];
-  return Promise.all(savedImageList.map((img) => urlToFile(img)));
+): (File | SavedImage)[] => {
+  return savedImageList;
 };
