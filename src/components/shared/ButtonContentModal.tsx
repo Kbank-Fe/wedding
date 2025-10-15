@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import * as Dialog from '@radix-ui/react-dialog';
 
-type ContentModalProps = {
+type ButtonContentModalProps = {
   children: React.ReactNode;
   buttonText: string;
   title: string;
@@ -9,13 +9,13 @@ type ContentModalProps = {
   onClose?: () => void;
 };
 
-const ContentModal = ({
+const ButtonContentModal = ({
   children,
   buttonText,
   title,
   description,
   onClose,
-}: ContentModalProps) => {
+}: ButtonContentModalProps) => {
   return (
     <Dialog.Root>
       {/* 모달 열기 버튼 */}
@@ -108,4 +108,4 @@ const modalMainStyle = css`
   padding: 2rem;
 `;
 
-export default ContentModal;
+export default ButtonContentModal;

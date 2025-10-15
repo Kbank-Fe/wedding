@@ -1,15 +1,15 @@
 import ContactModal from '@/components/contact/ContactModal';
-import ContentModal from '@/components/shared/ContentModal';
+import ButtonContentModal from '@/components/shared/ButtonContentModal';
 
 const Contact = () => {
   return (
-    <ContentModal
+    <ButtonContentModal
       buttonText="연락 하기"
       description="연락하기 모달창입니다"
       title="연락 하기"
     >
       <ContactModal />
-    </ContentModal>
+    </ButtonContentModal>
   );
 };
 
