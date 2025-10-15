@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 import UserInfo from '@/components/Intro/UserInfo';
 import Header from '@/components/shared/Header';
-import type { Intro } from '@/types/wedding';
+import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -11,36 +11,11 @@ const fadeUp = {
 };
 
 const WeddingIntro = () => {
-  const weddingIntroData: Intro = {
-    title: '저희 결혼합니다',
-    content: `
-      <div id="intro-ment-area">
-        <p>100년 동안 당신을 모르고 사는 것보다,</p>
-        <p>당신을 알고 지금 죽는 게 더 나아요.</p>
-        <p>&nbsp;</p>
-        <p>- 디즈니, &lt;포카혼타스&gt; 中 -</p>
-        <p>-</p>
-        <p>평생 서로 귀하게 여기며<br>첫 마음 그대로 존중하고&nbsp;</p>
-        <p>배려하며 살겠습니다.<br><br>오로지 믿음과 사랑을 약속하는 날<br>오셔서 축복해 주시면 더 없는 기쁨으로<br>간직하겠습니다.</p>
-      </div>
-    `,
-    alignment: 'center',
-    showNames: true,
-    basicInfo: [
-      {
-        maleName: 'MMM',
-        femaleName: 'FFF',
-        maleFatherName: '신랑아버지',
-        maleMotherName: '신랑어머니',
-        femaleFatherName: '신부아버지',
-        femaleMotherName: '신부어머니',
-      },
-    ],
-  };
+  const intro = useWeddingStore((state) => state.values.intro);
 
   return (
     <>
-      <Header title={'Wedding Day~!'} />
+      <Header title={intro.title} />
       <motion.div
         css={introContainerStyle}
         initial="hidden"
@@ -49,29 +24,28 @@ const WeddingIntro = () => {
         whileInView="visible"
       >
         <motion.p css={titleStyle} variants={fadeUp}>
-          {weddingIntroData.title}
+          {intro.title}
         </motion.p>
-
         <motion.div
-          dangerouslySetInnerHTML={{ __html: weddingIntroData.content }}
+          dangerouslySetInnerHTML={{ __html: intro.content }}
           variants={fadeUp}
         />
-
         <br />
-
-        {weddingIntroData.showNames &&
-          weddingIntroData.basicInfo.map((info, idx) => (
-            <UserInfo
-              key={idx}
-              alignment={weddingIntroData.alignment}
-              femaleFatherName={info.femaleFatherName}
-              femaleMotherName={info.femaleMotherName}
-              femaleName={info.femaleName}
-              maleFatherName={info.maleFatherName}
-              maleMotherName={info.maleMotherName}
-              maleName={info.maleName}
-            />
-          ))}
+        {intro.showNames && (
+          <UserInfo
+            alignment={intro.alignment}
+            femaleFatherDeceased={intro.basicInfo.femaleFatherDeceased}
+            femaleFatherName={intro.basicInfo.femaleFatherName}
+            femaleMotherDeceased={intro.basicInfo.femaleMotherDeceased}
+            femaleMotherName={intro.basicInfo.femaleMotherName}
+            femaleName={intro.basicInfo.femaleName}
+            maleFatherDeceased={intro.basicInfo.maleFatherDeceased}
+            maleFatherName={intro.basicInfo.maleFatherName}
+            maleMotherDeceased={intro.basicInfo.maleMotherDeceased}
+            maleMotherName={intro.basicInfo.maleMotherName}
+            maleName={intro.basicInfo.maleName}
+          />
+        )}
       </motion.div>
     </>
   );
