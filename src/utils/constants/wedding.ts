@@ -49,8 +49,8 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     },
   },
   intro: {
-    title: '',
-    content: '',
+    title: '타이틀 Default',
+    content: '내용 Default',
     showNames: true,
     alignment: 'center',
     basicInfo: {
