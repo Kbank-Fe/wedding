@@ -5,7 +5,6 @@ const lightColors = {
   ...RadixColors.amber,
   ...RadixColors.blue,
   ...RadixColors.red,
-  ...RadixColors.teal,
 };
 
 const darkColors = {
@@ -13,7 +12,6 @@ const darkColors = {
   ...RadixColors.amberDark,
   ...RadixColors.blueDark,
   ...RadixColors.redDark,
-  ...RadixColors.tealDark,
 };
 
 type Colors = Record<string, string>;
