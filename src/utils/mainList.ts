@@ -5,6 +5,7 @@ import DateCalendar from '@/components/calendar/DateCalendar';
 import Contact from '@/components/contact/Contact';
 import Gallery from '@/components/gallery/Gallery';
 import WeddingIntro from '@/components/Intro/WeddingIntro';
+import WeddingMap from '@/components/map/WeddingMap';
 import TransportList from '@/components/transport/TransportList';
 import type { ShowCheckbox } from '@/types/wedding';
 
@@ -41,5 +42,9 @@ export const mainList: MainList[] = [
   {
     key: 'gallery',
     component: Gallery,
+  },
+  {
+    key: 'map',
+    component: WeddingMap,
   },
 ] as const;

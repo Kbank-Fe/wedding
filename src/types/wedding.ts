@@ -97,7 +97,7 @@ export type ShowCheckbox = {
   transport: boolean;
   gallery: boolean;
   basic: boolean;
-  location: boolean;
+  map: boolean;
 };
 
 type WeddingMap = {
