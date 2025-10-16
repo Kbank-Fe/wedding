@@ -1,9 +1,23 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import { toast } from 'sonner';
+import { MdOutlineContentCopy } from 'react-icons/md';
 
 import type { Account as AccountProps } from '@/types/wedding';
 import { copyToClipboard } from '@/utils/clipboard';
+import { Icons } from '@/utils/constants/images';
+
+const useButtonCooldown = (delay = 2200) => {
+  const [disabled, setDisabled] = useState(false);
+
+  const trigger = (callback: () => void) => {
+    if (disabled) return;
+    setDisabled(true);
+    callback();
+    setTimeout(() => setDisabled(false), delay);
+  };
+
+  return { disabled, trigger };
+};
 
 const Account = ({
   bankName,
@@ -12,142 +26,91 @@ const Account = ({
   isKakaopay,
   kakaopayUrl,
 }: AccountProps) => {
-  const [copyButtonDisabled, setCopyButtonDisabled] = useState(false);
-  const [kakaoButtonDisabled, setKakaoButtonDisabled] = useState(false);
   const showAccount = !!(bankName && accountNumber && accountHolder);
 
-  const handleClickCopyButton = () => {
-    if (copyButtonDisabled) return;
+  const { trigger: triggerCopy } = useButtonCooldown();
+  const { trigger: triggerKakao } = useButtonCooldown();
 
-    setCopyButtonDisabled(true);
-    copyToClipboard({ text: `${bankName} ${accountNumber}` });
-    setTimeout(() => setCopyButtonDisabled(false), 2200);
-  };
+  const handleClickCopyButton = () =>
+    triggerCopy(() => {
+      copyToClipboard({ text: `${bankName} ${accountNumber}` });
+    });
 
-  const handleClickKakaoButton = () => {
-    if (kakaoButtonDisabled) return;
-
-    setKakaoButtonDisabled(true);
-
-    if ((kakaopayUrl ?? '').indexOf('https://qr.kakaopay.com') > -1) {
+  const handleClickKakaoButton = () =>
+    triggerKakao(() => {
       window.open(kakaopayUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      toast.warning('송금 링크를 확인해 주세요.');
-    }
+    });
 
-    setTimeout(() => setKakaoButtonDisabled(false), 2200);
-  };
+  if (!showAccount) return null;
 
   return (
-    <>
-      {showAccount && (
-        <div css={accountStyle}>
-          <div css={accountInfoStyle}>
-            <div css={accountHolderNameStyle}>{accountHolder ?? ''}</div>
-            <div css={accountNumberStyle}>
-              {bankName ?? ''} {accountNumber ?? ''}
-            </div>
-          </div>
+    <div css={accountStyle}>
+      <div css={accountRowStyle}>
+        <h4>{accountHolder}</h4>
+        {isKakaopay && kakaopayUrl && (
+          <button css={kakaoButtonStyle} onClick={handleClickKakaoButton}>
+            <img
+              alt="카카오페이"
+              css={kakaoPayImageStyle}
+              src={Icons.kakaopay}
+            />
+          </button>
+        )}
+      </div>
 
-          <div css={buttonGroupStyle}>
-            <button
-              css={copyButtonStyle}
-              disabled={copyButtonDisabled}
-              onClick={handleClickCopyButton}
-            >
-              복사
-            </button>
-            {isKakaopay && (
-              <button
-                css={kakaoButtonStyle}
-                disabled={kakaoButtonDisabled}
-                onClick={handleClickKakaoButton}
-              >
-                카카오송금
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-    </>
+      <div css={accountRowStyle}>
+        <p>
+          {bankName} {accountNumber}
+        </p>
+        <MdOutlineContentCopy
+          aria-label="계좌번호 복사"
+          css={copyIconStyle}
+          size={12}
+          onClick={handleClickCopyButton}
+        />
+      </div>
+    </div>
   );
 };
 
 const accountStyle = css`
-  background-color: var(--gray1);
   display: flex;
+  gap: 4px;
   justify-content: space-between;
+`;
+
+const accountRowStyle = css`
+  display: flex;
   align-items: center;
-`;
-
-const accountInfoStyle = css`
-  display: flex;
-  flex-direction: column;
-`;
-
-const accountHolderNameStyle = css`
-  font-weight: bold;
-  font-size: 0.85rem;
-  margin-bottom: 4px;
-`;
-
-const accountNumberStyle = css`
-  font-size: 0.75rem;
-`;
-
-const buttonGroupStyle = css`
-  display: flex;
-  flex-direction: column;
   gap: 6px;
-  width: 80px;
+
+  h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray11);
+  }
+
+  p {
+    font-size: 11px;
+    margin-bottom: 2px;
+    color: var(--gray10);
+  }
 `;
 
-const baseButtonStyle = css`
-  font-size: 0.75rem;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
+const copyIconStyle = css`
+  color: var(--gray10);
   cursor: pointer;
-  transition: background 0.2s ease;
-  width: 100%;
-`;
-
-const copyButtonStyle = css`
-  ${baseButtonStyle};
-  background-color: var(--blue9);
-  color: var(--gray1);
-
-  &:not(:disabled):hover {
-    background-color: var(--blue11);
-  }
-
-  &:disabled {
-    background-color: var(--gray5);
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
 `;
 
 const kakaoButtonStyle = css`
-  ${baseButtonStyle};
-  background-color: var(--amber9);
-  color: var(--gray12);
-  font-weight: bold;
+  display: inline-flex;
+  width: 35px;
+`;
 
-  &:hover {
-    background-color: var(--amber10);
-  }
-
-  &:active {
-    background-color: var(--amber11);
-  }
-
-  &:disabled {
-    background-color: var(--amber6);
-    color: var(--gray11);
-    cursor: not-allowed;
-    opacity: 0.8;
-  }
+const kakaoPayImageStyle = css`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 `;
 
 export default Account;

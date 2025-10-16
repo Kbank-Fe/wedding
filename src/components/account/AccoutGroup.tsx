@@ -55,6 +55,14 @@ const AccountGroup = ({
           )}
         </div>
 
+        <Field label="예금주">
+          <BaseTextInput
+            maxLength={10}
+            value={acc.accountHolder}
+            onChange={handleChange(i, 'accountHolder', 'kor')}
+          />
+        </Field>
+
         <Field label="은행명">
           <BaseTextInput
             maxLength={15}
@@ -68,14 +76,6 @@ const AccountGroup = ({
             maxLength={20}
             value={acc.accountNumber}
             onChange={handleChange(i, 'accountNumber', 'num')}
-          />
-        </Field>
-
-        <Field label="예금주">
-          <BaseTextInput
-            maxLength={10}
-            value={acc.accountHolder}
-            onChange={handleChange(i, 'accountHolder', 'kor')}
           />
         </Field>
 

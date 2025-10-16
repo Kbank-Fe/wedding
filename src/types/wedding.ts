@@ -99,6 +99,7 @@ export type ShowCheckbox = {
   basic: boolean;
   location: boolean;
   greeting: boolean;
+  map: boolean;
 };
 
 type WeddingMap = {

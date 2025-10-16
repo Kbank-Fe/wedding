@@ -1,9 +1,13 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
-import { Map, MapMarker, useKakaoLoader } from 'react-kakao-maps-sdk';
+import { MdLocationOn } from 'react-icons/md';
+import {
+  Map as KakaoMap,
+  MapMarker,
+  useKakaoLoader,
+} from 'react-kakao-maps-sdk';
 
 import MapBadge from '@/components/map/MapBadge';
-import Header from '@/components/shared/Header';
 import { useGeocode } from '@/hooks/useGeocode';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { LatLng } from '@/types/map.types';
@@ -21,34 +25,40 @@ const WeddingMap = () => {
 
   return (
     <>
-      <Header title="Location" />
+      <div css={headerStyle}>
+        <MdLocationOn color="#87BBBA" size={24} />
+      </div>
+
       <motion.div
+        css={textStyle}
         initial="hidden"
         variants={containerVariants}
         viewport={{ once: true, amount: 0.5 }}
         whileInView="visible"
       >
-        {mapInfo.title && <h3 css={titleStyle}>{mapInfo.title}</h3>}
-
         {mapInfo.venueName && (
-          <p css={venueInfoStyle}>
+          <h3>
             {mapInfo.venueName} {mapInfo.venueDetail}
-          </p>
+          </h3>
         )}
 
         {mapInfo.address && (
           <>
-            <p css={addressStyle}>{mapInfo.address}</p>
+            <p>{mapInfo.address}</p>
 
             {mapInfo.isMapVisible && (
               <>
-                <Map
+                <KakaoMap
                   center={position}
                   level={3}
-                  style={{ width: '100%', height: '40vh' }}
+                  style={{
+                    width: '100%',
+                    height: '40vh',
+                    margin: '3rem 0 2.5rem',
+                  }}
                 >
                   <MapMarker position={position} title="예식 장소" />
-                </Map>
+                </KakaoMap>
                 <MapBadge
                   address={mapInfo.address}
                   lat={position.lat}
@@ -72,25 +82,25 @@ const containerVariants = {
   },
 } as const;
 
-const titleStyle = css`
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+const headerStyle = css`
+  margin: 0 auto 1rem;
 `;
 
-const venueInfoStyle = css`
+const textStyle = css`
   text-align: center;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-  color: var(--gray12);
-`;
+  color: var(--gray11);
 
-const addressStyle = css`
-  text-align: center;
-  font-size: 0.9rem;
-  margin-bottom: 1.2rem;
-  color: var(--gray10);
+  h3,
+  h4 {
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+  }
+
+  p {
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--gray10);
+  }
 `;
 
 export default WeddingMap;
