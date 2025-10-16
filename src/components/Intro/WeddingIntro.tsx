@@ -15,7 +15,7 @@ const WeddingIntro = () => {
 
   return (
     <>
-      <Header title={intro.title} />
+      <Header title={'Wedding Day~'} />
       <motion.div
         css={introContainerStyle}
         initial="hidden"

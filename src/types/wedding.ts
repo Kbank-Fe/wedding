@@ -87,7 +87,7 @@ export type UserBasicInfoBoolean = {
   maleMotherDeceased?: boolean;
   femaleFatherDeceased?: boolean;
   femaleMotherDeceased?: boolean;
-}
+};
 
 export type ShowCheckbox = {
   intro: boolean;
@@ -98,6 +98,7 @@ export type ShowCheckbox = {
   gallery: boolean;
   basic: boolean;
   location: boolean;
+  greeting: boolean;
 };
 
 type WeddingMap = {
