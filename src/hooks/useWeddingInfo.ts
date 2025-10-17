@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import useSWR from 'swr';
 
 import type { WeddingInfo } from '@/types/wedding';
+import { WEDDING_INITIAL_INFO } from '@/utils/constants/wedding';
 import { initializeLocalImageList } from '@/utils/image';
 import { getShare, getUserShareId } from '@/utils/shares';
 import { isValidNanoId } from '@/utils/validateNanoId';
@@ -20,7 +21,7 @@ const fetchWeddingInfo = async ({
       const resolvedShareId = await getUserShareId(uid);
       if (!resolvedShareId) return null;
       const doc = await getShare<WeddingInfo>(resolvedShareId);
-      return doc?.data ?? null;
+      return doc?.data ?? WEDDING_INITIAL_INFO;
     }
 
     if (shareId && isValidNanoId(shareId)) {
@@ -63,13 +64,14 @@ export const useWeddingInfo = (
       );
 
       setDeep((draft) => {
-        Object.assign(draft, data);
         const localFiles = (draft.gallery?.localImageList ?? []).filter(
           (img): img is File => img instanceof File,
         );
-        draft.gallery.localImageList = [...localImageList, ...localFiles];
+        draft.gallery = {
+          ...(data.gallery ?? {}),
+          localImageList: [...localImageList, ...localFiles],
+        };
       });
-
       initializedRef.current = true;
     };
 
