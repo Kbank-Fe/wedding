@@ -63,13 +63,14 @@ export const useWeddingInfo = (
       );
 
       setDeep((draft) => {
-        Object.assign(draft, data);
         const localFiles = (draft.gallery?.localImageList ?? []).filter(
           (img): img is File => img instanceof File,
         );
-        draft.gallery.localImageList = [...localImageList, ...localFiles];
+        draft.gallery = {
+          ...(data.gallery ?? {}),
+          localImageList: [...localImageList, ...localFiles],
+        };
       });
-
       initializedRef.current = true;
     };
 
@@ -80,6 +81,6 @@ export const useWeddingInfo = (
     weddingInfo: data,
     isLoading: isLoading || !key, // key 없으면 로딩 처리 유지
     isError: !!error,
-    notFound: !!key && !isLoading && !data, // key 존재할 때만 notFound 판단
+    notFound: !!key && !isLoading, // key 존재할 때만 notFound 판단
   };
 };
