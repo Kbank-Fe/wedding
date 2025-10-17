@@ -21,10 +21,9 @@ const AdminPage = () => {
 
   const setDeep = useWeddingStore((state) => state.setDeep);
   const setField = useWeddingStore((state) => state.setField);
-    
+
   const { user, uid, isLoading: userLoading } = useCurrentUser();
   const { isLoading: infoLoading, notFound } = useWeddingInfo({ uid }, setDeep);
-  const { localImageList } = useWeddingStore((state) => state.values.gallery);
 
   const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
 
