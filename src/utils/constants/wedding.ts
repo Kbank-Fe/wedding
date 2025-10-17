@@ -85,6 +85,7 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     gallery: true,
     basic: true,
     map: true,
+    greeting: true,
   },
   map: {
     title: '',
