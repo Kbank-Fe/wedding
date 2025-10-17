@@ -1,160 +1,104 @@
-import 'react-photo-album/columns.css';
-import 'react-image-gallery/styles/css/image-gallery.css';
+import 'photoswipe/style.css';
 
 import { css } from '@emotion/react';
-import * as Dialog from '@radix-ui/react-dialog';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X } from 'lucide-react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import ImageGallery from 'react-image-gallery';
-import PhotoAlbum from 'react-photo-album';
+import { useState } from 'react';
+import { Gallery, Item } from 'react-photoswipe-gallery';
 
 import { usePhotoList } from '@/hooks/usePhotoList';
-import { useViewportStore } from '@/stores/useViewportStore';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
-type ButtonDirection = 'left' | 'right';
-
-const MAX_HEIGHT = 600;
-
 const GalleryView = () => {
-  const [open, setOpen] = useState(false);
-  const [startIndex, setStartIndex] = useState(0);
-  const isMobile = useViewportStore((state) => state.isMobile);
-
-  const [showMoreButton, setShowMoreButton] = useState(false);
-
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState(false);
 
   const { localImageList } = useWeddingStore((state) => state.values.gallery);
-  const { photoList, handleSetGalleryItems } = usePhotoList(
-    localImageList,
-    'actual',
-  );
+  const { photoList } = usePhotoList(localImageList, 'actual');
 
-  const handleClickAlbum = ({ index }: { index: number }) => {
-    setStartIndex(index);
-    setOpen(true);
-  };
-
-  const handleClickMore = () => {
-    setStartIndex(0);
-    setOpen(true);
-  };
-
-  useEffect(() => {
-    if (wrapperRef.current) {
-      const el = wrapperRef.current;
-      setShowMoreButton(el.scrollHeight > el.clientHeight);
-    }
-  }, [photoList]);
+  const showMoreButton = photoList.length > 9 && !expanded;
+  const visiblePhotos = expanded ? photoList : photoList.slice(0, 9);
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
+    <Gallery>
       <motion.div
-        ref={wrapperRef}
+        animate={{ maxHeight: expanded ? '100%' : '60vh' }}
         css={wrapperStyle}
         initial={{ opacity: 0, y: 30 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
+        transition={{ duration: 0.6, ease: 'easeInOut' }}
         viewport={{ once: true, amount: 0.2 }}
         whileInView={{ opacity: 1, y: 0 }}
       >
-        <PhotoAlbum
-          columns={3}
-          layout="columns"
-          photos={photoList.slice(0, 9)}
-          spacing={10}
-          onClick={handleClickAlbum}
-        />
-        {showMoreButton && <div css={fadeOverlayStyle} />}
+        <div css={gridStyle}>
+          {visiblePhotos.map((photo, index) => (
+            <Item
+              key={index}
+              height={photo.height}
+              original={photo.src}
+              thumbnail={photo.src}
+              width={photo.width}
+            >
+              {({ ref, open }) => (
+                <button ref={ref} css={buttonStyle} onClick={open}>
+                  <img
+                    alt={`image-${index}`}
+                    css={thumbStyle}
+                    src={photo.src}
+                  />
+                </button>
+              )}
+            </Item>
+          ))}
+        </div>
+        <AnimatePresence>
+          {!expanded && (
+            <motion.div
+              css={fadeOverlayStyle}
+              exit={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            />
+          )}
+        </AnimatePresence>
       </motion.div>
       {showMoreButton && (
-        <button css={moreButtonStyle} onClick={handleClickMore}>
-          more
+        <button css={moreButtonStyle} onClick={() => setExpanded(true)}>
+          더보기
         </button>
       )}
-      <AnimatePresence>
-        {open && (
-          <Dialog.Portal>
-            <Dialog.Overlay css={overlayStyle} />
-            <Dialog.Content asChild forceMount>
-              <motion.div
-                key="gallery-modal"
-                animate={{ opacity: 1, scale: 1, x: '-50%', y: '-50%' }}
-                css={contentStyle}
-                exit={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-                initial={{ opacity: 0, scale: 0.95, x: '-50%', y: '-50%' }}
-                transition={{ duration: 0.3 }}
-                onContextMenu={(e) => e.preventDefault()}
-              >
-                <VisuallyHidden>
-                  <Dialog.Title>사진 갤러리</Dialog.Title>
-                  <Dialog.Description>
-                    사진을 슬라이드로 볼 수 있는 모달입니다.
-                  </Dialog.Description>
-                </VisuallyHidden>
-                <Dialog.Close asChild>
-                  <button css={closeButtonStyle}>
-                    <X color="white" size={24} />
-                  </button>
-                </Dialog.Close>
-                <ImageGallery
-                  items={handleSetGalleryItems(photoList)}
-                  lazyLoad={true}
-                  showFullscreenButton={false}
-                  showPlayButton={false}
-                  showThumbnails={isMobile}
-                  slideOnThumbnailOver={true}
-                  startIndex={startIndex}
-                  renderLeftNav={(onClick, disabled) => (
-                    <button
-                      css={navButtonStyle('left')}
-                      disabled={disabled}
-                      onClick={onClick}
-                    >
-                      <ChevronLeft color="white" size={28} />
-                    </button>
-                  )}
-                  renderRightNav={(onClick, disabled) => (
-                    <button
-                      css={navButtonStyle('right')}
-                      disabled={disabled}
-                      onClick={onClick}
-                    >
-                      <ChevronRight color="white" size={28} />
-                    </button>
-                  )}
-                />
-              </motion.div>
-            </Dialog.Content>
-          </Dialog.Portal>
-        )}
-      </AnimatePresence>
-    </Dialog.Root>
+    </Gallery>
   );
 };
 
 const wrapperStyle = css`
   position: relative;
-  max-height: ${`${MAX_HEIGHT}px`};
   overflow: hidden;
-  transition: max-height 0.3s ease;
+`;
+
+const gridStyle = css`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  background-color: var(--gray1);
+`;
+
+const buttonStyle = css`
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: block;
+`;
+
+const thumbStyle = css`
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  background-color: var(--gray1);
 `;
 
 const fadeOverlayStyle = css`
-  content: '';
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
+  inset: 0;
+  background: linear-gradient(rgba(250, 250, 250, 0) 0%, var(--gray1) 93%);
   pointer-events: none;
 `;
 
@@ -166,48 +110,6 @@ const moreButtonStyle = css`
   border-radius: 6px;
   color: var(--gray8);
   cursor: pointer;
-`;
-
-const overlayStyle = css`
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-  z-index: 50;
-`;
-
-const contentStyle = css`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: none;
-  background: var(--gray12);
-  max-width: 90vw;
-  max-height: fit-content;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  overflow: hidden;
-  z-index: 100;
-  border-radius: 8px;
-`;
-
-const closeButtonStyle = css`
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  cursor: pointer;
-  z-index: 10;
-`;
-
-const navButtonStyle = (direction: ButtonDirection) => css`
-  position: absolute;
-  top: 50%;
-  ${direction}: 16px;
-  transform: translateY(-50%);
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 export default GalleryView;

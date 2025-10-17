@@ -48,8 +48,10 @@ export type Account = {
   kakaopayUrl?: string;
 };
 
-type Gallery = {
-  localImageList: File[];
+export type LocalImage = File | SavedImage;
+
+export type Gallery = {
+  localImageList: LocalImage[];
   savedImageList: SavedImage[];
 };
 

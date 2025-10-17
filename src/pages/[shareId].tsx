@@ -2,7 +2,7 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
-import { useWeddingInfoByShareId } from '@/hooks/useWeddingInfoByShareId';
+import { useWeddingInfo } from '@/hooks/useWeddingInfo';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { mainList } from '@/utils/mainList';
 
@@ -10,7 +10,7 @@ const SharePage = () => {
   const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
   const setDeep = useWeddingStore((state) => state.setDeep);
   const { shareId } = useParams<{ shareId: string }>();
-  const { notFound } = useWeddingInfoByShareId(shareId, setDeep);
+  const { notFound } = useWeddingInfo({ shareId }, setDeep);
 
   if (notFound) {
     return <Navigate replace to="/404" />;
