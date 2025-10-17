@@ -39,16 +39,19 @@ export const useWeddingInfo = (
   { uid, shareId }: Options,
   setDeep?: (fn: (draft: WeddingInfo) => void) => void,
 ) => {
-  const key = uid
-    ? ['weddingInfoByUid', uid]
-    : shareId && isValidNanoId(shareId)
-      ? ['weddingInfoByShareId', shareId]
-      : null;
+  const key =
+    uid && typeof uid === 'string'
+      ? ['weddingInfoByUid', uid]
+      : shareId && isValidNanoId(shareId)
+        ? ['weddingInfoByShareId', shareId]
+        : null;
 
   const initializedRef = useRef(false);
 
-  const { data, error, isLoading } = useSWR<WeddingInfo | null>(key, () =>
-    fetchWeddingInfo({ uid: uid ?? null, shareId: shareId ?? null }),
+  const { data, error, isLoading } = useSWR<WeddingInfo | null>(
+    key,
+    () => fetchWeddingInfo({ uid: uid ?? null, shareId: shareId ?? null }),
+    { revalidateOnFocus: false },
   );
 
   useEffect(() => {
@@ -61,13 +64,12 @@ export const useWeddingInfo = (
 
       setDeep((draft) => {
         Object.assign(draft, data);
-
-        const localFiles = (draft.gallery.localImageList ?? []).filter(
+        const localFiles = (draft.gallery?.localImageList ?? []).filter(
           (img): img is File => img instanceof File,
         );
-
         draft.gallery.localImageList = [...localImageList, ...localFiles];
       });
+
       initializedRef.current = true;
     };
 
@@ -76,8 +78,8 @@ export const useWeddingInfo = (
 
   return {
     weddingInfo: data,
-    isLoading,
+    isLoading: isLoading || !key, // key 없으면 로딩 처리 유지
     isError: !!error,
-    notFound: !isLoading && !data,
+    notFound: !!key && !isLoading && !data, // key 존재할 때만 notFound 판단
   };
 };

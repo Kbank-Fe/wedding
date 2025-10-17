@@ -17,15 +17,21 @@ import { uploadImageToStorage } from '@/utils/storage';
 
 const AdminPage = () => {
   const navigate = useNavigate();
-  const { user, uid, isLoading } = useCurrentUser();
-
+  const { user, uid, isLoading: userLoading } = useCurrentUser();
   const setDeep = useWeddingStore((state) => state.setDeep);
-  const { notFound } = useWeddingInfo({ uid }, setDeep);
+  const { isLoading: infoLoading, notFound } = useWeddingInfo({ uid }, setDeep);
+
+  if (!userLoading && !uid) {
+    return <Navigate replace to="/404" />;
+  }
+
+  if (userLoading || infoLoading) {
+    return <LoadingSpinner />;
+  }
 
   if (notFound) {
     return <Navigate replace to="/404" />;
   }
-
   const handleSetImageList = async (uid: string) => {
     const { savedImageList, localImageList } =
       useWeddingStore.getState().values.gallery;
@@ -82,8 +88,6 @@ const AdminPage = () => {
       toast.error('데이터 저장을 실패했어요.');
     }
   };
-
-  if (isLoading) return <LoadingSpinner />;
 
   return (
     <PageLayout>
