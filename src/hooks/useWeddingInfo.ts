@@ -62,9 +62,10 @@ export const useWeddingInfo = (
       setDeep((draft) => {
         Object.assign(draft, data);
 
-        const localFiles = draft.gallery.localImageList.filter(
+        const localFiles = (draft.gallery.localImageList ?? []).filter(
           (img): img is File => img instanceof File,
         );
+
         draft.gallery.localImageList = [...localImageList, ...localFiles];
       });
       initializedRef.current = true;
