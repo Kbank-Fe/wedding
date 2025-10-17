@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
+import { TfiLayoutLineSolid } from 'react-icons/tfi';
 import { Toaster } from 'sonner';
 
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
 import Account from '@/components/account/Account';
-import Header from '@/components/shared/Header';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { Account as AccountType } from '@/types/wedding';
 
@@ -46,14 +46,16 @@ const AccountList = () => {
 
   return (
     <>
-      <Header title="AccountList" />
+      <div css={headerStyle}>
+        <TfiLayoutLineSolid color="#87BBBA" size={24} strokeWidth={1} />
+      </div>
       <motion.div
         initial="hidden"
         variants={containerVariants}
         viewport={{ once: true, amount: 0.5 }}
         whileInView="visible"
       >
-        <p css={titleStyle}>{accountListTitle}</p>
+        <h3 css={titleStyle}>{accountListTitle}</h3>
         <p css={subtitleStyle}>{accountListSubTitle}</p>
 
         <Accordion
@@ -71,20 +73,21 @@ const AccountList = () => {
   );
 };
 
+const headerStyle = css`
+  margin: 0 auto 1rem;
+`;
+
 const titleStyle = css`
   text-align: center;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--gray12);
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.01em;
+  color: var(--gray11);
+  margin-bottom: 0.8rem;
 `;
 
 const subtitleStyle = css`
   text-align: center;
-  font-size: 1rem;
+  font-size: 13px;
   font-weight: 400;
-  color: var(--gray11);
+  color: var(--gray10);
   margin-bottom: 2rem;
   line-height: 1.6;
   white-space: pre-line;

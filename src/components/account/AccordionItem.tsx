@@ -18,7 +18,7 @@ export const AccordionItem = ({
     <RadixAccordion.Header>
       <RadixAccordion.Trigger css={triggerStyle}>
         {title}
-        <ChevronDown className="icon" size={18} />
+        <ChevronDown className="icon" size={15} />
       </RadixAccordion.Trigger>
     </RadixAccordion.Header>
     <RadixAccordion.Content css={contentStyle}>
@@ -38,28 +38,29 @@ const slideUp = keyframes`
 `;
 
 const itemStyle = css`
-  border: 1px solid var(--gray3);
-  border-radius: 10px;
+  border: 1px solid var(--gray4);
+  border-radius: 12px;
   overflow: hidden;
-  background: var(--gray1);
+  background: var(--gray3);
 `;
 
 const triggerStyle = css`
   width: 100%;
-  padding: 1rem 1.2rem;
-  border: none;
-  font-size: 0.85rem;
-  font-weight: 600;
+  padding: 0.9rem;
+  font-size: 12px;
+  font-weight: 700;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: pointer;
+  color: var(--gray11);
+  font-family: 'Wedding';
 
-  .icon {
+  svg {
     transition: transform 0.3s ease;
+    color: var(--gray10);
   }
 
-  &[data-state='open'] .icon {
+  &[data-state='open'] svg {
     transform: rotate(180deg);
   }
 `;
@@ -67,18 +68,16 @@ const triggerStyle = css`
 const contentStyle = css`
   overflow: hidden;
   font-size: 0.95rem;
-  background: var(--gray1);
-  border-top: 1px solid var(--gray3);
-  line-height: 17px;
-  padding: 1rem 1.3rem;
+  background: var(--gray2);
+  border-top: 1px solid var(--gray4);
+  padding: 1rem;
 
   &[data-state='open'] {
     animation: ${slideDown} 0.25s ease-out;
   }
 
   &[data-state='closed'] {
-    animation: ${slideUp} 0.2s ease-in;
-    padding-top: 0;
+    animation: ${slideUp} 0.2s ease-in-out;
     padding-bottom: 0;
   }
 `;

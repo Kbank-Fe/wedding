@@ -7,7 +7,7 @@ import Field from '@/components/shared/Field';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { isValid } from '@/utils/validate';
 
-type TextField = 'title' | 'venueName' | 'venueDetail';
+type TextField = 'venueName' | 'venueDetail';
 
 const WeddingMapAdmin = () => {
   const setField = useWeddingStore((state) => state.setField);
@@ -33,14 +33,6 @@ const WeddingMapAdmin = () => {
 
   return (
     <>
-      <Field label="제목">
-        <BaseTextInput
-          maxLength={20}
-          value={map.title ?? ''}
-          onChange={handleChangeText('title')}
-        />
-      </Field>
-
       <Field label="예식장명">
         <BaseTextInput
           maxLength={20}

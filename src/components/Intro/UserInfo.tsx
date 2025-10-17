@@ -18,10 +18,18 @@ const UserInfo = ({
   femaleFatherName,
   femaleMotherName,
   alignment,
+  maleFatherDeceased,
+  maleMotherDeceased,
+  femaleFatherDeceased,
+  femaleMotherDeceased,
 }: UserInfoProps) => (
   <motion.p css={namesStyle(alignment)} variants={fadeUp}>
-    {maleFatherName} · {maleMotherName}의 아들 {maleName} <br />
-    {femaleFatherName} · {femaleMotherName}의 딸 {femaleName}
+    {maleFatherDeceased && '(故)'}
+    {maleFatherName} · {maleMotherDeceased && '(故)'}
+    {maleMotherName}의 아들 {maleName} <br />
+    {femaleFatherDeceased && '(故)'}
+    {femaleFatherName} · {femaleMotherDeceased && '(故)'}
+    {femaleMotherName}의 딸 {femaleName}
   </motion.p>
 );
 

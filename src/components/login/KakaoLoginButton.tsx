@@ -56,9 +56,9 @@ export default function KakaoLoginAndSaveTest() {
   }, [navigate, uid]);
 
   return (
-    <div css={wrapper}>
+    <div css={wrapperStyle}>
       {!uid && (
-        <button css={button} disabled={loading} onClick={handleLogin}>
+        <button css={buttonStyle} disabled={loading} onClick={handleLogin}>
           <img alt="카카오 로그인" src="/images/kakao_login.png" />
         </button>
       )}
@@ -66,21 +66,14 @@ export default function KakaoLoginAndSaveTest() {
   );
 }
 
-const wrapper = css`
+const wrapperStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding: 1rem;
 `;
 
-const button = css`
-  display: inline-block;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  line-height: 0;
-
+const buttonStyle = css`
   transition:
     opacity 0.2s ease,
     filter 0.2s ease;
@@ -92,8 +85,6 @@ const button = css`
   }
 
   img {
-    width: 100%;
-    height: auto;
-    display: block;
+    width: 300px;
   }
 `;

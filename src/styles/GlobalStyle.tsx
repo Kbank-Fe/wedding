@@ -3,6 +3,55 @@ import { css, Global } from '@emotion/react';
 import { useThemeStore } from '@/stores/useThemeStore';
 
 const resetCSS = css`
+ @font-face {
+    font-family: 'Wedding';
+    src: url('/fonts/Wedding-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Wedding';
+    src: url('/fonts/Wedding-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Wedding';
+    src: url('/fonts/Wedding-SemiBold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'BasicSans';
+    src: url('/fonts/BasicSans-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'BasicSans';
+    src: url('/fonts/BasicSans-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'BasicSans';
+    src: url('/fonts/BasicSans-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'BasicSans';
+    src: url('/fonts/BasicSans-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
   *,
   *::before,
   *::after {
@@ -14,15 +63,9 @@ const resetCSS = css`
   body,
   #root {
     height: 100%;
-    font-family: 'Poppins', 'Nanum Myeongjo', sans-serif;
+    font-family: 'BasicSans', 'Wedding', sans-serif;
     background: var(--gray2);
     color: var(--gray12);
-  }
-  :lang(ko) {
-    font-family: 'Nanum Myeongjo', serif;
-  }
-  :lang(en) {
-    font-family: 'Poppins', sans-serif;
   }
   ul,
   ol {
