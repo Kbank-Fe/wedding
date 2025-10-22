@@ -19,7 +19,7 @@ const PageLayout = ({ children, pageType = 'basic' }: PageLayoutProps) => {
 const layoutStyle = ({ pageType }: { pageType: PageType }) => css`
   width: 100%;
   min-height: 100vh;
-  max-width: 500px;
+  max-width: 430px;
   margin: 0 auto;
   background: ${pageType === 'main' || pageType === 'login'
     ? '#F8F6F1'
