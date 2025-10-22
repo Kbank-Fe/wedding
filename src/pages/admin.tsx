@@ -110,6 +110,7 @@ const AdminPage = () => {
                 <BaseCheckBoxInput
                   checked={showCheckbox[value] ?? false}
                   css={checkboxStyle}
+                  id={value}
                   onChange={() => handleCheckboxChange(value)}
                 />
                 <div css={accordionItemStyle}>

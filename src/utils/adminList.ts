@@ -20,26 +20,6 @@ type AdminList = {
 
 export const adminList: AdminList[] = [
   {
-    title: '예식일자',
-    value: 'calendar',
-    component: DateCalendarAdmin,
-  },
-  {
-    title: '연락하기',
-    value: 'contact',
-    component: ContactAdmin,
-  },
-  {
-    title: '교통수단',
-    value: 'transport',
-    component: TransportAdmin,
-  },
-  {
-    title: '갤러리',
-    value: 'gallery',
-    component: GalleryAdmin,
-  },
-  {
     title: '기본정보',
     value: 'basic',
     component: UserInfoAdmin,
@@ -50,13 +30,33 @@ export const adminList: AdminList[] = [
     component: WeddingGreetingAdmin,
   },
   {
-    title: '계좌정보',
-    value: 'account',
-    component: AccountListAdmin,
+    title: '연락하기',
+    value: 'contact',
+    component: ContactAdmin,
+  },
+  {
+    title: '예식일자',
+    value: 'calendar',
+    component: DateCalendarAdmin,
+  },
+  {
+    title: '갤러리',
+    value: 'gallery',
+    component: GalleryAdmin,
   },
   {
     title: '예식장소',
     value: 'map',
     component: WeddingMapAdmin,
+  },
+  {
+    title: '교통수단',
+    value: 'transport',
+    component: TransportAdmin,
+  },
+  {
+    title: '계좌정보',
+    value: 'account',
+    component: AccountListAdmin,
   },
 ] as const;

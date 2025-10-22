@@ -35,6 +35,7 @@ const AccountGroup = ({
         <BaseCheckBoxInput
           checkboxLabel="펼치기"
           checked={isExpand}
+          id="isExpand"
           onChange={onToggleExpand}
         />
 
@@ -94,6 +95,7 @@ const AccountGroup = ({
           <BaseCheckBoxInput
             checkboxLabel=""
             checked={acc.isKakaopay ?? false}
+            id="kakaoPay"
             onChange={handleChange(i, 'isKakaopay')}
           />
         </Field>

@@ -46,7 +46,7 @@ const WeddingMap = () => {
           <>
             <p>{mapInfo.address}</p>
 
-            {mapInfo.isMapVisible && (
+            {mapInfo.isVisibleMap && (
               <>
                 <KakaoMap
                   center={position}

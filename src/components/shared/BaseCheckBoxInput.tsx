@@ -3,17 +3,25 @@ import { css } from '@emotion/react';
 type BaseCheckBoxInputProps = {
   checkboxLabel?: string;
   checked: boolean;
+  id: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const BaseCheckBoxInput = ({
   checkboxLabel,
   checked,
+  id,
   ...rest
 }: BaseCheckBoxInputProps) => {
   return (
     <div css={wrapperStyle}>
-      <input checked={checked} css={checkboxStyle} type="checkbox" {...rest} />
-      {checkboxLabel && <span>{checkboxLabel}</span>}
+      <input
+        checked={checked}
+        css={checkboxStyle}
+        id={id}
+        type="checkbox"
+        {...rest}
+      />
+      {checkboxLabel && <label htmlFor={id}>{checkboxLabel}</label>}
     </div>
   );
 };

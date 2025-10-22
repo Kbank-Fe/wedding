@@ -5,18 +5,12 @@ import React, { Children, isValidElement, useId } from 'react';
 import { useViewportStore } from '@/stores/useViewportStore';
 
 type FieldProps = {
-  /** 화면에 보이는 라벨(단일: <label>, 복수: legend 또는 시각 라벨) */
-  label: string;
-  /** 보조 설명. 제공 시 aria-describedby 연결 */
-  description?: string;
-  /** 1개 또는 여러 개의 컨트롤 */
-  children: React.ReactNode;
-  /** 강제로 모드 지정: 기본 auto(자식 수로 판별) */
+  label: string; // 화면에 보이는 라벨(단일: <label>, 복수: legend 또는 시각 라벨)
+  description?: string; // 보조 설명. 제공 시 aria-describedby 연결
+  children: React.ReactNode; // 1개 또는 여러 개의 컨트롤
   mode?: 'auto' | 'single' | 'group';
-  /** 복수 모드일 때 legend를 숨기고, 대신 가시 라벨(span)을 써서 가로배치에 참여시킬지 */
-  useVisualLabelInGroup?: boolean;
-  /** 라벨 고정 폭(px). 미지정 시 100px */
-  labelWidth?: number;
+  useVisualLabelInGroup?: boolean; // 복수 모드일 때 legend를 숨기고, 대신 가시 라벨(span)을 써서 가로배치에 참여시킬지
+  labelWidth?: number; // 라벨 고정 폭(px)
 };
 
 const Field = ({
@@ -39,19 +33,19 @@ const Field = ({
 
   if (isGroup) {
     return (
-      <fieldset aria-describedby={descId} css={fsCss}>
-        <legend css={srOnly} id={labelId}>
+      <fieldset aria-describedby={descId} css={fieldsetStyle}>
+        <legend css={srOnlyStyle} id={labelId}>
           {label}
         </legend>
 
-        <div css={rowCss}>
+        <div css={rowStyle}>
           {useVisualLabelInGroup && (
-            <span css={labelCss(labelWidth, isMobile)} id={visualLabelId}>
+            <span css={labelStyle(labelWidth, isMobile)} id={visualLabelId}>
               {label}
             </span>
           )}
 
-          <div css={controlsCss}>
+          <div css={controlsStyle}>
             {Children.map(children, (child, i) =>
               isValidElement<React.HTMLAttributes<HTMLElement>>(child)
                 ? React.cloneElement(child, {
@@ -75,15 +69,15 @@ const Field = ({
   const controlId = only.props?.id ?? `${rootId}-ctrl-0`;
 
   return (
-    <div css={singleRowCss(isMobile)}>
+    <div css={singleRowStyle(isMobile)}>
       <label
-        css={labelCss(labelWidth, isMobile)}
+        css={labelStyle(labelWidth, isMobile)}
         htmlFor={controlId}
         id={labelId}
       >
         {label}
       </label>
-      <div css={controlWrapCss(isMobile)}>
+      <div css={controlWrapperStyle(isMobile)}>
         {React.cloneElement(only, {
           id: controlId,
           ...(descId ? { 'aria-describedby': descId } : {}),
@@ -93,7 +87,7 @@ const Field = ({
   );
 };
 
-const singleRowCss = (isMobile: boolean) => css`
+const singleRowStyle = (isMobile: boolean) => css`
   display: flex;
   gap: 8px;
   align-items: center;
@@ -102,7 +96,7 @@ const singleRowCss = (isMobile: boolean) => css`
   align-items: ${isMobile ? 'flex-start' : 'center'};
 `;
 
-const labelCss = (width: number, isMobile: boolean) => css`
+const labelStyle = (width: number, isMobile: boolean) => css`
   width: ${isMobile ? 'auto' : `${width}px`};
   margin: 0.5rem 0;
   flex-shrink: 0;
@@ -110,24 +104,24 @@ const labelCss = (width: number, isMobile: boolean) => css`
   align-items: flex-start;
 `;
 
-const controlWrapCss = (isMobile: boolean) => css`
+const controlWrapperStyle = (isMobile: boolean) => css`
   flex: 1;
   min-width: ${isMobile ? '100%' : '200px'};
 `;
 
-const fsCss = css`
+const fieldsetStyle = css`
   border: 0;
   padding: 0;
   margin: 0.5rem 0;
 `;
 
-const rowCss = css`
+const rowStyle = css`
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 `;
 
-const controlsCss = css`
+const controlsStyle = css`
   display: flex;
   gap: 8px;
   align-items: center;
@@ -136,7 +130,7 @@ const controlsCss = css`
   flex-wrap: wrap;
 `;
 
-const srOnly = css`
+const srOnlyStyle = css`
   position: absolute !important;
   width: 1px;
   height: 1px;
