@@ -7,7 +7,6 @@ import { AccordionItem } from '@/components/account/AccordionItem';
 import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import PageLayout from '@/components/shared/PageLayout';
-import Section from '@/components/shared/Section';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useWeddingInfo } from '@/hooks/useWeddingInfo';
 import { useWeddingStore } from '@/stores/useWeddingStore';
@@ -102,30 +101,28 @@ const AdminPage = () => {
 
   return (
     <PageLayout>
-      <Section>
-        {adminList.length > 0 && (
-          <Accordion>
-            {adminList.map(({ title, value, component: Component }) => (
-              <div key={value} css={divWrapStyle}>
-                <BaseCheckBoxInput
-                  checked={showCheckbox[value] ?? false}
-                  css={checkboxStyle}
-                  id={value}
-                  onChange={() => handleCheckboxChange(value)}
-                />
-                <div css={accordionItemStyle}>
-                  <AccordionItem title={title} value={value}>
-                    <Component />
-                  </AccordionItem>
-                </div>
+      {adminList.length > 0 && (
+        <Accordion>
+          {adminList.map(({ title, value, component: Component }) => (
+            <div key={value} css={divWrapStyle}>
+              <BaseCheckBoxInput
+                checked={showCheckbox[value] ?? false}
+                css={checkboxStyle}
+                id={value}
+                onChange={() => handleCheckboxChange(value)}
+              />
+              <div css={accordionItemStyle}>
+                <AccordionItem title={title} value={value}>
+                  <Component />
+                </AccordionItem>
               </div>
-            ))}
-          </Accordion>
-        )}
-        <button css={buttonStyle} onClick={handleSave}>
-          저장하기
-        </button>
-      </Section>
+            </div>
+          ))}
+        </Accordion>
+      )}
+      <button css={buttonStyle} onClick={handleSave}>
+        저장하기
+      </button>
       <Toaster duration={2000} position="top-center" />
     </PageLayout>
   );
