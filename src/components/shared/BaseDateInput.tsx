@@ -34,23 +34,33 @@ const BaseDateInput = forwardRef<HTMLInputElement, BaseDateInputProps>(
   },
 );
 
-// forwardRef 적용 시 displayName 명시 필수
 BaseDateInput.displayName = 'BaseDateInput';
 
 const baseDateInputStyle = css`
-  width: 100%;
-  height: 2.5rem;
-  padding: 0 1rem;
-  margin: 0.5rem 0;
-  font-size: 1rem;
+  flex: 1;
+  height: 39px;
+  padding: 0.6rem 0.8rem;
   border: 1px solid var(--gray4);
-  border-radius: 8px;
-  background-color: var(--gray5);
-  appearance: none; /* 브라우저 기본 스타일 제거 */
-  box-shadow: none; /* 기본 박스 그림자 제거 */
-  color: var(--gray12); /* 기본 텍스트 색상 설정 */
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: transparent;
+  appearance: none;
+  box-shadow: none;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+
   &::-webkit-calendar-picker-indicator {
-    display: none; /* 브라우저 기본 달력 아이콘 제거 */
+    display: none;
+  }
+
+  &:hover {
+    border-color: var(--gray8);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--gray11);
   }
 `;
 

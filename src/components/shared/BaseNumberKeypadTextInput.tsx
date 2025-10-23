@@ -55,14 +55,28 @@ const BaseNumberKeypadTextInput = ({
 };
 
 const baseNumberKeypadTextInputStyle = css`
-  width: 100%;
-  height: 2.5rem;
-  padding: 0 1rem;
-  font-size: 1rem;
+  flex: 1;
+  padding: 0.6rem 0.8rem;
   border: 1px solid var(--gray4);
-  border-radius: 8px;
-  background-color: var(--gray5);
-  margin: 0.5rem 0;
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: transparent;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+
+  &::placeholder {
+    color: var(--gray8);
+  }
+
+  &:hover {
+    border-color: var(--gray8);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--gray11);
+  }
 `;
 
 export default BaseNumberKeypadTextInput;
