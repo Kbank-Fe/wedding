@@ -150,6 +150,7 @@ const AccountListAdmin = () => {
             <AccountGroup
               accounts={accounts?.accounts ?? []}
               handleChange={handleChangeAccount(side)}
+              id={side + idx}
               isExpand={accounts?.isExpand ?? false}
               title={accounts?.title || label}
               onAdd={handleAddAccount(side)}

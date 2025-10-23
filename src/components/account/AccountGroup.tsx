@@ -6,6 +6,7 @@ import Field from '@/components/shared/Field';
 import type { Account } from '@/types/wedding';
 
 type AccountGroupProps = {
+  id: string;
   title: string;
   accounts: Account[];
   handleChange: (
@@ -20,6 +21,7 @@ type AccountGroupProps = {
 };
 
 const AccountGroup = ({
+  id,
   title,
   accounts,
   handleChange,
@@ -35,7 +37,7 @@ const AccountGroup = ({
         <BaseCheckBoxInput
           checkboxLabel="펼치기"
           checked={isExpand}
-          id="isExpand"
+          id={id}
           onChange={onToggleExpand}
         />
 
@@ -45,12 +47,12 @@ const AccountGroup = ({
       </div>
     </div>
 
-    {accounts.map((acc, i) => (
-      <div key={i} css={accountBlockStyle}>
+    {accounts.map((acc, index) => (
+      <div key={index} css={accountBlockStyle}>
         <div css={accountHeaderStyle}>
-          <span>계좌 {i + 1}</span>
+          <span>계좌 {index + 1}</span>
           {accounts.length > 1 && (
-            <button css={removeButtonStyle} onClick={() => onRemove(i)}>
+            <button css={removeButtonStyle} onClick={() => onRemove(index)}>
               －
             </button>
           )}
@@ -60,7 +62,7 @@ const AccountGroup = ({
           <BaseTextInput
             maxLength={10}
             value={acc.accountHolder}
-            onChange={handleChange(i, 'accountHolder', 'kor')}
+            onChange={handleChange(index, 'accountHolder', 'kor')}
           />
         </Field>
 
@@ -68,7 +70,7 @@ const AccountGroup = ({
           <BaseTextInput
             maxLength={15}
             value={acc.bankName}
-            onChange={handleChange(i, 'bankName', 'kor')}
+            onChange={handleChange(index, 'bankName', 'kor')}
           />
         </Field>
 
@@ -76,7 +78,7 @@ const AccountGroup = ({
           <BaseTextInput
             maxLength={20}
             value={acc.accountNumber}
-            onChange={handleChange(i, 'accountNumber', 'num')}
+            onChange={handleChange(index, 'accountNumber', 'num')}
           />
         </Field>
 
@@ -86,7 +88,7 @@ const AccountGroup = ({
               maxLength={50}
               placeholder="https://qr.kakaopay.com/..."
               value={acc.kakaopayUrl ?? ''}
-              onChange={handleChange(i, 'kakaopayUrl', 'url')}
+              onChange={handleChange(index, 'kakaopayUrl', 'url')}
             />
           </Field>
         )}
@@ -95,8 +97,8 @@ const AccountGroup = ({
           <BaseCheckBoxInput
             checkboxLabel=""
             checked={acc.isKakaopay ?? false}
-            id="kakaoPay"
-            onChange={handleChange(i, 'isKakaopay')}
+            id={id + index}
+            onChange={handleChange(index, 'isKakaopay')}
           />
         </Field>
       </div>
