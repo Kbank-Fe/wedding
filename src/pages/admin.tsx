@@ -105,12 +105,13 @@ const AdminPage = () => {
         <Accordion>
           {adminList.map(({ title, value, component: Component }) => (
             <div key={value} css={divWrapStyle}>
-              <BaseCheckBoxInput
-                checked={showCheckbox[value] ?? false}
-                css={checkboxStyle}
-                id={value}
-                onChange={() => handleCheckboxChange(value)}
-              />
+              <div css={checkboxStyle}>
+                <BaseCheckBoxInput
+                  checked={showCheckbox[value] ?? false}
+                  id={value}
+                  onChange={() => handleCheckboxChange(value)}
+                />
+              </div>
               <div css={accordionItemStyle}>
                 <AccordionItem title={title} value={value}>
                   <Component />
@@ -156,13 +157,12 @@ const buttonStyle = css`
 
 const divWrapStyle = css`
   display: flex;
-  align-items: flex-start;
   gap: 8px;
 `;
 
 const checkboxStyle = css`
   flex-shrink: 0;
-  margin-top: 1.2rem;
+  margin-top: 1.1rem;
 `;
 
 const accordionItemStyle = css`
