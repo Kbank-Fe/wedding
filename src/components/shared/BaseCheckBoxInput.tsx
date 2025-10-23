@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { FaCheck } from 'react-icons/fa';
 
 type BaseCheckBoxInputProps = {
   checkboxLabel?: string;
@@ -13,7 +14,7 @@ const BaseCheckBoxInput = ({
   ...rest
 }: BaseCheckBoxInputProps) => {
   return (
-    <div css={wrapperStyle}>
+    <label css={css([wrapperStyle, wrapperInteractiveStyle])} htmlFor={id}>
       <input
         checked={checked}
         css={checkboxStyle}
@@ -21,42 +22,60 @@ const BaseCheckBoxInput = ({
         type="checkbox"
         {...rest}
       />
-      {checkboxLabel && <label htmlFor={id}>{checkboxLabel}</label>}
-    </div>
+      <span className="custom-checkbox">
+        {checked && <FaCheck css={iconStyle} />}
+      </span>
+      {checkboxLabel && <span css={labelStyle}>{checkboxLabel}</span>}
+    </label>
   );
 };
 
-const checkboxStyle = css`
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  background-color: var(--gray5);
-  position: relative;
-  transition: background-color 0.2s ease;
-
-  &:checked {
-    background-color: var(--gray12);
-  }
-
-  &:checked::after {
-    content: '✔';
-    font-size: 14px;
-    color: #fff;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-`;
-
 const wrapperStyle = css`
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px; /* 체크박스와 텍스트 사이 간격 */
+  gap: 6px;
   cursor: pointer;
+  user-select: none;
 `;
+
+const checkboxStyle = css`
+  display: none;
+`;
+
+const iconStyle = css`
+  font-size: 8px;
+  line-height: 1.2;
+  color: var(--gray11);
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+`;
+
+const labelStyle = css`
+  font-size: 12px;
+  color: var(--gray12);
+`;
+
+const wrapperInteractiveStyle = css`
+  .custom-checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--gray4);
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.25s ease;
+  }
+
+  &:hover .custom-checkbox {
+    border-color: var(--gray8);
+  }
+
+  input:checked + .custom-checkbox {
+    border-color: var(--gray11);
+  }
+`;
+
 export default BaseCheckBoxInput;
