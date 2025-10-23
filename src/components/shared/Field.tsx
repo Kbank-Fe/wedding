@@ -21,8 +21,11 @@ const Field = ({
   const visualLabelId = `${rootId}-vlabel`;
   const descId = description ? `${rootId}-desc` : undefined;
 
-  const count = Children.count(children);
+  const validChildren = React.Children.toArray(children).filter(Boolean);
+  const count = validChildren.length;
   const isGroup = mode === 'group' || (mode === 'auto' && count > 1);
+
+  console.log(count, mode, isGroup);
 
   if (isGroup) {
     return (
@@ -36,8 +39,8 @@ const Field = ({
               {label}
             </span>
           )}
-          <div css={controlsStyle}>
-            {Children.map(children, (child, i) =>
+          <div css={groupControlStyle}>
+            {Children.map(validChildren, (child, i) =>
               isValidElement<React.HTMLAttributes<HTMLElement>>(child)
                 ? React.cloneElement(child, {
                     id: child.props?.id ?? `${rootId}-ctrl-${i}`,
@@ -54,24 +57,27 @@ const Field = ({
     );
   }
 
-  const only = Children.only(children) as React.ReactElement<
-    React.HTMLAttributes<HTMLElement>
-  >;
-  const controlId = only.props?.id ?? `${rootId}-ctrl-0`;
+  if (count === 1) {
+    const only = validChildren[0] as React.ReactElement<
+      React.HTMLAttributes<HTMLElement>
+    >;
+    const controlId = only.props?.id ?? `${rootId}-ctrl-0`;
 
-  return (
-    <div css={singleRowStyle}>
-      <label css={labelStyle} htmlFor={controlId} id={labelId}>
-        {label}
-      </label>
-      <div css={controlsStyle}>
-        {React.cloneElement(only, {
-          id: controlId,
-          ...(descId ? { 'aria-describedby': descId } : {}),
-        })}
+    return (
+      <div css={singleRowStyle}>
+        <label css={labelStyle} htmlFor={controlId} id={labelId}>
+          {label}
+        </label>
+        <div css={controlsStyle}>
+          {React.cloneElement(only, {
+            id: controlId,
+            ...(descId ? { 'aria-describedby': descId } : {}),
+          })}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+  return null;
 };
 
 const singleRowStyle = css`
@@ -106,10 +112,17 @@ const rowStyle = css`
 
 const controlsStyle = css`
   display: flex;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
   flex: 1;
   flex-wrap: wrap;
+`;
+
+const groupControlStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
 `;
 
 const srOnlyStyle = css`
