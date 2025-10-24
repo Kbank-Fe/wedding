@@ -129,32 +129,6 @@ const AdminPage = () => {
   );
 };
 
-const buttonStyle = css`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.7rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  border-radius: 10px;
-  border: 1px solid var(--gray3);
-  background: var(--gray2);
-  color: var(--gray12);
-  cursor: pointer;
-  margin-top: 1rem;
-  color: var(--gray11);
-
-  &:hover {
-    background: var(--gray3);
-    font-weight: 600;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-`;
-
 const divWrapStyle = css`
   display: flex;
   gap: 8px;
@@ -167,6 +141,38 @@ const checkboxStyle = css`
 
 const accordionItemStyle = css`
   flex: 1;
+`;
+
+const buttonStyle = css`
+  font-family: 'Wedding';
+  padding: 0.9rem;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gray11);
+  background-color: var(--gray2);
+  border: 1px solid var(--gray4);
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:hover {
+    background-color: var(--gray8);
+    color: var(--gray1);
+    border-color: var(--gray8);
+  }
+
+  &:active {
+    background-color: var(--gray11);
+    color: var(--gray1);
+    border-color: var(--gray11);
+  }
 `;
 
 export default AdminPage;
