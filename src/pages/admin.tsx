@@ -7,7 +7,6 @@ import { AccordionItem } from '@/components/account/AccordionItem';
 import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import PageLayout from '@/components/shared/PageLayout';
-import Section from '@/components/shared/Section';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useWeddingInfo } from '@/hooks/useWeddingInfo';
 import { useWeddingStore } from '@/stores/useWeddingStore';
@@ -102,73 +101,78 @@ const AdminPage = () => {
 
   return (
     <PageLayout>
-      <Section>
-        {adminList.length > 0 && (
-          <Accordion>
-            {adminList.map(({ title, value, component: Component }) => (
-              <div key={value} css={divWrapStyle}>
+      {adminList.length > 0 && (
+        <Accordion>
+          {adminList.map(({ title, value, component: Component }) => (
+            <div key={value} css={divWrapStyle}>
+              <div css={checkboxStyle}>
                 <BaseCheckBoxInput
                   checked={showCheckbox[value] ?? false}
-                  css={checkboxStyle}
+                  id={value}
                   onChange={() => handleCheckboxChange(value)}
                 />
-                <div css={accordionItemStyle}>
-                  <AccordionItem title={title} value={value}>
-                    <Component />
-                  </AccordionItem>
-                </div>
               </div>
-            ))}
-          </Accordion>
-        )}
-        <button css={buttonStyle} onClick={handleSave}>
-          저장하기
-        </button>
-      </Section>
+              <div css={accordionItemStyle}>
+                <AccordionItem title={title} value={value}>
+                  <Component />
+                </AccordionItem>
+              </div>
+            </div>
+          ))}
+        </Accordion>
+      )}
+      <button css={buttonStyle} onClick={handleSave}>
+        저장하기
+      </button>
       <Toaster duration={2000} position="top-center" />
     </PageLayout>
   );
 };
 
-const buttonStyle = css`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.7rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  border-radius: 10px;
-  border: 1px solid var(--gray3);
-  background: var(--gray2);
-  color: var(--gray12);
-  cursor: pointer;
-  margin-top: 1rem;
-  color: var(--gray11);
-
-  &:hover {
-    background: var(--gray3);
-    font-weight: 600;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-`;
-
 const divWrapStyle = css`
   display: flex;
-  align-items: flex-start;
   gap: 8px;
 `;
 
 const checkboxStyle = css`
   flex-shrink: 0;
-  margin-top: 1.2rem;
+  margin-top: 1.1rem;
 `;
 
 const accordionItemStyle = css`
   flex: 1;
+`;
+
+const buttonStyle = css`
+  font-family: 'Wedding';
+  padding: 0.9rem;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gray11);
+  background-color: var(--gray2);
+  border: 1px solid var(--gray4);
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:hover {
+    background-color: var(--gray8);
+    color: var(--gray1);
+    border-color: var(--gray8);
+  }
+
+  &:active {
+    background-color: var(--gray11);
+    color: var(--gray1);
+    border-color: var(--gray11);
+  }
 `;
 
 export default AdminPage;

@@ -108,7 +108,7 @@ type WeddingMap = {
   venueName: string;
   venueDetail: string;
   address: string;
-  isMapVisible: boolean;
+  isVisibleMap: boolean;
 };
 
 export type WeddingInfo = {

@@ -1,7 +1,7 @@
 import { css, keyframes } from '@emotion/react';
 import * as RadixAccordion from '@radix-ui/react-accordion';
-import { ChevronDown } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { LuChevronDown } from 'react-icons/lu';
 
 type AccordionItemProps = {
   value: string;
@@ -18,7 +18,7 @@ export const AccordionItem = ({
     <RadixAccordion.Header>
       <RadixAccordion.Trigger css={triggerStyle}>
         {title}
-        <ChevronDown className="icon" size={15} />
+        <LuChevronDown className="icon" size={15} />
       </RadixAccordion.Trigger>
     </RadixAccordion.Header>
     <RadixAccordion.Content css={contentStyle}>
@@ -68,7 +68,7 @@ const triggerStyle = css`
 const contentStyle = css`
   overflow: hidden;
   font-size: 0.95rem;
-  background: var(--gray2);
+  background: var(--gray1);
   border-top: 1px solid var(--gray4);
   padding: 1rem;
 

@@ -5,15 +5,15 @@ type LineProps = {
   marginBottom?: number;
 };
 
-const Line = ({ marginTop = 20, marginBottom = 20 }: LineProps) => {
+const Line = ({ marginTop = 25, marginBottom = 25 }: LineProps) => {
   return <hr css={lineStyle(marginTop, marginBottom)} />;
 };
 
 const lineStyle = (mt: number, mb: number) => css`
+  width: 96%;
+  margin: ${mt}px auto ${mb}px auto;
   border: none;
-  border-bottom: 1px solid var(--gray8);
-  margin: ${mt}px 0 ${mb}px 0;
-  width: 100%;
+  border-bottom: 1px solid var(--gray3);
 `;
 
 export default Line;

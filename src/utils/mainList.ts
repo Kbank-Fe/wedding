@@ -32,19 +32,19 @@ export const mainList: MainList[] = [
     component: DateCalendar,
   },
   {
-    key: 'account',
-    component: AccountList,
-  },
-  {
-    key: 'transport',
-    component: TransportList,
-  },
-  {
     key: 'gallery',
     component: Gallery,
   },
   {
     key: 'map',
     component: WeddingMap,
+  },
+  {
+    key: 'transport',
+    component: TransportList,
+  },
+  {
+    key: 'account',
+    component: AccountList,
   },
 ] as const;

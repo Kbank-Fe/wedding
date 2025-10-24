@@ -1,22 +1,12 @@
-// Field.tsx — 단일/복수 컨트롤을 자동 처리하는 하나의 컴포넌트
 import { css } from '@emotion/react';
 import React, { Children, isValidElement, useId } from 'react';
 
-import { useViewportStore } from '@/stores/useViewportStore';
-
 type FieldProps = {
-  /** 화면에 보이는 라벨(단일: <label>, 복수: legend 또는 시각 라벨) */
   label: string;
-  /** 보조 설명. 제공 시 aria-describedby 연결 */
-  description?: string;
-  /** 1개 또는 여러 개의 컨트롤 */
+  description?: string; // 제공 시 aria-describedby 연결
   children: React.ReactNode;
-  /** 강제로 모드 지정: 기본 auto(자식 수로 판별) */
   mode?: 'auto' | 'single' | 'group';
-  /** 복수 모드일 때 legend를 숨기고, 대신 가시 라벨(span)을 써서 가로배치에 참여시킬지 */
-  useVisualLabelInGroup?: boolean;
-  /** 라벨 고정 폭(px). 미지정 시 100px */
-  labelWidth?: number;
+  useVisualLabelInGroup?: boolean; // 복수 모드일 때 legend를 숨기고, 대신 가시 라벨(span)을 써서 가로배치에 참여시킬지
 };
 
 const Field = ({
@@ -25,34 +15,32 @@ const Field = ({
   children,
   mode = 'auto',
   useVisualLabelInGroup = true,
-  labelWidth = 100,
 }: FieldProps) => {
-  const isMobile = useViewportStore((state) => state.isMobile);
-
   const rootId = useId();
   const labelId = `${rootId}-label`;
   const visualLabelId = `${rootId}-vlabel`;
   const descId = description ? `${rootId}-desc` : undefined;
 
-  const count = Children.count(children);
+  const validChildren = React.Children.toArray(children).filter(Boolean);
+  const count = validChildren.length;
   const isGroup = mode === 'group' || (mode === 'auto' && count > 1);
+
+  console.log(count, mode, isGroup);
 
   if (isGroup) {
     return (
-      <fieldset aria-describedby={descId} css={fsCss}>
-        <legend css={srOnly} id={labelId}>
+      <fieldset aria-describedby={descId} css={fieldsetStyle}>
+        <legend css={srOnlyStyle} id={labelId}>
           {label}
         </legend>
-
-        <div css={rowCss}>
+        <div css={rowStyle}>
           {useVisualLabelInGroup && (
-            <span css={labelCss(labelWidth, isMobile)} id={visualLabelId}>
+            <span css={labelStyle} id={visualLabelId}>
               {label}
             </span>
           )}
-
-          <div css={controlsCss}>
-            {Children.map(children, (child, i) =>
+          <div css={groupControlStyle}>
+            {Children.map(validChildren, (child, i) =>
               isValidElement<React.HTMLAttributes<HTMLElement>>(child)
                 ? React.cloneElement(child, {
                     id: child.props?.id ?? `${rootId}-ctrl-${i}`,
@@ -69,74 +57,75 @@ const Field = ({
     );
   }
 
-  const only = Children.only(children) as React.ReactElement<
-    React.HTMLAttributes<HTMLElement>
-  >;
-  const controlId = only.props?.id ?? `${rootId}-ctrl-0`;
+  if (count === 1) {
+    const only = validChildren[0] as React.ReactElement<
+      React.HTMLAttributes<HTMLElement>
+    >;
+    const controlId = only.props?.id ?? `${rootId}-ctrl-0`;
 
-  return (
-    <div css={singleRowCss(isMobile)}>
-      <label
-        css={labelCss(labelWidth, isMobile)}
-        htmlFor={controlId}
-        id={labelId}
-      >
-        {label}
-      </label>
-      <div css={controlWrapCss(isMobile)}>
-        {React.cloneElement(only, {
-          id: controlId,
-          ...(descId ? { 'aria-describedby': descId } : {}),
-        })}
+    return (
+      <div css={singleRowStyle}>
+        <label css={labelStyle} htmlFor={controlId} id={labelId}>
+          {label}
+        </label>
+        <div css={controlsStyle}>
+          {React.cloneElement(only, {
+            id: controlId,
+            ...(descId ? { 'aria-describedby': descId } : {}),
+          })}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+  return null;
 };
 
-const singleRowCss = (isMobile: boolean) => css`
+const singleRowStyle = css`
   display: flex;
   gap: 8px;
-  align-items: center;
   margin: 0.5rem 0;
-  flex-direction: ${isMobile ? 'column' : 'row'};
-  align-items: ${isMobile ? 'flex-start' : 'center'};
+  justify-content: center;
+  align-items: center;
+  color: var(--gray11);
 `;
 
-const labelCss = (width: number, isMobile: boolean) => css`
-  width: ${isMobile ? 'auto' : `${width}px`};
+const labelStyle = css`
   margin: 0.5rem 0;
-  flex-shrink: 0;
+  width: 80px;
+  font-size: 13px;
   display: flex;
   align-items: flex-start;
 `;
 
-const controlWrapCss = (isMobile: boolean) => css`
-  flex: 1;
-  min-width: ${isMobile ? '100%' : '200px'};
-`;
-
-const fsCss = css`
+const fieldsetStyle = css`
   border: 0;
   padding: 0;
   margin: 0.5rem 0;
+  color: var(--gray11);
 `;
 
-const rowCss = css`
+const rowStyle = css`
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 `;
 
-const controlsCss = css`
+const controlsStyle = css`
   display: flex;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
   flex: 1;
-  min-width: 200px;
   flex-wrap: wrap;
 `;
 
-const srOnly = css`
+const groupControlStyle = css`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+`;
+
+const srOnlyStyle = css`
   position: absolute !important;
   width: 1px;
   height: 1px;
