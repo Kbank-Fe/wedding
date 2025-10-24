@@ -38,8 +38,9 @@ const AdminPage = () => {
     return <Navigate replace to="/404" />;
   }
   const handleSetImageList = async (uid: string) => {
-    const { savedImageList, localImageList } =
-      useWeddingStore.getState().values.gallery;
+    const gallery = useWeddingStore.getState().values.gallery;
+    const savedImageList = gallery.savedImageList ?? [];
+    const localImageList = gallery.localImageList ?? [];
 
     // 새로 추가된 파일만 추출
     const addedFiles = localImageList.filter(
