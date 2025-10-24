@@ -6,6 +6,7 @@ import Contact from '@/components/contact/Contact';
 import Gallery from '@/components/gallery/Gallery';
 import WeddingIntro from '@/components/Intro/WeddingIntro';
 import WeddingMap from '@/components/map/WeddingMap';
+import PolaroidTheme from '@/components/theme/PolaroidTheme';
 import TransportList from '@/components/transport/TransportList';
 import type { ShowCheckbox } from '@/types/wedding';
 
@@ -18,6 +19,11 @@ type MainList = {
 };
 
 export const mainList: MainList[] = [
+  {
+    key: 'theme',
+    alwaysVisible: true,
+    component: PolaroidTheme,
+  },
   {
     key: 'intro',
     alwaysVisible: true,

@@ -33,7 +33,7 @@ const WeddingMap = () => {
         css={textStyle}
         initial="hidden"
         variants={containerVariants}
-        viewport={{ once: true, amount: 0.5 }}
+        viewport={{ amount: 0.5 }}
         whileInView="visible"
       >
         {mapInfo.venueName && (

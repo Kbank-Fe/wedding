@@ -77,6 +77,7 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     savedImageList: [],
   },
   showCheckbox: {
+    theme: true,
     intro: true,
     contact: false,
     calendar: true,

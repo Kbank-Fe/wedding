@@ -32,7 +32,7 @@ const AccountList = () => {
           css={accountListStyle}
           initial="hidden"
           variants={listVariants}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ amount: 0.3 }}
           whileInView="visible"
         >
           {accounts.map((account) => (
@@ -52,7 +52,7 @@ const AccountList = () => {
       <motion.div
         initial="hidden"
         variants={containerVariants}
-        viewport={{ once: true, amount: 0.5 }}
+        viewport={{ amount: 0.5 }}
         whileInView="visible"
       >
         <h3 css={titleStyle}>{accountListTitle}</h3>
