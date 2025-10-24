@@ -1,10 +1,17 @@
 import { css } from '@emotion/react';
+import { motion } from 'framer-motion';
 
 import mainImage from '/images/image2.png';
 
 const PolaroidTheme = () => {
   return (
-    <div css={containerStyle}>
+    <motion.div
+      css={containerStyle}
+      initial={{ opacity: 0, y: 30 }}
+      transition={{ duration: 0.8, ease: 'easeInOut' }}
+      viewport={{ amount: 0.2 }}
+      whileInView={{ opacity: 1, y: 0 }}
+    >
       <div css={headerStyle}>
         <h2>KYUMIN</h2>
         <h3>and</h3>
@@ -18,7 +25,7 @@ const PolaroidTheme = () => {
       </div>
 
       <p css={subTextStyle}>The day we become one</p>
-    </div>
+    </motion.div>
   );
 };
 

@@ -24,7 +24,7 @@ export const MotionFade = ({
     className={className}
     initial={{ opacity: 0, y: directionMap[motionDirection] }} // motion 시작 위치 설정 (방향 설정)
     transition={{ duration: 1.5, ease: 'easeOut' }} // 천천히
-    viewport={{ once: true, amount: 0.5 }} // 50% 보이면 실행, 1회만
+    viewport={{ amount: 0.5 }} // 50% 보이면 실행, 1회만
     whileInView={{ opacity: 1, y: 0 }}
   >
     {children}
