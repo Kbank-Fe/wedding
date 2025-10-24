@@ -19,20 +19,21 @@ const fetchWeddingInfo = async ({
   try {
     if (uid) {
       const resolvedShareId = await getUserShareId(uid);
+      if (!resolvedShareId) return WEDDING_INITIAL_INFO;
 
-      if (!resolvedShareId) {
-        return WEDDING_INITIAL_INFO;
-      }
       const doc = await getShare<WeddingInfo>(resolvedShareId);
-
-      if (doc?.data) {
-        return doc.data;
-      }
-      return WEDDING_INITIAL_INFO;
+      return doc?.data ?? WEDDING_INITIAL_INFO;
     }
-    if (shareId && isValidNanoId(shareId)) {
+
+    if (shareId) {
+      if (!isValidNanoId(shareId)) {
+        return null;
+      }
       const doc = await getShare<WeddingInfo>(shareId);
-      return doc?.data ?? null;
+      if (!doc) {
+        return null;
+      }
+      return doc.data ?? null;
     }
     return null;
   } catch (err) {
@@ -48,7 +49,7 @@ export const useWeddingInfo = (
   const key =
     uid && typeof uid === 'string'
       ? ['weddingInfoByUid', uid]
-      : shareId && isValidNanoId(shareId)
+      : shareId
         ? ['weddingInfoByShareId', shareId]
         : null;
 
