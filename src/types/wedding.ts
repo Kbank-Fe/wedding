@@ -92,6 +92,7 @@ export type UserBasicInfoBoolean = {
 };
 
 export type ShowCheckbox = {
+  theme: boolean;
   intro: boolean;
   contact: boolean;
   calendar: boolean;
