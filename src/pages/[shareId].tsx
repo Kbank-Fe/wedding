@@ -1,5 +1,6 @@
 import { Navigate, useParams } from 'react-router-dom';
 
+import Footer from '@/components/footer/Footer';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
 import { useWeddingInfo } from '@/hooks/useWeddingInfo';
@@ -30,6 +31,7 @@ const SharePage = () => {
           )}
         </>
       )}
+      <Footer />
     </PageLayout>
   );
 };
