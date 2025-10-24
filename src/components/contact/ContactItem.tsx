@@ -11,7 +11,7 @@ const ContactItem = ({ part, phone }: ContactItemProps) => {
     <>
       <div css={contactRowStyle}>
         <span css={partStyle}>{part}</span>
-        <a href={'tel:' + phone}>
+        <a css={iconStyle} href={'tel:' + phone}>
           <Phone size={20} />
         </a>
       </div>
@@ -29,7 +29,12 @@ const contactRowStyle = css`
 
 const partStyle = css`
   min-width: 110px;
-  font-size: 0.9rem;
+  font-size: 12px;
+  color: var(--gray11);
+`;
+
+const iconStyle = css`
+  color: var(--gray9);
 `;
 
 export default ContactItem;

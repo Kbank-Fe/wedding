@@ -19,10 +19,8 @@ const ContactModal = () => {
   return (
     <>
       <div css={wrapperStyle}>
-        <span css={titleStyle}>신랑측</span>
-        <Line />
         {groomFilteredList.length === 0 ? (
-          <span css={textStyle}>등록된 연락처가 없습니다.</span>
+          <span css={textStyle}>신랑 측 등록된 연락처가 없어요</span>
         ) : (
           groomFilteredList.map((contact, index) => (
             <ContactItem
@@ -34,13 +32,11 @@ const ContactModal = () => {
         )}
       </div>
 
-      <hr css={gapHrStyle} />
+      <Line />
 
       <div css={wrapperStyle}>
-        <span css={titleStyle}>신부측</span>
-        <Line />
         {bridgeFilteredList.length === 0 ? (
-          <span css={textStyle}>등록된 연락처가 없습니다.</span>
+          <span css={textStyle}>신부 측 등록된 연락처가 없어요</span>
         ) : (
           bridgeFilteredList.map((contact, index) => (
             <ContactItem
@@ -56,27 +52,15 @@ const ContactModal = () => {
 };
 
 const wrapperStyle = css`
+  margin: 0 auto;
+  width: 80%;
   display: flex;
   flex-direction: column;
 `;
 
-const gapHrStyle = css`
-  border: none;
-  height: 40px;
-  background: transparent;
-  margin: 0;
-  width: 100%;
-`;
-
 const textStyle = css`
-  margin: 0 16px;
-  font-size: 0.9rem;
-`;
-
-const titleStyle = css`
-  font-weight: 600;
-  margin: 0 16px;
-  font-size: 0.9rem;
+  font-size: 12px;
+  color: var(--gray11);
 `;
 
 export default ContactModal;

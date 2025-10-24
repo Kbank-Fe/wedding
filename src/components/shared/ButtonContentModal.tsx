@@ -55,17 +55,18 @@ const ButtonContentModal = ({
 
 const modalButtonStyle = css`
   margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: var(--gray4);
-  color: var(--gray12);
-  border-radius: 1rem;
-  font-size: 1rem;
+  padding: 0.8rem 1rem;
+  background-color: var(--gray2);
+  color: var(--gray11);
+  border-radius: 0.5rem;
+  font-size: 12px;
 `;
 
 const modalOverlayStyle = css`
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: #e8e8e8;
+  opacity: 0.95;
 `;
 
 const modalContentStyle = css`
@@ -73,7 +74,6 @@ const modalContentStyle = css`
   inset: 0;
   display: flex;
   flex-direction: column;
-  color: white;
   background: transparent;
 `;
 
@@ -84,8 +84,8 @@ const modalHeaderStyle = css`
 `;
 
 const modalTitleStyle = css`
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: 13px;
+  color: var(--gray12);
 `;
 
 const modalDescriptionStyle = css`
@@ -99,7 +99,7 @@ const modalCloseStyle = css`
   background: transparent;
   border: none;
   font-size: 1.5rem;
-  color: var(--gray1);
+  color: var(--gray12);
   cursor: pointer;
 `;
 
