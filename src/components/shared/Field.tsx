@@ -25,8 +25,6 @@ const Field = ({
   const count = validChildren.length;
   const isGroup = mode === 'group' || (mode === 'auto' && count > 1);
 
-  console.log(count, mode, isGroup);
-
   if (isGroup) {
     return (
       <fieldset aria-describedby={descId} css={fieldsetStyle}>
