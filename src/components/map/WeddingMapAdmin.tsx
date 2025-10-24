@@ -28,7 +28,7 @@ const WeddingMapAdmin = () => {
   };
 
   const handleChangeCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
-    setField('map', 'isMapVisible', e.currentTarget.checked);
+    setField('map', 'isVisibleMap', e.currentTarget.checked);
   };
 
   return (
@@ -54,10 +54,11 @@ const WeddingMapAdmin = () => {
         <AddressSearch buttonText="검색" onSelect={handleSelectAddress} />
       </Field>
 
-      <Field label="지도 표시" mode="group">
+      <Field label="지도 표시">
         <BaseCheckBoxInput
           checkboxLabel=""
-          checked={map.isMapVisible ?? false}
+          checked={map.isVisibleMap ?? false}
+          id="isVisibleMap"
           onChange={handleChangeCheckbox}
         />
       </Field>

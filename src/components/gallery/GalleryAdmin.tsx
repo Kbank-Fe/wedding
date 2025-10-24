@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
-import { X } from 'lucide-react';
+import { CgClose } from 'react-icons/cg';
 
 import BaseImageInput from '@/components/shared/BaseImageInput';
-import Input from '@/components/shared/Input';
+import Field from '@/components/shared/Field';
 import { useImagePreview } from '@/hooks/useImagePreview';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { LocalImage } from '@/types/wedding';
@@ -34,9 +34,9 @@ const GalleryAdmin = () => {
 
   return (
     <>
-      <Input labelText="사진">
+      <Field label="사진">
         <BaseImageInput onChange={handleAddFiles} />
-      </Input>
+      </Field>
       {localImageList.length > 0 && (
         <div css={previewWrapperStyle}>
           {localImageList.map((file, index) => (
@@ -51,7 +51,7 @@ const GalleryAdmin = () => {
                   css={removeButtonStyle}
                   onClick={() => handleRemoveImage(file)}
                 >
-                  <X size={10} />
+                  <CgClose size={8} strokeWidth={1.1} />
                 </button>
               </div>
               <span css={previewNameStyle}>{file.name}</span>
@@ -66,7 +66,8 @@ const GalleryAdmin = () => {
 const previewWrapperStyle = css`
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 13px;
+  margin-top: 1rem;
 `;
 
 const previewImageWrapperStyle = css`
@@ -85,7 +86,7 @@ const previewImageStyle = css`
 `;
 
 const previewNameStyle = css`
-  font-size: 12px;
+  font-size: 10px;
   color: var(--gray10);
   padding: 0.4rem 0.2rem 0;
   display: inline-block;
@@ -99,14 +100,13 @@ const removeButtonStyle = css`
   position: absolute;
   top: 6px;
   right: 6px;
-  background: var(--gray12);
-  color: white;
-  border: none;
+  background: var(--gray11);
+  color: var(--gray2);
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: 0.9;
 `;
 
 export default GalleryAdmin;

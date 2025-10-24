@@ -34,7 +34,7 @@ export default function AddressSearch({
   return (
     <button
       aria-label="주소 검색"
-      css={btn}
+      css={buttonStyle}
       disabled={!ready || disabled}
       onClick={open}
     >
@@ -43,26 +43,34 @@ export default function AddressSearch({
   );
 }
 
-const btn = css`
-  margin-top: 0.8rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--gray6);
-  border-radius: 0.5rem;
-  background: #fff;
-  font-size: 0.9rem;
-  color: var(--gray12);
+const buttonStyle = css`
+  margin-top: 0.3rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  color: var(--gray11);
+  background-color: var(--gray2);
+  border: 1px solid var(--gray4);
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
   transition:
-    background 0.2s,
-    box-shadow 0.2s;
-
-  &:hover:not(:disabled) {
-    background: var(--gray2);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
+    border-color 0.25s ease,
+    background-color 0.25s ease;
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+
+  &:hover {
+    background-color: var(--gray8);
+    color: var(--gray1);
+    border-color: var(--gray8);
+  }
+
+  &:active {
+    background-color: var(--gray11);
+    color: var(--gray1);
+    border-color: var(--gray11);
   }
 `;

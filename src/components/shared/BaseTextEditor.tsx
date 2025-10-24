@@ -26,14 +26,15 @@ const BaseTextEditor = ({
   };
 
   return (
-    <ReactQuill
-      css={editorWrapperStyle(height ?? 100)}
-      modules={modules}
-      placeholder={placeholder}
-      theme="snow"
-      value={value}
-      onChange={onChange}
-    />
+    <div css={editorWrapperStyle(height ?? 100)}>
+      <ReactQuill
+        modules={modules}
+        placeholder={placeholder}
+        theme="snow"
+        value={value}
+        onChange={onChange}
+      />
+    </div>
   );
 };
 
@@ -42,26 +43,50 @@ const editorWrapperStyle = (height: number) => css`
 
   .ql-toolbar {
     height: fit-content;
-    border-radius: 4px 4px 0 0;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .ql-toolbar.ql-snow {
+    border: 1px solid var(--gray4);
+    padding: 0.4rem 0.6rem;
   }
 
   .ql-toolbar.ql-snow .ql-formats {
-    margin-right: 12px;
+    margin-right: 0.2rem;
   }
 
   .ql-toolbar svg {
-    width: 15px;
-    height: 15px;
+    width: 13px;
+    height: 13px;
   }
 
   .ql-container {
-    border-radius: 0 0 4px 4px;
+    border-radius: 0 0 6px 6px;
+    font-family: 'BasicSans';
+  }
+
+  .ql-container.ql-snow {
+    color: var(--gray12);
+    border: 1px solid var(--gray4);
   }
 
   .ql-editor {
     min-height: ${height}px;
     max-height: ${height}px;
     overflow-y: auto;
+    padding: 0.6rem 0.8rem;
+  }
+
+  &:hover .ql-toolbar.ql-snow,
+  &:hover .ql-container.ql-snow {
+    border-color: var(--gray7);
+  }
+
+  .ql-toolbar,
+  .ql-container {
+    transition:
+      border-color 0.25s ease,
+      background-color 0.25s ease;
   }
 `;
 

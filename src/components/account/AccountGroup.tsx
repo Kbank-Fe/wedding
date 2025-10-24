@@ -1,4 +1,6 @@
 import { css } from '@emotion/react';
+import { CgClose } from 'react-icons/cg';
+import { RiMenuAddLine } from 'react-icons/ri';
 
 import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import BaseTextInput from '@/components/shared/BaseTextInput';
@@ -6,6 +8,7 @@ import Field from '@/components/shared/Field';
 import type { Account } from '@/types/wedding';
 
 type AccountGroupProps = {
+  id: string;
   title: string;
   accounts: Account[];
   handleChange: (
@@ -20,6 +23,7 @@ type AccountGroupProps = {
 };
 
 const AccountGroup = ({
+  id,
   title,
   accounts,
   handleChange,
@@ -30,27 +34,26 @@ const AccountGroup = ({
 }: AccountGroupProps) => (
   <div css={groupWrapperStyle}>
     <div css={groupHeaderStyle}>
-      <span css={groupTitleStyle}>{title}</span>
       <div css={groupActionsStyle}>
+        <span css={groupTitleStyle}>{title}</span>
         <BaseCheckBoxInput
           checkboxLabel="펼치기"
           checked={isExpand}
+          id={id}
           onChange={onToggleExpand}
         />
-
-        <button css={addButtonStyle} onClick={onAdd}>
-          ＋
-        </button>
       </div>
+      <button css={buttonStyle} onClick={onAdd}>
+        <RiMenuAddLine size={15} />
+      </button>
     </div>
 
-    {accounts.map((acc, i) => (
-      <div key={i} css={accountBlockStyle}>
+    {accounts.map((acc, index) => (
+      <div key={index} css={accountBlockStyle}>
         <div css={accountHeaderStyle}>
-          <span>계좌 {i + 1}</span>
           {accounts.length > 1 && (
-            <button css={removeButtonStyle} onClick={() => onRemove(i)}>
-              －
+            <button css={buttonStyle} onClick={() => onRemove(index)}>
+              <CgClose size={12} strokeWidth={1.1} />
             </button>
           )}
         </div>
@@ -59,7 +62,7 @@ const AccountGroup = ({
           <BaseTextInput
             maxLength={10}
             value={acc.accountHolder}
-            onChange={handleChange(i, 'accountHolder', 'kor')}
+            onChange={handleChange(index, 'accountHolder', 'kor')}
           />
         </Field>
 
@@ -67,7 +70,7 @@ const AccountGroup = ({
           <BaseTextInput
             maxLength={15}
             value={acc.bankName}
-            onChange={handleChange(i, 'bankName', 'kor')}
+            onChange={handleChange(index, 'bankName', 'kor')}
           />
         </Field>
 
@@ -75,7 +78,7 @@ const AccountGroup = ({
           <BaseTextInput
             maxLength={20}
             value={acc.accountNumber}
-            onChange={handleChange(i, 'accountNumber', 'num')}
+            onChange={handleChange(index, 'accountNumber', 'num')}
           />
         </Field>
 
@@ -85,7 +88,7 @@ const AccountGroup = ({
               maxLength={50}
               placeholder="https://qr.kakaopay.com/..."
               value={acc.kakaopayUrl ?? ''}
-              onChange={handleChange(i, 'kakaopayUrl', 'url')}
+              onChange={handleChange(index, 'kakaopayUrl', 'url')}
             />
           </Field>
         )}
@@ -94,7 +97,8 @@ const AccountGroup = ({
           <BaseCheckBoxInput
             checkboxLabel=""
             checked={acc.isKakaopay ?? false}
-            onChange={handleChange(i, 'isKakaopay')}
+            id={id + index}
+            onChange={handleChange(index, 'isKakaopay')}
           />
         </Field>
       </div>
@@ -110,13 +114,12 @@ const groupHeaderStyle = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin: 0 0.3rem 0.7rem;
 `;
 
 const groupTitleStyle = css`
-  font-weight: bold;
-  font-size: 0.93rem;
-  color: var(--gray12);
+  font-size: 13px;
+  font-weight: 700;
 `;
 
 const groupActionsStyle = css`
@@ -125,45 +128,29 @@ const groupActionsStyle = css`
   gap: 0.75rem;
 `;
 
-const addButtonStyle = css`
-  border: none;
-  background: transparent;
-  font-size: 1.25rem;
-  cursor: pointer;
-  line-height: 1;
-  padding: 0;
-  color: var(--gray11);
-
-  &:hover {
-    color: var(--blue11);
-  }
-`;
-
 const accountBlockStyle = css`
-  margin-bottom: 1.25rem;
-  padding: 0.75rem;
-  border: 1px solid var(--gray6);
-  border-radius: 0.5rem;
+  background-color: var(--gray2);
+  border-radius: 6px;
+  padding: 0.2rem 0.8rem 0.3rem;
+  margin-bottom: 1rem;
 `;
 
 const accountHeaderStyle = css`
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin: 0.6rem 0.2rem;
 `;
 
-const removeButtonStyle = css`
-  border: none;
-  background: transparent;
-  font-size: 1.12rem;
-  cursor: pointer;
-  line-height: 1;
-  padding: 0;
-  color: var(--gray10);
+const buttonStyle = css`
+  color: var(--gray11);
 
   &:hover {
-    color: var(--red11);
+    color: var(--gray12);
+  }
+
+  &:active {
+    color: var(--gray12);
   }
 `;
 

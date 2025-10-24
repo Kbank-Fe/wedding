@@ -1,18 +1,15 @@
 import { css } from '@emotion/react';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { LuChevronDown } from 'react-icons/lu';
 
-// rest props로 select 속성 전달 가능 (예: onChange, disabled 등)
 type BaseSelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   options: { title: string; value: string | number }[];
   value: string | number;
 };
 
 const BaseSelect = forwardRef<HTMLSelectElement, BaseSelectProps>(
-  ({ options, value, ...rest }: BaseSelectProps, ref) => {
-    // 자식 내부 input DOM 직접 제어
+  ({ options, value, ...rest }, ref) => {
     const selectRef = useRef<HTMLSelectElement>(null);
-
-    // 부모 ref를 자식의 input DOM에 연결
     useImperativeHandle(ref, () => selectRef.current!, []);
 
     return (
@@ -24,42 +21,63 @@ const BaseSelect = forwardRef<HTMLSelectElement, BaseSelectProps>(
             </option>
           ))}
         </select>
-        <span css={iconStyle}>▼</span>
+        <LuChevronDown css={iconStyle} />
       </div>
     );
   },
 );
 
-// forwardRef 적용 시 displayName 명시 필수
 BaseSelect.displayName = 'BaseSelect';
 
 const wrapperStyle = css`
   position: relative;
-  display: inline-block;
-  padding-right: 2;
+  display: inline-flex;
+  align-items: center;
   width: 100%;
-  margin: 0.5rem 0;
 `;
 
 const baseSelectStyle = css`
-  width: 100%;
-  height: 2.5rem;
-  padding: 0 1rem;
-  font-size: 1rem;
+  flex: 1;
+  height: 39px;
+  padding: 0.6rem 2rem 0.6rem 0.8rem;
   border: 1px solid var(--gray4);
-  border-radius: 8px;
-  background-color: var(--gray5);
-  /* 브라우저 기본 화살표 제거*/
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: transparent;
   appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+
+  &:hover {
+    border-color: var(--gray8);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--gray11);
+  }
+
+  &:hover + svg {
+    color: var(--gray8);
+  }
+
+  &:focus + svg,
+  &:active + svg {
+    color: var(--gray11);
+  }
 `;
 
 const iconStyle = css`
   position: absolute;
   right: 0.75rem;
-  padding-right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
   pointer-events: none;
+  color: var(--gray7);
+  font-size: 1rem;
+  transition: color 0.25s ease;
 `;
 
 export default BaseSelect;

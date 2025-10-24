@@ -92,6 +92,6 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     venueName: '',
     venueDetail: '',
     address: '',
-    isMapVisible: false,
+    isVisibleMap: false,
   },
 };

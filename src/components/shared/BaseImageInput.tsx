@@ -33,40 +33,43 @@ const BaseImageInput = ({
   );
 };
 
+const commonButtonStyle = css`
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  color: var(--gray11);
+  background-color: var(--gray2);
+  border: 1px solid var(--gray4);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+
+  &:hover {
+    background-color: var(--gray8);
+    color: var(--gray1);
+    border-color: var(--gray8);
+  }
+
+  &:active {
+    background-color: var(--gray11);
+    color: var(--gray1);
+    border-color: var(--gray11);
+  }
+`;
+
 const fileInputStyle = css`
   color: transparent;
   text-shadow: none;
   width: 100px;
 
   &::file-selector-button {
-    padding: 8px 16px;
-    border-radius: 6px;
-    background-color: var(--blue9);
-    border: none;
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-
-  &::file-selector-button:hover {
-    background-color: var(--blue11);
+    ${commonButtonStyle};
   }
 
   &::-webkit-file-upload-button {
-    padding: 8px 16px;
-    border-radius: 6px;
-    background-color: var(--blue9);
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-
-  &::-webkit-file-upload-button:hover {
-    background-color: var(--blue11);
+    ${commonButtonStyle};
   }
 `;
 

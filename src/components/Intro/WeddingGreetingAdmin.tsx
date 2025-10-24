@@ -42,8 +42,9 @@ const WeddingGreetingAdmin = () => {
       </Field>
       <Field label="성함표기">
         <BaseCheckBoxInput
-          checkboxLabel={'인사말 하단에 신랑신부&혼주 성함 표시'}
+          checkboxLabel={'인사말 하단에 신랑 신부&혼주 성함 표시'}
           checked={greetingInfo.showNames}
+          id="showNames"
           onChange={handleCheckBox}
         />
       </Field>

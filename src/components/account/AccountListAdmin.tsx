@@ -1,4 +1,4 @@
-import AccountGroup from '@/components/account/AccoutGroup';
+import AccountGroup from '@/components/account/AccountGroup';
 import BaseTextArea from '@/components/shared/BaseTextArea';
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Field from '@/components/shared/Field';
@@ -150,6 +150,7 @@ const AccountListAdmin = () => {
             <AccountGroup
               accounts={accounts?.accounts ?? []}
               handleChange={handleChangeAccount(side)}
+              id={side + idx}
               isExpand={accounts?.isExpand ?? false}
               title={accounts?.title || label}
               onAdd={handleAddAccount(side)}
