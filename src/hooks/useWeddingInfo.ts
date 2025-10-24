@@ -19,16 +19,22 @@ const fetchWeddingInfo = async ({
   try {
     if (uid) {
       const resolvedShareId = await getUserShareId(uid);
-      if (!resolvedShareId) return null;
+      if (!resolvedShareId) return WEDDING_INITIAL_INFO;
+
       const doc = await getShare<WeddingInfo>(resolvedShareId);
       return doc?.data ?? WEDDING_INITIAL_INFO;
     }
 
-    if (shareId && isValidNanoId(shareId)) {
+    if (shareId) {
+      if (!isValidNanoId(shareId)) {
+        return null;
+      }
       const doc = await getShare<WeddingInfo>(shareId);
-      return doc?.data ?? null;
+      if (!doc) {
+        return null;
+      }
+      return doc.data ?? null;
     }
-
     return null;
   } catch (err) {
     console.error('fetchWeddingInfo error:', err);
@@ -43,7 +49,7 @@ export const useWeddingInfo = (
   const key =
     uid && typeof uid === 'string'
       ? ['weddingInfoByUid', uid]
-      : shareId && isValidNanoId(shareId)
+      : shareId
         ? ['weddingInfoByShareId', shareId]
         : null;
 
@@ -67,11 +73,21 @@ export const useWeddingInfo = (
         const localFiles = (draft.gallery?.localImageList ?? []).filter(
           (img): img is File => img instanceof File,
         );
+
         draft.gallery = {
           ...(data.gallery ?? {}),
           localImageList: [...localImageList, ...localFiles],
         };
+
+        draft.showCheckbox = data.showCheckbox ?? WEDDING_INITIAL_INFO.showCheckbox;
+        draft.account = data.account ?? WEDDING_INITIAL_INFO.account;
+        draft.contact = data.contact ?? WEDDING_INITIAL_INFO.contact;
+        draft.date = data.date ?? WEDDING_INITIAL_INFO.date;
+        draft.intro = data.intro ?? WEDDING_INITIAL_INFO.intro;
+        draft.transport = data.transport ?? WEDDING_INITIAL_INFO.transport;
+        draft.map = data.map ?? WEDDING_INITIAL_INFO.map;
       });
+
       initializedRef.current = true;
     };
 
@@ -80,8 +96,8 @@ export const useWeddingInfo = (
 
   return {
     weddingInfo: data,
-    isLoading: isLoading || !key, // key 없으면 로딩 처리 유지
+    isLoading: isLoading || !key,
     isError: !!error,
-    notFound: !!key && !isLoading && !data, // key 존재할 때만 notFound 판단
+    notFound: !!key && !isLoading && data === null,
   };
 };
