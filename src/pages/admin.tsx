@@ -17,37 +17,32 @@ import { uploadImageToStorage } from '@/utils/storage';
 
 const AdminPage = () => {
   const navigate = useNavigate();
-
   const setDeep = useWeddingStore((state) => state.setDeep);
   const setField = useWeddingStore((state) => state.setField);
 
   const { user, uid, isLoading: userLoading } = useCurrentUser();
-  const { isLoading: infoLoading, notFound } = useWeddingInfo({ uid }, setDeep);
 
+  const shouldFetch = !!uid;
+  const { isLoading: infoLoading, notFound } = useWeddingInfo(
+    shouldFetch ? { uid } : { uid: null },
+    shouldFetch ? setDeep : undefined,
+  );
   const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
 
-  if (!userLoading && !uid) {
-    return <Navigate replace to="/404" />;
-  }
+  if (userLoading) return <LoadingSpinner />;
+  if (!uid) return <Navigate replace to="/404" />;
+  if (infoLoading) return <LoadingSpinner />;
+  if (notFound) return <Navigate replace to="/404" />;
 
-  if (userLoading || infoLoading) {
-    return <LoadingSpinner />;
-  }
-
-  if (notFound) {
-    return <Navigate replace to="/404" />;
-  }
   const handleSetImageList = async (uid: string) => {
     const gallery = useWeddingStore.getState().values.gallery;
     const savedImageList = gallery.savedImageList ?? [];
     const localImageList = gallery.localImageList ?? [];
 
-    // 새로 추가된 파일만 추출
     const addedFiles = localImageList.filter(
       (img): img is File => img instanceof File,
     );
 
-    // 삭제된 SavedImage 추출
     const deletedSavedImages = savedImageList.filter(
       (saved) =>
         !localImageList.some(
@@ -55,15 +50,13 @@ const AdminPage = () => {
         ),
     );
 
-    if (addedFiles.length === 0 && deletedSavedImages.length === 0) return; // 변화 없으면 skip
+    if (addedFiles.length === 0 && deletedSavedImages.length === 0) return;
 
     try {
-      // 새 파일 업로드
       const metas: SavedImage[] = await Promise.all(
         addedFiles.map((file) => uploadImageToStorage(file, uid)),
       );
 
-      // DB 반영 (삭제 제외 + 신규 추가)
       setDeep((draft) => {
         draft.gallery.savedImageList = [
           ...savedImageList.filter(
@@ -83,7 +76,6 @@ const AdminPage = () => {
 
     try {
       await handleSetImageList(uid);
-
       const values = useWeddingStore.getState().values;
       const shareId = await saveUserShare(uid, values);
 
@@ -157,11 +149,6 @@ const buttonStyle = css`
   transition:
     border-color 0.25s ease,
     background-color 0.25s ease;
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
 
   &:hover {
     background-color: var(--gray8);
