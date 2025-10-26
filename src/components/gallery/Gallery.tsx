@@ -6,7 +6,7 @@ import GalleryView from '@/components/gallery/GalleryView';
 const Gallery = () => {
   return (
     <>
-      <ImHeart css={iconStyle} />
+      <ImHeart color="#87BBBA" css={iconStyle} size={16} />
       <GalleryView />
     </>
   );
