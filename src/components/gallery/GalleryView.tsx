@@ -77,7 +77,6 @@ const gridStyle = css`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  /* background-color: #f8f6f1; */
 `;
 
 const buttonStyle = css`
@@ -90,7 +89,7 @@ const buttonStyle = css`
 
 const thumbStyle = css`
   width: 100%;
-  height: 150px;
+  height: 145px;
   object-fit: cover;
 `;
 
@@ -102,13 +101,10 @@ const fadeOverlayStyle = css`
 `;
 
 const moreButtonStyle = css`
-  margin-top: 1rem;
-  width: 100%;
-  text-align: center;
-  padding: 8px 0;
-  border-radius: 6px;
+  padding: 1rem 0;
   color: var(--gray8);
-  cursor: pointer;
+  font-family: 'Wedding';
+  font-size: 12px;
 `;
 
 export default GalleryView;
