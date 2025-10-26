@@ -12,3 +12,12 @@ export const copyToClipboard = async ({ text }: Copy) => {
     toast.error('계좌번호 복사에 실패했어요.');
   }
 };
+
+export const copyToLink = async ({ text }: Copy) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    toast.success('청첩장 링크 복사에 성공했어요.');
+  } catch {
+    toast.error('청첩장 링크 복사에 실패했어요.');
+  }
+};
