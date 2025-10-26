@@ -15,8 +15,6 @@ import {
   getMinuteTitle,
 } from '@/utils/date';
 
-import Line from '../shared/Line';
-
 type highlight = {
   date: Date;
   view: View;
