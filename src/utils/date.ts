@@ -1,3 +1,5 @@
+import { HOUR_OPTION_LIST, MINUTE_OPTION_LIST } from './constants/time';
+
 // 요일 반환
 export const getDayOfWeek = (targetDate: Date) => {
   const getDayOfWeekList = ['일', '월', '화', '수', '목', '금', '토'];
@@ -29,4 +31,15 @@ export const getDtime = (targetDate: Date) => {
   const s = Math.floor((diff / 1000) % 60);
 
   return { d, h, m, s };
+};
+
+// 시간 값에 해당하는 제목 반환
+export const getHourTitle = (hour: number) => {
+  return HOUR_OPTION_LIST.filter((option) => option.value === hour)[0].title;
+};
+
+// 시간 값에 해당하는 제목 반환
+export const getMinuteTitle = (minute: number) => {
+  return MINUTE_OPTION_LIST.filter((option) => option.value === minute)[0]
+    .title;
 };
