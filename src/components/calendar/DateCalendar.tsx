@@ -54,14 +54,22 @@ const DateCalendar = () => {
   const dDayRaw = getDday(dateObject);
 
   const dDay = Math.abs(dDayRaw);
-  let dDayMessage = '';
+  let dDayMessage;
 
   if (dDayRaw === 0) {
     dDayMessage = '🎉 오늘은 결혼식 날이에요!';
   } else if (dDayRaw < 0) {
-    dDayMessage = `결혼식이 ${dDay}일 지났어요`;
+    dDayMessage = (
+      <>
+        결혼식이 <span css={dDayStyle}>{dDay}</span>일 지났어요
+      </>
+    );
   } else {
-    dDayMessage = `결혼식까지 ${dDay}일 남았어요`;
+    dDayMessage = (
+      <>
+        결혼식까지 <span css={dDayStyle}>{dDay}</span>일 남았어요
+      </>
+    );
   }
 
   return (
@@ -181,9 +189,14 @@ const monthStyle = css`
 
 const dtimeStyle = css`
   color: var(--gray11);
-  font-size: 13px;
+  font-size: 12px;
   margin: 2rem auto 0 auto;
   text-align: center;
+`;
+
+const dDayStyle = css`
+  color: var(--gray12);
+  font-size: 12px;
 `;
 
 export default DateCalendar;
