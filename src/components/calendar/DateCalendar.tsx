@@ -4,8 +4,8 @@ import { css } from '@emotion/react';
 import { useMemo } from 'react';
 import Calendar from 'react-calendar';
 import type { View } from 'react-calendar/dist/shared/types.js';
+import { TfiLayoutLineSolid } from 'react-icons/tfi';
 
-import Header from '@/components/shared/Header';
 import { MotionFade } from '@/components/shared/MotionFade';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import {
@@ -74,19 +74,15 @@ const DateCalendar = () => {
 
   return (
     <>
-      <Header title="Calendar" />
       <MotionFade css={dateStyle}>
-        <div
-          css={dateTimeStyle}
-        >{`${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`}</div>
-        <div
-          css={dateTimeStyle}
-        >{`${getHourTitle(hour)} ${getMinuteTitle(min)}`}</div>
-        <hr css={lineStyle} />
+        <div css={dateTimeStyle}>
+          <p>{`${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`}</p>
+          <p>{`${getHourTitle(hour)} ${getMinuteTitle(min)}`}</p>
+       </div>
+        <TfiLayoutLineSolid color="#87bbba" size={24} strokeWidth={1} />
         <div css={monthStyle}>{month}</div>
       </MotionFade>
       <MotionFade>
-        {/* <Line /> */}
         <div css={calendarContainerStyle}>
           <Calendar
             activeStartDate={dateObject}
@@ -103,7 +99,6 @@ const DateCalendar = () => {
             }
           />
         </div>
-        {/* <Line /> */}
         <div css={dtimeStyle}>{dDayMessage}</div>
       </MotionFade>
     </>
@@ -116,36 +111,34 @@ const calendarContainerStyle = css`
     background-color: #f8f6f1;
     border: none;
     box-shadow: none;
+    line-height: 1.4rem;
   }
 
-  border-top: 0.1px solid var(--gray3);
-  border-bottom: 0.1px solid var(--gray3);
-  padding: 1rem 0 0.5rem 0;
+  border-top: 0.5px solid var(--gray4);
+  border-bottom: 0.5px solid var(--gray4);
+  padding: 1.3rem 0.8rem;
 `;
 
 const calendarStyle = css`
-  margin: 0 auto;
-  padding-bottom: 10px;
-  width: 100%; // 부모 요소 너비에 맞춤
-  max-width: 100%; // 요소 최대 너비 부모 맞춤
   box-sizing: border-box; // 패딩, 보더 포함 요소 전체 너비와 높이 계산
+  font-family: 'Wedding' !important;
+  font-weight: 400 !important;
 
   /* 기본 텍스트 색상: 검정 */
   .react-calendar__tile {
     color: var(--gray11) !important;
-    font-weight: 100;
   }
 
   /* highlight 날짜 셀 스타일 설정 */
   .react-calendar__tile.highlight {
     background: #87bbba !important;
     color: var(--gray1) !important;
-    border-radius: 80% !important;
+    border-radius: 50% !important;
+    font-weight: 700 !important;
   }
 
   /* 요일 헤더에서 일요일만 빨간색 */
   .react-calendar__month-view__weekdays__weekday {
-    font-weight: 200;
     color: var(--gray7);
   }
 
@@ -167,30 +160,28 @@ const calendarStyle = css`
 `;
 
 const dateStyle = css`
-  margin: 0 auto 2rem auto;
   text-align: center;
 `;
 
 const dateTimeStyle = css`
   color: var(--gray11);
-  font-size: 13px;
-`;
-
-const lineStyle = css`
-  width: 15%;
-  margin: 1.5rem auto 2rem auto;
-  border-bottom: 1px solid #87bbba;
+  font-size: 14px;
+  margin-bottom: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 `;
 
 const monthStyle = css`
   color: var(--gray11);
-  font-size: 36px;
+  font-size: 35px;
+  margin: 2rem 0 2.7rem;
 `;
 
 const dtimeStyle = css`
   color: var(--gray11);
-  font-size: 12px;
-  margin: 2rem auto 0 auto;
+  font-size: 13px;
+  margin-top: 2.2rem;
   text-align: center;
 `;
 
