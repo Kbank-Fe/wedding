@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Phone } from 'lucide-react';
+import { PiPhoneFill } from 'react-icons/pi';
 
 type ContactItemProps = {
   part: string;
@@ -12,7 +12,7 @@ const ContactItem = ({ part, phone }: ContactItemProps) => {
       <div css={contactRowStyle}>
         <span css={partStyle}>{part}</span>
         <a css={iconStyle} href={'tel:' + phone}>
-          <Phone size={20} />
+          <PiPhoneFill />
         </a>
       </div>
     </>

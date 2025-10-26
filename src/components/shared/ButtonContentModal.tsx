@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import * as Dialog from '@radix-ui/react-dialog';
+import { IoIosClose } from 'react-icons/io';
 
 type ButtonContentModalProps = {
   children: React.ReactNode;
@@ -40,7 +41,7 @@ const ButtonContentModal = ({
             {/* 닫기 버튼 (우측 상단) */}
             <Dialog.Close asChild>
               <button css={modalCloseStyle} onClick={onClose}>
-                ✕
+                <IoIosClose />
               </button>
             </Dialog.Close>
           </header>
@@ -60,6 +61,10 @@ const modalButtonStyle = css`
   color: var(--gray11);
   border-radius: 0.5rem;
   font-size: 12px;
+  border: 0.5px solid var(--gray4);
+
+  /* 클릭/탭 시 배경 깜빡임 제거 */
+  -webkit-tap-highlight-color: transparent;
 `;
 
 const modalOverlayStyle = css`
