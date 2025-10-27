@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 
 import Footer from '@/components/footer/Footer';
@@ -12,6 +13,10 @@ const SharePage = () => {
   const setDeep = useWeddingStore((state) => state.setDeep);
   const { shareId } = useParams<{ shareId: string }>();
   const { notFound } = useWeddingInfo({ shareId }, setDeep);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
 
   if (notFound) {
     return <Navigate replace to="/404" />;
