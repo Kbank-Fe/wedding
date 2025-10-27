@@ -59,7 +59,7 @@ export default function KakaoLoginAndSaveTest() {
     <div css={wrapperStyle}>
       {!uid && (
         <button css={buttonStyle} disabled={loading} onClick={handleLogin}>
-          <img alt="카카오 로그인" src="/images/kakao_login.png" />
+          <img alt="카카오 로그인" src="/images/icon/kakao_login.png" />
         </button>
       )}
     </div>
