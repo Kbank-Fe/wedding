@@ -2,7 +2,6 @@ import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 
 import UserInfo from '@/components/Intro/UserInfo';
-import Header from '@/components/shared/Header';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const fadeUp = {
@@ -15,7 +14,6 @@ const WeddingIntro = () => {
 
   return (
     <>
-      <Header title={'Wedding Day~'} />
       <motion.div
         css={introContainerStyle}
         initial="hidden"
@@ -27,6 +25,7 @@ const WeddingIntro = () => {
           {intro.title}
         </motion.p>
         <motion.div
+          css={contentStyle}
           dangerouslySetInnerHTML={{ __html: intro.content }}
           variants={fadeUp}
         />
@@ -52,15 +51,20 @@ const WeddingIntro = () => {
 };
 
 const introContainerStyle = css`
-  padding: 1.5rem;
-  border-radius: 0.75rem;
+  padding: 0 1rem;
   text-align: center;
 `;
 
 const titleStyle = css`
-  font-size: 1.375rem;
-  font-weight: bold;
-  margin-bottom: 0.625rem;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 2.3rem;
 `;
+
+const contentStyle = css`
+  font-size: 14px;
+  color: var(--gray11);
+  line-height: 1.6rem;
+`
 
 export default WeddingIntro;

@@ -49,7 +49,7 @@ const GalleryView = () => {
           ))}
         </div>
         <AnimatePresence>
-          {!expanded && (
+          {showMoreButton && (
             <motion.div
               css={fadeOverlayStyle}
               exit={{ opacity: 0 }}
@@ -77,7 +77,6 @@ const gridStyle = css`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  background-color: var(--gray1);
 `;
 
 const buttonStyle = css`
@@ -90,26 +89,22 @@ const buttonStyle = css`
 
 const thumbStyle = css`
   width: 100%;
-  height: 150px;
+  height: 145px;
   object-fit: cover;
-  background-color: var(--gray1);
 `;
 
 const fadeOverlayStyle = css`
   position: absolute;
   inset: 0;
-  background: linear-gradient(rgba(250, 250, 250, 0) 0%, var(--gray1) 93%);
+  background: linear-gradient(rgba(250, 250, 250, 0) 0%, #f8f6f1 93%);
   pointer-events: none;
 `;
 
 const moreButtonStyle = css`
-  margin-top: 1rem;
-  width: 100%;
-  text-align: center;
-  padding: 8px 0;
-  border-radius: 6px;
+  padding: 1rem 0;
   color: var(--gray8);
-  cursor: pointer;
+  font-family: 'Wedding';
+  font-size: 12px;
 `;
 
 export default GalleryView;
