@@ -42,6 +42,8 @@ const itemStyle = css`
   border-radius: 12px;
   overflow: hidden;
   background: var(--gray3);
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const triggerStyle = css`
@@ -66,6 +68,7 @@ const triggerStyle = css`
 `;
 
 const contentStyle = css`
+  width: 100%;
   overflow: hidden;
   font-size: 0.95rem;
   background: var(--gray1);
