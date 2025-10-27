@@ -27,6 +27,7 @@ const layoutStyle = ({ pageType }: { pageType: PageType }) => css`
   font-family: ${pageType === 'main' || pageType === 'login'
     ? "'Wedding', sans-serif"
     : 'inherit'};
+  overflow-x: hidden;
 `;
 
 const wrapperStyle = ({ pageType }: { pageType: PageType }) => css`
