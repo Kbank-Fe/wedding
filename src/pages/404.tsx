@@ -2,132 +2,103 @@ import { css } from '@emotion/react';
 import { type MouseEventHandler, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import PageLayout from '@/components/shared/PageLayout';
+
 const NotFoundPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = '404 Not Found | Wedding';
+    document.title = 'Not Found | 내가 만드는 우리의 날, 어스데이';
   }, []);
 
   const handleClickHomeButton: MouseEventHandler<HTMLButtonElement> = () => {
     navigate('/');
   };
 
-  const handleClickPrevButton: MouseEventHandler<HTMLButtonElement> = () => {
-    navigate(-1);
-  };
-
   return (
-    <main css={containerStyle}>
-      <section css={sectionStyle}>
-        <div aria-hidden css={codeStyle}>
-          404
+    <PageLayout pageType="service">
+      <div css={containerStyle}>
+        <div css={LogoWrapperStyle}>
+          <img alt="Us Day Logo" css={imageStyle} src="/images/logo_sad.png" />
+          <h2 css={textStyle}>404; Not Found</h2>
+          <p css={descriptionStyle}>
+            잘못된 경로로 접근하셨습니다. <br />
+            아래 버튼을 눌러 서비스를 다시 이용해 주세요.
+          </p>
         </div>
-        <h1 css={titleStyle}>페이지를 찾을 수 없어요</h1>
-        <p css={descriptionStyle}>
-          요청하신 주소가 변경되었거나 삭제되었을 수 있어요. 아래 버튼으로
-          이동해 보세요.
-        </p>
-        <div css={buttonWrapperStyle}>
-          <button
-            css={[buttonStyle, primaryStyle]}
-            onClick={handleClickHomeButton}
-          >
-            홈으로 가기
-          </button>
-          <button
-            css={[buttonStyle, basicStyle]}
-            onClick={handleClickPrevButton}
-          >
-            이전 페이지
-          </button>
-        </div>
-      </section>
-    </main>
+        <button css={buttonStyle} onClick={handleClickHomeButton}>
+          어스데이 메인으로 가기
+        </button>
+      </div>
+    </PageLayout>
   );
 };
 
 const containerStyle = css`
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 2rem;
-  background: var(--gray1);
-  color: var(--gray12);
-`;
-
-const sectionStyle = css`
-  width: min(500px, 100%);
-  background: var(--gray1);
-  border: 1px solid var(--gray2);
-  border-radius: 1rem;
-  padding: 2.2rem;
-  text-align: center;
-`;
-
-const codeStyle = css`
-  font-size: 2rem;
-  font-weight: 600;
-  line-height: 1;
-  margin-bottom: 0.5rem;
-  color: var(--gray10);
-`;
-
-const titleStyle = css`
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 0.25rem 0 1rem;
-  color: var(--gray11);
-`;
-
-const descriptionStyle = css`
-  font-size: 0.8rem;
-  margin-bottom: 1.5rem;
-  color: var(--gray9);
-  word-break: keep-all;
-  overflow-wrap: break-word;
-`;
-
-const buttonWrapperStyle = css`
-  display: grid;
-  grid-auto-flow: column;
-  gap: 1rem;
+  width: 100%;
+  height: 100vh;
+  padding: 0 2.5rem;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+`;
+
+const LogoWrapperStyle = css`
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 3rem;
 `;
 
 const buttonStyle = css`
-  border-radius: 2rem;
-  padding: 0.8rem 1.2rem;
-  font-weight: 600;
-  cursor: pointer;
+  width: 250px;
+  padding: 0.8rem 1rem;
+  background-color: var(--gray2);
+  color: var(--gray11);
+  border-radius: 8px;
+  border: 1px solid var(--gray4);
+  font-size: 12px;
+  font-family: 'Wedding';
+  font-weight: 700;
   transition:
-    transform 0.08s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+
+  &:hover {
+    background-color: var(--gray8);
+    color: var(--gray1);
+    border-color: var(--gray8);
+  }
 
   &:active {
-    transform: translateY(1px);
+    background-color: var(--gray11);
+    color: var(--gray1);
+    border-color: var(--gray11);
   }
 `;
 
-const primaryStyle = css`
-  background: var(--blue9);
-  color: var(--gray1);
-  box-shadow: 0 6px 16px var(--gray6);
-
-  &:hover {
-    background: var(--blue11);
-  }
+const imageStyle = css`
+  width: 6.8rem;
 `;
 
-const basicStyle = css`
-  background: transparent;
-  color: inherit;
-  border: 1px solid var(--gray4);
+const textStyle = css`
+  font-size: 21px;
+  font-weight: 400;
+  color: var(--gray11);
+  letter-spacing: -1px;
+  text-transform: uppercase;
+`;
 
-  &:hover {
-    background: var(--gray3);
-  }
+const descriptionStyle = css`
+  font-size: 13px;
+  margin-top: 0.8rem;
+  color: var(--gray9);
+  text-align: center;
+  line-height: 1.4rem;
 `;
 
 export default NotFoundPage;

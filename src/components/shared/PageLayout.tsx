@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import type { ReactNode } from 'react';
 
-type PageType = 'basic' | 'main' | 'login';
+type PageType = 'basic' | 'main' | 'service';
 
 type PageLayoutProps = {
   children: ReactNode;
@@ -21,10 +21,10 @@ const layoutStyle = ({ pageType }: { pageType: PageType }) => css`
   min-height: 100vh;
   max-width: 430px;
   margin: 0 auto;
-  background: ${pageType === 'main' || pageType === 'login'
+  background: ${pageType === 'main' || pageType === 'service'
     ? '#F8F6F1'
     : 'var(--gray1)'};
-  font-family: ${pageType === 'main' || pageType === 'login'
+  font-family: ${pageType === 'main' || pageType === 'service'
     ? "'Wedding', sans-serif"
     : 'inherit'};
   overflow-x: hidden;
@@ -32,14 +32,14 @@ const layoutStyle = ({ pageType }: { pageType: PageType }) => css`
 
 const wrapperStyle = ({ pageType }: { pageType: PageType }) => css`
   width: 100%;
-  padding: ${pageType === 'login'
+  padding: ${pageType === 'service'
     ? 0
     : pageType === 'main'
       ? '3rem 0 0'
       : '3rem 1.5rem'};
   display: flex;
   flex-direction: column;
-  gap: ${pageType === 'login' ? 0 : '5rem'};
+  gap: ${pageType === 'service' ? 0 : '5rem'};
 `;
 
 export default PageLayout;

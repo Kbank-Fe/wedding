@@ -119,6 +119,15 @@ const resetCSS = css`
   textarea {
     resize: none;
   }
+  [data-sonner-toast] {
+    color: var(--gray12) !important;
+    font-family: 'BasicSans', sans-serif;
+
+    [data-title],
+    [data-description] {
+      color: var(--gray12) !important;
+    }
+  }
 `;
 
 const GlobalStyle = () => {

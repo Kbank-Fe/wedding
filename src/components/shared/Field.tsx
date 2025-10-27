@@ -89,7 +89,7 @@ const singleRowStyle = css`
 
 const labelStyle = css`
   margin: 0.5rem 0;
-  width: 80px;
+  width: 70px;
   font-size: 13px;
   display: flex;
   align-items: flex-start;

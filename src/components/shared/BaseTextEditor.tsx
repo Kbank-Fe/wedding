@@ -81,13 +81,6 @@ const editorWrapperStyle = (height: number) => css`
   &:hover .ql-container.ql-snow {
     border-color: var(--gray7);
   }
-
-  .ql-toolbar,
-  .ql-container {
-    transition:
-      border-color 0.25s ease,
-      background-color 0.25s ease;
-  }
 `;
 
 export default BaseTextEditor;

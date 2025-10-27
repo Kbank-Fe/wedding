@@ -47,7 +47,6 @@ const Footer = ({ shareId }: { shareId: string }) => {
         </button>
       </div>
       <img alt="Us Day Logo" css={imageStyle} src="/images/logo.png" />
-
       <p css={fontStyle}>© usday. All rights reserved.</p>
     </div>
   );
@@ -56,30 +55,50 @@ const Footer = ({ shareId }: { shareId: string }) => {
 const containerStyle = css`
   background-color: var(--gray2);
   width: 100%;
-  height: 23vh;
-
+  height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
+  padding: 2.2rem 0 2.6rem;
 `;
 
 const buttonContainerStyle = css`
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  margin-bottom: 2rem;
 `;
 
 const buttonStyle = css`
-  border: 1px solid var(--gray4);
-  padding: 0.5rem 3rem;
-  border-radius: 0.5rem;
+  width: 140px;
+  padding: 0.8rem 1rem;
+  background-color: var(--gray2);
   color: var(--gray11);
+  border-radius: 8px;
+  border: 1px solid var(--gray4);
+  font-size: 12px;
+  font-family: 'Wedding';
+  font-weight: 700;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+
+  &:hover {
+    background-color: var(--gray8);
+    color: var(--gray1);
+    border-color: var(--gray8);
+  }
+
+  &:active {
+    background-color: var(--gray11);
+    color: var(--gray1);
+    border-color: var(--gray11);
+  }
 `;
 
 const imageStyle = css`
-  width: 3rem;
+  width: 60px;
 `;
 
 const fontStyle = css`
