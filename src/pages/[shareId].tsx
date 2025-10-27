@@ -31,7 +31,7 @@ const SharePage = () => {
           )}
         </>
       )}
-      <Footer />
+      <Footer shareId={shareId ?? ''} />
     </PageLayout>
   );
 };
