@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Phone } from 'lucide-react';
+import { PiPhoneFill } from 'react-icons/pi';
 
 type ContactItemProps = {
   part: string;
@@ -11,8 +11,8 @@ const ContactItem = ({ part, phone }: ContactItemProps) => {
     <>
       <div css={contactRowStyle}>
         <span css={partStyle}>{part}</span>
-        <a href={'tel:' + phone}>
-          <Phone size={20} />
+        <a css={iconStyle} href={'tel:' + phone}>
+          <PiPhoneFill size={20} />
         </a>
       </div>
     </>
@@ -23,13 +23,15 @@ const contactRowStyle = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
-  margin: 12px 12px;
 `;
 
 const partStyle = css`
-  min-width: 110px;
-  font-size: 0.9rem;
+  font-size: 14px;
+  color: var(--gray11);
+`;
+
+const iconStyle = css`
+  color: var(--gray9);
 `;
 
 export default ContactItem;

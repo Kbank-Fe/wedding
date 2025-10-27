@@ -11,11 +11,11 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
   contact: {
     contactList: [
       { type: 'Groom', part: '신랑', phone: '' },
-      { type: 'Groom', part: '아버지', phone: '' },
-      { type: 'Groom', part: '어머니', phone: '' },
+      { type: 'Groom', part: '신랑 아버지', phone: '' },
+      { type: 'Groom', part: '신랑 어머니', phone: '' },
       { type: 'Bride', part: '신부', phone: '' },
-      { type: 'Bride', part: '아버지', phone: '' },
-      { type: 'Bride', part: '어머니', phone: '' },
+      { type: 'Bride', part: '신부 아버지', phone: '' },
+      { type: 'Bride', part: '신부 어머니', phone: '' },
     ],
   },
   account: {

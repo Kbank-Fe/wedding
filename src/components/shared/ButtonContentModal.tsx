@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import * as Dialog from '@radix-ui/react-dialog';
+import { IoIosClose } from 'react-icons/io';
 
 type ButtonContentModalProps = {
   children: React.ReactNode;
@@ -40,7 +41,7 @@ const ButtonContentModal = ({
             {/* 닫기 버튼 (우측 상단) */}
             <Dialog.Close asChild>
               <button css={modalCloseStyle} onClick={onClose}>
-                ✕
+                <IoIosClose size={28} />
               </button>
             </Dialog.Close>
           </header>
@@ -54,18 +55,27 @@ const ButtonContentModal = ({
 };
 
 const modalButtonStyle = css`
-  margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: var(--gray4);
-  color: var(--gray12);
-  border-radius: 1rem;
-  font-size: 1rem;
+  padding: 0.8rem 1rem;
+  background-color: var(--gray2);
+  color: var(--gray11);
+  border-radius: 8px;
+  border: 1px solid var(--gray4);
+  font-size: 12px;
+  font-family: 'Wedding';
+  font-weight: 700;
+  margin: 0 1rem;
+
+  /* 클릭/탭 시 배경 깜빡임 제거 */
+  -webkit-tap-highlight-color: transparent;
 `;
 
 const modalOverlayStyle = css`
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: #e8e8e8;
+  opacity: 0.95;
+  max-width: 430px;
+  margin: 0 auto;
 `;
 
 const modalContentStyle = css`
@@ -73,19 +83,25 @@ const modalContentStyle = css`
   inset: 0;
   display: flex;
   flex-direction: column;
-  color: white;
   background: transparent;
+  font-family: 'Wedding';
+  font-weight: 700;
+  max-width: 430px;
+  margin: 0 auto;
 `;
 
 const modalHeaderStyle = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
-  padding: 1.5rem;
-  text-align: center;
+  height: 60px;
 `;
 
 const modalTitleStyle = css`
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: 15px;
+  color: var(--gray12);
+  font-weight: 700;
 `;
 
 const modalDescriptionStyle = css`
@@ -94,18 +110,13 @@ const modalDescriptionStyle = css`
 
 const modalCloseStyle = css`
   position: absolute;
-  top: 1rem;
   right: 1rem;
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  color: var(--gray1);
-  cursor: pointer;
+  color: var(--gray12);
 `;
 
 const modalMainStyle = css`
-  flex: 1;
-  padding: 2rem;
+  padding: 0 4rem;
+  margin: auto 0;
 `;
 
 export default ButtonContentModal;

@@ -4,9 +4,9 @@ import ButtonContentModal from '@/components/shared/ButtonContentModal';
 const Contact = () => {
   return (
     <ButtonContentModal
-      buttonText="연락하기"
-      description="연락하기 모달창입니다"
-      title="연락하기"
+      buttonText="축하 연락하기"
+      description="축하 연락하기 모달창입니다"
+      title="축하 연락하기"
     >
       <ContactModal />
     </ButtonContentModal>

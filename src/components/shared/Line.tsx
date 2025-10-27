@@ -10,10 +10,10 @@ const Line = ({ marginTop = 25, marginBottom = 25 }: LineProps) => {
 };
 
 const lineStyle = (mt: number, mb: number) => css`
-  width: 96%;
+  width: 70%;
   margin: ${mt}px auto ${mb}px auto;
   border: none;
-  border-bottom: 1px solid var(--gray3);
+  border-bottom: 1px solid var(--gray10);
 `;
 
 export default Line;
