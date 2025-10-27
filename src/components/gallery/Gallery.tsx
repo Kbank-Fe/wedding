@@ -18,8 +18,6 @@ const Gallery = () => {
   const showMoreButton = photoList.length > 9 && !expanded;
   const visiblePhotos = expanded ? photoList : photoList.slice(0, 9);
 
-  if (!photoList.length) return null;
-
   return (
     <>
       <ImHeart color="#87BBBA" css={iconStyle} size={16} />
