@@ -71,4 +71,6 @@ const handler = async (req, res) => {
       .status(500)
       .json({ error: 'og_generation_failed', message: err.message });
   }
-}
+};
+
+export default handler;
