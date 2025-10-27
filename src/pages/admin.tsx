@@ -134,6 +134,7 @@ const checkboxStyle = css`
 
 const accordionItemStyle = css`
   flex: 1;
+  min-width: 0;
 `;
 
 const buttonStyle = css`

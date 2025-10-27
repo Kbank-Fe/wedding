@@ -3,7 +3,7 @@ import { css, Global } from '@emotion/react';
 import { useThemeStore } from '@/stores/useThemeStore';
 
 const resetCSS = css`
- @font-face {
+  @font-face {
     font-family: 'Wedding';
     src: url('/fonts/Wedding-Regular.woff2') format('woff2');
     font-weight: 400;
@@ -77,6 +77,7 @@ const resetCSS = css`
   }
   img {
     max-width: 100%;
+    box-sizing: border-box;
     height: auto;
     display: block;
     user-select: none;
@@ -112,6 +113,8 @@ const resetCSS = css`
     font: inherit;
     border: none;
     outline: none;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   textarea {
     resize: none;
