@@ -5,10 +5,10 @@ import PageLayout from '@/components/shared/PageLayout';
 
 const HomePage = () => {
   return (
-    <PageLayout pageType='login'>
+    <PageLayout pageType="service">
       <div css={containerStyle}>
         <div css={LogoWrapperStyle}>
-          <img alt="Us Day Logo" css={imageStyle} src="/images/logo.png"/>
+          <img alt="Us Day Logo" css={imageStyle} src="/images/logo.png" />
           <p css={textStyle}>내가 만드는 우리의 날, 어스데이</p>
         </div>
         <KakaoLogin />
@@ -25,7 +25,7 @@ const containerStyle = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const LogoWrapperStyle = css`
   padding: 0 1rem;
@@ -38,13 +38,13 @@ const LogoWrapperStyle = css`
 
 const imageStyle = css`
   width: 8.5rem;
-`
+`;
 
 const textStyle = css`
   font-size: 0.87rem;
   font-weight: 400;
   color: var(--gray9);
   letter-spacing: -1px;
-`
+`;
 
 export default HomePage;

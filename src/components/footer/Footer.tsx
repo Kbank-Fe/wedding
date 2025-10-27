@@ -55,13 +55,13 @@ const Footer = ({ shareId }: { shareId: string }) => {
 const containerStyle = css`
   background-color: var(--gray2);
   width: 100%;
-  height: 27vh;
-
+  height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
+  padding: 2.2rem 0 2.6rem;
 `;
 
 const buttonContainerStyle = css`
