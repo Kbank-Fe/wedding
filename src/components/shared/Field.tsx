@@ -93,6 +93,7 @@ const labelStyle = css`
   font-size: 13px;
   display: flex;
   align-items: flex-start;
+  flex-shrink: 0;
 `;
 
 const fieldsetStyle = css`
