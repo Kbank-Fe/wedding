@@ -115,6 +115,7 @@ const controlsStyle = css`
   gap: 8px;
   flex: 1;
   flex-wrap: wrap;
+  min-width: 0;
 `;
 
 const groupControlStyle = css`
@@ -122,6 +123,7 @@ const groupControlStyle = css`
   flex-direction: column;
   gap: 8px;
   flex: 1;
+  min-width: 0;
 `;
 
 const srOnlyStyle = css`
