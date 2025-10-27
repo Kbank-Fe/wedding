@@ -7,17 +7,17 @@ type Copy = {
 export const copyToClipboard = async ({ text }: Copy) => {
   try {
     await navigator.clipboard.writeText(text);
-    toast.success('계좌번호 복사에 성공했어요.');
+    toast.success('계좌번호를 복사했어요.');
   } catch {
-    toast.error('계좌번호 복사에 실패했어요.');
+    toast.error('복사 중 문제가 발생했어요. 다시 시도해 주세요.');
   }
 };
 
 export const copyToLink = async ({ text }: Copy) => {
   try {
     await navigator.clipboard.writeText(text);
-    toast.success('청첩장 링크 복사에 성공했어요.');
+    toast.success('링크를 복사했어요.');
   } catch {
-    toast.error('청첩장 링크 복사에 실패했어요.');
+    toast.error('복사 중 문제가 발생했어요. 다시 시도해 주세요.');
   }
 };
