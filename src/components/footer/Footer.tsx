@@ -6,20 +6,22 @@ import { loadKakaoSdk } from '@/utils/loadKakaoSdk';
 
 const SHARE_URL = import.meta.env.VITE_PUBLIC_BASE_URL;
 
-const Footer = ({shareId}:{shareId:string}) => {
+const Footer = ({ shareId }: { shareId: string }) => {
   const nameList = useWeddingStore((state) => state.values.intro.basicInfo);
   const date = useWeddingStore((state) => state.values.date);
-  const picture = useWeddingStore((state) => state.values.gallery.savedImageList?.[0]);
+  const picture = useWeddingStore(
+    (state) => state.values.gallery.savedImageList?.[0],
+  );
 
   const handleLinkShareClick = () => {
     copyToLink({ text: `${SHARE_URL}/${shareId}` });
-  }
+  };
 
   const handleKakaoShareClick = async () => {
     const Kakao = await loadKakaoSdk();
     const title = `${nameList.maleName} ❤ ${nameList.femaleName} 저희 결혼합니다!💍`;
-    const description =  `${date.year}년 ${date.month}월 ${date.day}일 ${date.hour}시 ${date.min}분`;
-    const imageUrl = `${SHARE_URL}/api/og?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent(description)}&image=${encodeURIComponent(picture?.url)}`;
+    const description = `${date.year}년 ${date.month}월 ${date.day}일 ${date.hour}시 ${date.min}분`;
+    const imageUrl = `${SHARE_URL}/api/og?image=${encodeURIComponent(picture?.url)}`;
 
     Kakao.Share.sendDefault({
       objectType: 'feed',
@@ -29,17 +31,21 @@ const Footer = ({shareId}:{shareId:string}) => {
         imageUrl: imageUrl,
         link: {
           mobileWebUrl: `${SHARE_URL}/${shareId}`,
-          webUrl:`${SHARE_URL}/${shareId}`,
+          webUrl: `${SHARE_URL}/${shareId}`,
         },
       },
     });
-  }
+  };
 
   return (
     <div css={containerStyle}>
-       <div css={buttonContainerStyle}>
-         <button css={buttonStyle} onClick={handleKakaoShareClick}>카카오톡 공유</button>
-        <button css={buttonStyle} onClick={handleLinkShareClick}>링크 공유</button>
+      <div css={buttonContainerStyle}>
+        <button css={buttonStyle} onClick={handleKakaoShareClick}>
+          카카오톡 공유
+        </button>
+        <button css={buttonStyle} onClick={handleLinkShareClick}>
+          링크 공유
+        </button>
       </div>
       <img alt="Us Day Logo" css={imageStyle} src="/images/logo.png" />
 
