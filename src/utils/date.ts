@@ -35,11 +35,26 @@ export const getDtime = (targetDate: Date) => {
 
 // 시간 값에 해당하는 제목 반환
 export const getHourTitle = (hour: number) => {
-  return HOUR_OPTION_LIST.filter((option) => option.value === hour)[0].title;
+  const hourOption = HOUR_OPTION_LIST.find((option) => option.value === hour);
+
+  // 일치하는 값이 없을 경우 예외처리
+  if (!hourOption) {
+    return '';
+  }
+
+  return hourOption.title;
 };
 
 // 시간 값에 해당하는 제목 반환
 export const getMinuteTitle = (minute: number) => {
-  return MINUTE_OPTION_LIST.filter((option) => option.value === minute)[0]
-    .title;
+  const minuteOption = MINUTE_OPTION_LIST.find(
+    (option) => option.value === minute,
+  );
+
+  // 일치하는 값이 없을 경우 예외처리
+  if (!minuteOption) {
+    return '';
+  }
+
+  return minuteOption.title;
 };
