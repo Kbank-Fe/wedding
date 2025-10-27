@@ -1,7 +1,11 @@
 import { ImageResponse } from '@vercel/og';
 import React from 'react';
 
-export default async function handler(req, res) {
+/**
+ * @param {import('@vercel/node').VercelRequest} req
+ * @param {import('@vercel/node').VercelResponse} res
+ */
+const handler = async (req, res) => {
   try {
     const { title, subtitle, image } = req.query;
 
