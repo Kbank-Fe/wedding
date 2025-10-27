@@ -2,11 +2,9 @@ import { type FirebaseApp, getApp, getApps, initializeApp } from 'firebase/app';
 import {
   type Auth,
   getAuth,
-  onAuthStateChanged,
   type User,
 } from 'firebase/auth';
 import {
-  type Database,
   get,
   getDatabase,
   ref,
@@ -32,7 +30,7 @@ const getFirebaseApp = (): FirebaseApp => {
 
 const app = getFirebaseApp();
 export const auth: Auth = getAuth(app);
-export const db: Database = getDatabase(app);
+export const db = getDatabase(app);
 export const storage = getStorage(app);
 
 export type UserRow = {
@@ -74,28 +72,18 @@ export const getOrCreateUser = async (params: {
 
 export const getJSON = async <T>(
   path: string,
-  database: Database = db,
 ): Promise<T | null> => {
-  const snap = await get(ref(database, path));
+  const snap = await get(ref(db, path));
   return snap.exists() ? (snap.val() as T) : null;
 };
 
 export const updateJSON = async (
   path: string,
   patch: Record<string, unknown>,
-  database: Database = db,
 ): Promise<void> => {
-  await update(ref(database, path), patch);
+  await update(ref(db, path), patch);
 };
 
 export const getCurrentUser = (): User | null => auth.currentUser;
 
 export const isLogin = (): boolean => !!auth.currentUser;
-
-export const waitForAuth = (): Promise<User | null> =>
-  new Promise((resolve) => {
-    const off = onAuthStateChanged(auth, (u) => {
-      off();
-      resolve(u);
-    });
-  });
