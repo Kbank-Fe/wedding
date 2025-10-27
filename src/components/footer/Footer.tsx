@@ -21,14 +21,13 @@ const Footer = ({ shareId }: { shareId: string }) => {
     const Kakao = await loadKakaoSdk();
     const title = `${nameList.maleName} ❤ ${nameList.femaleName} 저희 결혼합니다!💍`;
     const description = `${date.year}년 ${date.month}월 ${date.day}일 ${date.hour}시 ${date.min}분`;
-    const imageUrl = `${SHARE_URL}/api/og?image=${encodeURIComponent(picture?.url)}`;
 
     Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
         title: title,
         description: description,
-        imageUrl: imageUrl,
+        imageUrl: picture?.url ?? `${SHARE_URL}/${shareId}`,
         link: {
           mobileWebUrl: `${SHARE_URL}/${shareId}`,
           webUrl: `${SHARE_URL}/${shareId}`,
