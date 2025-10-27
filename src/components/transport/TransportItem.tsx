@@ -18,7 +18,7 @@ const TransportItem = ({ title, description }: TransportProps) => {
     >
       {title && (
         <div css={titleContainerStyle}>
-          <IoCaretForwardOutline color="#87BBBA" size={12} />
+          <IoCaretForwardOutline color="#87BBBA" size={14} />
           <h2 css={titleStyle}>{title}</h2>
         </div>
       )}
@@ -46,16 +46,16 @@ const titleContainerStyle = css`
 
 const titleStyle = css`
   color: var(--gray11);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  margin-left: 0.3rem;
+  margin-left: 0.4rem;
 `;
 
 const descriptionStyle = css`
   color: var(--gray10);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
-  line-height: 1.2rem;
+  line-height: 1.4rem;
 `;
 
 export default TransportItem;
