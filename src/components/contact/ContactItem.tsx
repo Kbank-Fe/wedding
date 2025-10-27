@@ -12,7 +12,7 @@ const ContactItem = ({ part, phone }: ContactItemProps) => {
       <div css={contactRowStyle}>
         <span css={partStyle}>{part}</span>
         <a css={iconStyle} href={'tel:' + phone}>
-          <PiPhoneFill />
+          <PiPhoneFill size={20} />
         </a>
       </div>
     </>
@@ -23,13 +23,10 @@ const contactRowStyle = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
-  margin: 12px 12px;
 `;
 
 const partStyle = css`
-  min-width: 110px;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--gray11);
 `;
 

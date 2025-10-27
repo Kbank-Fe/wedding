@@ -32,7 +32,7 @@ const ContactModal = () => {
         )}
       </div>
 
-      <Line />
+      <Line marginBottom={45} marginTop={45} />
 
       <div css={wrapperStyle}>
         {bridgeFilteredList.length === 0 ? (
@@ -52,14 +52,13 @@ const ContactModal = () => {
 };
 
 const wrapperStyle = css`
-  margin: 0 auto;
-  width: 80%;
   display: flex;
   flex-direction: column;
+  gap: 2rem;
 `;
 
 const textStyle = css`
-  font-size: 12px;
+  font-size: 13px;
   color: var(--gray11);
 `;
 
