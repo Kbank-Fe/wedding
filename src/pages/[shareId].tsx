@@ -23,13 +23,13 @@ const SharePage = () => {
   }
 
   return (
-    <PageLayout pageType="main">
+    <PageLayout isPadded={false} pageType="main">
       {mainList.length > 0 && (
         <>
           {mainList.map(
-            ({ key, alwaysVisible, component: Component }) =>
+            ({ key, alwaysVisible, component: Component, isPadded }) =>
               (alwaysVisible || showCheckbox[key]) && (
-                <Section key={key}>
+                <Section key={key} isPadded={isPadded}>
                   <Component />
                 </Section>
               ),

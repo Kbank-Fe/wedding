@@ -6,12 +6,17 @@ type PageType = 'basic' | 'main' | 'service';
 type PageLayoutProps = {
   children: ReactNode;
   pageType?: PageType;
+  isPadded?: boolean;
 };
 
-const PageLayout = ({ children, pageType = 'basic' }: PageLayoutProps) => {
+const PageLayout = ({
+  children,
+  pageType = 'basic',
+  isPadded = true,
+}: PageLayoutProps) => {
   return (
     <div css={layoutStyle({ pageType })}>
-      <div css={wrapperStyle({ pageType })}>{children}</div>
+      <div css={wrapperStyle({ pageType, isPadded })}>{children}</div>
     </div>
   );
 };
@@ -30,12 +35,20 @@ const layoutStyle = ({ pageType }: { pageType: PageType }) => css`
   overflow-x: hidden;
 `;
 
-const wrapperStyle = ({ pageType }: { pageType: PageType }) => css`
+const wrapperStyle = ({
+  pageType,
+  isPadded,
+}: {
+  pageType: PageType;
+  isPadded: boolean;
+}) => css`
   width: 100%;
   padding: ${pageType === 'service'
     ? 0
     : pageType === 'main'
-      ? '3rem 0 0'
+      ? isPadded
+        ? '3rem 0 0'
+        : '0'
       : '3rem 1.5rem'};
   display: flex;
   flex-direction: column;
