@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { motion } from 'framer-motion';
 
 import mainImage from '/images/image7.png';
 import Line from '@/components/shared/Line';
@@ -15,14 +16,20 @@ const MonochromeTheme = () => {
           </p>
         </time>
       </header>
-      <figure css={imageWrapperStyle}>
+      <motion.figure
+        css={imageWrapperStyle}
+        initial={{ opacity: 0, y: 30 }}
+        transition={{ duration: 0.8, ease: 'easeInOut' }}
+        viewport={{ amount: 0.2 }}
+        whileInView={{ opacity: 1, y: 0 }}
+      >
         <img alt="Wedding main" css={imageStyle} src={mainImage} />
         <figcaption css={textStyle}>
           <h2>
             JONGEUN <span>and</span> KYUMIN
           </h2>
         </figcaption>
-      </figure>
+      </motion.figure>
     </section>
   );
 };
