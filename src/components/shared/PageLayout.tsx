@@ -35,7 +35,7 @@ const wrapperStyle = ({ pageType }: { pageType: PageType }) => css`
   padding: ${pageType === 'service'
     ? 0
     : pageType === 'main'
-      ? '3rem 0 0'
+      ? '2rem 0 0'
       : '3rem 1.5rem'};
   display: flex;
   flex-direction: column;

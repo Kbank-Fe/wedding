@@ -34,26 +34,24 @@ const containerStyle = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3rem;
+  gap: 2.5rem;
 `;
 
 const headerStyle = css`
   text-align: center;
+  font-weight: 400;
+  font-style: normal;
 
   h2 {
-    font-size: 60px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
+    font-size: 55px;
     font-family: 'Instrument Serif', serif;
-    font-weight: 400;
-    font-style: normal;
   }
 
   h3 {
-    margin-bottom: 0.5rem;
-    font-family: 'Kristi', cursive;
-    font-weight: 400;
-    font-style: normal;
+    margin-bottom: 0.2rem;
     font-size: 40px;
+    font-family: 'Kristi', cursive;
     opacity: 0.8;
   }
 `;
@@ -62,7 +60,7 @@ const polariodStyle = css`
   width: 90%;
   height: fit-content;
   background: var(--gray12);
-  padding: 2.3rem;
+  padding: 2.2rem;
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
   position: relative;
 `;
@@ -87,13 +85,13 @@ const photoTextStyle = css`
   text-align: center;
   opacity: 0.8;
   letter-spacing: 0.1rem;
-  margin-top: 2rem;
+  margin-top: 1.8rem;
 `;
 
 const photoSubTextStyle = css`
   position: absolute;
   top: 65px;
-  right: -122px;
+  right: -123px;
   font-family: 'Instrument Serif', serif;
   font-weight: 400;
   font-style: normal;
