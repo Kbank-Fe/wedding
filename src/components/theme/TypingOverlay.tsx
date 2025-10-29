@@ -59,6 +59,7 @@ const textContainerStyle = css`
 const fadeSubTextStyle = css`
   font-family: 'Kristi', cursive;
   font-size: 27px;
+  color: var(--gray6);
   opacity: 0;
   animation: fadeIn 1s ease-in forwards;
   animation-delay: 2.5s;
