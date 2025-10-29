@@ -5,27 +5,27 @@ import mainImage from '/images/image2.png';
 
 const PolaroidTheme = () => {
   return (
-    <motion.div
+    <motion.section
       css={containerStyle}
       initial={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.8, ease: 'easeInOut' }}
       viewport={{ amount: 0.2 }}
       whileInView={{ opacity: 1, y: 0 }}
     >
-      <div css={headerStyle}>
-        <h2>KYUMIN</h2>
-        <h3>and</h3>
-        <h2>JONGEUN</h2>
-      </div>
-      <div css={polariodStyle}>
+      <header css={headerStyle}>
+        <h1>
+          KYUMIN <span>and</span> JONGEUN
+        </h1>
+      </header>
+      <figure css={polariodStyle}>
         <div css={stickerStyle} />
+        <img alt="Wedding main" src={mainImage} />
+        <figcaption css={photoTextStyle}>Our Wedding Day</figcaption>
         <p css={photoSubTextStyle}>A day made with love</p>
-        <img alt="main" css={imageStyle} src={mainImage} />
-        <p css={photoTextStyle}>Our Wedding Day</p>
-      </div>
+      </figure>
 
       <p css={subTextStyle}>The day we become one</p>
-    </motion.div>
+    </motion.section>
   );
 };
 
@@ -42,13 +42,14 @@ const headerStyle = css`
   font-weight: 400;
   font-style: normal;
 
-  h2 {
+  h1 {
     margin-bottom: 0.2rem;
     font-size: 55px;
     font-family: 'Instrument Serif', serif;
   }
 
-  h3 {
+  span {
+    display: block;
     margin-bottom: 0.2rem;
     font-size: 40px;
     font-family: 'Kristi', cursive;
@@ -113,7 +114,5 @@ const subTextStyle = css`
   letter-spacing: 0.07rem;
   font-size: 13px;
 `;
-
-const imageStyle = css``;
 
 export default PolaroidTheme;
