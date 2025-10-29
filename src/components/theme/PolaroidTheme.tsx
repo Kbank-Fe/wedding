@@ -34,7 +34,7 @@ const containerStyle = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2.5rem;
+  gap: 2.7rem;
 `;
 
 const headerStyle = css`
