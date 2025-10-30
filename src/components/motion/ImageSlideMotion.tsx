@@ -6,6 +6,7 @@ type ImageSlidesMotionProps = {
   images: string[];
   interval?: number;
   duration?: number;
+  width?: string;
   height?: string;
   radius?: string;
 };
@@ -14,6 +15,7 @@ const ImageSlideMotion = ({
   images,
   interval = 5000,
   duration = 1.5,
+  width = '300px',
   height = '300px',
   radius = '0px',
 }: ImageSlidesMotionProps) => {
@@ -30,7 +32,7 @@ const ImageSlideMotion = ({
   }, [images.length, interval]);
 
   return (
-    <div css={wrapperStyle(height, radius)}>
+    <div css={wrapperStyle(width, height, radius)}>
       <img alt="prev" css={imageStyle(radius)} src={images[slide.prev]} />
       <motion.img
         key={slide.index}
@@ -45,12 +47,13 @@ const ImageSlideMotion = ({
   );
 };
 
-const wrapperStyle = (height: string, radius: string) => css`
+const wrapperStyle = (width: string, height: string, radius: string) => css`
   position: relative;
-  width: 100%;
+  width: ${width};
   height: ${height};
   overflow: hidden;
   border-radius: ${radius};
+  margin: 0 auto;
 `;
 
 const imageStyle = (radius: string) => css`
