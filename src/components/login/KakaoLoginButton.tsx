@@ -62,7 +62,7 @@ const KakaoLoginButton = () => {
         <img alt="카카오 로그인" src="/images/icon/kakao_login.png" />
       </button>
 
-      <LoadingBackdrop open={loading} text="로그인 중 ..." />
+      <LoadingBackdrop open={loading} />
     </div>
   );
 };
