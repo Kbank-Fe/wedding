@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import KakaoLogin from '@/components/login/KakaoLoginButton';
+import KakaoLoginButton from '@/components/login/KakaoLoginButton';
 import PageLayout from '@/components/shared/PageLayout';
 
 const HomePage = () => {
@@ -11,7 +11,7 @@ const HomePage = () => {
           <img alt="Us Day Logo" css={imageStyle} src="/images/logo.png" />
           <p css={textStyle}>내가 만드는 우리의 날, 어스데이</p>
         </div>
-        <KakaoLogin />
+        <KakaoLoginButton />
       </div>
     </PageLayout>
   );

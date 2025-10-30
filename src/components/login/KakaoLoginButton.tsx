@@ -7,21 +7,16 @@ import {
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import LoadingBackdrop from '@/components/shared/LoadingBackdrop';
 import { auth, getOrCreateUser } from '@/utils/firebase';
 import { openKakaoPopup } from '@/utils/kakaoPopup';
 
-import SetLoadingOverlay from '../shared/SetLoadingOverlay';
-
 type ExchangeResp = { firebaseCustomToken: string; email: string | null };
 
-export default function KakaoLoginAndSaveTest() {
+const KakaoLoginButton = () => {
   const [uid, setUid] = useState<string | null>(null);
   const navigate = useNavigate();
   const [loading, setLoadingOpen] = useState(false);
-
-  const loadingClose = () => {
-    setLoadingOpen(false);
-  };
 
   const handleLogin = async () => {
     if (loading) return;
@@ -68,22 +63,18 @@ export default function KakaoLoginAndSaveTest() {
           <img alt="카카오 로그인" src="/images/icon/kakao_login.png" />
         </button>
       )}
-      <SetLoadingOverlay
-        open={loading}
-        text="로그인 중 ..."
-        onClose={loadingClose}
-      />
+      <LoadingBackdrop open={loading} />
     </div>
   );
-}
+};
 
 const wrapperStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem;
+  position: relative;
 `;
-
 const buttonStyle = css`
   transition:
     opacity 0.2s ease,
@@ -99,3 +90,5 @@ const buttonStyle = css`
     width: 300px;
   }
 `;
+
+export default KakaoLoginButton;
