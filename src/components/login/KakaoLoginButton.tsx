@@ -7,20 +7,21 @@ import {
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import LoadingBackdrop from '@/components/shared/LoadingBackdrop';
 import { auth, getOrCreateUser } from '@/utils/firebase';
 import { openKakaoPopup } from '@/utils/kakaoPopup';
 
 type ExchangeResp = { firebaseCustomToken: string; email: string | null };
 
-export default function KakaoLoginAndSaveTest() {
-  const [loading, setLoading] = useState(false);
+const KakaoLoginButton = () => {
   const [uid, setUid] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [loading, setLoadingOpen] = useState(false);
 
   const handleLogin = async () => {
     if (loading) return;
-    setLoading(true);
 
+    setLoadingOpen(true);
     try {
       await setPersistence(auth, browserLocalPersistence);
       const { code } = await openKakaoPopup();
@@ -45,7 +46,7 @@ export default function KakaoLoginAndSaveTest() {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setLoadingOpen(false);
     }
   };
 
@@ -57,22 +58,22 @@ export default function KakaoLoginAndSaveTest() {
 
   return (
     <div css={wrapperStyle}>
-      {!uid && (
-        <button css={buttonStyle} disabled={loading} onClick={handleLogin}>
-          <img alt="카카오 로그인" src="/images/icon/kakao_login.png" />
-        </button>
-      )}
+      <button css={buttonStyle} disabled={loading} onClick={handleLogin}>
+        <img alt="카카오 로그인" src="/images/icon/kakao_login.png" />
+      </button>
+
+      <LoadingBackdrop open={loading} />
     </div>
   );
-}
+};
 
 const wrapperStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem;
+  position: relative;
 `;
-
 const buttonStyle = css`
   transition:
     opacity 0.2s ease,
@@ -88,3 +89,5 @@ const buttonStyle = css`
     width: 300px;
   }
 `;
+
+export default KakaoLoginButton;
