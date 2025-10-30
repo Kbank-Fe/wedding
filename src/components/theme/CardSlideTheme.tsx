@@ -35,7 +35,7 @@ const CardSlideTheme = () => {
 
 const containerStyle = css`
   text-align: center;
-  padding-top: 8rem;
+  padding: 8rem 0 3rem;
 `;
 
 const nameWrapperStyle = css`
@@ -77,7 +77,6 @@ const subTextStyle = css`
   line-height: 1.3rem;
   color: var(--gray11);
   letter-spacing: 0.03rem;
-  margin-bottom: 3rem;
 `;
 
 export default CardSlideTheme;
