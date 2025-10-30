@@ -13,7 +13,6 @@ const containerStyle = css`
   align-items: center;
   justify-content: center;
   padding: 0.75rem;
-  min-height: 100vh;
 `;
 
 const spinnerStyle = css`

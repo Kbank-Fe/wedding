@@ -9,6 +9,7 @@ type LoadingBackdropProps = {
   onClick?: () => void;
   blur?: boolean;
   zIndex?: number;
+  text?: string;
 };
 
 const LoadingBackdrop = ({
@@ -16,6 +17,7 @@ const LoadingBackdrop = ({
   onClick,
   blur = false,
   zIndex = 1300,
+  text,
 }: LoadingBackdropProps) => {
   return (
     <AnimatePresence>
@@ -29,13 +31,26 @@ const LoadingBackdrop = ({
             transition={{ duration: 0.25 }}
             onClick={onClick}
           >
-            <LoadingSpinner />
+            <div css={contentStyle}>
+              <LoadingSpinner />
+              {text && <p css={textStyle}>{text}</p>}
+            </div>
           </motion.div>
         </Portal>
       )}
     </AnimatePresence>
   );
 };
+
+const textStyle = css`
+  color: var(--gray3);
+`;
+
+const contentStyle = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const backdropStyle = ({
   blur,

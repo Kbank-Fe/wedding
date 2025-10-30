@@ -58,12 +58,11 @@ const KakaoLoginButton = () => {
 
   return (
     <div css={wrapperStyle}>
-      {!uid && (
-        <button css={buttonStyle} disabled={loading} onClick={handleLogin}>
-          <img alt="카카오 로그인" src="/images/icon/kakao_login.png" />
-        </button>
-      )}
-      <LoadingBackdrop open={loading} />
+      <button css={buttonStyle} disabled={loading} onClick={handleLogin}>
+        <img alt="카카오 로그인" src="/images/icon/kakao_login.png" />
+      </button>
+
+      <LoadingBackdrop open={loading} text="로그인 중 ..." />
     </div>
   );
 };
