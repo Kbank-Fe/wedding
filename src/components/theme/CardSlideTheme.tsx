@@ -35,7 +35,7 @@ const CardSlideTheme = () => {
 
 const containerStyle = css`
   text-align: center;
-  padding: 8rem 0 3rem;
+  padding: 8rem 2.5rem 3rem;
 `;
 
 const nameWrapperStyle = css`
