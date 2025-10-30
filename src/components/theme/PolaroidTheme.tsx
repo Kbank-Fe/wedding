@@ -18,13 +18,13 @@ const PolaroidTheme = () => {
   const introSubtitle = 'May 27, 2025';
 
   return (
-    <>
+    <div css={containerStyle}>
       <TypingOverlay
         show={showIntro}
         subtitle={introSubtitle}
         title={introTitle}
       />
-      <section css={containerStyle}>
+      <section css={sectionStyle}>
         <header css={headerStyle}>
           <h1>
             KYUMIN <span>and</span> JONGEUN
@@ -40,11 +40,15 @@ const PolaroidTheme = () => {
 
         <p css={subTextStyle}>The day we become one</p>
       </section>
-    </>
+    </div>
   );
 };
 
 const containerStyle = css`
+  padding: 4.5rem 2.5rem 1rem;
+`;
+
+const sectionStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
