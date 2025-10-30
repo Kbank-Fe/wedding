@@ -10,17 +10,23 @@ import { useNavigate } from 'react-router';
 import { auth, getOrCreateUser } from '@/utils/firebase';
 import { openKakaoPopup } from '@/utils/kakaoPopup';
 
+import SetLoadingOverlay from '../shared/SetLoadingOverlay';
+
 type ExchangeResp = { firebaseCustomToken: string; email: string | null };
 
 export default function KakaoLoginAndSaveTest() {
-  const [loading, setLoading] = useState(false);
   const [uid, setUid] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [loading, setLoadingOpen] = useState(false);
+
+  const loadingClose = () => {
+    setLoadingOpen(false);
+  };
 
   const handleLogin = async () => {
     if (loading) return;
-    setLoading(true);
 
+    setLoadingOpen(true);
     try {
       await setPersistence(auth, browserLocalPersistence);
       const { code } = await openKakaoPopup();
@@ -45,7 +51,7 @@ export default function KakaoLoginAndSaveTest() {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setLoadingOpen(false);
     }
   };
 
@@ -62,6 +68,11 @@ export default function KakaoLoginAndSaveTest() {
           <img alt="카카오 로그인" src="/images/icon/kakao_login.png" />
         </button>
       )}
+      <SetLoadingOverlay
+        open={loading}
+        text="로그인 중 ..."
+        onClose={loadingClose}
+      />
     </div>
   );
 }
