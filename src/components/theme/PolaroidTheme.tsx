@@ -1,69 +1,84 @@
 import { css } from '@emotion/react';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 import mainImage from '/images/image2.png';
+import TypingOverlay from '@/components/theme/TypingOverlay';
 
 const PolaroidTheme = () => {
-  return (
-    <motion.div
-      css={containerStyle}
-      initial={{ opacity: 0, y: 30 }}
-      transition={{ duration: 0.8, ease: 'easeInOut' }}
-      viewport={{ amount: 0.2 }}
-      whileInView={{ opacity: 1, y: 0 }}
-    >
-      <div css={headerStyle}>
-        <h2>KYUMIN</h2>
-        <h3>and</h3>
-        <h2>JONGEUN</h2>
-      </div>
-      <div css={polariodStyle}>
-        <div css={stickerStyle} />
-        <p css={photoSubTextStyle}>A day made with love</p>
-        <img alt="main" css={imageStyle} src={mainImage} />
-        <p css={photoTextStyle}>Our Wedding Day</p>
-      </div>
+  const [showIntro, setShowIntro] = useState(true);
 
-      <p css={subTextStyle}>The day we become one</p>
-    </motion.div>
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowIntro(false);
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const introTitle = "We're getting Married";
+  const introSubtitle = 'May 27, 2025';
+
+  return (
+    <div css={containerStyle}>
+      <TypingOverlay
+        show={showIntro}
+        subtitle={introSubtitle}
+        title={introTitle}
+      />
+      <section css={sectionStyle}>
+        <header css={headerStyle}>
+          <h1>
+            KYUMIN <span>and</span> JONGEUN
+          </h1>
+        </header>
+
+        <figure css={polaroidStyle}>
+          <div css={stickerStyle} />
+          <img alt="Wedding main" src={mainImage} />
+          <figcaption css={photoTextStyle}>Our Wedding Day</figcaption>
+          <p css={photoSubTextStyle}>A day made with love</p>
+        </figure>
+
+        <p css={subTextStyle}>The day we become one</p>
+      </section>
+    </div>
   );
 };
 
 const containerStyle = css`
+  padding: 4.5rem 2.5rem 1rem;
+`;
+
+const sectionStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3rem;
+  gap: 2.7rem;
 `;
 
 const headerStyle = css`
   text-align: center;
+  font-weight: 400;
+  font-style: normal;
 
-  h2 {
-    font-size: 60px;
-    margin-bottom: 0.5rem;
+  h1 {
+    font-size: 55px;
     font-family: 'Instrument Serif', serif;
-    font-weight: 400;
-    font-style: normal;
   }
 
-  h3 {
-    margin-bottom: 0.5rem;
-    font-family: 'Kristi', cursive;
-    font-weight: 400;
-    font-style: normal;
+  span {
+    display: block;
     font-size: 40px;
+    font-family: 'Kristi', cursive;
     opacity: 0.8;
   }
 `;
 
-const polariodStyle = css`
+const polaroidStyle = css`
   width: 90%;
-  height: fit-content;
   background: var(--gray12);
-  padding: 2.3rem;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+  padding: 2.2rem;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   position: relative;
 `;
 
@@ -75,7 +90,7 @@ const stickerStyle = css`
   height: 46px;
   border-radius: 50%;
   background: var(--gray5);
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
 `;
 
 const photoTextStyle = css`
@@ -87,16 +102,14 @@ const photoTextStyle = css`
   text-align: center;
   opacity: 0.8;
   letter-spacing: 0.1rem;
-  margin-top: 2rem;
+  margin-top: 1.8rem;
 `;
 
 const photoSubTextStyle = css`
   position: absolute;
   top: 65px;
-  right: -122px;
+  right: -123px;
   font-family: 'Instrument Serif', serif;
-  font-weight: 400;
-  font-style: normal;
   font-size: 10px;
   letter-spacing: 0.16rem;
   text-transform: uppercase;
@@ -108,14 +121,10 @@ const photoSubTextStyle = css`
 
 const subTextStyle = css`
   font-family: 'Instrument Serif', serif;
-  font-weight: 400;
-  font-style: normal;
   color: var(--gray11);
   text-transform: uppercase;
   letter-spacing: 0.07rem;
   font-size: 13px;
 `;
-
-const imageStyle = css``;
 
 export default PolaroidTheme;

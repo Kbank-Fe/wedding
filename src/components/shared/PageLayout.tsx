@@ -32,11 +32,7 @@ const layoutStyle = ({ pageType }: { pageType: PageType }) => css`
 
 const wrapperStyle = ({ pageType }: { pageType: PageType }) => css`
   width: 100%;
-  padding: ${pageType === 'service'
-    ? 0
-    : pageType === 'main'
-      ? '3rem 0 0'
-      : '3rem 1.5rem'};
+  padding: ${pageType === 'basic' ? '3rem 1.5rem' : 0};
   display: flex;
   flex-direction: column;
   gap: ${pageType === 'service' ? 0 : '5rem'};
