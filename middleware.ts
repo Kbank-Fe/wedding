@@ -11,7 +11,7 @@ const env = (k: string) => {
   return v;
 };
 
-const FIREBASE_BASE = `https://${env('FIREBASE_PROJECT_ID')}.firebaseio.com`;
+const FIREBASE_BASE = env('FIREBASE_DATABASE_URL');
 const BOT_PATTERN =
   /(facebook|twitter|linkedin|bot|crawl|spider|slack|embed|kakaotalk)/i;
 
