@@ -44,6 +44,7 @@ const containerStyle = css`
   font-weight: 400;
   font-style: normal;
   text-align: center;
+  padding: 4rem 0 2rem;
 `;
 
 const headerStyle = css`
@@ -60,7 +61,6 @@ const dateTextStyle = css`
 `;
 
 const imageWrapperStyle = css`
-  margin: 0 -2.5rem;
   position: relative;
 `;
 
