@@ -4,6 +4,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import Footer from '@/components/footer/Footer';
 import PageLayout from '@/components/shared/PageLayout';
 import Section from '@/components/shared/Section';
+import PolaroidTheme from '@/components/theme/PolaroidTheme';
 import { useWeddingInfo } from '@/hooks/useWeddingInfo';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { mainList } from '@/utils/mainList';
@@ -24,6 +25,7 @@ const SharePage = () => {
 
   return (
     <PageLayout pageType="main">
+      <PolaroidTheme />
       {mainList.length > 0 && (
         <>
           {mainList.map(
