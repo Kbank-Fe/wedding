@@ -4,6 +4,7 @@ import { css } from '@emotion/react';
 import { useMemo } from 'react';
 import Calendar from 'react-calendar';
 import type { View } from 'react-calendar/dist/shared/types.js';
+import { ImHeart } from 'react-icons/im';
 import { TfiLayoutLineSolid } from 'react-icons/tfi';
 
 import { MotionFade } from '@/components/shared/MotionFade';
@@ -22,6 +23,7 @@ type highlight = {
 
 const DateCalendar = () => {
   const date = useWeddingStore((state) => state.values.date);
+  const basicInfo = useWeddingStore((state) => state.values.intro.basicInfo);
 
   const { year, month, day, hour, min } = date;
 
@@ -61,13 +63,15 @@ const DateCalendar = () => {
   } else if (dDayRaw < 0) {
     dDayMessage = (
       <>
-        결혼식이 <span css={dDayStyle}>{dDay}</span>일 지났어요
+        결혼식이<span css={dDayStyle}>{dDay}</span>일 지났어요
       </>
     );
   } else {
     dDayMessage = (
       <>
-        결혼식까지 <span css={dDayStyle}>{dDay}</span>일 남았어요
+        {basicInfo.maleName} <ImHeart color="#87BBBA" size={11} />{' '}
+        {basicInfo.femaleName} 결혼식까지 <span css={dDayStyle}>{dDay}</span>일
+        남았어요
       </>
     );
   }
@@ -78,7 +82,7 @@ const DateCalendar = () => {
         <div css={dateTimeStyle}>
           <p>{`${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`}</p>
           <p>{`${getHourTitle(hour)} ${getMinuteTitle(min)}`}</p>
-       </div>
+        </div>
         <TfiLayoutLineSolid color="#87bbba" size={24} strokeWidth={1} />
         <div css={monthStyle}>{month}</div>
       </MotionFade>
