@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
-import { Navigate, useNavigate } from 'react-router';
+import { useEffect, useRef, useState } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router';
 import { toast, Toaster } from 'sonner';
 
 import { Accordion } from '@/components/account/Accordion';
@@ -17,10 +18,31 @@ import { uploadImageToStorage } from '@/utils/storage';
 
 const AdminPage = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // 현재 경로
+  const prevPathRef = useRef(location.pathname); // 이전경로
   const setDeep = useWeddingStore((state) => state.setDeep);
   const setField = useWeddingStore((state) => state.setField);
 
   const { user, uid, isLoading: userLoading } = useCurrentUser();
+
+  const [loading, setLoadingOpen] = useState(false);
+  const isSavingRef = useRef(false); // 더블클릭 방지(true : 저장중 , false : 저장가능)
+
+  useEffect(() => {
+    // 로딩이 아니라면 경로만 최신화하고 종료
+    if (!loading) {
+      prevPathRef.current = location.pathname;
+      return;
+    }
+
+    // 로딩 중일 때 경로가 실제로 바뀌었다면 로딩 닫기
+    if (prevPathRef.current !== location.pathname) {
+      setLoadingOpen(false);
+    }
+
+    // 항상 마지막에 최신 경로로 갱신
+    prevPathRef.current = location.pathname;
+  }, [location.pathname, loading]);
 
   const shouldFetch = !!uid;
   const { isLoading: infoLoading, notFound } = useWeddingInfo(
@@ -72,7 +94,10 @@ const AdminPage = () => {
   };
 
   const handleSave = async () => {
-    if (!user || !uid) return;
+    if (!user || !uid || isSavingRef.current) return;
+
+    isSavingRef.current = true;
+    setLoadingOpen(true);
 
     try {
       await handleSetImageList(uid);
@@ -84,6 +109,9 @@ const AdminPage = () => {
     } catch (error) {
       console.error(error);
       toast.error('데이터 저장을 실패했어요.');
+      setLoadingOpen(false);
+    } finally {
+      isSavingRef.current = false;
     }
   };
 
@@ -118,6 +146,7 @@ const AdminPage = () => {
         저장하기
       </button>
       <Toaster duration={2000} position="top-center" />
+      <LoadingBackdrop open={loading} />
     </PageLayout>
   );
 };
