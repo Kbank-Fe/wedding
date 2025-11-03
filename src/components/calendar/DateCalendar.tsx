@@ -63,15 +63,18 @@ const DateCalendar = () => {
   } else if (dDayRaw < 0) {
     dDayMessage = (
       <>
-        결혼식이<span css={dDayStyle}>{dDay}</span>일 지났어요
+        {basicInfo.maleName}
+        <ImHeart color="#E0E0E0" css={heartIconStyle} size={11} />
+        {basicInfo.femaleName} 행복한 결혼식을 마쳤습니다
       </>
     );
   } else {
     dDayMessage = (
       <>
-        {basicInfo.maleName} <ImHeart color="#87BBBA" size={11} />{' '}
+        {basicInfo.maleName}
+        <ImHeart color="#87BBBA" css={heartIconStyle} size={11} />
         {basicInfo.femaleName} 결혼식까지 <span css={dDayStyle}>{dDay}</span>일
-        남았어요
+        남았습니다
       </>
     );
   }
@@ -183,15 +186,20 @@ const monthStyle = css`
 `;
 
 const dtimeStyle = css`
-  color: var(--gray11);
+  color: var(--gray10);
   font-size: 13px;
   margin-top: 2.2rem;
   text-align: center;
 `;
 
 const dDayStyle = css`
-  color: var(--gray12);
-  font-size: 12px;
+  color: var(--gray11);
+  font-size: 13px;
+  font-weight: 700;
+`;
+
+const heartIconStyle = css`
+  margin: 0 0.3rem;
 `;
 
 export default DateCalendar;
