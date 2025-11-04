@@ -1,3 +1,25 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "functions": {
+    "functions/[shareId].ts": {
+      "runtime": "edge"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(admin|404|api)(?:/.*)?$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/.*\\.(js|css|png|jpg|jpeg|svg|ico|txt|webmanifest|json)$",
+      "dest": "/$1"
+    },
+    {
+      "src": "^/([^/.]+)$",
+      "dest": "/functions/[shareId].ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
