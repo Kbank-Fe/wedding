@@ -1,3 +1,21 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/(admin|404|api)($|/.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/(.*)\\.(js|css|png|jpg|jpeg|svg|ico|txt|webmanifest|json)",
+      "destination": "/$1.$2"
+    },
+    {
+      "source": "/([^/.]+)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
