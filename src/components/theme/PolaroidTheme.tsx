@@ -2,9 +2,8 @@ import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 
 import mainImage from '/images/image2.png';
+import Sticker from '@/components/shared/Sticker';
 import TypingOverlay from '@/components/theme/TypingOverlay';
-
-import Sticker from '../shared/Sticker';
 
 const PolaroidTheme = () => {
   const [showIntro, setShowIntro] = useState(true);

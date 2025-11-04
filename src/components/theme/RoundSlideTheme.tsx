@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
-import ImageSlideMotion from '../motion/ImageSlideMotion';
-import Sticker from '../shared/Sticker';
+import ImageSlideMotion from '@/components/motion/ImageSlideMotion';
+import Sticker from '@/components/shared/Sticker';
 
 const images = [
   '/images/image1.png',
