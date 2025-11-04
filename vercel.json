@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
-      "source": "/(admin|404|api)($|/.*)",
+      "source": "/(admin|404)($|/.*)",
       "destination": "/index.html"
     },
     {
@@ -10,7 +10,7 @@
       "destination": "/$1.$2"
     },
     {
-      "source": "/([^/.]+)",
+      "source": "^/([^/.]+)$",
       "destination": "/api/$1"
     },
     {
