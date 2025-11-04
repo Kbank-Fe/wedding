@@ -13,35 +13,34 @@ const images = [
 
 const RoundSlideTheme = () => {
   return (
-    <div css={containerStyle}>
+    <section css={containerStyle}>
       <header css={headerStyle}>
-        <div css={titleStyle}>
-          Our
-          <br />
-          Wedding Day
-        </div>
+        <h1 css={titleStyle}>
+          Our <br /> Wedding Day
+        </h1>
         <Sticker right="-10px" size="38px" top="-10px" />
       </header>
-
-      <ImageSlideMotion
-        height="360px"
-        images={images}
-        radius="170px"
-        width="290px"
-      />
-      <p css={descriptionStyle}>Kyumin and Jongeun</p>
-    </div>
+      <figure css={figureStyle}>
+        <ImageSlideMotion
+          height="360px"
+          images={images}
+          radius="170px"
+          width="300px"
+        />
+        <figcaption css={descriptionStyle}>Kyumin and Jongeun</figcaption>
+      </figure>
+    </section>
   );
 };
 
 const containerStyle = css`
-  padding: 5rem 2.5rem;
+  padding: 5rem 0;
   color: var(--gray11);
 `;
 
 const headerStyle = css`
   position: relative;
-  margin: 0 0.5rem 1.5rem;
+  margin: 0 3rem 1.5rem;
 `;
 
 const titleStyle = css`
@@ -51,12 +50,19 @@ const titleStyle = css`
   margin-left: 0.5rem;
 `;
 
+const figureStyle = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+`;
+
 const descriptionStyle = css`
   font-family: 'Herr Von Muellerhoff', cursive;
   font-size: 20px;
   text-align: center;
   letter-spacing: 0.1rem;
-  margin-top: 2rem;
   opacity: 0.8;
 `;
 
