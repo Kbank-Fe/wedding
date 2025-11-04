@@ -4,6 +4,7 @@ import { css } from '@emotion/react';
 import { useMemo } from 'react';
 import Calendar from 'react-calendar';
 import type { View } from 'react-calendar/dist/shared/types.js';
+import { ImHeart } from 'react-icons/im';
 import { TfiLayoutLineSolid } from 'react-icons/tfi';
 
 import { MotionFade } from '@/components/shared/MotionFade';
@@ -22,6 +23,7 @@ type highlight = {
 
 const DateCalendar = () => {
   const date = useWeddingStore((state) => state.values.date);
+  const basicInfo = useWeddingStore((state) => state.values.intro.basicInfo);
 
   const { year, month, day, hour, min } = date;
 
@@ -61,13 +63,18 @@ const DateCalendar = () => {
   } else if (dDayRaw < 0) {
     dDayMessage = (
       <>
-        결혼식이 <span css={dDayStyle}>{dDay}</span>일 지났어요
+        {basicInfo.maleName}
+        <ImHeart color="#E0E0E0" css={heartIconStyle} size={11} />
+        {basicInfo.femaleName} 행복한 결혼식을 마쳤습니다
       </>
     );
   } else {
     dDayMessage = (
       <>
-        결혼식까지 <span css={dDayStyle}>{dDay}</span>일 남았어요
+        {basicInfo.maleName}
+        <ImHeart color="#87BBBA" css={heartIconStyle} size={11} />
+        {basicInfo.femaleName} 결혼식까지 <span css={dDayStyle}>{dDay}</span>일
+        남았습니다
       </>
     );
   }
@@ -78,7 +85,7 @@ const DateCalendar = () => {
         <div css={dateTimeStyle}>
           <p>{`${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`}</p>
           <p>{`${getHourTitle(hour)} ${getMinuteTitle(min)}`}</p>
-       </div>
+        </div>
         <TfiLayoutLineSolid color="#87bbba" size={24} strokeWidth={1} />
         <div css={monthStyle}>{month}</div>
       </MotionFade>
@@ -179,15 +186,20 @@ const monthStyle = css`
 `;
 
 const dtimeStyle = css`
-  color: var(--gray11);
+  color: var(--gray10);
   font-size: 13px;
   margin-top: 2.2rem;
   text-align: center;
 `;
 
 const dDayStyle = css`
-  color: var(--gray12);
-  font-size: 12px;
+  color: var(--gray11);
+  font-size: 13px;
+  font-weight: 700;
+`;
+
+const heartIconStyle = css`
+  margin: 0 0.3rem;
 `;
 
 export default DateCalendar;
