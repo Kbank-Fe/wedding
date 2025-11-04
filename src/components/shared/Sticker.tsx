@@ -3,33 +3,37 @@ import { css } from '@emotion/react';
 type StickerProps = {
   top?: string;
   left?: string;
+  right?: string;
+  bottom?: string;
   size?: string;
   color?: string;
 };
 
 const Sticker = ({
-  top = '0',
-  left = '0',
+  top,
+  left,
+  right,
+  bottom,
   size = '46px',
   color = 'var(--gray5)',
 }: StickerProps) => {
-  return <div css={stickerStyle({ top, left, size, color })} />;
+  return <div css={stickerStyle({ top, left, right, bottom, size, color })} />;
 };
 
 const stickerStyle = ({
   top,
   left,
+  right,
+  bottom,
   size,
   color,
-}: {
-  top: string;
-  left: string;
-  size: string;
-  color: string;
-}) => css`
+}: StickerProps) => css`
   position: absolute;
-  top: ${top};
-  left: ${left};
+  ${top ? `top: ${top};` : ''}
+  ${left ? `left: ${left};` : ''}
+  ${right ? `right: ${right};` : ''}
+  ${bottom ? `bottom: ${bottom};` : ''}
+
   width: ${size};
   height: ${size};
   border-radius: 50%;
