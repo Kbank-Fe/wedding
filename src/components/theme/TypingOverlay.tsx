@@ -46,12 +46,12 @@ const typingOverlayStyle = css`
   align-items: center;
   justify-content: center;
   padding: 0 1.5rem;
-`;
-
-const textContainerStyle = css`
   width: 100%;
   max-width: 430px;
   margin: 0 auto;
+`;
+
+const textContainerStyle = css`
   text-align: center;
   color: var(--gray2);
 `;
