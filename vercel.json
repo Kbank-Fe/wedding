@@ -6,10 +6,6 @@
       "destination": "/index.html"
     },
     {
-      "source": "/(.*)\\.(js|css|png|jpg|jpeg|svg|ico|txt|webmanifest|json)",
-      "destination": "/$1.$2"
-    },
-    {
       "source": "^/([^/.]+)$",
       "destination": "/api/$1"
     },
