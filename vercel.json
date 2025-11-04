@@ -1,25 +1,26 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "functions/[shareId].ts": {
+    "api/[shareId].ts": {
       "runtime": "edge"
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(admin|404|api)(?:/.*)?$",
-      "dest": "/index.html"
+      "source": "/(admin|404|api)(?:/.*)?$",
+      "destination": "/index.html"
     },
     {
-      "src": "/.*\\.(js|css|png|jpg|jpeg|svg|ico|txt|webmanifest|json)$",
-      "dest": "/$1"
+      "source": "/.*\\.(js|css|png|jpg|jpeg|svg|ico|txt|webmanifest|json)$",
+      "destination": "/$1"
     },
     {
-      "src": "^/([^/.]+)$",
-      "dest": "/functions/[shareId].ts"
+      "source": "^/([^/.]+)$",
+      "destination": "/api/$1.ts"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

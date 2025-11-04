@@ -1,6 +1,4 @@
-export const config = {
-  runtime: 'edge',
-};
+export const config = { runtime: 'edge' };
 
 const FIREBASE_BASE = process.env.FIREBASE_DATABASE_URL!;
 const BASE_URL =
@@ -14,32 +12,32 @@ const BOT_PATTERN =
 export default async function handler(req: Request) {
   try {
     const url = new URL(req.url);
-    const shareId = url.pathname.replace('/', '');
-    if (!shareId) {
-      return fetch(`${BASE_URL}/index.html`);
-    }
+    const shareId = url.pathname.replace(/^\/+/, '').split('/')[0];
+    if (!shareId) return fetch(`${BASE_URL}/index.html`, { cache: 'no-store' });
 
     const ua = req.headers.get('user-agent') || '';
-    const isBot = BOT_PATTERN.test(ua);
+    if (!BOT_PATTERN.test(ua))
+      return fetch(`${BASE_URL}/index.html`, { cache: 'no-store' });
 
-    if (!isBot) {
-      return fetch(`${BASE_URL}/index.html`);
-    }
+    const snap = await fetch(`${FIREBASE_BASE}/shares/${shareId}/data.json`, {
+      cache: 'no-store',
+    });
+    if (!snap.ok) return fetch(`${BASE_URL}/index.html`, { cache: 'no-store' });
 
-    const snap = await fetch(`${FIREBASE_BASE}/shares/${shareId}/data.json`);
-    if (!snap.ok) return fetch(`${BASE_URL}/index.html`);
     const data = await snap.json();
-    if (!data?.intro || !data?.date) return fetch(`${BASE_URL}/index.html`);
+    if (!data?.intro || !data?.date)
+      return fetch(`${BASE_URL}/index.html`, { cache: 'no-store' });
 
     const { date, intro, gallery } = data;
     const { maleName, femaleName } = intro.basicInfo;
-    const img = gallery?.savedImageList?.[0] ?? `${BASE_URL}/og-image.png`;
+    const img = gallery?.savedImageList?.[0]?.startsWith('http')
+      ? gallery.savedImageList[0]
+      : `${BASE_URL}${gallery?.savedImageList?.[0] ?? '/og-image.png'}`;
 
     const title = `${maleName} ❤️ ${femaleName} 결혼합니다!`;
     const desc = `${date.year}년 ${date.month}월 ${date.day}일 결혼식에 초대합니다.`;
 
-    const html = `
-<!DOCTYPE html>
+    const html = `<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
@@ -59,10 +57,10 @@ export default async function handler(req: Request) {
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
         'Cache-Control': 'no-cache, no-store, must-revalidate',
+        Vary: 'User-Agent',
       },
     });
-  } catch (err) {
-    console.error('EDGE_ERROR', err);
-    return fetch(`${BASE_URL}/index.html`);
+  } catch {
+    return fetch(`${BASE_URL}/index.html`, { cache: 'no-store' });
   }
 }
