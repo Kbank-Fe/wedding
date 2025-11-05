@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useRef, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { toast, Toaster } from 'sonner';
 
@@ -21,6 +22,9 @@ const AdminPage = () => {
   const setField = useWeddingStore((state) => state.setField);
 
   const { user, uid, isLoading: userLoading } = useCurrentUser();
+
+  const [loading, setLoadingOpen] = useState(false);
+  const isSavingRef = useRef(false); // 더블클릭 방지(true : 저장중 , false : 저장가능)
 
   const shouldFetch = !!uid;
   const { isLoading: infoLoading, notFound } = useWeddingInfo(
@@ -72,7 +76,10 @@ const AdminPage = () => {
   };
 
   const handleSave = async () => {
-    if (!user || !uid) return;
+    if (!user || !uid || isSavingRef.current) return;
+
+    isSavingRef.current = true;
+    setLoadingOpen(true);
 
     try {
       await handleSetImageList(uid);
@@ -84,6 +91,9 @@ const AdminPage = () => {
     } catch (error) {
       console.error(error);
       toast.error('데이터 저장을 실패했어요.');
+      setLoadingOpen(false);
+    } finally {
+      isSavingRef.current = false;
     }
   };
 
@@ -114,10 +124,15 @@ const AdminPage = () => {
           ))}
         </Accordion>
       )}
-      <button css={buttonStyle} onClick={handleSave}>
+      <button
+        css={buttonStyle}
+        disabled={isSavingRef.current}
+        onClick={handleSave}
+      >
         저장하기
       </button>
       <Toaster duration={2000} position="top-center" />
+      <LoadingBackdrop open={loading} />
     </PageLayout>
   );
 };
