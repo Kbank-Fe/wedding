@@ -14,6 +14,7 @@ type ShowKey = keyof ShowCheckbox;
 type MainList = {
   key: ShowKey;
   alwaysVisible?: boolean;
+  isPadded?: boolean;
   component: FC;
 };
 
