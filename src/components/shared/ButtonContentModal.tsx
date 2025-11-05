@@ -2,8 +2,6 @@ import { css } from '@emotion/react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { IoIosClose } from 'react-icons/io';
 
-import Layout from '@/components/shared/Layout';
-
 type ButtonContentModalProps = {
   children: React.ReactNode;
   buttonText: string;
@@ -38,9 +36,7 @@ const ButtonContentModal = ({
               </button>
             </Dialog.Close>
           </header>
-          <div css={scrollAreaStyle}>
-            <Layout viewType="main">{children}</Layout>
-          </div>
+          <div css={scrollAreaStyle}>{children}</div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
@@ -63,9 +59,8 @@ const modalButtonStyle = css`
 const modalOverlayStyle = css`
   position: fixed;
   inset: 0;
-  background-color: #e8e8e8;
-  opacity: 0.95;
-  max-width: 430px;
+  background-color: var(--gray4);
+  opacity: 0.9;
   margin: 0 auto;
   z-index: 999;
 `;
@@ -80,6 +75,7 @@ const modalContentStyle = css`
   width: min(100%, 430px);
   height: 100vh;
   background: #fff;
+  font-family: 'Wedding';
   overflow: hidden;
   z-index: 1000;
 `;
@@ -95,7 +91,7 @@ const modalHeaderStyle = css`
 `;
 
 const modalTitleStyle = css`
-  font-size: 15px;
+  font-size: 14px;
   color: var(--gray12);
   font-weight: 700;
 `;

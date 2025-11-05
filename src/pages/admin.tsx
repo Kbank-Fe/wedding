@@ -170,8 +170,11 @@ const adminPanelStyle = ({ isMobile }: { isMobile: boolean }) => css`
   gap: 3rem;
   max-width: 430px;
   padding: ${isMobile ? 0 : '3rem 1.5rem'};
-  height: 100vh;
-  overflow-y: auto;
+  ${!isMobile &&
+  `
+    height: 100vh;
+    overflow-y: auto;
+  `}
 `;
 
 const previewAreaStyle = css`
