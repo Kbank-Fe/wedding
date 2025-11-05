@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 
 import KakaoLoginButton from '@/components/login/KakaoLoginButton';
-import PageLayout from '@/components/shared/PageLayout';
+import Layout from '@/components/shared/Layout';
 
 const HomePage = () => {
   return (
-    <PageLayout pageType="service">
+    <Layout viewType="service">
       <div css={containerStyle}>
         <div css={LogoWrapperStyle}>
           <img alt="Us Day Logo" css={imageStyle} src="/images/logo.png" />
@@ -13,7 +13,7 @@ const HomePage = () => {
         </div>
         <KakaoLoginButton />
       </div>
-    </PageLayout>
+    </Layout>
   );
 };
 
