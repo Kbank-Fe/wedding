@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import ImageSlideMotion from '@/components/motion/ImageSlideMotion';
+import ImageSlideMotion from '@/components/shared/motion/ImageSlideMotion';
 import Sticker from '@/components/shared/Sticker';
 
 const images = [
