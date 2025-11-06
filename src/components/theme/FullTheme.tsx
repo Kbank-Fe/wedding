@@ -1,6 +1,6 @@
 import { css, keyframes } from '@emotion/react';
 
-import mainImage from '/images/image8.png';
+import mainImage from '/images/image11.jpg';
 
 const FullTheme = () => {
   const words = 'Our Wedding Day'.split(' ');
@@ -9,67 +9,63 @@ const FullTheme = () => {
   const header3 = '더 컨벤션 영등포';
 
   return (
-    <div css={containerStyle}>
-      <section css={sectionStyle}>
-        <header>
-          <h2 css={fullTextStyle('12%')}>{header1}</h2>
-          <h2 css={fullTextStyle('15%')}>{header2}</h2>
-          <h3 css={fullTextStyle('22%')}>{header3}</h3>
-        </header>
-        <figure>
-          <img alt="Wedding main" css={fullImageStyle} src={mainImage} />
-        </figure>
-        <p css={fullTitleStyle}>
-          {words.map((word, i) => (
-            <span key={word} css={letterStyle(i)}>
-              {word}
-            </span>
-          ))}
-        </p>
-      </section>
-    </div>
+    <section css={containerStyle}>
+      <header css={headerStyle}>
+        <h2>
+          {header1}
+          <br />
+          {header2}
+        </h2>
+        <h3>{header3}</h3>
+      </header>
+      <figure>
+        <img alt="Wedding main" css={imageStyle} src={mainImage} />
+      </figure>
+      <p css={fullTitleStyle}>
+        {words.map((word, i) => (
+          <span key={word} css={letterStyle(i)}>
+            {word}
+          </span>
+        ))}
+      </p>
+    </section>
   );
 };
 
 const containerStyle = css`
-  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+`;
+
+const headerStyle = css`
+  position: absolute;
+  color: var(--gray11);
+  font-size: 14px;
+  top: 6rem;
+  text-align: center;
+
+  h2 {
+    line-height: 1.6rem;
+  }
+
+  h3 {
+    margin-top: 1.5rem;
+  }
+`;
+
+const imageStyle = css`
   height: 100vh;
-  overflow: hidden;
-  position: relative;
-`;
-
-const sectionStyle = css`
-  width: 100%;
-  height: 100%;
-  position: relative;
-`;
-
-const fullTextStyle = (top: string) => css`
-  position: absolute;
-  color: var(--gray2);
-  top: ${top};
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.8rem;
-  font-weight: 100;
-  z-index: 2;
-`;
-
-const fullImageStyle = css`
-  width: 100%;
-  height: 100%;
   object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
 `;
 
 const smoothTyping = keyframes`
   from {
     opacity: 0;
     transform: translateY(10px);
-    clip-path: inset(0 100% 0 0); /* 오른쪽에서부터 나타남 */
+    clip-path: inset(0 100% 0 0);
   }
   to {
     opacity: 1;
@@ -80,17 +76,19 @@ const smoothTyping = keyframes`
 
 const fullTitleStyle = css`
   position: absolute;
-  bottom: 20%;
-  left: 50%;
-  transform: translateX(-50%);
   color: var(--gray2);
-  font-size: 2.8rem;
-  font-weight: 600;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  opacity: 0.9;
+  bottom: 4.5rem;
+  font-family: 'Smooch', cursive;
+  font-size: 90px;
+  text-align: center;
+  text-shadow: 0px 2px 7px rgba(94, 94, 94, 0.29);
+  width: 100%;
+  padding: 0 1rem;
+
+  span {
+    display: block;
+    margin-top: -2rem;
+  }
 `;
 
 const letterStyle = (i: number) => css`
