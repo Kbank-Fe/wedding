@@ -7,7 +7,7 @@ import type { View } from 'react-calendar/dist/shared/types.js';
 import { ImHeart } from 'react-icons/im';
 import { TfiLayoutLineSolid } from 'react-icons/tfi';
 
-import { MotionFade } from '@/components/shared/MotionFade';
+import FadeMotion from '@/components/shared/motion/FadeMotion';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import {
   getDayOfWeek,
@@ -81,15 +81,15 @@ const DateCalendar = () => {
 
   return (
     <>
-      <MotionFade css={dateStyle}>
+      <FadeMotion css={dateStyle}>
         <div css={dateTimeStyle}>
           <p>{`${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`}</p>
           <p>{`${getHourTitle(hour)} ${getMinuteTitle(min)}`}</p>
         </div>
         <TfiLayoutLineSolid color="#87bbba" size={24} strokeWidth={1} />
         <div css={monthStyle}>{month}</div>
-      </MotionFade>
-      <MotionFade>
+      </FadeMotion>
+      <FadeMotion>
         <div css={calendarContainerStyle}>
           <Calendar
             activeStartDate={dateObject}
@@ -107,7 +107,7 @@ const DateCalendar = () => {
           />
         </div>
         <div css={dtimeStyle}>{dDayMessage}</div>
-      </MotionFade>
+      </FadeMotion>
     </>
   );
 };

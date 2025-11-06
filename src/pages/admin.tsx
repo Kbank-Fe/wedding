@@ -6,10 +6,13 @@ import { toast, Toaster } from 'sonner';
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
 import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
+import ButtonContentModal from '@/components/shared/ButtonContentModal';
+import Layout from '@/components/shared/Layout';
 import LoadingBackdrop from '@/components/shared/LoadingBackdrop';
-import PageLayout from '@/components/shared/PageLayout';
+import WeddingPreview from '@/components/shared/WeddingPreview';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useWeddingInfo } from '@/hooks/useWeddingInfo';
+import { useViewportStore } from '@/stores/useViewportStore';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { SavedImage, ShowCheckbox } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
@@ -24,13 +27,15 @@ const AdminPage = () => {
   const { user, uid, isLoading: userLoading } = useCurrentUser();
 
   const [loading, setLoadingOpen] = useState(false);
-  const isSavingRef = useRef(false); // 더블클릭 방지(true : 저장중 , false : 저장가능)
+  const isSavingRef = useRef(false);
 
   const shouldFetch = !!uid;
   const { isLoading: infoLoading, notFound } = useWeddingInfo(
     shouldFetch ? { uid } : { uid: null },
     shouldFetch ? setDeep : undefined,
   );
+
+  const isMobile = useViewportStore((state) => state.isMobile);
   const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
 
   if (userLoading) return <LoadingBackdrop open={userLoading} />;
@@ -77,7 +82,6 @@ const AdminPage = () => {
 
   const handleSave = async () => {
     if (!user || !uid || isSavingRef.current) return;
-
     isSavingRef.current = true;
     setLoadingOpen(true);
 
@@ -103,39 +107,83 @@ const AdminPage = () => {
   };
 
   return (
-    <PageLayout>
-      {adminList.length > 0 && (
-        <Accordion>
-          {adminList.map(({ title, value, component: Component }) => (
-            <div key={value} css={divWrapStyle}>
-              <div css={checkboxStyle}>
-                <BaseCheckBoxInput
-                  checked={showCheckbox[value] ?? false}
-                  id={value}
-                  onChange={() => handleCheckboxChange(value)}
-                />
-              </div>
-              <div css={accordionItemStyle}>
-                <AccordionItem title={title} value={value}>
-                  <Component />
-                </AccordionItem>
-              </div>
-            </div>
-          ))}
-        </Accordion>
-      )}
-      <button
-        css={buttonStyle}
-        disabled={isSavingRef.current}
-        onClick={handleSave}
-      >
-        저장하기
-      </button>
+    <Layout viewType="admin">
+      <div css={adminLayoutStyle({ isMobile })}>
+        {!isMobile && (
+          <div css={previewAreaStyle}>
+            <WeddingPreview shareId={uid ?? ''} />
+          </div>
+        )}
+        <div css={adminPanelStyle({ isMobile })}>
+          {isMobile && (
+            <ButtonContentModal buttonText="미리보기" title="미리보기">
+              <WeddingPreview isPopup shareId={uid ?? ''} />
+            </ButtonContentModal>
+          )}
+          {adminList.length > 0 && (
+            <Accordion>
+              {adminList.map(({ title, value, component: Component }) => (
+                <div key={value} css={divWrapStyle}>
+                  <div css={checkboxStyle}>
+                    <BaseCheckBoxInput
+                      checked={showCheckbox[value] ?? false}
+                      id={value}
+                      onChange={() => handleCheckboxChange(value)}
+                    />
+                  </div>
+                  <div css={accordionItemStyle}>
+                    <AccordionItem title={title} value={value}>
+                      <Component />
+                    </AccordionItem>
+                  </div>
+                </div>
+              ))}
+            </Accordion>
+          )}
+          <button
+            css={buttonStyle}
+            disabled={isSavingRef.current}
+            onClick={handleSave}
+          >
+            저장하기
+          </button>
+        </div>
+      </div>
+
       <Toaster duration={2000} position="top-center" />
       <LoadingBackdrop open={loading} />
-    </PageLayout>
+    </Layout>
   );
 };
+
+const adminLayoutStyle = ({ isMobile }: { isMobile: boolean }) => css`
+  display: ${isMobile ? 'block' : 'flex'};
+  ${!isMobile && 'justify-content: center;'}
+  gap: 3rem;
+  width: 100%;
+`;
+
+const adminPanelStyle = ({ isMobile }: { isMobile: boolean }) => css`
+  flex: ${isMobile ? 'none' : '0 0 50%'};
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  max-width: 430px;
+  padding: ${isMobile ? 0 : '3rem 1.5rem'};
+  ${!isMobile &&
+  `
+    height: 100vh;
+    overflow-y: auto;
+  `}
+`;
+
+const previewAreaStyle = css`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 430px;
+`;
 
 const divWrapStyle = css`
   display: flex;

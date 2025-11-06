@@ -41,7 +41,7 @@ const itemStyle = css`
   border: 1px solid var(--gray4);
   border-radius: 12px;
   overflow: hidden;
-  background: var(--gray3);
+  background: var(--gray2);
   width: 100%;
   box-sizing: border-box;
 `;
