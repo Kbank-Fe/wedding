@@ -1,8 +1,18 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
-    { "source": "/(admin|404)(/.*)?", "destination": "/index.html" },
-    { "source": "/:shareId", "destination": "/api/:shareId" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/api/og/(.*)",
+      "destination": "/api/og.js"
+    },
+    {
+      "source": "/:shareId",
+      "has": [{ "type": "host", "value": "us-day.vercel.app" }],
+      "destination": "/api/og.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
