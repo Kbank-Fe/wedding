@@ -1,17 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
-    {
-      "source": "/(admin|404)($|/.*)",
-      "destination": "/index.html"
-    },
-    {
-      "source": "^/([^/.]+)$",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/(admin|404)(/.*)?", "destination": "/index.html" },
+    { "source": "/:shareId", "destination": "/api/:shareId" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
