@@ -2,10 +2,10 @@ import type { WeddingInfo } from '@/types/wedding';
 
 export const WEDDING_INITIAL_INFO: WeddingInfo = {
   date: {
-    year: 0,
-    month: 0,
-    day: 0,
-    hour: 0,
+    year: new Date().getFullYear(),
+    month: new Date().getMonth() + 1,
+    day: new Date().getDate(),
+    hour: 12,
     min: 0,
   },
   contact: {
