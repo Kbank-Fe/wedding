@@ -37,6 +37,8 @@ const BaseDateInput = forwardRef<HTMLInputElement, BaseDateInputProps>(
 BaseDateInput.displayName = 'BaseDateInput';
 
 const baseDateInputStyle = css`
+  color: var(--gray11) !important;
+  -webkit-text-fill-color: var(--gray11) !important;
   flex: 1;
   height: 39px;
   padding: 0.6rem 0.8rem;

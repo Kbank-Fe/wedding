@@ -37,6 +37,8 @@ const wrapperStyle = css`
 `;
 
 const baseSelectStyle = css`
+  color: var(--gray11) !important;
+  -webkit-text-fill-color: var(--gray11) !important;
   flex: 1;
   height: 39px;
   padding: 0.6rem 2rem 0.6rem 0.8rem;
