@@ -5,10 +5,16 @@ type BaseTextInputProps = Omit<
   'type'
 > & {
   ref?: React.Ref<HTMLInputElement>;
+  helperText?: string;
 };
 
-const BaseTextInput = ({ ref, ...rest }: BaseTextInputProps) => {
-  return <input ref={ref} css={inputStyle} type="text" {...rest} />;
+const BaseTextInput = ({ ref, helperText, ...rest }: BaseTextInputProps) => {
+  return (
+    <>
+      <input ref={ref} css={inputStyle} type="text" {...rest} />
+      <span css={helperStyle}>{helperText}</span>
+    </>
+  );
 };
 
 const inputStyle = css`
@@ -35,6 +41,13 @@ const inputStyle = css`
     outline: none;
     border-color: var(--gray11);
   }
+`;
+
+const helperStyle = css`
+  display: block;
+  font-size: 10px;
+  color: var(--gray9);
+  padding: 0 0.2rem;
 `;
 
 export default BaseTextInput;

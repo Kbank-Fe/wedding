@@ -58,9 +58,10 @@ const AccountGroup = ({
           )}
         </div>
 
-        <Field label="예금주">
+        <Field label="예금주명">
           <BaseTextInput
             maxLength={10}
+            placeholder="예금주명을 입력해주세요"
             value={acc.accountHolder}
             onChange={handleChange(index, 'accountHolder', 'kor')}
           />
@@ -69,6 +70,7 @@ const AccountGroup = ({
         <Field label="은행명">
           <BaseTextInput
             maxLength={15}
+            placeholder="은행명을 입력해주세요"
             value={acc.bankName}
             onChange={handleChange(index, 'bankName', 'kor')}
           />
@@ -77,21 +79,11 @@ const AccountGroup = ({
         <Field label="계좌번호">
           <BaseTextInput
             maxLength={20}
+            placeholder="계좌번호를 입력해주세요"
             value={acc.accountNumber}
             onChange={handleChange(index, 'accountNumber', 'num')}
           />
         </Field>
-
-        {acc.isKakaopay && (
-          <Field label="송금 링크">
-            <BaseTextInput
-              maxLength={50}
-              placeholder="https://qr.kakaopay.com/..."
-              value={acc.kakaopayUrl ?? ''}
-              onChange={handleChange(index, 'kakaopayUrl', 'url')}
-            />
-          </Field>
-        )}
 
         <Field label="카카오페이">
           <BaseCheckBoxInput
@@ -101,6 +93,18 @@ const AccountGroup = ({
             onChange={handleChange(index, 'isKakaopay')}
           />
         </Field>
+
+        {acc.isKakaopay && (
+          <Field label="송금 링크">
+            <BaseTextInput
+              helperText="카카오페이 > 송금 > 내 QR > 링크 복사에서 URL을 확인할 수 있어요"
+              maxLength={50}
+              placeholder="https://qr.kakaopay.com/..."
+              value={acc.kakaopayUrl ?? ''}
+              onChange={handleChange(index, 'kakaopayUrl', 'url')}
+            />
+          </Field>
+        )}
       </div>
     ))}
   </div>

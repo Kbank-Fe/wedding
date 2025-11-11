@@ -119,6 +119,7 @@ const AccountListAdmin = () => {
       <Field label="제목">
         <BaseTextInput
           maxLength={20}
+          placeholder="제목을 입력해주세요"
           value={account.title ?? ''}
           onChange={handleChangeInput}
         />
@@ -126,6 +127,7 @@ const AccountListAdmin = () => {
       <Field label="내용">
         <BaseTextArea
           maxLength={200}
+          placeholder="내용을 입력해주세요"
           value={account.subtitle ?? ''}
           onChange={handleChangeTextAreaInput}
         />
@@ -143,6 +145,7 @@ const AccountListAdmin = () => {
             <Field label="그룹명">
               <BaseTextInput
                 maxLength={15}
+                placeholder="그룹명을 입력해주세요"
                 value={accounts?.title ?? ''}
                 onChange={handleChangeAccountInfo(side, 'title')}
               />
