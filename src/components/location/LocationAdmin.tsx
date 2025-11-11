@@ -36,6 +36,7 @@ const LocationAdmin = () => {
       <Field label="예식장명">
         <BaseTextInput
           maxLength={20}
+          placeholder="예식장명을 입력해주세요"
           value={map.venueName ?? ''}
           onChange={handleChangeText('venueName')}
         />
@@ -44,6 +45,7 @@ const LocationAdmin = () => {
       <Field label="층과 홀">
         <BaseTextInput
           maxLength={20}
+          placeholder="층과 홀을 입력해주세요"
           value={map.venueDetail ?? ''}
           onChange={handleChangeText('venueDetail')}
         />
