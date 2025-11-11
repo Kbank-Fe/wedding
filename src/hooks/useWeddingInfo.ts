@@ -79,7 +79,14 @@ export const useWeddingInfo = (
           localImageList: [...localImageList, ...localFiles],
         };
 
-        draft.showCheckbox = data.showCheckbox ?? WEDDING_INITIAL_INFO.showCheckbox;
+        draft.share = {
+          ...(data.share ?? {}),
+          file: data.share?.file ?? undefined,
+          uploadMeta: data.share?.uploadMeta ?? undefined,
+        };
+
+        draft.showCheckbox =
+          data.showCheckbox ?? WEDDING_INITIAL_INFO.showCheckbox;
         draft.account = data.account ?? WEDDING_INITIAL_INFO.account;
         draft.contact = data.contact ?? WEDDING_INITIAL_INFO.contact;
         draft.date = data.date ?? WEDDING_INITIAL_INFO.date;

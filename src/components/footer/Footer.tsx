@@ -7,10 +7,10 @@ import { loadKakaoSdk } from '@/utils/loadKakaoSdk';
 const SHARE_URL = import.meta.env.VITE_PUBLIC_BASE_URL;
 
 const Footer = ({ shareId }: { shareId: string }) => {
-  const shareInfo = useWeddingStore((state) => state.values.share);
-  const picture = useWeddingStore(
-    (state) => state.values.gallery.savedImageList?.[0],
+  const showCheckbox = useWeddingStore(
+    (state) => state.values.showCheckbox.share,
   );
+  const shareInfo = useWeddingStore((state) => state.values.share);
 
   const handleLinkShareClick = () => {
     copyToLink({ text: `${SHARE_URL}/${shareId}` });
@@ -24,7 +24,7 @@ const Footer = ({ shareId }: { shareId: string }) => {
       content: {
         title: shareInfo.title ?? '',
         description: shareInfo.description ?? '',
-        imageUrl: picture?.url ?? `${SHARE_URL}/${shareId}`,
+        imageUrl: shareInfo.uploadMeta?.url ?? `${SHARE_URL}/${shareId}`,
         link: {
           mobileWebUrl: `${SHARE_URL}/${shareId}`,
           webUrl: `${SHARE_URL}/${shareId}`,
@@ -50,7 +50,7 @@ const Footer = ({ shareId }: { shareId: string }) => {
 
   return (
     <div css={containerStyle}>
-      {shareOptions.length > 0 && (
+      {showCheckbox && shareOptions.length > 0 && (
         <div css={buttonContainerStyle}>
           {shareOptions.map(({ key, label, onClick }) => (
             <button key={key} css={buttonStyle} onClick={onClick}>

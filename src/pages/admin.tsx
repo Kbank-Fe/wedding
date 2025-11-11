@@ -80,6 +80,33 @@ const AdminPage = () => {
     }
   };
 
+  const handleSetShareImage = async (uid: string) => {
+    const { file, uploadMeta } = useWeddingStore.getState().values.share;
+
+    if (!(file instanceof File)) return;
+    if (uploadMeta && uploadMeta.name === file.name) {
+      setDeep((draft) => {
+        draft.share.file = uploadMeta;
+      });
+      return;
+    }
+
+    try {
+      const meta: SavedImage = await uploadImageToStorage(file, uid, {
+        folder: 'share',
+        overwrite: true,
+      });
+
+      setDeep((draft) => {
+        draft.share.file = meta;
+        draft.share.uploadMeta = meta;
+      });
+    } catch (error) {
+      console.error('공유하기 이미지 업로드 중 오류 발생', error);
+      throw new Error('share_file_upload_failed');
+    }
+  };
+
   const handleSave = async () => {
     if (!user || !uid || isSavingRef.current) return;
     isSavingRef.current = true;
@@ -87,6 +114,7 @@ const AdminPage = () => {
 
     try {
       await handleSetImageList(uid);
+      await handleSetShareImage(uid);
       const values = useWeddingStore.getState().values;
       const shareId = await saveUserShare(uid, values);
 

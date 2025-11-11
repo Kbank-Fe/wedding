@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import { useCallback } from 'react';
 
 import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
@@ -15,6 +16,7 @@ const FooterAdmin = () => {
     description = '',
     kakaoShare = true,
     linkShare = true,
+    file = undefined,
   } = shareInfo;
 
   const handleChangeInput = useCallback(
@@ -30,8 +32,7 @@ const FooterAdmin = () => {
   );
 
   const handleAddFile = (files: File[]) => {
-    console.log(files);
-    setField('share', 'pictureUrl', '');
+    setField('share', 'file', files[0]);
   };
 
   return (
@@ -55,8 +56,18 @@ const FooterAdmin = () => {
       </Field>
 
       <Field label="메인 사진">
-        <BaseImageInput id="picture" onChange={handleAddFile} />
+        <BaseImageInput
+          id="picture"
+          multiple={false}
+          onChange={handleAddFile}
+        />
       </Field>
+
+      {file?.name && (
+        <Field label="파일명">
+          <p css={imgNameStyle}>{file?.name}</p>
+        </Field>
+      )}
 
       <Field label="공유 버튼">
         <BaseCheckBoxInput
@@ -75,5 +86,12 @@ const FooterAdmin = () => {
     </>
   );
 };
+
+const imgNameStyle = css`
+  font-size: 0.7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
 
 export default FooterAdmin;
