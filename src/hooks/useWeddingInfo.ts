@@ -79,13 +79,14 @@ export const useWeddingInfo = (
           localImageList: [...localImageList, ...localFiles],
         };
 
-        draft.showCheckbox = data.showCheckbox ?? WEDDING_INITIAL_INFO.showCheckbox;
+        draft.showCheckbox =
+          data.showCheckbox ?? WEDDING_INITIAL_INFO.showCheckbox;
         draft.account = data.account ?? WEDDING_INITIAL_INFO.account;
         draft.contact = data.contact ?? WEDDING_INITIAL_INFO.contact;
         draft.date = data.date ?? WEDDING_INITIAL_INFO.date;
         draft.intro = data.intro ?? WEDDING_INITIAL_INFO.intro;
         draft.transport = data.transport ?? WEDDING_INITIAL_INFO.transport;
-        draft.map = data.map ?? WEDDING_INITIAL_INFO.map;
+        draft.location = data.location ?? WEDDING_INITIAL_INFO.location;
       });
 
       initializedRef.current = true;
