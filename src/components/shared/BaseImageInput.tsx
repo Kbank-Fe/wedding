@@ -17,14 +17,13 @@ const BaseImageInput = ({
     const list = event.currentTarget.files;
     if (!list) return;
     onChange(Array.from(list));
-    // 같은 파일 재선택 허용
     event.currentTarget.value = '';
   };
 
   return (
     <input
       accept={accept}
-      multiple={multiple}
+      {...(multiple ? { multiple: true } : {})}
       type="file"
       onChange={handleChange}
       {...rest}
