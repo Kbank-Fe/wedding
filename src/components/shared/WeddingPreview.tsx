@@ -4,6 +4,7 @@ import Footer from '@/components/footer/Footer';
 import Layout from '@/components/shared/Layout';
 import Section from '@/components/shared/Section';
 import CardSlideTheme from '@/components/theme/CardSlideTheme';
+import { PreviewModeProvider } from '@/contexts/PreviewModeContext';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { mainList } from '@/utils/mainList';
 
@@ -19,26 +20,28 @@ const WeddingPreview = ({
   const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
 
   return (
-    <Layout viewType="main">
-      <div css={containerStyle({ isPopup })}>
-        <div css={previewContentStyle({ isPopup })}>
-          <CardSlideTheme />
-          {mainList.length > 0 && (
-            <>
-              {mainList.map(
-                ({ key, alwaysVisible, component: Component }) =>
-                  (alwaysVisible || showCheckbox[key]) && (
-                    <Section key={key}>
-                      <Component />
-                    </Section>
-                  ),
-              )}
-            </>
-          )}
-          <Footer shareId={shareId} />
+    <PreviewModeProvider isPopup={isPopup}>
+      <Layout viewType="main">
+        <div css={containerStyle({ isPopup })}>
+          <div css={previewContentStyle({ isPopup })}>
+            <CardSlideTheme />
+            {mainList.length > 0 && (
+              <>
+                {mainList.map(
+                  ({ key, alwaysVisible, component: Component }) =>
+                    (alwaysVisible || showCheckbox[key]) && (
+                      <Section key={key}>
+                        <Component />
+                      </Section>
+                    ),
+                )}
+              </>
+            )}
+            <Footer shareId={shareId} />
+          </div>
         </div>
-      </div>
-    </Layout>
+      </Layout>
+    </PreviewModeProvider>
   );
 };
 

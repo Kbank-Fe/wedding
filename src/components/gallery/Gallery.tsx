@@ -5,12 +5,15 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { ImHeart } from 'react-icons/im';
 import { Gallery as GalleryWrapper, Item } from 'react-photoswipe-gallery';
+import { toast } from 'sonner';
 
+import { usePreviewMode } from '@/contexts/PreviewModeContext';
 import { usePhotoList } from '@/hooks/usePhotoList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const Gallery = () => {
   const [expanded, setExpanded] = useState(false);
+  const isPopup = usePreviewMode();
 
   const { localImageList } = useWeddingStore((state) => state.values.gallery);
   const { photoList } = usePhotoList(localImageList, 'actual');
@@ -18,56 +21,73 @@ const Gallery = () => {
   const showMoreButton = photoList.length > 9 && !expanded;
   const visiblePhotos = expanded ? photoList : photoList.slice(0, 9);
 
+  const galleryList = (
+    <>
+      <motion.div
+        animate={{ maxHeight: expanded ? '100%' : '60vh' }}
+        css={wrapperStyle}
+        initial={{ opacity: 0, y: 30 }}
+        transition={{ duration: 0.6, ease: 'easeInOut' }}
+        viewport={{ amount: 0.2 }}
+        whileInView={{ opacity: 1, y: 0 }}
+      >
+        <div css={gridStyle}>
+          {visiblePhotos.map((photo, index) => (
+            <Item
+              key={index}
+              height={photo.height}
+              original={photo.src}
+              thumbnail={photo.src}
+              width={photo.width}
+            >
+              {({ ref, open }) => (
+                <button
+                  ref={ref}
+                  css={buttonStyle}
+                  onClick={(event) => {
+                    if (isPopup) {
+                      event.preventDefault();
+                      toast.warning(
+                        '모바일 미리보기에서는 갤러리 기능이 제공되지 않아요. 저장 후 확인해주세요.',
+                      );
+                    } else {
+                      open(event);
+                    }
+                  }}
+                >
+                  <img
+                    alt={`image-${index}`}
+                    css={thumbStyle}
+                    src={photo.src}
+                  />
+                </button>
+              )}
+            </Item>
+          ))}
+        </div>
+        <AnimatePresence>
+          {showMoreButton && (
+            <motion.div
+              css={fadeOverlayStyle}
+              exit={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            />
+          )}
+        </AnimatePresence>
+      </motion.div>
+      {showMoreButton && (
+        <button css={moreButtonStyle} onClick={() => setExpanded(true)}>
+          더보기
+        </button>
+      )}
+    </>
+  );
+
   return (
     <>
       <ImHeart color="#87BBBA" css={iconStyle} size={16} />
-      <GalleryWrapper>
-        <motion.div
-          animate={{ maxHeight: expanded ? '100%' : '60vh' }}
-          css={wrapperStyle}
-          initial={{ opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
-          viewport={{ amount: 0.2 }}
-          whileInView={{ opacity: 1, y: 0 }}
-        >
-          <div css={gridStyle}>
-            {visiblePhotos.map((photo, index) => (
-              <Item
-                key={index}
-                height={photo.height}
-                original={photo.src}
-                thumbnail={photo.src}
-                width={photo.width}
-              >
-                {({ ref, open }) => (
-                  <button ref={ref} css={buttonStyle} onClick={open}>
-                    <img
-                      alt={`image-${index}`}
-                      css={thumbStyle}
-                      src={photo.src}
-                    />
-                  </button>
-                )}
-              </Item>
-            ))}
-          </div>
-          <AnimatePresence>
-            {showMoreButton && (
-              <motion.div
-                css={fadeOverlayStyle}
-                exit={{ opacity: 0 }}
-                initial={{ opacity: 1 }}
-                transition={{ duration: 0.4, ease: 'easeOut' }}
-              />
-            )}
-          </AnimatePresence>
-        </motion.div>
-        {showMoreButton && (
-          <button css={moreButtonStyle} onClick={() => setExpanded(true)}>
-            더보기
-          </button>
-        )}
-      </GalleryWrapper>
+      {isPopup ? galleryList : <GalleryWrapper>{galleryList}</GalleryWrapper>}
     </>
   );
 };
