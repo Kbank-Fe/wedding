@@ -55,7 +55,7 @@ const descriptionStyle = css`
   color: var(--gray10);
   font-size: 13px;
   font-weight: 400;
-  line-height: 1.4rem;
+  line-height: 1.6rem;
 `;
 
 export default TransportItem;

@@ -57,10 +57,9 @@ export default async function handler(req) {
       return fetch(`${BASE_URL}/index.html`);
     }
 
-    const intro = data.intro || {};
     const date = data.date || {};
     const gallery = data.gallery || {};
-    const basic = intro.basicInfo || {};
+    const basic = data.basicInfo || {};
 
     const maleName = basic.maleName || '신랑';
     const femaleName = basic.femaleName || '신부';

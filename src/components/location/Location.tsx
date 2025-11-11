@@ -7,13 +7,13 @@ import {
   useKakaoLoader,
 } from 'react-kakao-maps-sdk';
 
-import MapBadge from '@/components/map/MapBadge';
+import MapBadge from '@/components/location/MapBadge';
 import { useGeocode } from '@/hooks/useGeocode';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { LatLng } from '@/types/map.types';
 
-const WeddingMap = () => {
-  const mapInfo = useWeddingStore((state) => state.values.map);
+const Location = () => {
+  const mapInfo = useWeddingStore((state) => state.values.location);
   const [loading] = useKakaoLoader({
     appkey: import.meta.env.VITE_KAKAO_JS_KEY,
     libraries: ['services'],
@@ -103,4 +103,4 @@ const textStyle = css`
   }
 `;
 
-export default WeddingMap;
+export default Location;

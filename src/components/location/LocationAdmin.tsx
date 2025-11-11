@@ -1,6 +1,6 @@
 import { type ChangeEvent } from 'react';
 
-import AddressSearch from '@/components/map/AddressSearch';
+import AddressSearch from '@/components/location/AddressSearch';
 import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Field from '@/components/shared/Field';
@@ -9,9 +9,9 @@ import { isValid } from '@/utils/validate';
 
 type TextField = 'venueName' | 'venueDetail';
 
-const WeddingMapAdmin = () => {
+const LocationAdmin = () => {
   const setField = useWeddingStore((state) => state.setField);
-  const map = useWeddingStore((state) => state.values.map);
+  const map = useWeddingStore((state) => state.values.location);
 
   const handleChangeText =
     (field: TextField) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -20,15 +20,15 @@ const WeddingMapAdmin = () => {
         e.preventDefault();
         return;
       }
-      setField('map', field, value);
+      setField('location', field, value);
     };
 
   const handleSelectAddress = (address: string) => {
-    setField('map', 'address', address);
+    setField('location', 'address', address);
   };
 
   const handleChangeCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
-    setField('map', 'isVisibleMap', e.currentTarget.checked);
+    setField('location', 'isVisibleMap', e.currentTarget.checked);
   };
 
   return (
@@ -66,4 +66,4 @@ const WeddingMapAdmin = () => {
   );
 };
 
-export default WeddingMapAdmin;
+export default LocationAdmin;
