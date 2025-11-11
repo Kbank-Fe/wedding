@@ -13,21 +13,39 @@ export const compressImage = async (
     outputType?: 'image/webp' | 'image/jpeg';
   } = {},
 ): Promise<Blob> => {
-  const bitmap = await createImageBitmap(file);
+  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const el = new Image();
+    el.onload = () => resolve(el);
+    el.onerror = reject;
+    el.src = URL.createObjectURL(file);
+  });
 
-  const scale = Math.min(1, maxWidth / bitmap.width);
+  const scale = Math.min(1, maxWidth / img.width);
+  const width = Math.round(img.width * scale);
+  const height = Math.round(img.height * scale);
+
   const canvas = document.createElement('canvas');
-  canvas.width = Math.floor(bitmap.width * scale);
-  canvas.height = Math.floor(bitmap.height * scale);
+  canvas.width = width;
+  canvas.height = height;
 
-  const ctx = canvas.getContext('2d')!;
-  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('canvas context 생성 실패');
+  ctx.drawImage(img, 0, 0, width, height);
 
-  const blob: Blob = await new Promise((resolve) =>
-    canvas.toBlob((b) => resolve(b!), outputType, quality),
-  );
+  const type = canvas.toDataURL(outputType).startsWith('data:image/webp')
+    ? outputType
+    : 'image/jpeg';
 
-  return blob!;
+  const blob: Blob = await new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (b) => (b ? resolve(b) : reject(new Error('blob 변환 실패'))),
+      type,
+      quality,
+    );
+  });
+
+  URL.revokeObjectURL(img.src);
+  return blob;
 };
 
 // 서버에서 불러온 savedImageList를 그대로 localImageList로 반환
