@@ -97,7 +97,6 @@ const AccountGroup = ({
         {acc.isKakaopay && (
           <Field label="송금 링크">
             <BaseTextInput
-              helperText="카카오페이 > 송금 > 내 QR > 링크 복사에서 URL을 확인할 수 있어요"
               maxLength={50}
               placeholder="https://qr.kakaopay.com/..."
               value={acc.kakaopayUrl ?? ''}
