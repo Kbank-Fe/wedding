@@ -4,7 +4,7 @@ import { forwardRef, useImperativeHandle, useRef } from 'react';
 type BaseDateInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 const BaseDateInput = forwardRef<HTMLInputElement, BaseDateInputProps>(
-  ({ ...rest }: BaseDateInputProps, ref) => {
+  ({ defaultValue, ...rest }: BaseDateInputProps, ref) => {
     // 자식 내부 input DOM 직접 제어
     const dateRef = useRef<HTMLInputElement>(null);
 
@@ -21,13 +21,16 @@ const BaseDateInput = forwardRef<HTMLInputElement, BaseDateInputProps>(
       .toISOString()
       .split('T')[0];
 
+    // defaultValue가 없을 경우 오늘 날짜로 세팅
+    const resolvedDefaultValue = defaultValue ?? todayKST;
+
     return (
       <input
         ref={dateRef}
         css={baseDateInputStyle}
         type="date"
         {...rest}
-        defaultValue={todayKST}
+        defaultValue={resolvedDefaultValue}
         onClick={handleClick}
       />
     );
@@ -37,6 +40,8 @@ const BaseDateInput = forwardRef<HTMLInputElement, BaseDateInputProps>(
 BaseDateInput.displayName = 'BaseDateInput';
 
 const baseDateInputStyle = css`
+  color: var(--gray11) !important;
+  -webkit-text-fill-color: var(--gray11) !important;
   flex: 1;
   height: 39px;
   padding: 0.6rem 0.8rem;

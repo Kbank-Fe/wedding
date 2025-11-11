@@ -8,6 +8,18 @@ import { HOUR_OPTION_LIST, MINUTE_OPTION_LIST } from '@/utils/constants/time';
 
 const DateCalendarAdmin = () => {
   const setField = useWeddingStore((state) => state.setField);
+  const date = useWeddingStore((state) => state.values.date);
+  const year = date.year;
+  const month = date.month;
+  const day = date.day;
+
+  const padZero = (num: number) => String(num).padStart(2, '0');
+
+  const formattedDate =
+    year && month && day ? `${year}-${padZero(month)}-${padZero(day)}` : '';
+
+  const hour = date.hour;
+  const minute = date.min;
 
   // 부모가 자식의 input DOM을 직접 제어
   const dateInputRef = useRef<HTMLInputElement>(null);
@@ -29,9 +41,6 @@ const DateCalendarAdmin = () => {
       calledRef.current = true;
     }
   }, [setField]);
-
-  const hour = useWeddingStore((state) => state.values.date.hour);
-  const minute = useWeddingStore((state) => state.values.date.min);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const dateObject = new Date(e.target.value);
@@ -55,7 +64,11 @@ const DateCalendarAdmin = () => {
         label="예식일자"
         mode="single"
       >
-        <BaseDateInput ref={dateInputRef} onChange={handleDateChange} />
+        <BaseDateInput
+          ref={dateInputRef}
+          defaultValue={formattedDate}
+          onChange={handleDateChange}
+        />
       </Field>
       <Field
         description="예식시간을 선택해주세요."
