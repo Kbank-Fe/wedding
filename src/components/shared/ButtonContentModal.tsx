@@ -80,8 +80,10 @@ const modalContentStyle = css`
   z-index: 1000;
 
   /* IOS safari safe area 대응 */
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
+  @supports (padding-top: env(safe-area-inset-top)) {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 
   @supports (padding-top: constant(safe-area-inset-top)) {
     padding-top: constant(safe-area-inset-top);
