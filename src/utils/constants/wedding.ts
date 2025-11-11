@@ -87,6 +87,7 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     basic: true,
     map: true,
     greeting: true,
+    share: true,
   },
   map: {
     title: '',
@@ -94,5 +95,12 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     venueDetail: '',
     address: '',
     isVisibleMap: false,
+  },
+  share: {
+    title: '',
+    description: '',
+    kakaoShare: true,
+    linkShare: true,
+    pictureUrl: '',
   },
 };

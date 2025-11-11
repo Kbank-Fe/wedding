@@ -113,6 +113,14 @@ type WeddingMap = {
   isVisibleMap: boolean;
 };
 
+export type FooterShare = {
+  title: string;
+  description: string;
+  kakaoShare: boolean;
+  linkShare: boolean;
+  pictureUrl: string;
+};
+
 export type WeddingInfo = {
   date: DateInfo;
   contact: ContactList;
@@ -122,4 +130,5 @@ export type WeddingInfo = {
   gallery: Gallery;
   showCheckbox: ShowCheckbox;
   map: WeddingMap;
+  share: FooterShare;
 };
