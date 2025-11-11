@@ -101,6 +101,5 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     description: '',
     kakaoShare: true,
     linkShare: true,
-    pictureUrl: '',
   },
 };
