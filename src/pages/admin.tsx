@@ -5,6 +5,7 @@ import { toast, Toaster } from 'sonner';
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
 import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
+import ListSkeleton from '@/components/shared/ListSkeleton';
 import LoadingBackdrop from '@/components/shared/LoadingBackdrop';
 import PageLayout from '@/components/shared/PageLayout';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
@@ -29,9 +30,9 @@ const AdminPage = () => {
   );
   const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
 
-  if (userLoading) return <LoadingBackdrop open={userLoading} />;
-  if (!uid) return <Navigate replace to="/404" />;
-  if (infoLoading) return <LoadingBackdrop open={infoLoading} />;
+  if (!uid && !(infoLoading || userLoading))
+    return <Navigate replace to="/404" />;
+
   if (notFound) return <Navigate replace to="/404" />;
 
   const handleSetImageList = async (uid: string) => {
@@ -94,7 +95,12 @@ const AdminPage = () => {
 
   return (
     <PageLayout>
-      {adminList.length > 0 && (
+      {infoLoading || userLoading || adminList.length === 0 ? (
+        <>
+          <LoadingBackdrop open={true} />
+          <ListSkeleton count={8} gap="16px" height={48.297} width={382} />
+        </>
+      ) : (
         <Accordion>
           {adminList.map(({ title, value, component: Component }) => (
             <div key={value} css={divWrapStyle}>
@@ -117,6 +123,7 @@ const AdminPage = () => {
       <button css={buttonStyle} onClick={handleSave}>
         저장하기
       </button>
+
       <Toaster duration={2000} position="top-center" />
     </PageLayout>
   );
