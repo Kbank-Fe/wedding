@@ -41,6 +41,7 @@ const FooterAdmin = () => {
         <BaseTextInput
           id="title"
           maxLength={50}
+          placeholder="제목을 입력해주세요"
           value={title}
           onChange={handleChangeInput}
         />
@@ -50,17 +51,14 @@ const FooterAdmin = () => {
         <BaseTextInput
           id="description"
           maxLength={50}
+          placeholder="설명을 입력해주세요"
           value={description}
           onChange={handleChangeInput}
         />
       </Field>
 
       <Field label="메인 사진">
-        <BaseImageInput
-          id="picture"
-          multiple={false}
-          onChange={handleAddFile}
-        />
+        <BaseImageInput multiple={false} onChange={handleAddFile} />
       </Field>
 
       {file?.name && (
