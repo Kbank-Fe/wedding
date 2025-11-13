@@ -97,4 +97,10 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
       isExpand: true,
     },
   },
+  share: {
+    title: '사랑이 머문 시간, 이제 결혼으로 이어집니다.',
+    description: '행복한 날, 함께해주시면 감사하겠습니다.',
+    kakaoShare: true,
+    linkShare: true,
+  },
 };

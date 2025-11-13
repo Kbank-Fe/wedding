@@ -9,6 +9,7 @@ export type ShowCheckbox = {
   basic: boolean;
   location: boolean;
   greeting: boolean;
+  share: boolean;
 };
 
 export type UserBasicInfo = UserBasicInfoString & UserBasicInfoBoolean;
@@ -110,6 +111,15 @@ type AccountList = {
   brideSideAccounts?: AccountInfo;
 };
 
+export type FooterShare = {
+  title: string;
+  description: string;
+  kakaoShare: boolean;
+  linkShare: boolean;
+  file?: LocalImage;
+  uploadMeta?: SavedImage;
+};
+
 export type WeddingInfo = {
   showCheckbox: ShowCheckbox;
   basicInfo: UserBasicInfo;
@@ -120,4 +130,5 @@ export type WeddingInfo = {
   location: Location;
   transport: TransportList;
   account: AccountList;
+  share: FooterShare;
 };

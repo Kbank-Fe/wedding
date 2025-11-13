@@ -7,11 +7,10 @@ import { loadKakaoSdk } from '@/utils/loadKakaoSdk';
 const SHARE_URL = import.meta.env.VITE_PUBLIC_BASE_URL;
 
 const Footer = ({ shareId }: { shareId: string }) => {
-  const nameList = useWeddingStore((state) => state.values.basicInfo);
-  const date = useWeddingStore((state) => state.values.date);
-  const picture = useWeddingStore(
-    (state) => state.values.gallery.savedImageList?.[0],
+  const showCheckbox = useWeddingStore(
+    (state) => state.values.showCheckbox.share,
   );
+  const shareInfo = useWeddingStore((state) => state.values.share);
 
   const handleLinkShareClick = () => {
     copyToLink({ text: `${SHARE_URL}/${shareId}` });
@@ -19,15 +18,13 @@ const Footer = ({ shareId }: { shareId: string }) => {
 
   const handleKakaoShareClick = async () => {
     const Kakao = await loadKakaoSdk();
-    const title = `${nameList.maleName} ❤ ${nameList.femaleName} 저희 결혼합니다!💍`;
-    const description = `${date.year}년 ${date.month}월 ${date.day}일 ${date.hour}시 ${date.min}분`;
 
     Kakao.Share.sendDefault({
       objectType: 'feed',
       content: {
-        title: title,
-        description: description,
-        imageUrl: picture?.url ?? `${SHARE_URL}/${shareId}`,
+        title: shareInfo.title ?? '',
+        description: shareInfo.description ?? '',
+        imageUrl: shareInfo.uploadMeta?.url ?? `${SHARE_URL}/${shareId}`,
         link: {
           mobileWebUrl: `${SHARE_URL}/${shareId}`,
           webUrl: `${SHARE_URL}/${shareId}`,
@@ -36,16 +33,32 @@ const Footer = ({ shareId }: { shareId: string }) => {
     });
   };
 
+  const shareOptions = [
+    {
+      key: 'kakao',
+      enabled: shareInfo?.kakaoShare,
+      label: '카카오톡 공유',
+      onClick: handleKakaoShareClick,
+    },
+    {
+      key: 'link',
+      enabled: shareInfo?.linkShare,
+      label: '링크 공유',
+      onClick: handleLinkShareClick,
+    },
+  ].filter((opt) => opt.enabled);
+
   return (
     <div css={containerStyle}>
-      <div css={buttonContainerStyle}>
-        <button css={buttonStyle} onClick={handleKakaoShareClick}>
-          카카오톡 공유
-        </button>
-        <button css={buttonStyle} onClick={handleLinkShareClick}>
-          링크 공유
-        </button>
-      </div>
+      {showCheckbox && shareOptions.length > 0 && (
+        <div css={buttonContainerStyle}>
+          {shareOptions.map(({ key, label, onClick }) => (
+            <button key={key} css={buttonStyle} onClick={onClick}>
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
       <img alt="Us Day Logo" css={imageStyle} src="/images/logo.png" />
       <p css={fontStyle}>© usday. All rights reserved.</p>
     </div>

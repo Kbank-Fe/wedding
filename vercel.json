@@ -1,18 +1,3 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
-    {
-      "source": "/api/og/(.*)",
-      "destination": "/api/og.js"
-    },
-    {
-      "source": "/:shareId",
-      "has": [{ "type": "host", "value": "us-day.vercel.app" }],
-      "destination": "/api/og.js"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
