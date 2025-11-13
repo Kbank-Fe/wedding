@@ -144,7 +144,7 @@ const calendarStyle = css`
 
   /* 기본 텍스트 색상: 검정 */
   .react-calendar__tile {
-    color: var(--gray11) !important;
+    color: var(--gray11);
   }
 
   /* highlight 날짜 셀 스타일 설정 */
