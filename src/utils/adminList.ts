@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import AccountListAdmin from '@/components/account/AccountListAdmin';
 import DateCalendarAdmin from '@/components/calendar/DateCalendarAdmin';
 import ContactAdmin from '@/components/contact/ContactAdmin';
-import FooterAdmin from '@/components/footer/FooterAdmin';
+import ShareAdmin from '@/components/footer/ShareAdmin';
 import GalleryAdmin from '@/components/gallery/GalleryAdmin';
 import UserInfoAdmin from '@/components/Intro/UserInfoAdmin';
 import WeddingGreetingAdmin from '@/components/Intro/WeddingGreetingAdmin';
@@ -63,6 +63,6 @@ export const adminList: AdminList[] = [
   {
     title: '공유하기',
     value: 'share',
-    component: FooterAdmin,
+    component: ShareAdmin,
   },
 ] as const;

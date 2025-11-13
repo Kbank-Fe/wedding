@@ -8,7 +8,7 @@ import Field from '@/components/shared/Field';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { FooterShare } from '@/types/wedding';
 
-const FooterAdmin = () => {
+const ShareAdmin = () => {
   const shareInfo = useWeddingStore((state) => state.values.share);
   const setField = useWeddingStore((state) => state.setField);
   const {
@@ -92,4 +92,4 @@ const imgNameStyle = css`
   white-space: nowrap;
 `;
 
-export default FooterAdmin;
+export default ShareAdmin;
