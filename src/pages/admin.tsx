@@ -82,9 +82,10 @@ const AdminPage = () => {
 
   const handleSetShareImage = async (uid: string) => {
     const { file, uploadMeta } = useWeddingStore.getState().values.share;
+    const localFile = file?.[0];
 
-    if (!(file instanceof File)) return;
-    if (uploadMeta?.length && uploadMeta[0].name === file.name) {
+    if (!(localFile instanceof File)) return;
+    if (uploadMeta?.[0]?.name === localFile.name) {
       setDeep((draft) => {
         draft.share.file = uploadMeta;
       });
@@ -92,7 +93,7 @@ const AdminPage = () => {
     }
 
     try {
-      const meta: SavedImage = await uploadImageToStorage(file, uid, {
+      const meta: SavedImage = await uploadImageToStorage(localFile, uid, {
         folder: 'share',
         overwrite: true,
       });
