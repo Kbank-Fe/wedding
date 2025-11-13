@@ -90,6 +90,10 @@ const AdminPage = () => {
       const values = useWeddingStore.getState().values;
       const shareId = await saveUserShare(uid, values);
 
+      useWeddingStore.setState((state) => {
+        state.values.gallery.localImageList = [];
+      });
+
       toast.success('데이터를 저장했어요!');
       setTimeout(() => navigate(`/${shareId}`), 1500);
     } catch (error) {
