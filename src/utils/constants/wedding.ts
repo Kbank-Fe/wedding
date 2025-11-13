@@ -12,6 +12,7 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     basic: true,
     location: true,
     greeting: true,
+    share: false,
   },
   basicInfo: {
     maleName: '',
