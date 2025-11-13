@@ -1,7 +1,7 @@
 import 'react-calendar/dist/Calendar.css';
 
 import { css } from '@emotion/react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import Calendar from 'react-calendar';
 import type { View } from 'react-calendar/dist/shared/types.js';
 import { ImHeart } from 'react-icons/im';
@@ -24,6 +24,7 @@ type highlight = {
 const DateCalendar = () => {
   const date = useWeddingStore((state) => state.values.date);
   const basicInfo = useWeddingStore((state) => state.values.basicInfo);
+  const setField = useWeddingStore((state) => state.setField);
 
   const { year, month, day, hour, min } = date;
 
@@ -31,6 +32,16 @@ const DateCalendar = () => {
   const dateObject = useMemo(() => {
     return new Date(year, month - 1, day, hour, min);
   }, [year, month, day, hour, min]);
+
+  useEffect(() => {
+    // PC 브라우저 기본 달력 삭제 버튼 클릭 시 날짜 초기화 방지 (오늘 날짜로 세팅)
+    if (isNaN(year) || isNaN(month) || isNaN(day)) {
+      const today = new Date();
+      setField('date', 'year', today.getFullYear());
+      setField('date', 'month', today.getMonth() + 1);
+      setField('date', 'day', today.getDate());
+    }
+  }, [year, month, day, setField]);
 
   // react-calendar tileClassName 속성 전달: highlight 설정
   const setTileClassName = ({ date, view }: highlight) => {
