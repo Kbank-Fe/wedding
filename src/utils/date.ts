@@ -47,6 +47,10 @@ export const getHourTitle = (hour: number) => {
 
 // 시간 값에 해당하는 제목 반환
 export const getMinuteTitle = (minute: number) => {
+  if (minute === 0) {
+    return '';
+  }
+
   const minuteOption = MINUTE_OPTION_LIST.find(
     (option) => option.value === minute,
   );
