@@ -38,9 +38,9 @@ const AdminPage = () => {
   const isMobile = useViewportStore((state) => state.isMobile);
   const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
 
-  if (userLoading) return <LoadingBackdrop open={userLoading} />;
-  if (!uid) return <Navigate replace to="/404" />;
-  if (infoLoading) return <LoadingBackdrop open={infoLoading} />;
+  if (!uid && !(infoLoading || userLoading))
+    return <Navigate replace to="/404" />;
+
   if (notFound) return <Navigate replace to="/404" />;
 
   const handleSetImageList = async (uid: string) => {
