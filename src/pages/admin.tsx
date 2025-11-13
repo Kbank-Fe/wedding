@@ -98,7 +98,7 @@ const AdminPage = () => {
       {infoLoading || userLoading || adminList.length === 0 ? (
         <>
           <LoadingBackdrop open={true} />
-          <ListSkeleton count={8} gap="16px" height={48.297} width={382} />
+          <ListSkeleton count={8} />
         </>
       ) : (
         <Accordion>
