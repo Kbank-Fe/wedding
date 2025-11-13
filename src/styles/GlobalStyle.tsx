@@ -91,6 +91,12 @@ const resetCSS = css`
     padding: 0;
     cursor: pointer;
   }
+  button:focus {
+    outline: none;
+  }
+  button:focus-visible {
+    outline: 1px solid var(--gray2);
+  }
   h1,
   h2,
   h3,
