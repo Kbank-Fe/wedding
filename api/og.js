@@ -1,76 +1,101 @@
-import { ImageResponse } from '@vercel/og';
-import React from 'react';
+export const config = { runtime: 'edge' };
 
-/**
- * @param {import('@vercel/node').VercelRequest} req
- * @param {import('@vercel/node').VercelResponse} res
- */
-const handler = async (req, res) => {
+const FIREBASE_BASE = process.env.FIREBASE_DATABASE_URL;
+const BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? process.env.PUBLIC_BASE_URL
+    : 'http://localhost:3000';
+
+const BOT_PATTERN =
+  /(facebook|twitter|linkedin|bot|crawl|spider|slack|embed|kakaotalk|kakaostory|whatsapp|telegram|discord)/i;
+
+export default async function handler(req) {
   try {
-    const { title, subtitle, image } = req.query;
+    const url = new URL(req.url);
+    const shareId = url.pathname.replace(/^\/api\/og\//, '').replace(/^\//, '');
 
-    const titleText = decodeURIComponent(title ?? '우리 결혼해요 💍');
-    const subText = decodeURIComponent(subtitle ?? '초대합니다');
-    const imageUrl = image ? decodeURIComponent(image) : null;
+    console.log(`[OG] ▶ Request start | shareId=${shareId}`);
 
-    const imageResponse = new ImageResponse(
-      React.createElement(
-        'div',
-        {
-          style: {
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#FAF7F2',
-            backgroundImage: imageUrl ? `url(${imageUrl})` : 'none',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            textAlign: 'center',
-            fontFamily: 'Pretendard, sans-serif',
-            color: '#333',
-            padding: '0 40px',
-          },
-        },
-        React.createElement(
-          'div',
-          {
-            style: {
-              fontSize: 64,
-              fontWeight: 700,
-              color: imageUrl ? 'white' : '#222',
-              textShadow: imageUrl ? '2px 2px 6px rgba(0,0,0,0.4)' : 'none',
-            },
-          },
-          titleText,
-        ),
-        React.createElement(
-          'div',
-          {
-            style: {
-              fontSize: 32,
-              color: imageUrl ? 'rgba(255,255,255,0.9)' : '#555',
-              marginTop: 12,
-              textShadow: imageUrl ? '1px 1px 3px rgba(0,0,0,0.3)' : 'none',
-            },
-          },
-          subText,
-        ),
-      ),
-      { width: 800, height: 400 },
-    );
+    if (!shareId) {
+      console.warn('[OG] ⚠ Missing shareId → index.html');
+      return fetch(`${BASE_URL}/index.html`);
+    }
 
-    const buffer = Buffer.from(await imageResponse.arrayBuffer());
-    res.setHeader('Content-Type', 'image/png');
-    res.status(200).end(buffer);
+    const ua = req.headers.get('user-agent') || '';
+    const isBot = BOT_PATTERN.test(ua);
+    console.log(`[OG] UA: ${ua.slice(0, 80)}... | isBot=${isBot}`);
+
+    if (!isBot) {
+      console.log('[OG] Normal user → forward to SPA');
+      return fetch(`${BASE_URL}/index.html`, { cache: 'no-store' });
+    }
+
+    if (!FIREBASE_BASE) {
+      console.error('[OG] ❌ Missing FIREBASE_DATABASE_URL');
+      return fetch(`${BASE_URL}/index.html`);
+    }
+
+    const dataUrl = `${FIREBASE_BASE}/shares/${shareId}/data.json`;
+    console.log(`[OG] 🔍 Fetching Firebase data: ${dataUrl}`);
+
+    const snap = await fetch(dataUrl, { cache: 'no-store' });
+    if (!snap.ok) {
+      console.error(`[OG] ❌ Firebase fetch failed | status=${snap.status}`);
+      return fetch(`${BASE_URL}/index.html`);
+    }
+
+    let data;
+    try {
+      data = await snap.json();
+    } catch {
+      console.error('[OG] ❌ JSON parse error');
+      return fetch(`${BASE_URL}/index.html`);
+    }
+
+    if (!data?.intro || !data?.date) {
+      console.warn('[OG] ⚠ Incomplete data → index.html');
+      return fetch(`${BASE_URL}/index.html`);
+    }
+
+    const intro = data.intro || {};
+    const date = data.date || {};
+    const gallery = data.gallery || {};
+    const basic = intro.basicInfo || {};
+
+    const maleName = basic.maleName || '신랑';
+    const femaleName = basic.femaleName || '신부';
+    const title = `${maleName} ❤️ ${femaleName} 결혼합니다!`;
+    const desc = `${date.year ?? ''}년 ${date.month ?? ''}월 ${date.day ?? ''}일 결혼식에 초대합니다.`;
+
+    let img = `${BASE_URL}/og-image.png`;
+    const list = gallery.savedImageList;
+    if (Array.isArray(list) && list.length > 0) {
+      const first = list[0];
+      img = first.startsWith('http') ? first : `${BASE_URL}${first}`;
+    }
+
+    console.log(`[OG] ✅ Meta generated | title="${title}" | img=${img}`);
+
+    const html = `<!doctype html><html lang="ko"><head>
+<meta charset="utf-8" />
+<title>${title}</title>
+<meta property="og:title" content="${title}" />
+<meta property="og:description" content="${desc}" />
+<meta property="og:image" content="${img}" />
+<meta property="og:url" content="${BASE_URL}/${shareId}" />
+<meta http-equiv="refresh" content="0; url=${BASE_URL}/${shareId}" />
+</head></html>`;
+
+    console.log('[OG] ▶ Request end (success)');
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        Vary: 'User-Agent',
+      },
+    });
   } catch (err) {
-    console.error('OG_IMAGE_ERROR', err);
-    res
-      .status(500)
-      .json({ error: 'og_generation_failed', message: err.message });
+    console.error('[OG] ❗ Unexpected error', err);
+    return fetch(`${BASE_URL}/index.html`, { cache: 'no-store' });
   }
-};
-
-export default handler;
+}

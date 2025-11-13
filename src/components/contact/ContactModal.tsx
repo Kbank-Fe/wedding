@@ -17,7 +17,7 @@ const ContactModal = () => {
   );
 
   return (
-    <>
+    <div css={containerStyle}>
       <div css={wrapperStyle}>
         {groomFilteredList.length === 0 ? (
           <span css={textStyle}>신랑 측 등록된 연락처가 없어요</span>
@@ -47,9 +47,18 @@ const ContactModal = () => {
           ))
         )}
       </div>
-    </>
+    </div>
   );
 };
+
+const containerStyle = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 3rem;
+  background-color: var(--gray2);
+  height: 100%;
+`;
 
 const wrapperStyle = css`
   display: flex;

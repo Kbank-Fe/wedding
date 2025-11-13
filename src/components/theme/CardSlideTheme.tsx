@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import ImageSlideMotion from '@/components/motion/ImageSlideMotion';
+import ImageSlideMotion from '@/components/shared/motion/ImageSlideMotion';
 
 const images = [
   '/images/image1.png',
@@ -12,30 +12,38 @@ const images = [
 
 const CardSlideTheme = () => {
   return (
-    <div css={containerStyle}>
-      <ImageSlideMotion height="180px" images={images} width="180px" />
-      <div css={nameWrapperStyle}>
+    <section css={containerStyle}>
+      <figure css={figureStyle}>
+        <ImageSlideMotion height="180px" images={images} width="180px" />
+      </figure>
+      <header css={nameWrapperStyle}>
         <h2>이규민</h2>
-        <span>&</span>
+        <span aria-hidden="true">&</span>
         <h2>최종은</h2>
-      </div>
-      <p css={dateStyle}>
-        27
+      </header>
+      <time css={dateStyle} dateTime="2025-05-27">
+        <span>27</span>
         <span>May</span>
-        2025
-      </p>
+        <span>2025</span>
+      </time>
       <p css={subTextStyle}>
         Please come to our wedding
         <br />
-        and bless the start of our new live together
+        and bless the start of our new life together
       </p>
-    </div>
+    </section>
   );
 };
 
 const containerStyle = css`
   text-align: center;
   padding: 8rem 2.5rem 3rem;
+`;
+
+const figureStyle = css`
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 `;
 
 const nameWrapperStyle = css`
@@ -49,6 +57,7 @@ const nameWrapperStyle = css`
 
   h2 {
     letter-spacing: 0.3rem;
+    font-weight: 400;
   }
 
   span {
@@ -63,20 +72,22 @@ const dateStyle = css`
   font-size: 18px;
   font-weight: 500;
   margin: 2rem 0;
-
-  span {
-    margin: 0 0.6rem;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
 `;
 
 const subTextStyle = css`
   font-size: 14px;
   font-family: 'Instrument Serif', serif;
   font-weight: 400;
-  font-style: normal;
-  line-height: 1.3rem;
-  color: var(--gray11);
+  line-height: 1.4rem;
   letter-spacing: 0.03rem;
+  opacity: 0.85;
+  color: var(--gray11);
 `;
 
 export default CardSlideTheme;

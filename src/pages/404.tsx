@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { type MouseEventHandler, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import PageLayout from '@/components/shared/PageLayout';
+import Layout from '@/components/shared/Layout';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const NotFoundPage = () => {
   };
 
   return (
-    <PageLayout pageType="service">
+    <Layout viewType="service">
       <div css={containerStyle}>
         <div css={LogoWrapperStyle}>
           <img alt="Us Day Logo" css={imageStyle} src="/images/logo_sad.png" />
@@ -30,7 +30,7 @@ const NotFoundPage = () => {
           어스데이 메인으로 가기
         </button>
       </div>
-    </PageLayout>
+    </Layout>
   );
 };
 

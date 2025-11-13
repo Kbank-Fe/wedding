@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 
 import mainImage from '/images/image2.png';
+import Sticker from '@/components/shared/Sticker';
 import TypingOverlay from '@/components/theme/TypingOverlay';
 
 const PolaroidTheme = () => {
@@ -32,7 +33,7 @@ const PolaroidTheme = () => {
         </header>
 
         <figure css={polaroidStyle}>
-          <div css={stickerStyle} />
+          <Sticker left="-15px" top="-19px" />
           <img alt="Wedding main" src={mainImage} />
           <figcaption css={photoTextStyle}>Our Wedding Day</figcaption>
           <p css={photoSubTextStyle}>A day made with love</p>
@@ -80,17 +81,6 @@ const polaroidStyle = css`
   padding: 2.2rem;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   position: relative;
-`;
-
-const stickerStyle = css`
-  position: absolute;
-  top: -19px;
-  left: -15px;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: var(--gray5);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
 `;
 
 const photoTextStyle = css`
