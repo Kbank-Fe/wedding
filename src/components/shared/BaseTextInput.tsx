@@ -8,7 +8,11 @@ type BaseTextInputProps = Omit<
 };
 
 const BaseTextInput = ({ ref, ...rest }: BaseTextInputProps) => {
-  return <input ref={ref} css={inputStyle} type="text" {...rest} />;
+  return (
+    <>
+      <input ref={ref} css={inputStyle} type="text" {...rest} />
+    </>
+  );
 };
 
 const inputStyle = css`

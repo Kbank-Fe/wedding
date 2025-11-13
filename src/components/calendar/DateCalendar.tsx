@@ -23,7 +23,7 @@ type highlight = {
 
 const DateCalendar = () => {
   const date = useWeddingStore((state) => state.values.date);
-  const basicInfo = useWeddingStore((state) => state.values.intro.basicInfo);
+  const basicInfo = useWeddingStore((state) => state.values.basicInfo);
 
   const { year, month, day, hour, min } = date;
 

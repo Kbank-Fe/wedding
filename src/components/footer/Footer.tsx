@@ -7,7 +7,7 @@ import { loadKakaoSdk } from '@/utils/loadKakaoSdk';
 const SHARE_URL = import.meta.env.VITE_PUBLIC_BASE_URL;
 
 const Footer = ({ shareId }: { shareId: string }) => {
-  const nameList = useWeddingStore((state) => state.values.intro.basicInfo);
+  const nameList = useWeddingStore((state) => state.values.basicInfo);
   const date = useWeddingStore((state) => state.values.date);
   const picture = useWeddingStore(
     (state) => state.values.gallery.savedImageList?.[0],

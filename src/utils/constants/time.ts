@@ -19,7 +19,7 @@ export const HOUR_OPTION_LIST = [
 ];
 
 export const MINUTE_OPTION_LIST = [
-  { title: '정각', value: 0 },
+  { title: '0분', value: 0 },
   { title: '5분', value: 5 },
   { title: '10분', value: 10 },
   { title: '15분', value: 15 },

@@ -10,6 +10,7 @@ const fadeUp = {
 };
 
 const WeddingIntro = () => {
+  const basicInfo = useWeddingStore((state) => state.values.basicInfo);
   const intro = useWeddingStore((state) => state.values.intro);
 
   return (
@@ -33,16 +34,16 @@ const WeddingIntro = () => {
         {intro.showNames && (
           <UserInfo
             alignment={intro.alignment}
-            femaleFatherDeceased={intro.basicInfo.femaleFatherDeceased}
-            femaleFatherName={intro.basicInfo.femaleFatherName}
-            femaleMotherDeceased={intro.basicInfo.femaleMotherDeceased}
-            femaleMotherName={intro.basicInfo.femaleMotherName}
-            femaleName={intro.basicInfo.femaleName}
-            maleFatherDeceased={intro.basicInfo.maleFatherDeceased}
-            maleFatherName={intro.basicInfo.maleFatherName}
-            maleMotherDeceased={intro.basicInfo.maleMotherDeceased}
-            maleMotherName={intro.basicInfo.maleMotherName}
-            maleName={intro.basicInfo.maleName}
+            femaleFatherDeceased={basicInfo.femaleFatherDeceased}
+            femaleFatherName={basicInfo.femaleFatherName}
+            femaleMotherDeceased={basicInfo.femaleMotherDeceased}
+            femaleMotherName={basicInfo.femaleMotherName}
+            femaleName={basicInfo.femaleName}
+            maleFatherDeceased={basicInfo.maleFatherDeceased}
+            maleFatherName={basicInfo.maleFatherName}
+            maleMotherDeceased={basicInfo.maleMotherDeceased}
+            maleMotherName={basicInfo.maleMotherName}
+            maleName={basicInfo.maleName}
           />
         )}
       </motion.div>
@@ -65,6 +66,6 @@ const contentStyle = css`
   font-size: 14px;
   color: var(--gray11);
   line-height: 1.6rem;
-`
+`;
 
 export default WeddingIntro;

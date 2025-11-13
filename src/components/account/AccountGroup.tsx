@@ -58,9 +58,10 @@ const AccountGroup = ({
           )}
         </div>
 
-        <Field label="예금주">
+        <Field label="예금주명">
           <BaseTextInput
             maxLength={10}
+            placeholder="예금주명을 입력해주세요"
             value={acc.accountHolder}
             onChange={handleChange(index, 'accountHolder', 'kor')}
           />
@@ -69,6 +70,7 @@ const AccountGroup = ({
         <Field label="은행명">
           <BaseTextInput
             maxLength={15}
+            placeholder="은행명을 입력해주세요"
             value={acc.bankName}
             onChange={handleChange(index, 'bankName', 'kor')}
           />
@@ -77,8 +79,18 @@ const AccountGroup = ({
         <Field label="계좌번호">
           <BaseTextInput
             maxLength={20}
+            placeholder="계좌번호를 입력해주세요"
             value={acc.accountNumber}
             onChange={handleChange(index, 'accountNumber', 'num')}
+          />
+        </Field>
+
+        <Field label="카카오페이">
+          <BaseCheckBoxInput
+            checkboxLabel=""
+            checked={acc.isKakaopay ?? false}
+            id={id + index}
+            onChange={handleChange(index, 'isKakaopay')}
           />
         </Field>
 
@@ -92,15 +104,6 @@ const AccountGroup = ({
             />
           </Field>
         )}
-
-        <Field label="카카오페이">
-          <BaseCheckBoxInput
-            checkboxLabel=""
-            checked={acc.isKakaopay ?? false}
-            id={id + index}
-            onChange={handleChange(index, 'isKakaopay')}
-          />
-        </Field>
       </div>
     ))}
   </div>
