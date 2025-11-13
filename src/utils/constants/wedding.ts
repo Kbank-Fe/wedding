@@ -103,7 +103,7 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     description: '행복한 날, 함께해주시면 감사하겠습니다.',
     kakaoShare: true,
     linkShare: true,
-    file: undefined,
-    uploadMeta: undefined,
+    file: [],
+    uploadMeta: [],
   },
 };

@@ -80,9 +80,14 @@ export const useWeddingInfo = (
         };
 
         draft.share = {
-          ...(data.share ?? {}),
-          file: data.share?.file ?? undefined,
-          uploadMeta: data.share?.uploadMeta ?? undefined,
+          title: data.share?.title ?? '',
+          description: data.share?.description ?? '',
+          kakaoShare: data.share?.kakaoShare ?? true,
+          linkShare: data.share?.linkShare ?? true,
+          file: Array.isArray(data.share?.file) ? data.share.file : [],
+          uploadMeta: Array.isArray(data.share?.uploadMeta)
+            ? data.share.uploadMeta
+            : [],
         };
 
         draft.showCheckbox =
