@@ -45,7 +45,6 @@ const KakaoLoginButton = () => {
       setUid(cred.user.uid);
     } catch (err) {
       console.error(err);
-    } finally {
       setLoadingOpen(false);
     }
   };

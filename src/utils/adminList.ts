@@ -7,7 +7,7 @@ import ShareAdmin from '@/components/footer/ShareAdmin';
 import GalleryAdmin from '@/components/gallery/GalleryAdmin';
 import UserInfoAdmin from '@/components/Intro/UserInfoAdmin';
 import WeddingGreetingAdmin from '@/components/Intro/WeddingGreetingAdmin';
-import WeddingMapAdmin from '@/components/map/WeddingMapAdmin';
+import LocationAdmin from '@/components/location/LocationAdmin';
 import TransportAdmin from '@/components/transport/TransportAdmin';
 import type { ShowCheckbox } from '@/types/wedding';
 
@@ -47,8 +47,8 @@ export const adminList: AdminList[] = [
   },
   {
     title: '예식장소',
-    value: 'map',
-    component: WeddingMapAdmin,
+    value: 'location',
+    component: LocationAdmin,
   },
   {
     title: '교통수단',

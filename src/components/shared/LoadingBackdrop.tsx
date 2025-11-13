@@ -6,7 +6,6 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
 type LoadingBackdropProps = {
   open: boolean;
-  onClick?: () => void;
   blur?: boolean;
   zIndex?: number;
   text?: string;
@@ -14,7 +13,6 @@ type LoadingBackdropProps = {
 
 const LoadingBackdrop = ({
   open,
-  onClick,
   blur = false,
   zIndex = 1300,
   text,
@@ -29,7 +27,6 @@ const LoadingBackdrop = ({
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            onClick={onClick}
           >
             <div css={contentStyle}>
               <LoadingSpinner />

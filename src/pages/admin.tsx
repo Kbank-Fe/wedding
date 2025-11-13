@@ -38,9 +38,9 @@ const AdminPage = () => {
   const isMobile = useViewportStore((state) => state.isMobile);
   const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
 
-  if (userLoading) return <LoadingBackdrop open={userLoading} />;
-  if (!uid) return <Navigate replace to="/404" />;
-  if (infoLoading) return <LoadingBackdrop open={infoLoading} />;
+  if (!uid && !(infoLoading || userLoading))
+    return <Navigate replace to="/404" />;
+
   if (notFound) return <Navigate replace to="/404" />;
 
   const handleSetImageList = async (uid: string) => {
@@ -117,6 +117,10 @@ const AdminPage = () => {
       await handleSetShareImage(uid);
       const values = useWeddingStore.getState().values;
       const shareId = await saveUserShare(uid, values);
+
+      useWeddingStore.setState((state) => {
+        state.values.gallery.localImageList = [];
+      });
 
       toast.success('데이터를 저장했어요!');
       setTimeout(() => navigate(`/${shareId}`), 1500);

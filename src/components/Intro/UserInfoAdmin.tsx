@@ -42,13 +42,13 @@ const USER_LIST: UserInfo[] = [
 
 const UserInfoAdmin = () => {
   const setDeep = useWeddingStore((state) => state.setDeep);
-  const basicInfo = useWeddingStore((state) => state.values.intro.basicInfo);
+  const basicInfo = useWeddingStore((state) => state.values.basicInfo);
 
   const handleChangeInput =
     (key: keyof UserBasicInfoString) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setDeep((draft) => {
-        draft.intro.basicInfo[key] = event.currentTarget.value;
+        draft.basicInfo[key] = event.currentTarget.value;
       });
     };
 
@@ -56,7 +56,7 @@ const UserInfoAdmin = () => {
   const handleChangeCheckbox =
     (key: keyof UserBasicInfoBoolean) => (e: ChangeEvent<HTMLInputElement>) => {
       setDeep((draft) => {
-        draft.intro.basicInfo[key] = e.currentTarget.checked;
+        draft.basicInfo[key] = e.currentTarget.checked;
       });
     };
 

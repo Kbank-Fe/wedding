@@ -92,7 +92,7 @@ export const useWeddingInfo = (
         draft.date = data.date ?? WEDDING_INITIAL_INFO.date;
         draft.intro = data.intro ?? WEDDING_INITIAL_INFO.intro;
         draft.transport = data.transport ?? WEDDING_INITIAL_INFO.transport;
-        draft.map = data.map ?? WEDDING_INITIAL_INFO.map;
+        draft.location = data.location ?? WEDDING_INITIAL_INFO.location;
       });
 
       initializedRef.current = true;

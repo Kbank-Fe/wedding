@@ -73,11 +73,22 @@ const modalContentStyle = css`
   display: flex;
   flex-direction: column;
   width: min(100%, 430px);
-  height: 100vh;
+  height: 100dvh; /* Android chrome safe area 대응 */
   background: #fff;
   font-family: 'Wedding';
   overflow: hidden;
   z-index: 1000;
+
+  /* IOS safari safe area 대응 */
+  @supports (padding-top: env(safe-area-inset-top)) {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  @supports (padding-top: constant(safe-area-inset-top)) {
+    padding-top: constant(safe-area-inset-top);
+    padding-bottom: constant(safe-area-inset-bottom);
+  }
 `;
 
 const modalHeaderStyle = css`
