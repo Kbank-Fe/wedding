@@ -16,7 +16,7 @@ const ShareAdmin = () => {
     description = '',
     kakaoShare = true,
     linkShare = true,
-    file = undefined,
+    file = [],
   } = shareInfo;
 
   const handleChangeInput = useCallback(
@@ -32,7 +32,7 @@ const ShareAdmin = () => {
   );
 
   const handleAddFile = (files: File[]) => {
-    setField('share', 'file', files[0]);
+    setField('share', 'file', [files[0]]);
   };
 
   return (
@@ -61,9 +61,9 @@ const ShareAdmin = () => {
         <BaseImageInput multiple={false} onChange={handleAddFile} />
       </Field>
 
-      {file?.name && (
+      {file && file[0] && (
         <Field label="파일명">
-          <p css={imgNameStyle}>{file?.name}</p>
+          <p css={imgNameStyle}>{file[0].name}</p>
         </Field>
       )}
 
