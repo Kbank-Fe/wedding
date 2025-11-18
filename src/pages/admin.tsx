@@ -8,6 +8,7 @@ import { AccordionItem } from '@/components/account/AccordionItem';
 import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import ButtonContentModal from '@/components/shared/ButtonContentModal';
 import Layout from '@/components/shared/Layout';
+import ListSkeleton from '@/components/shared/ListSkeleton';
 import LoadingBackdrop from '@/components/shared/LoadingBackdrop';
 import WeddingPreview from '@/components/shared/WeddingPreview';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
@@ -152,7 +153,12 @@ const AdminPage = () => {
               <WeddingPreview isPopup shareId={uid ?? ''} />
             </ButtonContentModal>
           )}
-          {adminList.length > 0 && (
+          {infoLoading || userLoading || adminList.length === 0 ? (
+            <>
+              <LoadingBackdrop open={true} />
+              <ListSkeleton count={9} />
+            </>
+          ) : (
             <Accordion>
               {adminList.map(({ title, value, component: Component }) => (
                 <div key={value} css={divWrapStyle}>
