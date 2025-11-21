@@ -39,9 +39,7 @@ const AdminPage = () => {
   const isMobile = useViewportStore((state) => state.isMobile);
   const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
 
-  if (!uid && !(infoLoading || userLoading))
-    return <Navigate replace to="/404" />;
-
+  if (!uid && !userLoading) return <Navigate replace to="/404" />;
   if (notFound) return <Navigate replace to="/404" />;
 
   const handleSetImageList = async (uid: string) => {
@@ -161,22 +159,26 @@ const AdminPage = () => {
             </>
           ) : (
             <Accordion>
-              {adminList.map(({ title, value, component: Component }) => (
-                <div key={value} css={divWrapStyle}>
-                  <div css={checkboxStyle}>
-                    <BaseCheckBoxInput
-                      checked={showCheckbox[value] ?? false}
-                      id={value}
-                      onChange={() => handleCheckboxChange(value)}
-                    />
+              {adminList.map(
+                ({ title, value, component: Component, required }) => (
+                  <div key={value} css={divWrapStyle}>
+                    {!required && (
+                      <div css={checkboxStyle}>
+                        <BaseCheckBoxInput
+                          checked={showCheckbox[value] ?? false}
+                          id={value}
+                          onChange={() => handleCheckboxChange(value)}
+                        />
+                      </div>
+                    )}
+                    <div css={accordionItemStyle}>
+                      <AccordionItem title={title} value={value}>
+                        <Component />
+                      </AccordionItem>
+                    </div>
                   </div>
-                  <div css={accordionItemStyle}>
-                    <AccordionItem title={title} value={value}>
-                      <Component />
-                    </AccordionItem>
-                  </div>
-                </div>
-              ))}
+                ),
+              )}
             </Accordion>
           )}
           <button
