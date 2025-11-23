@@ -18,7 +18,7 @@ const RoundSlideTheme = () => {
     <section css={containerStyle}>
       <header css={headerStyle}>
         <h1 css={titleStyle}>
-          {values.theme.mainText} <br /> {values.theme.subText}
+          {values.theme.mainPhrase} <br /> {values.theme.subPhrase}
         </h1>
         <Sticker right="-10px" size="38px" top="-10px" />
       </header>

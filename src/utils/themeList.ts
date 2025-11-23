@@ -4,9 +4,11 @@ type ThemeList = {
   type: ThemeType;
   groomEnglishName: boolean;
   brideEnglishName: boolean;
-  mainText: boolean;
-  subText: boolean;
-  addText: boolean;
+  mainPhrase: boolean;
+  subPhrase: boolean;
+  word1?: boolean;
+  word2?: boolean;
+  word3?: boolean;
 };
 
 export const themeList: ThemeList[] = [
@@ -14,40 +16,50 @@ export const themeList: ThemeList[] = [
     type: 'CARDSLIDE',
     groomEnglishName: false,
     brideEnglishName: false,
-    mainText: true,
-    subText: true,
-    addText: false,
+    mainPhrase: true,
+    subPhrase: true,
+    word1: false,
+    word2: false,
+    word3: false,
   },
   {
     type: 'FULL',
     groomEnglishName: false,
     brideEnglishName: false,
-    mainText: true,
-    subText: true,
-    addText: true,
+    mainPhrase: false,
+    subPhrase: false,
+    word1: true,
+    word2: true,
+    word3: true,
   },
   {
     type: 'MONOCHROME',
     groomEnglishName: true,
     brideEnglishName: true,
-    mainText: false,
-    subText: false,
-    addText: false,
+    mainPhrase: false,
+    subPhrase: false,
+    word1: false,
+    word2: false,
+    word3: false,
   },
   {
     type: 'POLAROID',
     groomEnglishName: true,
     brideEnglishName: true,
-    mainText: true,
-    subText: true,
-    addText: false,
+    mainPhrase: true,
+    subPhrase: true,
+    word1: false,
+    word2: false,
+    word3: false,
   },
   {
     type: 'ROUNDSLIDE',
     groomEnglishName: true,
     brideEnglishName: true,
-    mainText: true,
-    subText: true,
-    addText: false,
+    mainPhrase: true,
+    subPhrase: true,
+    word1: false,
+    word2: false,
+    word3: false,
   },
 ];

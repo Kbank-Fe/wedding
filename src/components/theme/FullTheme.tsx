@@ -24,9 +24,9 @@ const FullTheme = () => {
         <img alt="Wedding main" css={imageStyle} src={mainImage} />
       </figure>
       <p css={fullTitleStyle}>
-        <span css={letterStyle(0)}>{values.theme.mainText}</span>
-        <span css={letterStyle(1)}>{values.theme.subText}</span>
-        <span css={letterStyle(2)}>{values.theme.addText}</span>
+        <span css={letterStyle(0)}>{values.theme.word1}</span>
+        <span css={letterStyle(1)}>{values.theme.word2}</span>
+        <span css={letterStyle(2)}>{values.theme.word3}</span>
       </p>
     </section>
   );

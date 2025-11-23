@@ -99,40 +99,66 @@ const ThemeAdmin = () => {
           />
         </Field>
       )}
-      {localThemeItem?.mainText && (
+      {localThemeItem?.mainPhrase && (
         <Field description="메인 문구" label="메인 문구" mode="single">
           <BaseTextInput
             placeholder="메인 문구를 입력해주세요"
-            value={theme.mainText || ''}
+            value={theme.mainPhrase || ''}
             onChange={(e) => {
               setDeep((draft) => {
-                draft.theme.mainText = e.target.value;
+                draft.theme.mainPhrase = e.target.value;
               });
             }}
           />
         </Field>
       )}
-      {localThemeItem?.subText && (
+      {localThemeItem?.subPhrase && (
         <Field description="서브 문구" label="서브 문구" mode="single">
           <BaseTextInput
             placeholder="서브 문구를 입력해주세요"
-            value={theme.subText || ''}
+            value={theme.subPhrase || ''}
             onChange={(e) => {
               setDeep((draft) => {
-                draft.theme.subText = e.target.value;
+                draft.theme.subPhrase = e.target.value;
               });
             }}
           />
         </Field>
       )}
-      {localThemeItem?.addText && (
-        <Field description="추가 문구" label="추가 문구" mode="single">
+      {localThemeItem?.word1 && (
+        <Field description="첫번째 단어" label="첫번째 단어" mode="single">
           <BaseTextInput
-            placeholder="추가 문구를 입력해주세요"
-            value={theme.addText || ''}
+            placeholder="첫번째 단어를 입력해주세요"
+            value={theme.word1 || ''}
             onChange={(e) => {
               setDeep((draft) => {
-                draft.theme.addText = e.target.value;
+                draft.theme.word1 = e.target.value;
+              });
+            }}
+          />
+        </Field>
+      )}
+      {localThemeItem?.word2 && (
+        <Field description="두번째 단어" label="두번째 단어" mode="single">
+          <BaseTextInput
+            placeholder="두번째 단어를 입력해주세요"
+            value={theme.word2 || ''}
+            onChange={(e) => {
+              setDeep((draft) => {
+                draft.theme.word2 = e.target.value;
+              });
+            }}
+          />
+        </Field>
+      )}
+      {localThemeItem?.word3 && (
+        <Field description="세번째 단어" label="세번째 단어" mode="single">
+          <BaseTextInput
+            placeholder="세번째 단어를 입력해주세요"
+            value={theme.word3 || ''}
+            onChange={(e) => {
+              setDeep((draft) => {
+                draft.theme.word3 = e.target.value;
               });
             }}
           />

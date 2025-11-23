@@ -40,11 +40,13 @@ const PolaroidTheme = () => {
         <figure css={polaroidStyle}>
           <Sticker left="-15px" top="-19px" />
           <img alt="Wedding main" src={mainImage} />
-          <figcaption css={photoTextStyle}>{values.theme.mainText}</figcaption>
-          <p css={photoSubTextStyle}>A day made with love</p>
+          <figcaption css={photoTextStyle}>
+            {values.theme.mainPhrase}
+          </figcaption>
+          <p css={photosubPhraseStyle}>A day made with love</p>
         </figure>
 
-        <p css={subTextStyle}>{values.theme.subText}</p>
+        <p css={subPhraseStyle}>{values.theme.subPhrase}</p>
       </section>
     </div>
   );
@@ -100,7 +102,7 @@ const photoTextStyle = css`
   margin-top: 1.8rem;
 `;
 
-const photoSubTextStyle = css`
+const photosubPhraseStyle = css`
   position: absolute;
   top: 65px;
   right: -123px;
@@ -114,7 +116,7 @@ const photoSubTextStyle = css`
   opacity: 0.8;
 `;
 
-const subTextStyle = css`
+const subPhraseStyle = css`
   font-family: 'Instrument Serif', serif;
   color: var(--gray11);
   text-transform: uppercase;

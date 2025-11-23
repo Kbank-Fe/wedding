@@ -29,10 +29,10 @@ const CardSlideTheme = () => {
         <span>{getEnglishMonth(values.date.month)}</span>
         <span>{values.date.year}</span>
       </time>
-      <p css={subTextStyle}>
-        {values.theme.mainText}
+      <p css={subPhraseStyle}>
+        {values.theme.mainPhrase}
         <br />
-        {values.theme.subText}
+        {values.theme.subPhrase}
       </p>
     </section>
   );
@@ -83,7 +83,7 @@ const dateStyle = css`
   letter-spacing: 0.05rem;
 `;
 
-const subTextStyle = css`
+const subPhraseStyle = css`
   font-size: 14px;
   font-family: 'Instrument Serif', serif;
   font-weight: 400;
