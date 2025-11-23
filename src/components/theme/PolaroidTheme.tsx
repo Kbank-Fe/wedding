@@ -46,7 +46,7 @@ const PolaroidTheme = () => {
           <p css={photoSubTextStyle}>A day made with love</p>
         </figure>
 
-        <p css={subPhraseStyle}>{values.theme.subPhrase}</p>
+        <p css={subTextStyle}>{values.theme.subPhrase}</p>
       </section>
     </div>
   );
@@ -116,7 +116,7 @@ const photoSubTextStyle = css`
   opacity: 0.8;
 `;
 
-const subPhraseStyle = css`
+const subTextStyle = css`
   font-family: 'Instrument Serif', serif;
   color: var(--gray11);
   text-transform: uppercase;
