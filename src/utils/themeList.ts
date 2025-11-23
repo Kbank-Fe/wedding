@@ -2,10 +2,10 @@ import type { ThemeType } from '@/types/wedding';
 
 type ThemeList = {
   type: ThemeType;
-  groomEnglishName: boolean;
-  brideEnglishName: boolean;
-  mainPhrase: boolean;
-  subPhrase: boolean;
+  groomEnglishName?: boolean;
+  brideEnglishName?: boolean;
+  mainPhrase?: boolean;
+  subPhrase?: boolean;
   word1?: boolean;
   word2?: boolean;
   word3?: boolean;
@@ -14,20 +14,11 @@ type ThemeList = {
 export const themeList: ThemeList[] = [
   {
     type: 'CARDSLIDE',
-    groomEnglishName: false,
-    brideEnglishName: false,
     mainPhrase: true,
     subPhrase: true,
-    word1: false,
-    word2: false,
-    word3: false,
   },
   {
     type: 'FULL',
-    groomEnglishName: false,
-    brideEnglishName: false,
-    mainPhrase: false,
-    subPhrase: false,
     word1: true,
     word2: true,
     word3: true,
@@ -36,11 +27,6 @@ export const themeList: ThemeList[] = [
     type: 'MONOCHROME',
     groomEnglishName: true,
     brideEnglishName: true,
-    mainPhrase: false,
-    subPhrase: false,
-    word1: false,
-    word2: false,
-    word3: false,
   },
   {
     type: 'POLAROID',
@@ -48,9 +34,6 @@ export const themeList: ThemeList[] = [
     brideEnglishName: true,
     mainPhrase: true,
     subPhrase: true,
-    word1: false,
-    word2: false,
-    word3: false,
   },
   {
     type: 'ROUNDSLIDE',
@@ -58,8 +41,5 @@ export const themeList: ThemeList[] = [
     brideEnglishName: true,
     mainPhrase: true,
     subPhrase: true,
-    word1: false,
-    word2: false,
-    word3: false,
   },
 ];
