@@ -1,3 +1,21 @@
+export type ThemeType =
+  | 'CARDSLIDE'
+  | 'FULL'
+  | 'MONOCHROME'
+  | 'POLAROID'
+  | 'ROUNDSLIDE';
+
+export type Theme = {
+  type?: ThemeType;
+  groomEnglishName?: string;
+  brideEnglishName?: string;
+  mainPhrase?: string;
+  subPhrase?: string;
+  word1?: string;
+  word2?: string;
+  word3?: string;
+};
+
 export type ShowCheckbox = {
   theme: boolean;
   intro: boolean;
@@ -121,6 +139,7 @@ export type FooterShare = {
 };
 
 export type WeddingInfo = {
+  theme: Theme;
   showCheckbox: ShowCheckbox;
   basicInfo: UserBasicInfo;
   intro: Intro;

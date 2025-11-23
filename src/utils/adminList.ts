@@ -8,6 +8,7 @@ import GalleryAdmin from '@/components/gallery/GalleryAdmin';
 import UserInfoAdmin from '@/components/Intro/UserInfoAdmin';
 import WeddingGreetingAdmin from '@/components/Intro/WeddingGreetingAdmin';
 import LocationAdmin from '@/components/location/LocationAdmin';
+import ThemeAdmin from '@/components/theme/ThemeAdmin';
 import TransportAdmin from '@/components/transport/TransportAdmin';
 import type { ShowCheckbox } from '@/types/wedding';
 
@@ -20,6 +21,11 @@ type AdminList = {
 };
 
 export const adminList: AdminList[] = [
+  {
+    title: '테마',
+    value: 'theme',
+    component: ThemeAdmin,
+  },
   {
     title: '기본정보',
     value: 'basic',

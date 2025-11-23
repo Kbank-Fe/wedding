@@ -32,3 +32,17 @@ export const MINUTE_OPTION_LIST = [
   { title: '50분', value: 50 },
   { title: '55분', value: 55 },
 ];
+
+/**
+ * 시(hour), 분(minute) 숫자를 입력받아 "AM/PM hh" 형태로 반환
+ * @param hour 0~23
+ * @param minute 0~59
+ * @returns 예: "AM 07:05", "PM 12:30"
+ */
+export const formatToAmPm = (hour: number, minute: number) => {
+  const period = hour < 12 ? 'AM' : 'PM';
+  const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+  const displayMinute = minute.toString().padStart(2, '0');
+
+  return `${period} ${displayHour.toString().padStart(2, '0')}:${displayMinute}`;
+};

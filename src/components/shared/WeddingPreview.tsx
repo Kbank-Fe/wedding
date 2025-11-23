@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import Footer from '@/components/footer/Footer';
 import Layout from '@/components/shared/Layout';
 import Section from '@/components/shared/Section';
-import CardSlideTheme from '@/components/theme/CardSlideTheme';
+import Theme from '@/components/theme/Theme';
 import { PreviewModeProvider } from '@/contexts/PreviewModeContext';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { mainList } from '@/utils/mainList';
@@ -24,7 +24,7 @@ const WeddingPreview = ({
       <Layout viewType="main">
         <div css={containerStyle({ isPopup })}>
           <div css={previewContentStyle({ isPopup })}>
-            <CardSlideTheme />
+            <Theme />
             {mainList.length > 0 && (
               <>
                 {mainList.map(
