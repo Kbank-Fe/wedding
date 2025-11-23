@@ -4,8 +4,11 @@ import { useEffect, useState } from 'react';
 import mainImage from '/images/image2.png';
 import Sticker from '@/components/shared/Sticker';
 import TypingOverlay from '@/components/theme/TypingOverlay';
+import { useWeddingStore } from '@/stores/useWeddingStore';
+import { getEnglishMonth } from '@/utils/date';
 
 const PolaroidTheme = () => {
+  const values = useWeddingStore((state) => state.values);
   const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
@@ -15,8 +18,9 @@ const PolaroidTheme = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // TODO: overlay 컴포넌트 분리 및 관리자 영역 추가 필요
   const introTitle = "We're getting Married";
-  const introSubtitle = 'May 27, 2025';
+  const introSubtitle = `${getEnglishMonth(values.date.month)} ${values.date.day}, ${values.date.year}`;
 
   return (
     <div css={containerStyle}>
@@ -28,18 +32,19 @@ const PolaroidTheme = () => {
       <section css={sectionStyle}>
         <header css={headerStyle}>
           <h1>
-            KYUMIN <span>and</span> JONGEUN
+            {values.theme.groomEnglishName} <span>and</span>{' '}
+            {values.theme.brideEnglishName}
           </h1>
         </header>
 
         <figure css={polaroidStyle}>
           <Sticker left="-15px" top="-19px" />
           <img alt="Wedding main" src={mainImage} />
-          <figcaption css={photoTextStyle}>Our Wedding Day</figcaption>
+          <figcaption css={photoTextStyle}>{values.theme.mainText}</figcaption>
           <p css={photoSubTextStyle}>A day made with love</p>
         </figure>
 
-        <p css={subTextStyle}>The day we become one</p>
+        <p css={subTextStyle}>{values.theme.subText}</p>
       </section>
     </div>
   );

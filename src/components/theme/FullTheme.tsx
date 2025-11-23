@@ -1,12 +1,14 @@
 import { css, keyframes } from '@emotion/react';
 
 import mainImage from '/images/image11.jpg';
+import { useWeddingStore } from '@/stores/useWeddingStore';
+import { getHourTitle, getMinuteTitle } from '@/utils/date';
 
 const FullTheme = () => {
-  const words = 'Our Wedding Day'.split(' ');
-  const header1 = '2026년 6월 14일';
-  const header2 = '오후 1시 20분';
-  const header3 = '더 컨벤션 영등포';
+  const values = useWeddingStore((state) => state.values);
+  const header1 = `${values.date.year}년 ${values.date.month}월 ${values.date.day}일`;
+  const header2 = `${getHourTitle(values.date.hour)} ${getMinuteTitle(values.date.min)}`;
+  const header3 = values.location.address;
 
   return (
     <section css={containerStyle}>
@@ -22,11 +24,9 @@ const FullTheme = () => {
         <img alt="Wedding main" css={imageStyle} src={mainImage} />
       </figure>
       <p css={fullTitleStyle}>
-        {words.map((word, i) => (
-          <span key={word} css={letterStyle(i)}>
-            {word}
-          </span>
-        ))}
+        <span css={letterStyle(0)}>{values.theme.mainText}</span>
+        <span css={letterStyle(1)}>{values.theme.subText}</span>
+        <span css={letterStyle(2)}>{values.theme.addText}</span>
       </p>
     </section>
   );
