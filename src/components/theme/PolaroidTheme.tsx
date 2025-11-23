@@ -43,7 +43,7 @@ const PolaroidTheme = () => {
           <figcaption css={photoTextStyle}>
             {values.theme.mainPhrase}
           </figcaption>
-          <p css={photosubPhraseStyle}>A day made with love</p>
+          <p css={photoSubTextStyle}>A day made with love</p>
         </figure>
 
         <p css={subPhraseStyle}>{values.theme.subPhrase}</p>
@@ -102,7 +102,7 @@ const photoTextStyle = css`
   margin-top: 1.8rem;
 `;
 
-const photosubPhraseStyle = css`
+const photoSubTextStyle = css`
   position: absolute;
   top: 65px;
   right: -123px;

@@ -29,7 +29,7 @@ const TypingOverlay = ({
         >
           <div css={textContainerStyle}>
             <TypingText delay={0.6} text={title} />
-            {subtitle && <p css={fadesubPhraseStyle}>{subtitle}</p>}
+            {subtitle && <p css={fadeSubTextStyle}>{subtitle}</p>}
           </div>
         </motion.div>
       )}
@@ -56,7 +56,7 @@ const textContainerStyle = css`
   color: var(--gray2);
 `;
 
-const fadesubPhraseStyle = css`
+const fadeSubTextStyle = css`
   font-family: 'Kristi', cursive;
   font-size: 27px;
   color: var(--gray6);
