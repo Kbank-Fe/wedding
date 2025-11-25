@@ -19,6 +19,7 @@ import type { SavedImage, ShowCheckbox } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
 import { saveUserShare } from '@/utils/shares';
 import { uploadImageToStorage } from '@/utils/storage';
+import { validateWeddingInfo } from '@/utils/validate';
 
 const AdminPage = () => {
   const navigate = useNavigate();
@@ -113,9 +114,16 @@ const AdminPage = () => {
     setLoadingOpen(true);
 
     try {
+      let values = useWeddingStore.getState().values;
+      if (!validateWeddingInfo(values)) {
+        toast.error('필수 내용을 모두 입력해주세요.');
+        setLoadingOpen(false);
+        return;
+      }
+
       await handleSetImageList(uid);
       await handleSetShareImage(uid);
-      const values = useWeddingStore.getState().values;
+      values = useWeddingStore.getState().values;
       const shareId = await saveUserShare(uid, values);
 
       useWeddingStore.setState((state) => {

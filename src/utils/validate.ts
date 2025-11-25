@@ -1,3 +1,5 @@
+import type { WeddingInfo } from '@/types/wedding';
+
 const validateNum = (v: string): boolean => /^[0-9]*$/.test(v);
 const validateKor = (v: string): boolean => /^[ㄱ-ㅎㅏ-ㅣ가-힣 ]*$/.test(v);
 const validateUrl = (v: string): boolean => /^[A-Za-z0-9:/.\-_?&=]*$/.test(v);
@@ -16,4 +18,17 @@ const validators: Record<string, (v: string) => boolean> = {
 
 export const isValid = (value: string, type: string): boolean => {
   return validators[type]?.(value) ?? false;
+};
+
+export const validateWeddingInfo = (v: WeddingInfo) => {
+  return [
+    Boolean(v.basicInfo.maleName?.trim()),
+    Boolean(v.basicInfo.femaleName?.trim()),
+
+    Boolean(v.date.year && v.date.year > 0),
+    Boolean(v.date.month && v.date.month > 0),
+
+    Boolean(v.location.venueName?.trim()),
+    Boolean(v.location.address?.trim()),
+  ].every(Boolean);
 };
