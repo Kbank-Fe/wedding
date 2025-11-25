@@ -3,29 +3,54 @@ import * as RadixAccordion from '@radix-ui/react-accordion';
 import type { ReactNode } from 'react';
 import { LuChevronDown } from 'react-icons/lu';
 
+import { useWeddingStore } from '@/stores/useWeddingStore';
+import type { ShowCheckbox } from '@/types/wedding';
+
+import BaseCheckBoxInput from '../shared/BaseCheckBoxInput';
+
 type AccordionItemProps = {
-  value: string;
+  value: keyof ShowCheckbox;
   title: string;
   children: ReactNode;
+  required: boolean;
 };
 
 export const AccordionItem = ({
   value,
   title,
   children,
-}: AccordionItemProps) => (
-  <RadixAccordion.Item css={itemStyle} value={value}>
-    <RadixAccordion.Header>
-      <RadixAccordion.Trigger css={triggerStyle}>
-        {title}
-        <LuChevronDown className="icon" size={15} />
-      </RadixAccordion.Trigger>
-    </RadixAccordion.Header>
-    <RadixAccordion.Content css={contentStyle}>
-      {children}
-    </RadixAccordion.Content>
-  </RadixAccordion.Item>
-);
+  required,
+}: AccordionItemProps) => {
+  const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
+  const setField = useWeddingStore((state) => state.setField);
+
+  const handleCheckboxChange = (key: keyof ShowCheckbox) => {
+    const current = showCheckbox[key] ?? false;
+    setField('showCheckbox', key, !current);
+  };
+
+  return (
+    <RadixAccordion.Item css={itemStyle} value={value}>
+      <RadixAccordion.Header>
+        {!required && (
+          <BaseCheckBoxInput
+            checked={showCheckbox[value] ?? false}
+            css={checkboxStyle}
+            id={value}
+            onChange={() => handleCheckboxChange(value)}
+          />
+        )}
+        <RadixAccordion.Trigger css={triggerStyle}>
+          {title}
+          <LuChevronDown className="icon" size={15} />
+        </RadixAccordion.Trigger>
+      </RadixAccordion.Header>
+      <RadixAccordion.Content css={contentStyle}>
+        {children}
+      </RadixAccordion.Content>
+    </RadixAccordion.Item>
+  );
+};
 
 const slideDown = keyframes`
   from { height: 0; opacity: 0; }
@@ -83,4 +108,8 @@ const contentStyle = css`
     animation: ${slideUp} 0.2s ease-in-out;
     padding-bottom: 0;
   }
+`;
+
+const checkboxStyle = css`
+  background-color: red;
 `;
