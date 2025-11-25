@@ -21,14 +21,37 @@ export const isValid = (value: string, type: string): boolean => {
 };
 
 export const validateWeddingInfo = (v: WeddingInfo) => {
-  return [
-    Boolean(v.basicInfo.maleName?.trim()),
-    Boolean(v.basicInfo.femaleName?.trim()),
+  const CHECKS = [
+    {
+      valid: Boolean(v.basicInfo.maleName?.trim()),
+      label: '신랑 이름을',
+    },
+    {
+      valid: Boolean(v.basicInfo.femaleName?.trim()),
+      label: '신부 이름을',
+    },
+    {
+      valid: Boolean(v.date.year && v.date.year > 0),
+      label: '결혼식 연도를',
+    },
+    {
+      valid: Boolean(v.date.month && v.date.month > 0),
+      label: '결혼식 월을',
+    },
+    {
+      valid: Boolean(v.location.venueName?.trim()),
+      label: '예식장명을',
+    },
+    {
+      valid: Boolean(v.location.address?.trim()),
+      label: '주소를',
+    },
+  ] as const;
 
-    Boolean(v.date.year && v.date.year > 0),
-    Boolean(v.date.month && v.date.month > 0),
+  const invalidList = CHECKS.filter((c) => !c.valid);
 
-    Boolean(v.location.venueName?.trim()),
-    Boolean(v.location.address?.trim()),
-  ].every(Boolean);
+  return {
+    isValid: invalidList.length === 0,
+    invalidLabels: invalidList.map((c) => c.label),
+  };
 };

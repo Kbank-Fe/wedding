@@ -115,8 +115,11 @@ const AdminPage = () => {
 
     try {
       let values = useWeddingStore.getState().values;
-      if (!validateWeddingInfo(values)) {
-        toast.error('필수 내용을 모두 입력해주세요.');
+      const result = validateWeddingInfo(values);
+
+      if (!result.isValid) {
+        toast.error(`${result.invalidLabels[0]} 입력해주세요.`);
+
         setLoadingOpen(false);
         return;
       }
