@@ -4,24 +4,22 @@ type ThemeList = {
   type: ThemeType;
   groomEnglishName?: boolean;
   brideEnglishName?: boolean;
-  mainPhrase?: boolean;
-  subPhrase?: boolean;
-  word1?: boolean;
-  word2?: boolean;
-  word3?: boolean;
+  text1?: boolean;
+  text2?: boolean;
+  text3?: boolean;
 };
 
 export const themeList: ThemeList[] = [
   {
     type: 'CARDSLIDE',
-    mainPhrase: true,
-    subPhrase: true,
+    text1: true,
+    text2: true,
   },
   {
     type: 'FULL',
-    word1: true,
-    word2: true,
-    word3: true,
+    text1: true,
+    text2: true,
+    text3: true,
   },
   {
     type: 'MONOCHROME',
@@ -32,14 +30,14 @@ export const themeList: ThemeList[] = [
     type: 'POLAROID',
     groomEnglishName: true,
     brideEnglishName: true,
-    mainPhrase: true,
-    subPhrase: true,
+    text1: true,
+    text2: true,
   },
   {
     type: 'ROUNDSLIDE',
     groomEnglishName: true,
     brideEnglishName: true,
-    mainPhrase: true,
-    subPhrase: true,
+    text1: true,
+    text2: true,
   },
 ];

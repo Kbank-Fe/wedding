@@ -9,11 +9,9 @@ export type Theme = {
   type?: ThemeType;
   groomEnglishName?: string;
   brideEnglishName?: string;
-  mainPhrase?: string;
-  subPhrase?: string;
-  word1?: string;
-  word2?: string;
-  word3?: string;
+  text1?: string;
+  text2?: string;
+  text3?: string;
 };
 
 export type ShowCheckbox = {
