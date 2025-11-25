@@ -1,34 +1,34 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
 
+// import { useEffect, useState } from 'react';
 import mainImage from '/images/image2.png';
 import Sticker from '@/components/shared/Sticker';
-import TypingOverlay from '@/components/theme/TypingOverlay';
+// import TypingOverlay from '@/components/theme/TypingOverlay';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import { getEnglishMonth } from '@/utils/date';
+// import { getEnglishMonth } from '@/utils/date';
 
 const PolaroidTheme = () => {
   const values = useWeddingStore((state) => state.values);
-  const [showIntro, setShowIntro] = useState(true);
+  // const [showIntro, setShowIntro] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowIntro(false);
-    }, 1800);
-    return () => clearTimeout(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setShowIntro(false);
+  //   }, 1800);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   // TODO: overlay 컴포넌트 분리 및 관리자 영역 추가 필요
-  const introTitle = "We're getting Married";
-  const introSubtitle = `${getEnglishMonth(values.date.month)} ${values.date.day}, ${values.date.year}`;
+  // const introTitle = "We're getting Married";
+  // const introSubtitle = `${getEnglishMonth(values.date.month)} ${values.date.day}, ${values.date.year}`;
 
   return (
     <div css={containerStyle}>
-      <TypingOverlay
+      {/* <TypingOverlay
         show={showIntro}
         subtitle={introSubtitle}
         title={introTitle}
-      />
+      /> */}
       <section css={sectionStyle}>
         <header css={headerStyle}>
           <h1>
