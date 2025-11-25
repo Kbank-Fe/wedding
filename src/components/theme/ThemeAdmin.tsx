@@ -73,9 +73,10 @@ const ThemeAdmin = () => {
         />
         ROUNDSLIDE
       </label>
-      {localThemeItem?.groomEnglishName && (
+      {localThemeItem?.groomEnglishName?.isShow && (
         <Field description="신랑 영문명" label="신랑 영문명" mode="single">
           <BaseTextInput
+            maxLength={localThemeItem?.groomEnglishName?.maxLenth}
             placeholder="신랑 영문명을 입력해주세요"
             value={theme['groomEnglishName'] || ''}
             onChange={(e) => {
@@ -86,9 +87,10 @@ const ThemeAdmin = () => {
           />
         </Field>
       )}
-      {localThemeItem?.brideEnglishName && (
+      {localThemeItem?.brideEnglishName?.isShow && (
         <Field description="신부 영문명" label="신부 영문명" mode="single">
           <BaseTextInput
+            maxLength={localThemeItem?.brideEnglishName?.maxLenth}
             placeholder="신부 영문명을 입력해주세요"
             value={theme.brideEnglishName || ''}
             onChange={(e) => {
@@ -99,9 +101,10 @@ const ThemeAdmin = () => {
           />
         </Field>
       )}
-      {localThemeItem?.text1 && (
+      {localThemeItem?.text1?.isShow && (
         <Field description="첫번째 문구" label="첫번째 문구" mode="single">
           <BaseTextInput
+            maxLength={localThemeItem?.text1?.maxLenth}
             placeholder="첫번째 문구를 입력해주세요"
             value={theme.text1 || ''}
             onChange={(e) => {
@@ -112,9 +115,10 @@ const ThemeAdmin = () => {
           />
         </Field>
       )}
-      {localThemeItem?.text2 && (
+      {localThemeItem?.text2?.isShow && (
         <Field description="두번째 문구" label="두번째 문구" mode="single">
           <BaseTextInput
+            maxLength={localThemeItem?.text2?.maxLenth}
             placeholder="두번째 문구를 입력해주세요"
             value={theme.text2 || ''}
             onChange={(e) => {
@@ -125,9 +129,10 @@ const ThemeAdmin = () => {
           />
         </Field>
       )}
-      {localThemeItem?.text3 && (
+      {localThemeItem?.text3?.isShow && (
         <Field description="세번째 문구" label="세번째 문구" mode="single">
           <BaseTextInput
+            maxLength={localThemeItem?.text3?.maxLenth}
             placeholder="세번째 문구를 입력해주세요"
             value={theme.text3 || ''}
             onChange={(e) => {
