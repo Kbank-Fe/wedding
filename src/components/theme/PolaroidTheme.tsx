@@ -1,45 +1,31 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
 
 import mainImage from '/images/image2.png';
 import Sticker from '@/components/shared/Sticker';
-import TypingOverlay from '@/components/theme/TypingOverlay';
+import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const PolaroidTheme = () => {
-  const [showIntro, setShowIntro] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowIntro(false);
-    }, 1800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const introTitle = "We're getting Married";
-  const introSubtitle = 'May 27, 2025';
-
+  const values = useWeddingStore((state) => state.values);
   return (
     <div css={containerStyle}>
-      <TypingOverlay
-        show={showIntro}
-        subtitle={introSubtitle}
-        title={introTitle}
-      />
       <section css={sectionStyle}>
         <header css={headerStyle}>
           <h1>
-            KYUMIN <span>and</span> JONGEUN
+            {values.theme.groomEnglishName} <span>and</span>{' '}
+            {values.theme.brideEnglishName}
           </h1>
         </header>
 
         <figure css={polaroidStyle}>
           <Sticker left="-15px" top="-19px" />
           <img alt="Wedding main" src={mainImage} />
-          <figcaption css={photoTextStyle}>Our Wedding Day</figcaption>
+          <figcaption css={photoTextStyle}>
+            {values.theme.mainPhrase}
+          </figcaption>
           <p css={photoSubTextStyle}>A day made with love</p>
         </figure>
 
-        <p css={subTextStyle}>The day we become one</p>
+        <p css={subTextStyle}>{values.theme.subPhrase}</p>
       </section>
     </div>
   );

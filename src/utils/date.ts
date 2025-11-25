@@ -62,3 +62,30 @@ export const getMinuteTitle = (minute: number) => {
 
   return minuteOption.title;
 };
+
+/**
+월(1~12)을 입력받아 영문 월 이름 반환
+@param month 1~12 숫자
+@returns 영어 월명 (ex: January)
+*/
+export const getEnglishMonth = (month: number) => {
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  // 1~12 아니라면 빈 문자열 반환
+  if (!month || month < 1 || month > 12) return '';
+
+  return monthNames[month - 1];
+};
