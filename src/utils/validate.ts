@@ -20,31 +20,43 @@ export const isValid = (value: string, type: string): boolean => {
   return validators[type]?.(value) ?? false;
 };
 
+export const getObjectParticle = (word: string) => {
+  if (!word) return '을';
+
+  const lastChar = word[word.length - 1];
+  const code = lastChar.charCodeAt(0);
+
+  if (code < 44032 || code > 55203) return '을';
+
+  const jong = (code - 44032) % 28;
+  return jong === 0 ? '를' : '을';
+};
+
 export const validateWeddingInfo = (v: WeddingInfo) => {
   const CHECKS = [
     {
       valid: Boolean(v.basicInfo.maleName?.trim()),
-      label: '신랑 이름을',
+      label: '신랑 이름',
     },
     {
       valid: Boolean(v.basicInfo.femaleName?.trim()),
-      label: '신부 이름을',
+      label: '신부 이름',
     },
     {
       valid: Boolean(v.date.year && v.date.year > 0),
-      label: '결혼식 연도를',
+      label: '결혼식 연도',
     },
     {
       valid: Boolean(v.date.month && v.date.month > 0),
-      label: '결혼식 월을',
+      label: '결혼식 월',
     },
     {
       valid: Boolean(v.location.venueName?.trim()),
-      label: '예식장명을',
+      label: '예식장명',
     },
     {
       valid: Boolean(v.location.address?.trim()),
-      label: '주소를',
+      label: '주소',
     },
   ] as const;
 
