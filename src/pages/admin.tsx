@@ -19,6 +19,7 @@ import type { SavedImage, ShowCheckbox } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
 import { saveUserShare } from '@/utils/shares';
 import { uploadImageToStorage } from '@/utils/storage';
+import { getObjectParticle, validateWeddingInfo } from '@/utils/validate';
 
 const AdminPage = () => {
   const navigate = useNavigate();
@@ -113,6 +114,16 @@ const AdminPage = () => {
     setLoadingOpen(true);
 
     try {
+      const result = validateWeddingInfo(useWeddingStore.getState().values);
+
+      if (!result.isValid) {
+        const label = result.invalidLabels[0];
+        toast.error(`${label}${getObjectParticle(label)} 입력해주세요.`);
+
+        setLoadingOpen(false);
+        return;
+      }
+
       await handleSetImageList(uid);
       await handleSetShareImage(uid);
       const values = useWeddingStore.getState().values;
