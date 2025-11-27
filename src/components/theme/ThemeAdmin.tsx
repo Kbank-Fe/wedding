@@ -1,7 +1,11 @@
+// import { css } from '@emotion/react';
+
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Field from '@/components/shared/Field';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { themeList } from '@/utils/themeList';
+
+import ThemeAdminScroll from './ThemeAdminScroll';
 
 const ThemeAdmin = () => {
   const setDeep = useWeddingStore((state) => state.setDeep);
@@ -17,62 +21,23 @@ const ThemeAdmin = () => {
     });
   };
 
+  const themeScrollList = [
+    { id: 1, img: '/images/theme_cardslide.png', value: 'CARDSLIDE' },
+    { id: 2, img: '/images/theme_full.png', value: 'FULL' },
+    { id: 3, img: '/images/theme_monochrome.png', value: 'MONOCHROME' },
+    { id: 4, img: '/images/theme_polariod.png', value: 'POLAROID' },
+    { id: 5, img: '/images/theme_roundslide.png', value: 'ROUNDSLIDE' },
+  ];
+
   return (
     <>
-      <label>
-        <input
-          checked={theme.type === 'CARDSLIDE'}
-          name="themeRadio"
-          type="radio"
-          value="CARDSLIDE"
-          onChange={handleChangeRadio}
-        />
-        CARDSLIDE
-      </label>
-      <br />
-      <label>
-        <input
-          checked={theme.type === 'FULL'}
-          name="themeRadio"
-          type="radio"
-          value="FULL"
-          onChange={handleChangeRadio}
-        />
-        FULL
-      </label>
-      <br />
-      <label>
-        <input
-          checked={theme.type === 'MONOCHROME'}
-          name="themeRadio"
-          type="radio"
-          value="MONOCHROME"
-          onChange={handleChangeRadio}
-        />
-        MONOCHROME
-      </label>
-      <br />
-      <label>
-        <input
-          checked={theme.type === 'POLAROID'}
-          name="themeRadio"
-          type="radio"
-          value="POLAROID"
-          onChange={handleChangeRadio}
-        />
-        POLAROID
-      </label>
-      <br />
-      <label>
-        <input
-          checked={theme.type === 'ROUNDSLIDE'}
-          name="themeRadio"
-          type="radio"
-          value="ROUNDSLIDE"
-          onChange={handleChangeRadio}
-        />
-        ROUNDSLIDE
-      </label>
+      <ThemeAdminScroll
+        items={themeScrollList.map((item) => ({
+          ...item,
+          checked: theme.type === item.value,
+          onChange: handleChangeRadio,
+        }))}
+      />
       {localThemeItem?.groomEnglishName?.isShow && (
         <Field description="신랑 영문명" label="신랑 영문명" mode="single">
           <BaseTextInput
