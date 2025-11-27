@@ -1,11 +1,12 @@
 import type { ThemeType } from '@/types/wedding';
 
 type TextInputOption = {
+  label: string;
   isShow: boolean;
   maxLength: number;
 };
 
-type ThemeList = {
+export type ThemeList = {
   type: ThemeType;
   groomEnglishName?: TextInputOption;
   brideEnglishName?: TextInputOption;
@@ -17,32 +18,32 @@ type ThemeList = {
 export const themeList: ThemeList[] = [
   {
     type: 'CARDSLIDE',
-    text1: { isShow: true, maxLength: 10 },
-    text2: { isShow: true, maxLength: 10 },
+    text1: { label: '첫번째 문구', isShow: true, maxLength: 10 },
+    text2: { label: '두번째 문구', isShow: true, maxLength: 10 },
   },
   {
     type: 'FULL',
-    text1: { isShow: true, maxLength: 5 },
-    text2: { isShow: true, maxLength: 5 },
-    text3: { isShow: true, maxLength: 5 },
+    text1: { label: '첫번째 문구', isShow: true, maxLength: 5 },
+    text2: { label: '두번째 문구', isShow: true, maxLength: 5 },
+    text3: { label: '세번째 문구', isShow: true, maxLength: 5 },
   },
   {
     type: 'MONOCHROME',
-    groomEnglishName: { isShow: true, maxLength: 15 },
-    brideEnglishName: { isShow: true, maxLength: 15 },
+    groomEnglishName: { label: '신랑 영문명', isShow: true, maxLength: 15 },
+    brideEnglishName: { label: '신부 영문명', isShow: true, maxLength: 15 },
   },
   {
     type: 'POLAROID',
-    groomEnglishName: { isShow: true, maxLength: 15 },
-    brideEnglishName: { isShow: true, maxLength: 15 },
-    text1: { isShow: true, maxLength: 10 },
-    text2: { isShow: true, maxLength: 10 },
+    groomEnglishName: { label: '신랑 영문명', isShow: true, maxLength: 15 },
+    brideEnglishName: { label: '신부 영문명', isShow: true, maxLength: 15 },
+    text1: { label: '첫번째 문구', isShow: true, maxLength: 10 },
+    text2: { label: '두번째 문구', isShow: true, maxLength: 10 },
   },
   {
     type: 'ROUNDSLIDE',
-    groomEnglishName: { isShow: true, maxLength: 15 },
-    brideEnglishName: { isShow: true, maxLength: 15 },
-    text1: { isShow: true, maxLength: 10 },
-    text2: { isShow: true, maxLength: 10 },
+    groomEnglishName: { label: '신랑 영문명', isShow: true, maxLength: 15 },
+    brideEnglishName: { label: '신부 영문명', isShow: true, maxLength: 15 },
+    text1: { label: '첫번째 문구', isShow: true, maxLength: 10 },
+    text2: { label: '두번째 문구', isShow: true, maxLength: 10 },
   },
 ];
