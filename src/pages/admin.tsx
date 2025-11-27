@@ -62,7 +62,7 @@ const AdminPage = () => {
 
     try {
       const metas: SavedImage[] = await Promise.all(
-        addedFiles.map((file) => uploadImageToStorage(file, uid)),
+        addedFiles.map((file) => uploadImageToStorage(file, uid, 'gallery')),
       );
 
       setDeep((draft) => {
@@ -80,26 +80,29 @@ const AdminPage = () => {
   };
 
   const handleSetShareImage = async (uid: string) => {
-    const { file, uploadMeta } = useWeddingStore.getState().values.share;
-    const localFile = file?.[0];
+    const share = useWeddingStore.getState().values.share;
+    const savedImageList = share.savedImageList ?? [];
+    const localImageList = share.localImageList ?? [];
+    console.log(localImageList[0]);
+    console.log(localImageList[0] instanceof File);
 
-    if (!(localFile instanceof File)) return;
-    if (uploadMeta?.[0]?.name === localFile.name) {
+    if (!(localImageList?.[0] instanceof File)) return;
+    if (savedImageList?.[0]?.name === localImageList?.[0].name) {
       setDeep((draft) => {
-        draft.share.file = uploadMeta;
+        draft.share.localImageList = [...savedImageList];
       });
       return;
     }
 
     try {
-      const meta: SavedImage = await uploadImageToStorage(localFile, uid, {
-        folder: 'share',
-        overwrite: true,
-      });
+      const meta: SavedImage = await uploadImageToStorage(
+        localImageList?.[0],
+        uid,
+        'share',
+      );
 
       setDeep((draft) => {
-        draft.share.file = [meta];
-        draft.share.uploadMeta = [meta];
+        draft.share.savedImageList = [meta];
       });
     } catch (error) {
       console.error('공유하기 이미지 업로드 중 오류 발생', error);
