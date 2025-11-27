@@ -1,7 +1,5 @@
 import { getDownloadURL, ref as sRef, uploadBytes } from 'firebase/storage';
 
-import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { SavedImage } from '@/types/wedding';
 import { storage } from '@/utils/firebase';
 import { compressImage } from '@/utils/image.ts';
 
@@ -29,34 +27,4 @@ export const uploadImageToStorage = async (
     type: blob.type,
     createdAt: Date.now(),
   };
-};
-
-export const uploadAndSyncImages = async (
-  section: 'gallery' | 'share',
-  uid: string,
-) => {
-  const state = useWeddingStore.getState().values[section];
-  const saved = state.savedImageList ?? [];
-  const local = state.localImageList ?? [];
-
-  const filesToUpload = local.filter((img): img is File => img instanceof File);
-
-  if (filesToUpload.length === 0) return;
-
-  const uploadedMetas: SavedImage[] = [];
-
-  for (const file of filesToUpload) {
-    try {
-      const meta = await uploadImageToStorage(file, uid, section);
-      uploadedMetas.push(meta);
-    } catch (error) {
-      console.error(`업로드 실패(${section})`, error);
-      throw new Error(`upload_failed_${section}`);
-    }
-  }
-
-  useWeddingStore.setState((draft) => {
-    draft.values[section].savedImageList = [...saved, ...uploadedMetas];
-    draft.values[section].localImageList = [];
-  });
 };

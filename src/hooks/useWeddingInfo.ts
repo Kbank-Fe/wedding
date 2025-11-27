@@ -1,10 +1,9 @@
 import { useEffect, useRef } from 'react';
 import useSWR from 'swr';
 
-import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { WeddingInfo } from '@/types/wedding';
 import { WEDDING_INITIAL_INFO } from '@/utils/constants/wedding';
-import { mergeImageLists } from '@/utils/image';
+import { initializeLocalImageList } from '@/utils/image';
 import { getShare, getUserShareId } from '@/utils/shares';
 import { isValidNanoId } from '@/utils/validateNanoId';
 
@@ -61,35 +60,36 @@ export const useWeddingInfo = (
     () => fetchWeddingInfo({ uid: uid ?? null, shareId: shareId ?? null }),
     { revalidateOnFocus: false },
   );
+
   useEffect(() => {
     if (!data || !setDeep || initializedRef.current) return;
 
     const setData = async () => {
-      // 현재 스토어의 로컬 파일 목록 가져오기
-      const currentGalleryLocal =
-        useWeddingStore.getState().values.gallery.localImageList;
-      const currentShareLocal =
-        useWeddingStore.getState().values.share.localImageList;
-
-      const mergedGallery = await mergeImageLists(
+      const localImageList = await initializeLocalImageList(
         data.gallery?.savedImageList,
-        currentGalleryLocal,
       );
 
-      const mergedShare = await mergeImageLists(
+      const localImageList2 = await initializeLocalImageList(
         data.share?.savedImageList,
-        currentShareLocal,
       );
 
       setDeep((draft) => {
+        const localFiles = (draft.gallery?.localImageList ?? []).filter(
+          (img): img is File => img instanceof File,
+        );
+
         draft.gallery = {
-          ...data.gallery,
-          ...mergedGallery,
+          ...(data.gallery ?? {}),
+          localImageList: [...localImageList, ...localFiles],
         };
 
+        const localFiles2 = (draft.share?.localImageList ?? []).filter(
+          (img): img is File => img instanceof File,
+        );
+
         draft.share = {
-          ...data.share,
-          ...mergedShare,
+          ...(data.share ?? {}),
+          localImageList: [...localImageList2, ...localFiles2],
         };
 
         draft.showCheckbox =
