@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from 'react';
 interface ThemeAdminScrollProps {
   items: {
     id: number;
-    img: string;
+    image: string;
     value: string;
     checked: boolean;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -101,7 +101,7 @@ const ThemeAdminScroll = ({ items }: ThemeAdminScrollProps) => {
     >
       {items.map((item) => (
         <div key={item.id} css={itemStyle}>
-          <img alt="" css={imgStyle} src={item.img} />
+          <img alt="" css={imgStyle} src={item.image} />
           <label css={labelStyle}>{item.value}</label>
           <input
             checked={item.checked}
