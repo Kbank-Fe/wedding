@@ -54,3 +54,20 @@ export const initializeLocalImageList = (
 ): (File | SavedImage)[] => {
   return savedImageList;
 };
+
+export const mergeImageLists = async (
+  serverSavedList: SavedImage[] | undefined,
+  localList: (File | SavedImage)[] | undefined,
+) => {
+  const serverLocal = await initializeLocalImageList(serverSavedList ?? []);
+
+  // 이미 로컬에서 업로드 대기 중이던 File만 필터링
+  const pendingFiles = (localList ?? []).filter(
+    (img): img is File => img instanceof File,
+  );
+
+  return {
+    savedImageList: serverSavedList ?? [],
+    localImageList: [...serverLocal, ...pendingFiles],
+  };
+};
