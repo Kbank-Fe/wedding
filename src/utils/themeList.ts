@@ -2,7 +2,7 @@ import type { ThemeType } from '@/types/wedding';
 
 type TextInputOption = {
   isShow: boolean;
-  maxLenth?: number;
+  maxLength: number;
 };
 
 type ThemeList = {
@@ -17,32 +17,32 @@ type ThemeList = {
 export const themeList: ThemeList[] = [
   {
     type: 'CARDSLIDE',
-    text1: { isShow: true, maxLenth: 10 },
-    text2: { isShow: true, maxLenth: 10 },
+    text1: { isShow: true, maxLength: 10 },
+    text2: { isShow: true, maxLength: 10 },
   },
   {
     type: 'FULL',
-    text1: { isShow: true, maxLenth: 5 },
-    text2: { isShow: true, maxLenth: 5 },
-    text3: { isShow: true, maxLenth: 5 },
+    text1: { isShow: true, maxLength: 5 },
+    text2: { isShow: true, maxLength: 5 },
+    text3: { isShow: true, maxLength: 5 },
   },
   {
     type: 'MONOCHROME',
-    groomEnglishName: { isShow: true, maxLenth: 15 },
-    brideEnglishName: { isShow: true, maxLenth: 15 },
+    groomEnglishName: { isShow: true, maxLength: 15 },
+    brideEnglishName: { isShow: true, maxLength: 15 },
   },
   {
     type: 'POLAROID',
-    groomEnglishName: { isShow: true, maxLenth: 15 },
-    brideEnglishName: { isShow: true, maxLenth: 15 },
-    text1: { isShow: true, maxLenth: 10 },
-    text2: { isShow: true, maxLenth: 10 },
+    groomEnglishName: { isShow: true, maxLength: 15 },
+    brideEnglishName: { isShow: true, maxLength: 15 },
+    text1: { isShow: true, maxLength: 10 },
+    text2: { isShow: true, maxLength: 10 },
   },
   {
     type: 'ROUNDSLIDE',
-    groomEnglishName: { isShow: true, maxLenth: 15 },
-    brideEnglishName: { isShow: true, maxLenth: 15 },
-    text1: { isShow: true, maxLenth: 10 },
-    text2: { isShow: true, maxLenth: 10 },
+    groomEnglishName: { isShow: true, maxLength: 15 },
+    brideEnglishName: { isShow: true, maxLength: 15 },
+    text1: { isShow: true, maxLength: 10 },
+    text2: { isShow: true, maxLength: 10 },
   },
 ];

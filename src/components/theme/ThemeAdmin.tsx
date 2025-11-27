@@ -76,7 +76,7 @@ const ThemeAdmin = () => {
       {localThemeItem?.groomEnglishName?.isShow && (
         <Field description="신랑 영문명" label="신랑 영문명" mode="single">
           <BaseTextInput
-            maxLength={localThemeItem?.groomEnglishName?.maxLenth}
+            maxLength={localThemeItem?.groomEnglishName?.maxLength}
             placeholder="신랑 영문명을 입력해주세요"
             value={theme['groomEnglishName'] || ''}
             onChange={(e) => {
@@ -90,7 +90,7 @@ const ThemeAdmin = () => {
       {localThemeItem?.brideEnglishName?.isShow && (
         <Field description="신부 영문명" label="신부 영문명" mode="single">
           <BaseTextInput
-            maxLength={localThemeItem?.brideEnglishName?.maxLenth}
+            maxLength={localThemeItem?.brideEnglishName?.maxLength}
             placeholder="신부 영문명을 입력해주세요"
             value={theme.brideEnglishName || ''}
             onChange={(e) => {
@@ -104,7 +104,7 @@ const ThemeAdmin = () => {
       {localThemeItem?.text1?.isShow && (
         <Field description="첫번째 문구" label="첫번째 문구" mode="single">
           <BaseTextInput
-            maxLength={localThemeItem?.text1?.maxLenth}
+            maxLength={localThemeItem?.text1?.maxLength}
             placeholder="첫번째 문구를 입력해주세요"
             value={theme.text1 || ''}
             onChange={(e) => {
@@ -118,7 +118,7 @@ const ThemeAdmin = () => {
       {localThemeItem?.text2?.isShow && (
         <Field description="두번째 문구" label="두번째 문구" mode="single">
           <BaseTextInput
-            maxLength={localThemeItem?.text2?.maxLenth}
+            maxLength={localThemeItem?.text2?.maxLength}
             placeholder="두번째 문구를 입력해주세요"
             value={theme.text2 || ''}
             onChange={(e) => {
@@ -132,7 +132,7 @@ const ThemeAdmin = () => {
       {localThemeItem?.text3?.isShow && (
         <Field description="세번째 문구" label="세번째 문구" mode="single">
           <BaseTextInput
-            maxLength={localThemeItem?.text3?.maxLenth}
+            maxLength={localThemeItem?.text3?.maxLength}
             placeholder="세번째 문구를 입력해주세요"
             value={theme.text3 || ''}
             onChange={(e) => {
