@@ -100,26 +100,25 @@ const BaseRadioButtonScrollGroup = ({
     isDownRef.current = false;
   };
 
-  const handleClickImage =
-    (item: BaseRadioButtonScrollGroupItemProps) => () => {
-      // 1. 드래그가 끝난 직후 발생한 클릭 무시
-      if (hasDraggedRef.current) {
-        return;
-      }
+  const handleClickItem = (item: BaseRadioButtonScrollGroupItemProps) => () => {
+    // 1. 드래그가 끝난 직후 발생한 클릭 무시
+    if (hasDraggedRef.current) {
+      return;
+    }
 
-      // 2. 이미 선택된 상태 변경 무시
-      if (item.checked) return;
+    // 2. 이미 선택된 상태 변경 무시
+    if (item.checked) return;
 
-      // 3. 가짜 이벤트 객체를 생성하여 onChange 함수 호출
-      item.onChange({
-        target: {
-          checked: true,
-          value: item.value,
-          type: 'radio',
-          name: 'themeRadioSlide',
-        } as HTMLInputElement,
-      } as React.ChangeEvent<HTMLInputElement>);
-    };
+    // 3. 가짜 이벤트 객체를 생성하여 onChange 함수 호출
+    item.onChange({
+      target: {
+        checked: true,
+        value: item.value,
+        type: 'radio',
+        name: 'themeRadioSlide',
+      } as HTMLInputElement,
+    } as React.ChangeEvent<HTMLInputElement>);
+  };
 
   return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -140,13 +139,13 @@ const BaseRadioButtonScrollGroup = ({
           css={itemStyle}
           role="button"
           tabIndex={0}
-          onClick={handleClickImage(item)}
+          onClick={handleClickItem(item)}
           onKeyDown={(e) => {
             // 키보드 이벤트 핸들러 (필수)
             // Enter 키나 Space 키를 눌렀을 때도 클릭 이벤트와 동일하게 작동하도록 처리
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault(); // 스페이스바의 기본 동작(스크롤 등) 방지
-              handleClickImage(item); // 클릭과 동일한 동작 수행
+              handleClickItem(item); // 클릭과 동일한 동작 수행
             }
           }}
         >
