@@ -100,7 +100,7 @@ const ThemeAdminScroll = ({ items }: ThemeAdminScrollProps) => {
     >
       {items.map((item) => (
         <div key={item.id} css={itemStyle}>
-          <img alt="" css={imgStyle} src={item.image} />
+          <img alt="" css={imgStyle(item.checked)} src={item.image} />
           <input
             checked={item.checked}
             css={radioButtonStyle}
@@ -151,7 +151,7 @@ const itemStyle = css`
   display: inline-block;
 `;
 
-const imgStyle = css`
+const imgStyle = (checked: boolean) => css`
   width: 80px;
   height: 100%;
   display: block;
@@ -159,7 +159,7 @@ const imgStyle = css`
   border-radius: 8px;
   margin-bottom: 8px;
   pointer-events: none; /* 이미지가 포인터 이벤트를 잡지 않도록 */
-  border: 1px solid var(--gray8);
+  border: ${checked ? '1.5px solid var(--gray8)' : '1px solid var(--gray4)'};
   border-radius: 8px;
 `;
 
