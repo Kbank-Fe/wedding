@@ -172,24 +172,26 @@ const scrollerStyle = css`
   display: flex;
   flex-direction: row;
   gap: 10px;
+
+  // 1. 가로 스크롤 활성화
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch; // iOS에서 부드러운 스크롤
   padding: 10px 0;
   flex-wrap: nowrap;
   width: 100%;
   box-sizing: border-box;
 
+  // 2. 커서 스타일
   cursor: grab;
   &.dragging {
     cursor: grabbing;
   }
 
-  /* 선택 방지 */
-  user-select: none;
-
-  scrollbar-width: none;
+  // 3. 기타 설정
+  user-select: none; // 콘텐츠 선택 방지
+  scrollbar-width: none; // Firefox 스크롤바 숨기기
   &::-webkit-scrollbar {
-    display: none;
+    display: none; // WebKit/Chrome 스크롤바 숨기기
   }
 `;
 
@@ -211,7 +213,7 @@ const imgStyle = (checked: boolean) => css`
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 8px;
-  pointer-events: none; /* 이미지가 포인터 이벤트를 잡지 않도록 */
+  pointer-events: none; // 이미지가 포인터 이벤트를 잡지 않도록
   border: ${checked ? '1.5px solid var(--gray8)' : '1px solid var(--gray4)'};
   border-radius: 8px;
 `;
@@ -234,7 +236,7 @@ const radioButtonStyle = css`
 
   &::after {
     content: '✔';
-    position: relative; /* relative로 둬서 부모 중앙 정렬된 flex에 맞춤 */
+    position: relative; // relative로 둬서 부모 중앙 정렬된 flex에 맞춤
     display: inline-block;
     font-size: 14px;
     color: var(--gray1);
