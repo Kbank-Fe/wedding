@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import React, { useEffect, useRef } from 'react';
 
-type ThemeAdminScrollProps = {
-  items: ThemeAdminScrollItemProps[];
+type BaseRadioButtonGroupProps = {
+  items: BaseRadioButtonGroupItemProps[];
 };
 
-type ThemeAdminScrollItemProps = {
+type BaseRadioButtonGroupItemProps = {
   id: number;
   image: string;
   value: string;
@@ -13,7 +13,7 @@ type ThemeAdminScrollItemProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const ThemeAdminScroll = ({ items }: ThemeAdminScrollProps) => {
+const BaseRadioButtonGroup = ({ items }: BaseRadioButtonGroupProps) => {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const isDownRef = useRef(false);
   const startXRef = useRef(0);
@@ -39,8 +39,7 @@ const ThemeAdminScroll = ({ items }: ThemeAdminScrollProps) => {
     el.classList.add('dragging'); // CSS cursor 변경용
     startXRef.current = e.pageX - el.offsetLeft;
     scrollLeftRef.current = el.scrollLeft;
-    // prevent text selection while dragging
-    document.body.style.userSelect = 'none';
+    document.body.style.userSelect = 'none'; // 드래그 시 텍스트 선택 방지
   };
 
   const onMouseLeave: React.MouseEventHandler = () => {
@@ -104,7 +103,7 @@ const ThemeAdminScroll = ({ items }: ThemeAdminScrollProps) => {
     isDownRef.current = false;
   };
 
-  const handleClickImage = (item: ThemeAdminScrollItemProps) => () => {
+  const handleClickImage = (item: BaseRadioButtonGroupItemProps) => () => {
     // 1. 드래그가 끝난 직후 발생한 클릭 무시
     if (hasDraggedRef.current) {
       return;
@@ -253,4 +252,4 @@ const radioButtonStyle = css`
   }
 `;
 
-export default ThemeAdminScroll;
+export default BaseRadioButtonGroup;
