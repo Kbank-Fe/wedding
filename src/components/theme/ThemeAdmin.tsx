@@ -1,4 +1,4 @@
-import BaseRadioButtonGroup from '@/components/shared/BaseRadioButtonGroup';
+import BaseRadioButtonScrollGroup from '@/components/shared/BaseRadioButtonScrollGroup';
 import ThemeFields from '@/components/theme/ThemeFields';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { themeList } from '@/utils/themeList';
@@ -27,7 +27,7 @@ const ThemeAdmin = () => {
 
   return (
     <>
-      <BaseRadioButtonGroup
+      <BaseRadioButtonScrollGroup
         items={themeScrollList.map((item) => ({
           ...item,
           checked: theme.type === item.value,

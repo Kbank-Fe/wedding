@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import React, { useEffect, useRef } from 'react';
 
-type BaseRadioButtonGroupProps = {
-  items: BaseRadioButtonGroupItemProps[];
+type BaseRadioButtonScrollGroupProps = {
+  items: BaseRadioButtonScrollGroupItemProps[];
 };
 
-type BaseRadioButtonGroupItemProps = {
+type BaseRadioButtonScrollGroupItemProps = {
   id: number;
   image: string;
   value: string;
@@ -13,7 +13,9 @@ type BaseRadioButtonGroupItemProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const BaseRadioButtonGroup = ({ items }: BaseRadioButtonGroupProps) => {
+const BaseRadioButtonScrollGroup = ({
+  items,
+}: BaseRadioButtonScrollGroupProps) => {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const isDownRef = useRef(false);
   const startXRef = useRef(0);
@@ -31,36 +33,31 @@ const BaseRadioButtonGroup = ({ items }: BaseRadioButtonGroupProps) => {
     };
   }, [items]);
 
+  // 드래그 시작
   const onMouseDown: React.MouseEventHandler = (e) => {
     const el = scrollerRef.current;
     if (!el) return;
-    isDownRef.current = true;
-    hasDraggedRef.current = false; // 마우스 다운 시 드래그 리셋
+    isDownRef.current = true; // 드래그 상태 설정
+    hasDraggedRef.current = false; // 새로운 드래그 세션 시작
     el.classList.add('dragging'); // CSS cursor 변경용
-    startXRef.current = e.pageX - el.offsetLeft;
-    scrollLeftRef.current = el.scrollLeft;
+    startXRef.current = e.pageX - el.offsetLeft; // 현재 마우스 X 좌표 설정
+    scrollLeftRef.current = el.scrollLeft; // 현재 스크롤 위치 설정
     document.body.style.userSelect = 'none'; // 드래그 시 텍스트 선택 방지
   };
 
-  const onMouseLeave: React.MouseEventHandler = () => {
+  // 드래그 종료
+  const onMouseEnd: React.MouseEventHandler = () => {
     const el = scrollerRef.current;
     if (!el) return;
-    isDownRef.current = false;
+    isDownRef.current = false; // 드래그 상태 해제
     el.classList.remove('dragging');
     document.body.style.userSelect = '';
   };
 
-  const onMouseUp: React.MouseEventHandler = () => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    isDownRef.current = false;
-    el.classList.remove('dragging');
-    document.body.style.userSelect = '';
-  };
-
+  // 드래그 이동
   const onMouseMove: React.MouseEventHandler = (e) => {
     const el = scrollerRef.current;
-    if (!el || !isDownRef.current) return;
+    if (!el || !isDownRef.current) return; // 드래그 상태일 때만 동작
 
     // 5px 이상 움직이면 드래그로 간주
     const dx = Math.abs(e.pageX - (startXRef.current + el.offsetLeft));
@@ -68,10 +65,10 @@ const BaseRadioButtonGroup = ({ items }: BaseRadioButtonGroupProps) => {
       hasDraggedRef.current = true;
     }
 
-    e.preventDefault();
-    const x = e.pageX - el.offsetLeft;
+    e.preventDefault(); // 브라우저 기본 드래그 동작 방지
+    const x = e.pageX - el.offsetLeft; // 현재 마우스 x 위치
     const walk = (x - startXRef.current) * 1; // 스크롤 민감도 (1 = 1:1)
-    el.scrollLeft = scrollLeftRef.current - walk;
+    el.scrollLeft = scrollLeftRef.current - walk; // 스크롤 위치 업데이트 = 스크롤 시작 위치 - 이동거리
   };
 
   // 터치 지원 (모바일)
@@ -103,25 +100,26 @@ const BaseRadioButtonGroup = ({ items }: BaseRadioButtonGroupProps) => {
     isDownRef.current = false;
   };
 
-  const handleClickImage = (item: BaseRadioButtonGroupItemProps) => () => {
-    // 1. 드래그가 끝난 직후 발생한 클릭 무시
-    if (hasDraggedRef.current) {
-      return;
-    }
+  const handleClickImage =
+    (item: BaseRadioButtonScrollGroupItemProps) => () => {
+      // 1. 드래그가 끝난 직후 발생한 클릭 무시
+      if (hasDraggedRef.current) {
+        return;
+      }
 
-    // 2. 이미 선택된 상태 변경 무시
-    if (item.checked) return;
+      // 2. 이미 선택된 상태 변경 무시
+      if (item.checked) return;
 
-    // 3. 가짜 이벤트 객체를 생성하여 onChange 함수 호출
-    item.onChange({
-      target: {
-        checked: true,
-        value: item.value,
-        type: 'radio',
-        name: 'themeRadioSlide',
-      } as HTMLInputElement,
-    } as React.ChangeEvent<HTMLInputElement>);
-  };
+      // 3. 가짜 이벤트 객체를 생성하여 onChange 함수 호출
+      item.onChange({
+        target: {
+          checked: true,
+          value: item.value,
+          type: 'radio',
+          name: 'themeRadioSlide',
+        } as HTMLInputElement,
+      } as React.ChangeEvent<HTMLInputElement>);
+    };
 
   return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -129,9 +127,9 @@ const BaseRadioButtonGroup = ({ items }: BaseRadioButtonGroupProps) => {
       ref={scrollerRef}
       css={scrollerStyle}
       onMouseDown={onMouseDown}
-      onMouseLeave={onMouseLeave}
+      onMouseLeave={onMouseEnd}
       onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
+      onMouseUp={onMouseEnd}
       onTouchEnd={onTouchEnd}
       onTouchMove={onTouchMove}
       onTouchStart={onTouchStart}
@@ -254,4 +252,4 @@ const radioButtonStyle = css`
   }
 `;
 
-export default BaseRadioButtonGroup;
+export default BaseRadioButtonScrollGroup;
