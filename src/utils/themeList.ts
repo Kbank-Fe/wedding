@@ -18,14 +18,14 @@ export type ThemeList = {
 export const themeList: ThemeList[] = [
   {
     type: 'CARDSLIDE',
-    text1: { label: '첫번째 문구', isShow: true, maxLength: 10 },
-    text2: { label: '두번째 문구', isShow: true, maxLength: 10 },
+    text1: { label: '첫번째 문구', isShow: true, maxLength: 20 },
+    text2: { label: '두번째 문구', isShow: true, maxLength: 20 },
   },
   {
     type: 'FULL',
-    text1: { label: '첫번째 문구', isShow: true, maxLength: 5 },
-    text2: { label: '두번째 문구', isShow: true, maxLength: 5 },
-    text3: { label: '세번째 문구', isShow: true, maxLength: 5 },
+    text1: { label: '첫번째 문구', isShow: true, maxLength: 10 },
+    text2: { label: '두번째 문구', isShow: true, maxLength: 10 },
+    text3: { label: '세번째 문구', isShow: true, maxLength: 10 },
   },
   {
     type: 'MONOCHROME',

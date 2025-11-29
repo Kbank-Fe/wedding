@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import React, { useEffect, useRef } from 'react';
 
@@ -102,9 +101,9 @@ const ThemeAdminScroll = ({ items }: ThemeAdminScrollProps) => {
       {items.map((item) => (
         <div key={item.id} css={itemStyle}>
           <img alt="" css={imgStyle} src={item.image} />
-          <label css={labelStyle}>{item.value}</label>
           <input
             checked={item.checked}
+            css={radioButtonStyle}
             name="themeRadioSlide"
             type="radio"
             value={item.value}
@@ -148,23 +147,56 @@ const itemStyle = css`
   min-width: 90px;
   flex: 0 0 auto;
   box-sizing: border-box;
-  border: 1px solid var(--gray8);
-  border-radius: 8px;
+  position: relative;
+  display: inline-block;
 `;
 
 const imgStyle = css`
   width: 80px;
-  height: 100px;
+  height: 100%;
   display: block;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 8px;
   pointer-events: none; /* 이미지가 포인터 이벤트를 잡지 않도록 */
+  border: 1px solid var(--gray8);
+  border-radius: 8px;
 `;
 
-const labelStyle = css`
-  margin-bottom: 6px;
-  font-size: 12px;
+const radioButtonStyle = css`
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  top: 8px;
+  left: 8px;
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  border: 1px solid var(--gray9);
+  border-radius: 50%;
+  background: var(--gray8);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+
+  &::after {
+    content: '✔';
+    position: relative; /* relative로 둬서 부모 중앙 정렬된 flex에 맞춤 */
+    display: inline-block;
+    font-size: 14px;
+    color: var(--gray12);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  &:checked {
+    background: var(--gray4);
+    border-color: var(--gray4);
+  }
+
+  &:checked::after {
+    opacity: 1;
+  }
 `;
 
 export default ThemeAdminScroll;
