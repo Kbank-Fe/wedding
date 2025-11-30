@@ -1,4 +1,4 @@
-import { css, keyframes } from '@emotion/react';
+import { css } from '@emotion/react';
 import * as RadixAccordion from '@radix-ui/react-accordion';
 import type { ReactNode } from 'react';
 import { LuChevronDown } from 'react-icons/lu';
@@ -27,16 +27,6 @@ export const AccordionItem = ({
   </RadixAccordion.Item>
 );
 
-const slideDown = keyframes`
-  from { height: 0; opacity: 0; }
-  to { height: var(--radix-accordion-content-height); opacity: 1; }
-`;
-
-const slideUp = keyframes`
-  from { height: var(--radix-accordion-content-height); opacity: 1; }
-  to { height: 0; opacity: 0; }
-`;
-
 const itemStyle = css`
   border: 1px solid var(--gray4);
   border-radius: 12px;
@@ -56,8 +46,11 @@ const triggerStyle = css`
   align-items: center;
   color: var(--gray11);
   font-family: 'Wedding';
+  line-height: 1;
 
   svg {
+    margin-left: auto;
+    will-change: transform;
     transition: transform 0.3s ease;
     color: var(--gray10);
   }
@@ -74,13 +67,40 @@ const contentStyle = css`
   background: var(--gray1);
   border-top: 1px solid var(--gray4);
   padding: 1rem;
+  transform-origin: top;
+
+  &[data-state='open'],
+  &[data-state='closed'] {
+    will-change: transform, opacity;
+  }
 
   &[data-state='open'] {
-    animation: ${slideDown} 0.25s ease-out;
+    animation: accordion-open 0.45s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
 
   &[data-state='closed'] {
-    animation: ${slideUp} 0.2s ease-in-out;
-    padding-bottom: 0;
+    animation: accordion-close 0.2s cubic-bezier(0.3, 0, 0.5, 1) forwards;
+  }
+
+  @keyframes accordion-open {
+    0% {
+      opacity: 0;
+      transform: scaleY(0.92);
+    }
+    100% {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes accordion-close {
+    0% {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scaleY(0.9);
+    }
   }
 `;
