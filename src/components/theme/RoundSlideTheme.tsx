@@ -13,12 +13,14 @@ const images = [
 ];
 
 const RoundSlideTheme = () => {
-  const values = useWeddingStore((state) => state.values);
+  const { groomEnglishName, brideEnglishName, text1, text2 } = useWeddingStore(
+    (state) => state.values.theme,
+  );
   return (
     <section css={containerStyle}>
       <header css={headerStyle}>
         <h1 css={titleStyle}>
-          {values.theme.mainPhrase} <br /> {values.theme.subPhrase}
+          {text1} <br /> {text2}
         </h1>
         <Sticker right="-10px" size="38px" top="-10px" />
       </header>
@@ -30,7 +32,7 @@ const RoundSlideTheme = () => {
           width="300px"
         />
         <figcaption css={descriptionStyle}>
-          {values.theme.groomEnglishName} and {values.theme.brideEnglishName}
+          {groomEnglishName} and {brideEnglishName}
         </figcaption>
       </figure>
     </section>

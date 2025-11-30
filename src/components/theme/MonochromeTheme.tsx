@@ -8,16 +8,22 @@ import { formatToAmPm } from '@/utils/constants/time';
 import { getEnglishMonth } from '@/utils/date';
 
 const MonochromeTheme = () => {
-  const values = useWeddingStore((state) => state.values);
+  const { year, month, day, hour, min } = useWeddingStore(
+    (state) => state.values.date,
+  );
+  const { groomEnglishName, brideEnglishName } = useWeddingStore(
+    (state) => state.values.theme,
+  );
+  const dateString = new Date(year, month - 1, day, hour, min).toISOString();
+
   return (
     <section css={containerStyle}>
       <header css={headerStyle}>
-        <time dateTime="2025-05-27T12:00">
-          <p css={dayTextStyle}>{values.date.day}</p>
+        <time dateTime={dateString}>
+          <p css={dayTextStyle}>{day}</p>
           <Line marginBottom={7} marginTop={0} />
           <p css={dateTextStyle}>
-            {getEnglishMonth(values.date.month)}{' '}
-            <span>{formatToAmPm(values.date.hour, values.date.min)}</span>
+            {getEnglishMonth(month)} <span>{formatToAmPm(hour, min)}</span>
           </p>
         </time>
       </header>
@@ -31,8 +37,7 @@ const MonochromeTheme = () => {
         <img alt="Wedding main" css={imageStyle} src={mainImage} />
         <figcaption css={textStyle}>
           <h2>
-            {values.theme.groomEnglishName} <span>and</span>{' '}
-            {values.theme.brideEnglishName}
+            {groomEnglishName} <span>and</span> {brideEnglishName}
           </h2>
         </figcaption>
       </motion.figure>

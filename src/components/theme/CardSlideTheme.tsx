@@ -13,26 +13,31 @@ const images = [
 ];
 
 const CardSlideTheme = () => {
-  const values = useWeddingStore((state) => state.values);
+  const { text1, text2 } = useWeddingStore((state) => state.values.theme);
+  const { maleName, femaleName } = useWeddingStore(
+    (state) => state.values.basicInfo,
+  );
+  const { year, month, day } = useWeddingStore((state) => state.values.date);
+
   return (
     <section css={containerStyle}>
       <figure css={figureStyle}>
         <ImageSlideMotion height="180px" images={images} width="180px" />
       </figure>
       <header css={nameWrapperStyle}>
-        <h2>{values.basicInfo.maleName}</h2>
+        <h2>{maleName}</h2>
         <span aria-hidden="true">&</span>
-        <h2>{values.basicInfo.femaleName}</h2>
+        <h2>{femaleName}</h2>
       </header>
       <time css={dateStyle} dateTime="2025-05-27">
-        <span>{values.date.day}</span>
-        <span>{getEnglishMonth(values.date.month)}</span>
-        <span>{values.date.year}</span>
+        <span>{day}</span>
+        <span>{getEnglishMonth(month)}</span>
+        <span>{year}</span>
       </time>
       <p css={subTextStyle}>
-        {values.theme.mainPhrase}
+        {text1}
         <br />
-        {values.theme.subPhrase}
+        {text2}
       </p>
     </section>
   );

@@ -5,27 +5,27 @@ import Sticker from '@/components/shared/Sticker';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const PolaroidTheme = () => {
-  const values = useWeddingStore((state) => state.values);
+  const { groomEnglishName, brideEnglishName, text1, text2 } = useWeddingStore(
+    (state) => state.values.theme,
+  );
+
   return (
     <div css={containerStyle}>
       <section css={sectionStyle}>
         <header css={headerStyle}>
           <h1>
-            {values.theme.groomEnglishName} <span>and</span>{' '}
-            {values.theme.brideEnglishName}
+            {groomEnglishName} <span>and</span> {brideEnglishName}
           </h1>
         </header>
 
         <figure css={polaroidStyle}>
           <Sticker left="-15px" top="-19px" />
           <img alt="Wedding main" src={mainImage} />
-          <figcaption css={photoTextStyle}>
-            {values.theme.mainPhrase}
-          </figcaption>
+          <figcaption css={photoTextStyle}>{text1}</figcaption>
           <p css={photoSubTextStyle}>A day made with love</p>
         </figure>
 
-        <p css={subTextStyle}>{values.theme.subPhrase}</p>
+        <p css={subTextStyle}>{text2}</p>
       </section>
     </div>
   );
