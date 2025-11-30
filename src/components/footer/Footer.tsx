@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { toast } from 'sonner';
 
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { copyToLink } from '@/utils/clipboard';
@@ -12,11 +13,23 @@ const Footer = ({ shareId }: { shareId: string }) => {
   );
   const shareInfo = useWeddingStore((state) => state.values.share);
 
+  const validateShareId = () => {
+    if (!shareId) return false;
+    if (shareId.includes('kakao')) {
+      toast.error('미리보기 중에는 확인할 수 없어요.');
+      return false;
+    }
+
+    return true;
+  };
+
   const handleLinkShareClick = () => {
+    if (!validateShareId()) return;
     copyToLink({ text: `${SHARE_URL}/${shareId}` });
   };
 
   const handleKakaoShareClick = async () => {
+    if (!validateShareId()) return;
     const Kakao = await loadKakaoSdk();
 
     Kakao.Share.sendDefault({
