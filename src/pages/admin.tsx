@@ -83,8 +83,6 @@ const AdminPage = () => {
     const share = useWeddingStore.getState().values.share;
     const savedImageList = share.savedImageList ?? [];
     const localImageList = share.localImageList ?? [];
-    console.log(localImageList[0]);
-    console.log(localImageList[0] instanceof File);
 
     if (!(localImageList?.[0] instanceof File)) return;
     if (savedImageList?.[0]?.name === localImageList?.[0].name) {
@@ -121,12 +119,14 @@ const AdminPage = () => {
       const values = useWeddingStore.getState().values;
       const shareId = await saveUserShare(uid, values);
 
-      useWeddingStore.setState((state) => {
+      toast.success('데이터를 저장했어요!');
+      
+      setTimeout(() => {
+        navigate(`/${shareId}`)
+        useWeddingStore.setState((state) => {
         state.values.gallery.localImageList = [];
       });
-
-      toast.success('데이터를 저장했어요!');
-      setTimeout(() => navigate(`/${shareId}`), 1500);
+      }, 1500);
     } catch (error) {
       console.error(error);
       toast.error('데이터 저장을 실패했어요.');

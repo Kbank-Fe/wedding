@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import useSWR from 'swr';
 
 import type { WeddingInfo } from '@/types/wedding';
@@ -53,8 +53,6 @@ export const useWeddingInfo = (
         ? ['weddingInfoByShareId', shareId]
         : null;
 
-  const initializedRef = useRef(false);
-
   const { data, error, isLoading } = useSWR<WeddingInfo | null>(
     key,
     () => fetchWeddingInfo({ uid: uid ?? null, shareId: shareId ?? null }),
@@ -62,16 +60,13 @@ export const useWeddingInfo = (
   );
 
   useEffect(() => {
-    if (!data || !setDeep || initializedRef.current) return;
+    if (!data || !setDeep) return;
 
     const setData = async () => {
       const localImageList = await initializeLocalImageList(
         data.gallery?.savedImageList,
       );
 
-      const localImageList2 = await initializeLocalImageList(
-        data.share?.savedImageList,
-      );
 
       setDeep((draft) => {
         const localFiles = (draft.gallery?.localImageList ?? []).filter(
@@ -83,13 +78,8 @@ export const useWeddingInfo = (
           localImageList: [...localImageList, ...localFiles],
         };
 
-        const localFiles2 = (draft.share?.localImageList ?? []).filter(
-          (img): img is File => img instanceof File,
-        );
-
         draft.share = {
           ...(data.share ?? {}),
-          localImageList: [...localImageList2, ...localFiles2],
         };
 
         draft.showCheckbox =
@@ -101,8 +91,6 @@ export const useWeddingInfo = (
         draft.transport = data.transport ?? WEDDING_INITIAL_INFO.transport;
         draft.location = data.location ?? WEDDING_INITIAL_INFO.location;
       });
-
-      initializedRef.current = true;
     };
 
     setData();

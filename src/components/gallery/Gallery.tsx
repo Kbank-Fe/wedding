@@ -16,6 +16,7 @@ const Gallery = () => {
   const isPopup = usePreviewMode();
 
   const { localImageList } = useWeddingStore((state) => state.values.gallery);
+  console.log(localImageList);
   const { photoList } = usePhotoList(localImageList, 'actual');
 
   const showMoreButton = photoList.length > 9 && !expanded;
