@@ -63,10 +63,8 @@ export const useWeddingInfo = (
     if (!data || !setDeep) return;
 
     const setData = async () => {
-      const localImageList = await initializeLocalImageList(
-        data.gallery?.savedImageList,
-      );
-
+      const galleryLocalImageList = initializeLocalImageList(data.gallery?.savedImageList);
+      const shareLocalImageList = initializeLocalImageList(data.share?.savedImageList);
 
       setDeep((draft) => {
         const localFiles = (draft.gallery?.localImageList ?? []).filter(
@@ -75,11 +73,12 @@ export const useWeddingInfo = (
 
         draft.gallery = {
           ...(data.gallery ?? {}),
-          localImageList: [...localImageList, ...localFiles],
+          localImageList: [...galleryLocalImageList, ...localFiles],
         };
 
         draft.share = {
           ...(data.share ?? {}),
+          localImageList: [...shareLocalImageList],
         };
 
         draft.showCheckbox =
