@@ -1,45 +1,49 @@
 import type { ThemeType } from '@/types/wedding';
 
-type ThemeList = {
+type TextInputOption = {
+  label: string;
+  isShow: boolean;
+  maxLength: number;
+};
+
+export type ThemeList = {
   type: ThemeType;
-  groomEnglishName?: boolean;
-  brideEnglishName?: boolean;
-  mainPhrase?: boolean;
-  subPhrase?: boolean;
-  word1?: boolean;
-  word2?: boolean;
-  word3?: boolean;
+  groomEnglishName?: TextInputOption;
+  brideEnglishName?: TextInputOption;
+  text1?: TextInputOption;
+  text2?: TextInputOption;
+  text3?: TextInputOption;
 };
 
 export const themeList: ThemeList[] = [
   {
     type: 'CARDSLIDE',
-    mainPhrase: true,
-    subPhrase: true,
+    text1: { label: '첫번째 문구', isShow: true, maxLength: 20 },
+    text2: { label: '두번째 문구', isShow: true, maxLength: 20 },
   },
   {
     type: 'FULL',
-    word1: true,
-    word2: true,
-    word3: true,
+    text1: { label: '첫번째 문구', isShow: true, maxLength: 10 },
+    text2: { label: '두번째 문구', isShow: true, maxLength: 10 },
+    text3: { label: '세번째 문구', isShow: true, maxLength: 10 },
   },
   {
     type: 'MONOCHROME',
-    groomEnglishName: true,
-    brideEnglishName: true,
+    groomEnglishName: { label: '신랑 영문명', isShow: true, maxLength: 15 },
+    brideEnglishName: { label: '신부 영문명', isShow: true, maxLength: 15 },
   },
   {
     type: 'POLAROID',
-    groomEnglishName: true,
-    brideEnglishName: true,
-    mainPhrase: true,
-    subPhrase: true,
+    groomEnglishName: { label: '신랑 영문명', isShow: true, maxLength: 15 },
+    brideEnglishName: { label: '신부 영문명', isShow: true, maxLength: 15 },
+    text1: { label: '첫번째 문구', isShow: true, maxLength: 10 },
+    text2: { label: '두번째 문구', isShow: true, maxLength: 10 },
   },
   {
     type: 'ROUNDSLIDE',
-    groomEnglishName: true,
-    brideEnglishName: true,
-    mainPhrase: true,
-    subPhrase: true,
+    groomEnglishName: { label: '신랑 영문명', isShow: true, maxLength: 15 },
+    brideEnglishName: { label: '신부 영문명', isShow: true, maxLength: 15 },
+    text1: { label: '첫번째 문구', isShow: true, maxLength: 10 },
+    text2: { label: '두번째 문구', isShow: true, maxLength: 10 },
   },
 ];

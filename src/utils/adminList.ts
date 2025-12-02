@@ -26,6 +26,7 @@ export const adminList: AdminList[] = [
     title: '테마',
     value: 'theme',
     component: ThemeAdmin,
+    required: true,
   },
   {
     title: '기본정보',
