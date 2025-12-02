@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import React, { useEffect, useRef } from 'react';
 
 type BaseRadioButtonScrollGroupProps = {
   items: BaseRadioButtonScrollGroupItemProps[];
@@ -16,100 +15,11 @@ type BaseRadioButtonScrollGroupItemProps = {
 const BaseRadioButtonScrollGroup = ({
   items,
 }: BaseRadioButtonScrollGroupProps) => {
-  const scrollerRef = useRef<HTMLDivElement | null>(null);
-  const isDownRef = useRef(false);
-  const startXRef = useRef(0);
-  const scrollLeftRef = useRef(0);
-  const hasDraggedRef = useRef(false); // 드래그발생여부
-
-  useEffect(() => {
-    // 이미지 드래그 시 브라우저 기본 드래그 이벤트 방지
-    const el = scrollerRef.current;
-    if (!el) return;
-    const imgs = el.querySelectorAll('img');
-    imgs.forEach((img) => img.setAttribute('draggable', 'false'));
-    return () => {
-      imgs.forEach((img) => img.removeAttribute('draggable'));
-    };
-  }, [items]);
-
-  // 드래그 시작
-  const onMouseDown: React.MouseEventHandler = (e) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    isDownRef.current = true; // 드래그 상태 설정
-    hasDraggedRef.current = false; // 새로운 드래그 세션 시작
-    el.classList.add('dragging'); // CSS cursor 변경용
-    startXRef.current = e.pageX - el.offsetLeft; // 현재 마우스 X 좌표 설정
-    scrollLeftRef.current = el.scrollLeft; // 현재 스크롤 위치 설정
-    document.body.style.userSelect = 'none'; // 드래그 시 텍스트 선택 방지
-  };
-
-  // 드래그 종료
-  const onMouseEnd: React.MouseEventHandler = () => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    isDownRef.current = false; // 드래그 상태 해제
-    el.classList.remove('dragging');
-    document.body.style.userSelect = '';
-  };
-
-  // 드래그 이동
-  const onMouseMove: React.MouseEventHandler = (e) => {
-    const el = scrollerRef.current;
-    if (!el || !isDownRef.current) return; // 드래그 상태일 때만 동작
-
-    // 5px 이상 움직이면 드래그로 간주
-    const dx = Math.abs(e.pageX - (startXRef.current + el.offsetLeft));
-    if (dx > 5) {
-      hasDraggedRef.current = true;
-    }
-
-    e.preventDefault(); // 브라우저 기본 드래그 동작 방지
-    const x = e.pageX - el.offsetLeft; // 현재 마우스 x 위치
-    const walk = (x - startXRef.current) * 1; // 스크롤 민감도 (1 = 1:1)
-    el.scrollLeft = scrollLeftRef.current - walk; // 스크롤 위치 업데이트 = 스크롤 시작 위치 - 이동거리
-  };
-
-  // 터치 지원 (모바일)
-  const onTouchStart: React.TouchEventHandler = (e) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    isDownRef.current = true;
-    hasDraggedRef.current = false; // 터치 다운 시 드래그 리셋
-    startXRef.current = e.touches[0].pageX - el.offsetLeft;
-    scrollLeftRef.current = el.scrollLeft;
-  };
-
-  const onTouchMove: React.TouchEventHandler = (e) => {
-    const el = scrollerRef.current;
-    if (!el || !isDownRef.current) return;
-    const x = e.touches[0].pageX - el.offsetLeft;
-    const walk = (x - startXRef.current) * 1;
-
-    const dx = Math.abs(x - startXRef.current);
-    if (dx > 5) {
-      // 5px 이상 움직이면 드래그로 간주
-      hasDraggedRef.current = true;
-    }
-
-    el.scrollLeft = scrollLeftRef.current - walk;
-  };
-
-  const onTouchEnd = () => {
-    isDownRef.current = false;
-  };
-
   const handleClickItem = (item: BaseRadioButtonScrollGroupItemProps) => () => {
-    // 1. 드래그가 끝난 직후 발생한 클릭 무시
-    if (hasDraggedRef.current) {
-      return;
-    }
-
-    // 2. 이미 선택된 상태 변경 무시
+    // 이미 선택된 상태 변경 무시
     if (item.checked) return;
 
-    // 3. 가짜 이벤트 객체를 생성하여 onChange 함수 호출
+    // 가짜 이벤트 객체를 생성하여 onChange 함수 호출
     item.onChange({
       target: {
         checked: true,
@@ -121,18 +31,7 @@ const BaseRadioButtonScrollGroup = ({
   };
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <div
-      ref={scrollerRef}
-      css={scrollerStyle}
-      onMouseDown={onMouseDown}
-      onMouseLeave={onMouseEnd}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseEnd}
-      onTouchEnd={onTouchEnd}
-      onTouchMove={onTouchMove}
-      onTouchStart={onTouchStart}
-    >
+    <div css={scrollerStyle}>
       {items.map((item) => (
         <div
           key={item.id}
@@ -169,36 +68,16 @@ const scrollerStyle = css`
   display: flex;
   flex-direction: row;
   gap: 10px;
-
-  // 1. 가로 스크롤 활성화
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch; // iOS에서 부드러운 스크롤
   padding: 10px 0;
   flex-wrap: nowrap;
-  width: 100%;
-  box-sizing: border-box;
-
-  // 2. 커서 스타일
-  cursor: grab;
-  &.dragging {
-    cursor: grabbing;
-  }
-
-  // 3. 기타 설정
-  user-select: none; // 콘텐츠 선택 방지
-  scrollbar-width: none; // Firefox 스크롤바 숨기기
-  &::-webkit-scrollbar {
-    display: none; // WebKit/Chrome 스크롤바 숨기기
-  }
 `;
 
 const itemStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 90px;
   flex: 0 0 auto;
-  box-sizing: border-box;
   position: relative;
   display: inline-block;
 `;
