@@ -36,7 +36,7 @@ const Location = () => {
         viewport={{ amount: 0.5 }}
         whileInView="visible"
       >
-        {mapInfo.venueName && (
+        {(mapInfo.venueName || mapInfo.venueDetail) && (
           <h3>
             {mapInfo.venueName} {mapInfo.venueDetail}
           </h3>
