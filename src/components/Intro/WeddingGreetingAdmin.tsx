@@ -28,7 +28,8 @@ const WeddingGreetingAdmin = () => {
     <>
       <Field label="제목">
         <BaseTextInput
-          placeholder="제목을 입력하세요"
+          maxLength={30}
+          placeholder="최대 30자 (예: 인사말, 모시는 길, 초대합니다 등)"
           value={greetingInfo.title || ''}
           onChange={(e) => handleChangeInput('title')(e.target.value)}
         />

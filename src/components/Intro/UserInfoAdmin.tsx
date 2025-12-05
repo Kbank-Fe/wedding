@@ -65,6 +65,7 @@ const UserInfoAdmin = () => {
       {USER_LIST.map(({ label, key, deceasedKey }) => (
         <Field key={key as string} label={label}>
           <BaseTextInput
+            maxLength={25}
             placeholder="이름을 입력해주세요"
             value={
               typeof basicInfo?.[key] === 'string'
