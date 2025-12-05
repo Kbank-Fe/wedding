@@ -9,7 +9,7 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     text2: 'WEDDING',
     text3: 'DAY',
   },
-  showCheckbox: {
+  activeCheckbox: {
     theme: true,
     intro: true,
     contact: false,

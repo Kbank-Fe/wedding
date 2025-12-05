@@ -8,8 +8,8 @@ import { loadKakaoSdk } from '@/utils/loadKakaoSdk';
 const SHARE_URL = import.meta.env.VITE_PUBLIC_BASE_URL;
 
 const Footer = ({ shareId }: { shareId: string }) => {
-  const showCheckbox = useWeddingStore(
-    (state) => state.values.showCheckbox.share,
+  const activeCheckbox = useWeddingStore(
+    (state) => state.values.activeCheckbox.share,
   );
   const shareInfo = useWeddingStore((state) => state.values.share);
 
@@ -63,7 +63,7 @@ const Footer = ({ shareId }: { shareId: string }) => {
 
   return (
     <div css={containerStyle}>
-      {showCheckbox && shareOptions.length > 0 && (
+      {activeCheckbox && shareOptions.length > 0 && (
         <div css={buttonContainerStyle}>
           {shareOptions.map(({ key, label, onClick }) => (
             <button key={key} css={buttonStyle} onClick={onClick}>

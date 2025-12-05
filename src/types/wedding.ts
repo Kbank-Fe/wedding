@@ -14,7 +14,7 @@ export type Theme = {
   text3?: string;
 };
 
-export type ShowCheckbox = {
+export type ActiveCheckbox = {
   theme: boolean;
   intro: boolean;
   contact: boolean;
@@ -138,7 +138,7 @@ export type FooterShare = {
 
 export type WeddingInfo = {
   theme: Theme;
-  showCheckbox: ShowCheckbox;
+  activeCheckbox: ActiveCheckbox;
   basicInfo: UserBasicInfo;
   intro: Intro;
   contact: ContactList;

@@ -17,7 +17,9 @@ const WeddingPreview = ({
   shareId = '',
   isPopup = false,
 }: WeddingPreviewProps) => {
-  const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
+  const activeCheckbox = useWeddingStore(
+    (state) => state.values.activeCheckbox,
+  );
 
   return (
     <PreviewModeProvider isPopup={isPopup}>
@@ -29,7 +31,7 @@ const WeddingPreview = ({
               <>
                 {mainList.map(
                   ({ key, alwaysVisible, component: Component }) =>
-                    (alwaysVisible || showCheckbox[key]) && (
+                    (alwaysVisible || activeCheckbox[key]) && (
                       <Section key={key}>
                         <Component />
                       </Section>

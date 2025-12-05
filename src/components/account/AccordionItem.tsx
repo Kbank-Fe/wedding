@@ -3,29 +3,61 @@ import * as RadixAccordion from '@radix-ui/react-accordion';
 import type { ReactNode } from 'react';
 import { LuChevronDown } from 'react-icons/lu';
 
+import { useWeddingStore } from '@/stores/useWeddingStore';
+import type { ActiveCheckbox } from '@/types/wedding';
+
+import BaseCheckBoxInput from '../shared/BaseCheckBoxInput';
+
 type AccordionItemProps = {
-  value: string;
+  value: keyof ActiveCheckbox | string;
   title: string;
   children: ReactNode;
+  showCheckbox?: boolean;
 };
 
 export const AccordionItem = ({
   value,
   title,
   children,
-}: AccordionItemProps) => (
-  <RadixAccordion.Item css={itemStyle} value={value}>
-    <RadixAccordion.Header>
-      <RadixAccordion.Trigger css={triggerStyle}>
-        {title}
-        <LuChevronDown className="icon" size={15} />
-      </RadixAccordion.Trigger>
-    </RadixAccordion.Header>
-    <RadixAccordion.Content css={contentStyle}>
-      {children}
-    </RadixAccordion.Content>
-  </RadixAccordion.Item>
-);
+  showCheckbox,
+}: AccordionItemProps) => {
+  const activeCheckbox = useWeddingStore(
+    (state) => state.values.activeCheckbox,
+  );
+  const setField = useWeddingStore((state) => state.setField);
+
+  const handleCheckboxChange = (key: keyof ActiveCheckbox) => {
+    const current = activeCheckbox[key] ?? false;
+    setField('activeCheckbox', key, !current);
+  };
+
+  const key = value as keyof ActiveCheckbox;
+
+  return (
+    <RadixAccordion.Item css={itemStyle} value={key}>
+      <RadixAccordion.Header>
+        <div css={triggerRowStyle}>
+          {showCheckbox && (
+            <div css={checkboxWrapperStyle}>
+              <BaseCheckBoxInput
+                checked={activeCheckbox[key] ?? false}
+                id={key}
+                onChange={() => handleCheckboxChange(key)}
+              />
+            </div>
+          )}
+          <RadixAccordion.Trigger css={triggerStyle}>
+            {title}
+            <LuChevronDown className="icon" size={15} />
+          </RadixAccordion.Trigger>
+        </div>
+      </RadixAccordion.Header>
+      <RadixAccordion.Content css={contentStyle}>
+        {children}
+      </RadixAccordion.Content>
+    </RadixAccordion.Item>
+  );
+};
 
 const itemStyle = css`
   border: 1px solid var(--gray4);
@@ -34,6 +66,11 @@ const itemStyle = css`
   background: var(--gray2);
   width: 100%;
   box-sizing: border-box;
+`;
+
+const triggerRowStyle = css`
+  display: flex;
+  align-items: center;
 `;
 
 const triggerStyle = css`
@@ -58,6 +95,10 @@ const triggerStyle = css`
   &[data-state='open'] svg {
     transform: rotate(180deg);
   }
+`;
+
+const checkboxWrapperStyle = css`
+  padding-left: 0.9rem;
 `;
 
 const contentStyle = css`

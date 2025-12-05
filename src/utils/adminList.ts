@@ -10,15 +10,15 @@ import WeddingGreetingAdmin from '@/components/Intro/WeddingGreetingAdmin';
 import LocationAdmin from '@/components/location/LocationAdmin';
 import ThemeAdmin from '@/components/theme/ThemeAdmin';
 import TransportAdmin from '@/components/transport/TransportAdmin';
-import type { ShowCheckbox } from '@/types/wedding';
+import type { ActiveCheckbox } from '@/types/wedding';
 
-type ShowKey = keyof ShowCheckbox;
+type ShowKey = keyof ActiveCheckbox;
 
 type AdminList = {
   title: string;
   value: ShowKey;
   component: FC;
-  required: boolean;
+  showCheckbox?: boolean;
 };
 
 export const adminList: AdminList[] = [
@@ -32,54 +32,51 @@ export const adminList: AdminList[] = [
     title: '기본정보',
     value: 'basic',
     component: UserInfoAdmin,
-    required: true,
   },
   {
     title: '인사말',
     value: 'greeting',
     component: WeddingGreetingAdmin,
-    required: false,
+    showCheckbox: true,
   },
   {
     title: '연락하기',
     value: 'contact',
     component: ContactAdmin,
-    required: false,
+    showCheckbox: true,
   },
   {
     title: '예식일자',
     value: 'calendar',
     component: DateCalendarAdmin,
-    required: true,
   },
   {
     title: '갤러리',
     value: 'gallery',
     component: GalleryAdmin,
-    required: false,
+    showCheckbox: true,
   },
   {
     title: '예식장소',
     value: 'location',
     component: LocationAdmin,
-    required: true,
   },
   {
     title: '교통수단',
     value: 'transport',
     component: TransportAdmin,
-    required: false,
+    showCheckbox: true,
   },
   {
     title: '계좌정보',
     value: 'account',
     component: AccountListAdmin,
-    required: false,
+    showCheckbox: true,
   },
   {
     title: '공유하기',
     value: 'share',
     component: ShareAdmin,
-    required: false,
+    showCheckbox: true,
   },
 ] as const;
