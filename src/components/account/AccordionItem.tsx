@@ -32,18 +32,22 @@ export const AccordionItem = ({
   return (
     <RadixAccordion.Item css={itemStyle} value={value}>
       <RadixAccordion.Header>
-        {!required && (
-          <BaseCheckBoxInput
-            checked={showCheckbox[value] ?? false}
-            css={checkboxStyle}
-            id={value}
-            onChange={() => handleCheckboxChange(value)}
-          />
-        )}
-        <RadixAccordion.Trigger css={triggerStyle}>
-          {title}
-          <LuChevronDown className="icon" size={15} />
-        </RadixAccordion.Trigger>
+        <div css={triggerRowStyle}>
+          {!required ? (
+            <BaseCheckBoxInput
+              checked={showCheckbox[value] ?? false}
+              css={checkboxStyle}
+              id={value}
+              onChange={() => handleCheckboxChange(value)}
+            />
+          ) : (
+            <div css={checkboxPlaceholderStyle} />
+          )}
+          <RadixAccordion.Trigger css={triggerStyle}>
+            {title}
+            <LuChevronDown className="icon" size={15} />
+          </RadixAccordion.Trigger>
+        </div>
       </RadixAccordion.Header>
       <RadixAccordion.Content css={contentStyle}>
         {children}
@@ -69,6 +73,12 @@ const itemStyle = css`
   background: var(--gray2);
   width: 100%;
   box-sizing: border-box;
+`;
+
+const triggerRowStyle = css`
+  display: flex;
+  align-items: center;
+  padding-left: 0.9rem;
 `;
 
 const triggerStyle = css`
@@ -112,4 +122,9 @@ const contentStyle = css`
 
 const checkboxStyle = css`
   background-color: red;
+`;
+
+const checkboxPlaceholderStyle = css`
+  width: 20px;
+  height: 20px;
 `;
