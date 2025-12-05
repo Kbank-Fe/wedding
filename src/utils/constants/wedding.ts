@@ -11,7 +11,7 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     word2: 'WEDDING',
     word3: 'DAY',
   },
-  showCheckbox: {
+  activeCheckbox: {
     theme: true,
     intro: true,
     contact: false,

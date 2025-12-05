@@ -4,44 +4,47 @@ import type { ReactNode } from 'react';
 import { LuChevronDown } from 'react-icons/lu';
 
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { ShowCheckbox } from '@/types/wedding';
+import type { ActiveCheckbox } from '@/types/wedding';
 
 import BaseCheckBoxInput from '../shared/BaseCheckBoxInput';
 
 type AccordionItemProps = {
-  value: keyof ShowCheckbox;
+  value: keyof ActiveCheckbox | string;
   title: string;
   children: ReactNode;
-  required: boolean;
+  showCheckbox?: boolean;
 };
 
 export const AccordionItem = ({
   value,
   title,
   children,
-  required,
+  showCheckbox,
 }: AccordionItemProps) => {
-  const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
+  const activeCheckbox = useWeddingStore(
+    (state) => state.values.activeCheckbox,
+  );
   const setField = useWeddingStore((state) => state.setField);
 
-  const handleCheckboxChange = (key: keyof ShowCheckbox) => {
-    const current = showCheckbox[key] ?? false;
-    setField('showCheckbox', key, !current);
+  const handleCheckboxChange = (key: keyof ActiveCheckbox) => {
+    const current = activeCheckbox[key] ?? false;
+    setField('activeCheckbox', key, !current);
   };
 
+  const key = value as keyof ActiveCheckbox;
+
   return (
-    <RadixAccordion.Item css={itemStyle} value={value}>
+    <RadixAccordion.Item css={itemStyle} value={key}>
       <RadixAccordion.Header>
         <div css={triggerRowStyle}>
-          {!required ? (
-            <BaseCheckBoxInput
-              checked={showCheckbox[value] ?? false}
-              css={checkboxStyle}
-              id={value}
-              onChange={() => handleCheckboxChange(value)}
-            />
-          ) : (
-            <div css={checkboxPlaceholderStyle} />
+          {showCheckbox && (
+            <div css={checkboxWrapperStyle}>
+              <BaseCheckBoxInput
+                checked={activeCheckbox[key] ?? false}
+                id={key}
+                onChange={() => handleCheckboxChange(key)}
+              />
+            </div>
           )}
           <RadixAccordion.Trigger css={triggerStyle}>
             {title}
@@ -78,7 +81,6 @@ const itemStyle = css`
 const triggerRowStyle = css`
   display: flex;
   align-items: center;
-  padding-left: 0.9rem;
 `;
 
 const triggerStyle = css`
@@ -102,6 +104,10 @@ const triggerStyle = css`
   }
 `;
 
+const checkboxWrapperStyle = css`
+  padding-left: 0.9rem;
+`;
+
 const contentStyle = css`
   width: 100%;
   overflow: hidden;
@@ -118,13 +124,4 @@ const contentStyle = css`
     animation: ${slideUp} 0.2s ease-in-out;
     padding-bottom: 0;
   }
-`;
-
-const checkboxStyle = css`
-  background-color: red;
-`;
-
-const checkboxPlaceholderStyle = css`
-  width: 20px;
-  height: 20px;
 `;
