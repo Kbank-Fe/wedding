@@ -141,6 +141,11 @@ const AdminPage = () => {
     }
   };
 
+  const sortedAdminList = [
+    ...adminList.filter((item) => !item.showCheckbox),
+    ...adminList.filter((item) => item.showCheckbox),
+  ];
+
   return (
     <Layout viewType="admin">
       <div css={adminLayoutStyle({ isMobile })}>
@@ -162,7 +167,7 @@ const AdminPage = () => {
             </>
           ) : (
             <Accordion>
-              {adminList.map(
+              {sortedAdminList.map(
                 ({ title, value, component: Component, showCheckbox }) => (
                   <div key={value} css={divWrapStyle}>
                     <div css={accordionItemStyle}>
