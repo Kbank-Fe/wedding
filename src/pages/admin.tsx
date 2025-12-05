@@ -152,11 +152,11 @@ const AdminPage = () => {
           ) : (
             <Accordion>
               {adminList.map(
-                ({ title, value, component: Component, required }) => (
+                ({ title, value, component: Component, showCheckbox }) => (
                   <div key={value} css={divWrapStyle}>
                     <div css={accordionItemStyle}>
                       <AccordionItem
-                        required={required}
+                        showCheckbox={showCheckbox}
                         title={title}
                         value={value}
                       >
