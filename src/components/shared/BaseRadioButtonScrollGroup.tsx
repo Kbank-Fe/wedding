@@ -5,7 +5,6 @@ type BaseRadioButtonScrollGroupProps = {
 };
 
 type BaseRadioButtonScrollGroupItemProps = {
-  id: number;
   image: string;
   value: string;
   checked: boolean;
@@ -15,40 +14,15 @@ type BaseRadioButtonScrollGroupItemProps = {
 const BaseRadioButtonScrollGroup = ({
   items,
 }: BaseRadioButtonScrollGroupProps) => {
-  const handleClickItem = (item: BaseRadioButtonScrollGroupItemProps) => () => {
-    // 이미 선택된 상태 변경 무시
-    if (item.checked) return;
-
-    // 가짜 이벤트 객체를 생성하여 onChange 함수 호출
-    item.onChange({
-      target: {
-        checked: true,
-        value: item.value,
-        type: 'radio',
-        name: 'themeRadioSlide',
-      } as HTMLInputElement,
-    } as React.ChangeEvent<HTMLInputElement>);
-  };
-
   return (
     <div css={scrollerStyle}>
       {items.map((item) => (
-        <div
-          key={item.id}
-          css={itemStyle}
-          role="button"
-          tabIndex={0}
-          onClick={handleClickItem(item)}
-          onKeyDown={(e) => {
-            // 키보드 이벤트 핸들러 (필수)
-            // Enter 키나 Space 키를 눌렀을 때도 클릭 이벤트와 동일하게 작동하도록 처리
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault(); // 스페이스바의 기본 동작(스크롤 등) 방지
-              handleClickItem(item); // 클릭과 동일한 동작 수행
-            }
-          }}
-        >
-          <img alt="" css={imgStyle(item.checked)} src={item.image} />
+        <label key={item.value} aria-label={item.value} css={labelWrapperStyle}>
+          <img
+            alt={`${item.value} 테마 미리보기 이미지`}
+            css={imgStyle(item.checked)}
+            src={item.image}
+          />
           <input
             checked={item.checked}
             css={radioButtonStyle}
@@ -56,9 +30,8 @@ const BaseRadioButtonScrollGroup = ({
             type="radio"
             value={item.value}
             onChange={item.onChange}
-            onClick={(e) => e.stopPropagation()}
           />
-        </div>
+        </label>
       ))}
     </div>
   );
@@ -73,7 +46,7 @@ const scrollerStyle = css`
   flex-wrap: nowrap;
 `;
 
-const itemStyle = css`
+const labelWrapperStyle = css`
   display: flex;
   flex-direction: column;
   align-items: center;
