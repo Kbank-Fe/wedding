@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { FaCheck } from 'react-icons/fa';
 
 type BaseRadioButtonScrollGroupProps = {
   items: BaseRadioButtonScrollGroupItemProps[];
@@ -25,12 +26,17 @@ const BaseRadioButtonScrollGroup = ({
           />
           <input
             checked={item.checked}
-            css={radioButtonStyle}
+            css={radioInputStyle}
             name="themeRadioSlide"
             type="radio"
             value={item.value}
             onChange={item.onChange}
           />
+          {item.checked && (
+            <div css={checkIconWrapperStyle}>
+              <FaCheck css={checkIconStyle} />
+            </div>
+          )}
         </label>
       ))}
     </div>
@@ -53,6 +59,7 @@ const labelWrapperStyle = css`
   flex: 0 0 auto;
   position: relative;
   display: inline-block;
+  cursor: pointer;
 `;
 
 const imgStyle = (checked: boolean) => css`
@@ -62,45 +69,41 @@ const imgStyle = (checked: boolean) => css`
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 8px;
-  pointer-events: none; // 이미지가 포인터 이벤트를 잡지 않도록
   border: ${checked ? '1.5px solid var(--gray8)' : '1px solid var(--gray4)'};
   border-radius: 8px;
 `;
 
-const radioButtonStyle = css`
+const radioControlBaseStyle = css`
   position: absolute;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   top: 8px;
   left: 8px;
   width: 18px;
   height: 18px;
-  appearance: none;
   border-radius: 50%;
-  border: 1px solid var(--gray4);
-  background: var(--gray4);
-  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+`;
 
-  &::after {
-    content: '✔';
-    position: relative; // relative로 둬서 부모 중앙 정렬된 flex에 맞춤
-    display: inline-block;
-    font-size: 14px;
-    color: var(--gray1);
-    opacity: 0;
-    transition: opacity 0.15s ease;
-  }
+const radioInputStyle = css`
+  ${radioControlBaseStyle}
+  border: 1px solid var(--gray6);
+  background: var(--gray4);
+  z-index: 1;
+  appearance: none;
+`;
 
-  &:checked {
-    background: var(--gray10);
-    border-color: var(--gray10);
-  }
+const checkIconWrapperStyle = css`
+  ${radioControlBaseStyle}
+  background: var(--gray10);
+  border: 1px solid var(--gray10);
+  z-index: 2;
+`;
 
-  &:checked::after {
-    opacity: 1;
-  }
+const checkIconStyle = css`
+  font-size: 10px;
+  color: var(--gray1);
 `;
 
 export default BaseRadioButtonScrollGroup;
