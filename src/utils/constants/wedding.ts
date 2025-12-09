@@ -109,3 +109,8 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
 };
 
 export const FOLDERS: Folder[] = ['gallery', 'share'];
+
+export const FOLDER_CONFIG: Record<Folder, { multiple: boolean }> = {
+  gallery: { multiple: true },
+  share: { multiple: false },
+};

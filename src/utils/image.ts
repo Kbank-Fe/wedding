@@ -4,10 +4,7 @@ import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { Folder, SavedImage, WeddingInfo } from '@/types/wedding';
 import { storage } from '@/utils/firebase';
 
-const folderConfigs: Record<Folder, { multiple: boolean }> = {
-  gallery: { multiple: true },
-  share: { multiple: false },
-};
+import { FOLDER_CONFIG } from './constants/wedding';
 
 // 이미지 압축: File → Blob 변환 (저장 전 용도)
 export const compressImage = async (
@@ -110,7 +107,7 @@ export const processFolderImages = async <F extends Folder>(
   return Promise.all(
     addedFiles.map((file) => uploadImageToStorage(file, uid, folder)),
   ).then((metas) => {
-    const isMultiple = folderConfigs[folder].multiple;
+    const { multiple } = FOLDER_CONFIG[folder];
 
     setDeep((draft) => {
       const folderDraft = draft[folder];
@@ -122,7 +119,7 @@ export const processFolderImages = async <F extends Folder>(
         ...metas,
       ];
 
-      folderDraft.savedImageList = isMultiple ? updated : updated.slice(-1);
+      folderDraft.savedImageList = multiple ? updated : updated.slice(-1);
     });
   });
 };
