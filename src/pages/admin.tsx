@@ -17,7 +17,7 @@ import { useViewportStore } from '@/stores/useViewportStore';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { ShowCheckbox } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
-import { FOLDERS } from '@/utils/constants/wedding';
+import { FOLDERS } from '@/utils/constants/folder';
 import { processFolderImages } from '@/utils/image';
 import { saveUserShare } from '@/utils/shares';
 

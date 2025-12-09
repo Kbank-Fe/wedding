@@ -1,10 +1,9 @@
 import { getDownloadURL, ref as sRef, uploadBytes } from 'firebase/storage';
 
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { Folder, SavedImage, WeddingInfo } from '@/types/wedding';
+import type { SavedImage, WeddingInfo } from '@/types/wedding';
+import { type Folder, FOLDER_CONFIG } from '@/utils/constants/folder';
 import { storage } from '@/utils/firebase';
-
-import { FOLDER_CONFIG } from './constants/wedding';
 
 // 이미지 압축: File → Blob 변환 (저장 전 용도)
 export const compressImage = async (

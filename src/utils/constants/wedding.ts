@@ -1,4 +1,4 @@
-import type { Folder, WeddingInfo } from '@/types/wedding';
+import type { WeddingInfo } from '@/types/wedding';
 
 export const WEDDING_INITIAL_INFO: WeddingInfo = {
   showCheckbox: {
@@ -106,11 +106,4 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     localImageList: [],
     savedImageList: [],
   },
-};
-
-export const FOLDERS: Folder[] = ['gallery', 'share'];
-
-export const FOLDER_CONFIG: Record<Folder, { multiple: boolean }> = {
-  gallery: { multiple: true },
-  share: { multiple: false },
 };
