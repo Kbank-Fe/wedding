@@ -108,7 +108,6 @@ export const useWeddingInfo = (
         draft.location = data.location ?? WEDDING_INITIAL_INFO.location;
         draft.transport = data.transport ?? WEDDING_INITIAL_INFO.transport;
         draft.account = data.account ?? WEDDING_INITIAL_INFO.account;
-        draft.share = data.share ?? WEDDING_INITIAL_INFO.share;
       });
     };
 
