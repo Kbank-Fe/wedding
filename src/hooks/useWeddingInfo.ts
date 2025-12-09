@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import useSWR from 'swr';
 
 import type { WeddingInfo } from '@/types/wedding';
-import { FOLDER_CONFIG, type Folder } from '@/utils/constants/folder';
+import { FOLDER_CONFIG, FOLDERS, type Folder } from '@/utils/constants/folder';
 import { WEDDING_INITIAL_INFO } from '@/utils/constants/wedding';
 import { initializeLocalImageList } from '@/utils/image';
 import { getShare, getUserShareId } from '@/utils/shares';
@@ -13,10 +13,28 @@ type Options = {
   shareId?: string | null;
 };
 
-const FOLDER_ENTRIES = Object.entries(FOLDER_CONFIG) as [
-  Folder,
-  (typeof FOLDER_CONFIG)[Folder],
-][];
+const syncImageSection = <K extends Folder>(
+  draft: WeddingInfo,
+  folder: K,
+  source: WeddingInfo[K],
+) => {
+  const { multiple } = FOLDER_CONFIG[folder];
+
+  const baseLocalImageList = initializeLocalImageList(source.savedImageList);
+
+  const preservedFiles = multiple
+    ? draft[folder].localImageList.filter(
+        (img): img is File => img instanceof File,
+      )
+    : [];
+
+  draft[folder] = {
+    ...source,
+    localImageList: multiple
+      ? [...baseLocalImageList, ...preservedFiles]
+      : [...baseLocalImageList],
+  };
+};
 
 const fetchWeddingInfo = async ({
   uid,
@@ -70,26 +88,9 @@ export const useWeddingInfo = (
 
     const setData = () => {
       setDeep((draft) => {
-        FOLDER_ENTRIES.forEach(([folder, { multiple }]) => {
+        FOLDERS.forEach((folder) => {
           const section = data[folder] ?? WEDDING_INITIAL_INFO[folder];
-          if (!section) return;
-
-          const baseLocalImageList = initializeLocalImageList(
-            section.savedImageList,
-          );
-
-          const preservedFiles = multiple
-            ? draft[folder].localImageList.filter(
-                (img): img is File => img instanceof File,
-              )
-            : [];
-
-          draft[folder] = {
-            ...section,
-            localImageList: multiple
-              ? [...baseLocalImageList, ...preservedFiles]
-              : [...baseLocalImageList],
-          } as WeddingInfo[Folder];
+          syncImageSection(draft, folder, section);
         });
 
         draft.showCheckbox =
