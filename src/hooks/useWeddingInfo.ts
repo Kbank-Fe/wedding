@@ -2,6 +2,12 @@ import { useEffect } from 'react';
 import useSWR from 'swr';
 
 import type { WeddingInfo } from '@/types/wedding';
+import {
+  type Folder,
+  FOLDER_CONFIG,
+  FOLDERS,
+  type FolderSection,
+} from '@/utils/constants/folder';
 import { WEDDING_INITIAL_INFO } from '@/utils/constants/wedding';
 import { initializeLocalImageList } from '@/utils/image';
 import { getShare, getUserShareId } from '@/utils/shares';
@@ -63,23 +69,34 @@ export const useWeddingInfo = (
     if (!data || !setDeep) return;
 
     const setData = async () => {
-      const galleryLocalImageList = initializeLocalImageList(data.gallery?.savedImageList);
-      const shareLocalImageList = initializeLocalImageList(data.share?.savedImageList);
-
       setDeep((draft) => {
-        const localFiles = (draft.gallery?.localImageList ?? []).filter(
-          (img): img is File => img instanceof File,
-        );
+        FOLDERS.forEach((folder) => {
+          type Section = FolderSection<Folder>;
 
-        draft.gallery = {
-          ...(data.gallery ?? {}),
-          localImageList: [...galleryLocalImageList, ...localFiles],
-        };
+          const section = (data[folder] ??
+            WEDDING_INITIAL_INFO[folder]) as Section;
 
-        draft.share = {
-          ...(data.share ?? {}),
-          localImageList: [...shareLocalImageList],
-        };
+          const baseLocalImageList = initializeLocalImageList(
+            section.savedImageList,
+          );
+
+          const preservedFiles =
+            FOLDER_CONFIG[folder].multiple &&
+            Array.isArray(draft[folder]?.localImageList)
+              ? draft[folder].localImageList.filter(
+                  (img): img is File => img instanceof File,
+                )
+              : [];
+
+          const draftFolders = draft as Record<Folder, FolderSection<Folder>>;
+
+          draftFolders[folder] = {
+            ...section,
+            localImageList: FOLDER_CONFIG[folder].multiple
+              ? [...baseLocalImageList, ...preservedFiles]
+              : baseLocalImageList,
+          } as Section;
+        });
 
         draft.showCheckbox =
           data.showCheckbox ?? WEDDING_INITIAL_INFO.showCheckbox;
