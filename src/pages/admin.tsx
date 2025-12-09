@@ -14,7 +14,6 @@ import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useWeddingInfo } from '@/hooks/useWeddingInfo';
 import { useViewportStore } from '@/stores/useViewportStore';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { SavedImage } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
 import { FOLDERS } from '@/utils/constants/folder';
 import { processFolderImages } from '@/utils/image';
