@@ -19,23 +19,24 @@ const AccountList = () => {
     brideSideAccounts: brideSide = { title: '', isExpand: false, accounts: [] },
   } = accountInfo;
 
-  const hasValidAccount = (accounts: AccountType[]) => {
-    if (!accounts.length) return false;
+  const renderSide = (
+    value: string,
+    title: string,
+    accounts: AccountType[],
+  ) => {
+    const validAccounts = accounts.filter(
+      (acc) =>
+        acc.accountHolder?.trim() ||
+        acc.bankName?.trim() ||
+        acc.accountNumber?.trim(),
+    );
 
-    const { accountNumber, accountHolder, bankName } = accounts[0];
+    if (validAccounts.length === 0) return null;
 
     return (
-      Boolean(accountNumber?.trim()) ||
-      Boolean(accountHolder?.trim()) ||
-      Boolean(bankName?.trim())
-    );
-  };
-
-  const renderSide = (value: string, title: string, accounts: AccountType[]) =>
-    hasValidAccount(accounts) && (
       <AccordionItem title={title} value={value}>
         <div css={accountListStyle}>
-          {accounts.map((account, idx) => (
+          {validAccounts.map((account, idx) => (
             <div key={idx}>
               <Account {...account} />
             </div>
@@ -43,6 +44,7 @@ const AccountList = () => {
         </div>
       </AccordionItem>
     );
+  };
 
   return (
     <>
