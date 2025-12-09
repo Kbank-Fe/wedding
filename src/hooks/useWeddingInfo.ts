@@ -98,14 +98,17 @@ export const useWeddingInfo = (
           } as Section;
         });
 
+        draft.theme = data.theme ?? WEDDING_INITIAL_INFO.theme;
         draft.activeCheckbox =
           data.activeCheckbox ?? WEDDING_INITIAL_INFO.activeCheckbox;
-        draft.account = data.account ?? WEDDING_INITIAL_INFO.account;
+        draft.basicInfo = data.basicInfo ?? WEDDING_INITIAL_INFO.basicInfo;
+        draft.intro = data.intro ?? WEDDING_INITIAL_INFO.intro;
         draft.contact = data.contact ?? WEDDING_INITIAL_INFO.contact;
         draft.date = data.date ?? WEDDING_INITIAL_INFO.date;
-        draft.intro = data.intro ?? WEDDING_INITIAL_INFO.intro;
-        draft.transport = data.transport ?? WEDDING_INITIAL_INFO.transport;
         draft.location = data.location ?? WEDDING_INITIAL_INFO.location;
+        draft.transport = data.transport ?? WEDDING_INITIAL_INFO.transport;
+        draft.account = data.account ?? WEDDING_INITIAL_INFO.account;
+        draft.share = data.share ?? WEDDING_INITIAL_INFO.share;
       });
     };
 
