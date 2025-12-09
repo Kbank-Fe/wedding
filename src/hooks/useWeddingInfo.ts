@@ -1,7 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import useSWR from 'swr';
 
 import type { WeddingInfo } from '@/types/wedding';
+import {
+  type Folder,
+  FOLDER_CONFIG,
+  FOLDERS,
+  type FolderSection,
+} from '@/utils/constants/folder';
 import { WEDDING_INITIAL_INFO } from '@/utils/constants/wedding';
 import { initializeLocalImageList } from '@/utils/image';
 import { getShare, getUserShareId } from '@/utils/shares';
@@ -53,8 +59,6 @@ export const useWeddingInfo = (
         ? ['weddingInfoByShareId', shareId]
         : null;
 
-  const initializedRef = useRef(false);
-
   const { data, error, isLoading } = useSWR<WeddingInfo | null>(
     key,
     () => fetchWeddingInfo({ uid: uid ?? null, shareId: shareId ?? null }),
@@ -62,33 +66,37 @@ export const useWeddingInfo = (
   );
 
   useEffect(() => {
-    if (!data || !setDeep || initializedRef.current) return;
+    if (!data || !setDeep) return;
 
     const setData = async () => {
-      const localImageList = await initializeLocalImageList(
-        data.gallery?.savedImageList,
-      );
-
       setDeep((draft) => {
-        const localFiles = (draft.gallery?.localImageList ?? []).filter(
-          (img): img is File => img instanceof File,
-        );
+        FOLDERS.forEach((folder) => {
+          type Section = FolderSection<Folder>;
 
-        draft.gallery = {
-          ...(data.gallery ?? {}),
-          localImageList: [...localImageList, ...localFiles],
-        };
+          const section = (data[folder] ??
+            WEDDING_INITIAL_INFO[folder]) as Section;
 
-        draft.share = {
-          title: data.share?.title ?? '',
-          description: data.share?.description ?? '',
-          kakaoShare: data.share?.kakaoShare ?? true,
-          linkShare: data.share?.linkShare ?? true,
-          file: Array.isArray(data.share?.file) ? data.share.file : [],
-          uploadMeta: Array.isArray(data.share?.uploadMeta)
-            ? data.share.uploadMeta
-            : [],
-        };
+          const baseLocalImageList = initializeLocalImageList(
+            section.savedImageList,
+          );
+
+          const preservedFiles =
+            FOLDER_CONFIG[folder].multiple &&
+            Array.isArray(draft[folder]?.localImageList)
+              ? draft[folder].localImageList.filter(
+                  (img): img is File => img instanceof File,
+                )
+              : [];
+
+          const draftFolders = draft as Record<Folder, FolderSection<Folder>>;
+
+          draftFolders[folder] = {
+            ...section,
+            localImageList: FOLDER_CONFIG[folder].multiple
+              ? [...baseLocalImageList, ...preservedFiles]
+              : baseLocalImageList,
+          } as Section;
+        });
 
         draft.activeCheckbox =
           data.activeCheckbox ?? WEDDING_INITIAL_INFO.activeCheckbox;
@@ -99,8 +107,6 @@ export const useWeddingInfo = (
         draft.transport = data.transport ?? WEDDING_INITIAL_INFO.transport;
         draft.location = data.location ?? WEDDING_INITIAL_INFO.location;
       });
-
-      initializedRef.current = true;
     };
 
     setData();

@@ -37,7 +37,8 @@ const Footer = ({ shareId }: { shareId: string }) => {
       content: {
         title: shareInfo.title ?? '',
         description: shareInfo.description ?? '',
-        imageUrl: shareInfo.uploadMeta?.[0].url ?? `${SHARE_URL}/${shareId}`,
+        imageUrl:
+          shareInfo.savedImageList?.[0].url ?? `${SHARE_URL}/${shareId}`,
         link: {
           mobileWebUrl: `${SHARE_URL}/${shareId}`,
           webUrl: `${SHARE_URL}/${shareId}`,

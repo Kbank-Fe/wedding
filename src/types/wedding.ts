@@ -132,8 +132,8 @@ export type FooterShare = {
   description: string;
   kakaoShare: boolean;
   linkShare: boolean;
-  file?: LocalImage[];
-  uploadMeta?: SavedImage[];
+  localImageList: LocalImage[];
+  savedImageList: SavedImage[];
 };
 
 export type WeddingInfo = {

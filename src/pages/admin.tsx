@@ -16,8 +16,9 @@ import { useViewportStore } from '@/stores/useViewportStore';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { SavedImage } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
+import { FOLDERS } from '@/utils/constants/folder';
+import { processFolderImages } from '@/utils/image';
 import { saveUserShare } from '@/utils/shares';
-import { uploadImageToStorage } from '@/utils/storage';
 import { getObjectParticle, validateWeddingInfo } from '@/utils/validate';
 
 const AdminPage = () => {
@@ -40,71 +41,6 @@ const AdminPage = () => {
   if (!uid && !userLoading) return <Navigate replace to="/404" />;
   if (notFound) return <Navigate replace to="/404" />;
 
-  const handleSetImageList = async (uid: string) => {
-    const gallery = useWeddingStore.getState().values.gallery;
-    const savedImageList = gallery.savedImageList ?? [];
-    const localImageList = gallery.localImageList ?? [];
-
-    const addedFiles = localImageList.filter(
-      (img): img is File => img instanceof File,
-    );
-
-    const deletedSavedImages = savedImageList.filter(
-      (saved) =>
-        !localImageList.some(
-          (img) => !(img instanceof File) && img.url === saved.url,
-        ),
-    );
-
-    if (addedFiles.length === 0 && deletedSavedImages.length === 0) return;
-
-    try {
-      const metas: SavedImage[] = await Promise.all(
-        addedFiles.map((file) => uploadImageToStorage(file, uid)),
-      );
-
-      setDeep((draft) => {
-        draft.gallery.savedImageList = [
-          ...savedImageList.filter(
-            (img) => !deletedSavedImages.some((del) => del.url === img.url),
-          ),
-          ...metas,
-        ];
-      });
-    } catch (error) {
-      console.error('이미지 업로드 중 오류 발생', error);
-      throw new Error('image_upload_failed');
-    }
-  };
-
-  const handleSetShareImage = async (uid: string) => {
-    const { file, uploadMeta } = useWeddingStore.getState().values.share;
-    const localFile = file?.[0];
-
-    if (!(localFile instanceof File)) return;
-    if (uploadMeta?.[0]?.name === localFile.name) {
-      setDeep((draft) => {
-        draft.share.file = uploadMeta;
-      });
-      return;
-    }
-
-    try {
-      const meta: SavedImage = await uploadImageToStorage(localFile, uid, {
-        folder: 'share',
-        overwrite: true,
-      });
-
-      setDeep((draft) => {
-        draft.share.file = [meta];
-        draft.share.uploadMeta = [meta];
-      });
-    } catch (error) {
-      console.error('공유하기 이미지 업로드 중 오류 발생', error);
-      throw new Error('share_file_upload_failed');
-    }
-  };
-
   const handleSave = async () => {
     if (!user || !uid || isSavingRef.current) return;
     isSavingRef.current = true;
@@ -121,17 +57,22 @@ const AdminPage = () => {
         return;
       }
 
-      await handleSetImageList(uid);
-      await handleSetShareImage(uid);
+      await Promise.all(
+        FOLDERS.map((f) => processFolderImages(uid, f, setDeep)),
+      );
       const values = useWeddingStore.getState().values;
       const shareId = await saveUserShare(uid, values);
 
-      useWeddingStore.setState((state) => {
-        state.values.gallery.localImageList = [];
-      });
-
       toast.success('데이터를 저장했어요!');
-      setTimeout(() => navigate(`/${shareId}`), 1500);
+
+      setTimeout(() => {
+        navigate(`/${shareId}`);
+        useWeddingStore.setState((state) => {
+          FOLDERS.forEach((folder) => {
+            state.values[folder].localImageList = [];
+          });
+        });
+      }, 1500);
     } catch (error) {
       console.error(error);
       toast.error('데이터 저장을 실패했어요.');
