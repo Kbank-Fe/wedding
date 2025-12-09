@@ -17,7 +17,8 @@ import { useViewportStore } from '@/stores/useViewportStore';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { ShowCheckbox } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
-import { type Folder,processFolderImages } from '@/utils/image';
+import { FOLDERS } from '@/utils/constants/wedding';
+import { processFolderImages } from '@/utils/image';
 import { saveUserShare } from '@/utils/shares';
 
 const AdminPage = () => {
@@ -48,21 +49,22 @@ const AdminPage = () => {
     setLoadingOpen(true);
 
     try {
-      const folders: Folder[] = ['gallery', 'share'];
+      await Promise.all(
+        FOLDERS.map((f) => processFolderImages(uid, f, setDeep)),
+      );
 
-      await Promise.all(folders.map((f) => processFolderImages(uid, f, setDeep)));
-      
       const values = useWeddingStore.getState().values;
       const shareId = await saveUserShare(uid, values);
 
       toast.success('데이터를 저장했어요!');
-      
+
       setTimeout(() => {
-        navigate(`/${shareId}`)
+        navigate(`/${shareId}`);
         useWeddingStore.setState((state) => {
-        state.values.gallery.localImageList = [];
-        state.values.share.localImageList = [];
-      });
+          FOLDERS.forEach((folder) => {
+            state.values[folder].localImageList = [];
+          });
+        });
       }, 1500);
     } catch (error) {
       console.error(error);

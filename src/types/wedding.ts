@@ -12,6 +12,8 @@ export type ShowCheckbox = {
   share: boolean;
 };
 
+export type Folder = 'gallery' | 'share';
+
 export type UserBasicInfo = UserBasicInfoString & UserBasicInfoBoolean;
 
 export type UserBasicInfoString = {
