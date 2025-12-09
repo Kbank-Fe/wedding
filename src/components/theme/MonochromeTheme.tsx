@@ -3,16 +3,27 @@ import { motion } from 'framer-motion';
 
 import mainImage from '/images/image7.png';
 import Line from '@/components/shared/Line';
+import { useWeddingStore } from '@/stores/useWeddingStore';
+import { formatToAmPm } from '@/utils/constants/time';
+import { getEnglishMonth } from '@/utils/date';
 
 const MonochromeTheme = () => {
+  const { year, month, day, hour, min } = useWeddingStore(
+    (state) => state.values.date,
+  );
+  const { groomEnglishName, brideEnglishName } = useWeddingStore(
+    (state) => state.values.theme,
+  );
+  const dateString = new Date(year, month - 1, day, hour, min).toISOString();
+
   return (
     <section css={containerStyle}>
       <header css={headerStyle}>
-        <time dateTime="2025-05-27T12:00">
-          <p css={dayTextStyle}>27</p>
+        <time dateTime={dateString}>
+          <p css={dayTextStyle}>{day}</p>
           <Line marginBottom={7} marginTop={0} />
           <p css={dateTextStyle}>
-            MAY <span>PM 12:00</span>
+            {getEnglishMonth(month)} <span>{formatToAmPm(hour, min)}</span>
           </p>
         </time>
       </header>
@@ -26,7 +37,7 @@ const MonochromeTheme = () => {
         <img alt="Wedding main" css={imageStyle} src={mainImage} />
         <figcaption css={textStyle}>
           <h2>
-            JONGEUN <span>and</span> KYUMIN
+            {groomEnglishName} <span>and</span> {brideEnglishName}
           </h2>
         </figcaption>
       </motion.figure>

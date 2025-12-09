@@ -1,4 +1,20 @@
-export type ShowCheckbox = {
+export type ThemeType =
+  | 'CARDSLIDE'
+  | 'FULL'
+  | 'MONOCHROME'
+  | 'POLAROID'
+  | 'ROUNDSLIDE';
+
+export type Theme = {
+  type?: ThemeType;
+  groomEnglishName?: string;
+  brideEnglishName?: string;
+  text1?: string;
+  text2?: string;
+  text3?: string;
+};
+
+export type ActiveCheckbox = {
   theme: boolean;
   intro: boolean;
   contact: boolean;
@@ -121,7 +137,8 @@ export type FooterShare = {
 };
 
 export type WeddingInfo = {
-  showCheckbox: ShowCheckbox;
+  theme: Theme;
+  activeCheckbox: ActiveCheckbox;
   basicInfo: UserBasicInfo;
   intro: Intro;
   contact: ContactList;

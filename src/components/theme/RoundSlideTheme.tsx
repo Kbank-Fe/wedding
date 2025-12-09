@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 
 import ImageSlideMotion from '@/components/shared/motion/ImageSlideMotion';
 import Sticker from '@/components/shared/Sticker';
+import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const images = [
   '/images/image1.png',
@@ -12,11 +13,14 @@ const images = [
 ];
 
 const RoundSlideTheme = () => {
+  const { groomEnglishName, brideEnglishName, text1, text2 } = useWeddingStore(
+    (state) => state.values.theme,
+  );
   return (
     <section css={containerStyle}>
       <header css={headerStyle}>
         <h1 css={titleStyle}>
-          Our <br /> Wedding Day
+          {text1} <br /> {text2}
         </h1>
         <Sticker right="-10px" size="38px" top="-10px" />
       </header>
@@ -27,7 +31,9 @@ const RoundSlideTheme = () => {
           radius="170px"
           width="300px"
         />
-        <figcaption css={descriptionStyle}>Kyumin and Jongeun</figcaption>
+        <figcaption css={descriptionStyle}>
+          {groomEnglishName} and {brideEnglishName}
+        </figcaption>
       </figure>
     </section>
   );

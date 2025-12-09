@@ -98,8 +98,8 @@ export const useWeddingInfo = (
           } as Section;
         });
 
-        draft.showCheckbox =
-          data.showCheckbox ?? WEDDING_INITIAL_INFO.showCheckbox;
+        draft.activeCheckbox =
+          data.activeCheckbox ?? WEDDING_INITIAL_INFO.activeCheckbox;
         draft.account = data.account ?? WEDDING_INITIAL_INFO.account;
         draft.contact = data.contact ?? WEDDING_INITIAL_INFO.contact;
         draft.date = data.date ?? WEDDING_INITIAL_INFO.date;

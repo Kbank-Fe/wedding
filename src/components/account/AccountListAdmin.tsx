@@ -1,3 +1,5 @@
+import { toast } from 'sonner';
+
 import AccountGroup from '@/components/account/AccountGroup';
 import BaseTextArea from '@/components/shared/BaseTextArea';
 import BaseTextInput from '@/components/shared/BaseTextInput';
@@ -74,6 +76,11 @@ const AccountListAdmin = () => {
           ? draft.account.groomSideAccounts
           : draft.account.brideSideAccounts;
       if (!target) return;
+
+      if (target.accounts.length >= 3) {
+        toast.error('계좌는 최대 3개까지 등록할 수 있어요.');
+        return;
+      }
       target.accounts.push(createEmptyAccount());
     });
 

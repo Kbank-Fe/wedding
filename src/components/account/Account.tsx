@@ -26,7 +26,9 @@ const Account = ({
   isKakaopay,
   kakaopayUrl,
 }: AccountProps) => {
-  const showAccount = !!(bankName && accountNumber && accountHolder);
+  const showAccount = Boolean(
+    bankName?.trim() || accountNumber?.trim() || accountHolder?.trim(),
+  );
 
   const { trigger: triggerCopy } = useButtonCooldown();
   const { trigger: triggerKakao } = useButtonCooldown();

@@ -7,9 +7,9 @@ import Gallery from '@/components/gallery/Gallery';
 import WeddingIntro from '@/components/Intro/WeddingIntro';
 import Location from '@/components/location/Location';
 import TransportList from '@/components/transport/TransportList';
-import type { ShowCheckbox } from '@/types/wedding';
+import type { ActiveCheckbox } from '@/types/wedding';
 
-type ShowKey = keyof ShowCheckbox;
+type ShowKey = keyof ActiveCheckbox;
 
 type MainList = {
   key: ShowKey;

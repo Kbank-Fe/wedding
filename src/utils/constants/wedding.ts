@@ -1,7 +1,15 @@
 import type { WeddingInfo } from '@/types/wedding';
 
 export const WEDDING_INITIAL_INFO: WeddingInfo = {
-  showCheckbox: {
+  theme: {
+    type: 'CARDSLIDE',
+    groomEnglishName: 'Kim KKK',
+    brideEnglishName: 'Park HHH',
+    text1: 'OUR',
+    text2: 'WEDDING',
+    text3: 'DAY',
+  },
+  activeCheckbox: {
     theme: true,
     intro: true,
     contact: false,

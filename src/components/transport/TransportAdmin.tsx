@@ -28,6 +28,7 @@ const TransportAdmin = () => {
       {transportList.map((item, index) => (
         <Field key={index} label={`교통수단${index + 1}`}>
           <BaseTextInput
+            maxLength={24}
             placeholder="교통수단을 입력해주세요"
             value={item.title}
             onChange={handleChangeInput(index)}

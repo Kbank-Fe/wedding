@@ -39,6 +39,12 @@ const inputStyle = css`
     outline: none;
     border-color: var(--gray11);
   }
+
+  &[readonly] {
+    background-color: var(--gray3);
+    color: var(--gray11);
+    cursor: default;
+  }
 `;
 
 export default BaseTextInput;

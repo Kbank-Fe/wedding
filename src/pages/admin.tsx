@@ -5,7 +5,6 @@ import { toast, Toaster } from 'sonner';
 
 import { Accordion } from '@/components/account/Accordion';
 import { AccordionItem } from '@/components/account/AccordionItem';
-import BaseCheckBoxInput from '@/components/shared/BaseCheckBoxInput';
 import ButtonContentModal from '@/components/shared/ButtonContentModal';
 import Layout from '@/components/shared/Layout';
 import ListSkeleton from '@/components/shared/ListSkeleton';
@@ -15,16 +14,16 @@ import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useWeddingInfo } from '@/hooks/useWeddingInfo';
 import { useViewportStore } from '@/stores/useViewportStore';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { ShowCheckbox } from '@/types/wedding';
+import type { SavedImage } from '@/types/wedding';
 import { adminList } from '@/utils/adminList';
 import { FOLDERS } from '@/utils/constants/folder';
 import { processFolderImages } from '@/utils/image';
 import { saveUserShare } from '@/utils/shares';
+import { getObjectParticle, validateWeddingInfo } from '@/utils/validate';
 
 const AdminPage = () => {
   const navigate = useNavigate();
   const setDeep = useWeddingStore((state) => state.setDeep);
-  const setField = useWeddingStore((state) => state.setField);
 
   const { user, uid, isLoading: userLoading } = useCurrentUser();
 
@@ -38,7 +37,6 @@ const AdminPage = () => {
   );
 
   const isMobile = useViewportStore((state) => state.isMobile);
-  const showCheckbox = useWeddingStore((state) => state.values.showCheckbox);
 
   if (!uid && !userLoading) return <Navigate replace to="/404" />;
   if (notFound) return <Navigate replace to="/404" />;
@@ -49,10 +47,19 @@ const AdminPage = () => {
     setLoadingOpen(true);
 
     try {
+      const result = validateWeddingInfo(useWeddingStore.getState().values);
+
+      if (!result.isValid) {
+        const label = result.invalidLabels[0];
+        toast.error(`${label}${getObjectParticle(label)} 입력해주세요.`);
+
+        setLoadingOpen(false);
+        return;
+      }
+
       await Promise.all(
         FOLDERS.map((f) => processFolderImages(uid, f, setDeep)),
       );
-
       const values = useWeddingStore.getState().values;
       const shareId = await saveUserShare(uid, values);
 
@@ -75,10 +82,10 @@ const AdminPage = () => {
     }
   };
 
-  const handleCheckboxChange = (key: keyof ShowCheckbox) => {
-    const current = showCheckbox[key] ?? false;
-    setField('showCheckbox', key, !current);
-  };
+  const sortedAdminList = [
+    ...adminList.filter((item) => !item.showCheckbox),
+    ...adminList.filter((item) => item.showCheckbox),
+  ];
 
   return (
     <Layout viewType="admin">
@@ -101,20 +108,15 @@ const AdminPage = () => {
             </>
           ) : (
             <Accordion>
-              {adminList.map(
-                ({ title, value, component: Component, required }) => (
+              {sortedAdminList.map(
+                ({ title, value, component: Component, showCheckbox }) => (
                   <div key={value} css={divWrapStyle}>
-                    {!required && (
-                      <div css={checkboxStyle}>
-                        <BaseCheckBoxInput
-                          checked={showCheckbox[value] ?? false}
-                          id={value}
-                          onChange={() => handleCheckboxChange(value)}
-                        />
-                      </div>
-                    )}
                     <div css={accordionItemStyle}>
-                      <AccordionItem title={title} value={value}>
+                      <AccordionItem
+                        showCheckbox={showCheckbox}
+                        title={title}
+                        value={value}
+                      >
                         <Component />
                       </AccordionItem>
                     </div>
@@ -171,11 +173,6 @@ const previewAreaStyle = css`
 const divWrapStyle = css`
   display: flex;
   gap: 8px;
-`;
-
-const checkboxStyle = css`
-  flex-shrink: 0;
-  margin-top: 1.1rem;
 `;
 
 const accordionItemStyle = css`

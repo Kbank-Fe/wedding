@@ -1,6 +1,8 @@
 import { css } from '@emotion/react';
 
 import ImageSlideMotion from '@/components/shared/motion/ImageSlideMotion';
+import { useWeddingStore } from '@/stores/useWeddingStore';
+import { getEnglishMonth } from '@/utils/date';
 
 const images = [
   '/images/image1.png',
@@ -11,25 +13,31 @@ const images = [
 ];
 
 const CardSlideTheme = () => {
+  const { text1, text2 } = useWeddingStore((state) => state.values.theme);
+  const { maleName, femaleName } = useWeddingStore(
+    (state) => state.values.basicInfo,
+  );
+  const { year, month, day } = useWeddingStore((state) => state.values.date);
+
   return (
     <section css={containerStyle}>
       <figure css={figureStyle}>
         <ImageSlideMotion height="180px" images={images} width="180px" />
       </figure>
       <header css={nameWrapperStyle}>
-        <h2>이규민</h2>
+        <h2>{maleName}</h2>
         <span aria-hidden="true">&</span>
-        <h2>최종은</h2>
+        <h2>{femaleName}</h2>
       </header>
       <time css={dateStyle} dateTime="2025-05-27">
-        <span>27</span>
-        <span>May</span>
-        <span>2025</span>
+        <span>{day}</span>
+        <span>{getEnglishMonth(month)}</span>
+        <span>{year}</span>
       </time>
       <p css={subTextStyle}>
-        Please come to our wedding
+        {text1}
         <br />
-        and bless the start of our new life together
+        {text2}
       </p>
     </section>
   );

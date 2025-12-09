@@ -19,36 +19,39 @@ const AccountList = () => {
     brideSideAccounts: brideSide = { title: '', isExpand: false, accounts: [] },
   } = accountInfo;
 
-  const hasValidAccount = (accounts: AccountType[]) =>
-    accounts.length > 0 &&
-    accounts[0].accountNumber &&
-    accounts[0].accountHolder &&
-    accounts[0].bankName;
+  const renderSide = (
+    value: string,
+    title: string,
+    accounts: AccountType[],
+  ) => {
+    const validAccounts = accounts.filter(
+      (acc) =>
+        acc.accountHolder?.trim() ||
+        acc.bankName?.trim() ||
+        acc.accountNumber?.trim(),
+    );
 
-  const renderSide = (value: string, title: string, accounts: AccountType[]) =>
-    hasValidAccount(accounts) && (
+    if (validAccounts.length === 0) return null;
+
+    return (
       <AccordionItem title={title} value={value}>
-        <motion.div
-          css={accountListStyle}
-          initial="hidden"
-          variants={listVariants}
-          viewport={{ amount: 0.3 }}
-          whileInView="visible"
-        >
-          {accounts.map((account) => (
-            <motion.div key={account.accountNumber} variants={itemVariants}>
+        <div css={accountListStyle}>
+          {validAccounts.map((account, idx) => (
+            <div key={idx}>
               <Account {...account} />
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </AccordionItem>
     );
+  };
 
   return (
     <>
       <div css={headerStyle}>
         <TfiLayoutLineSolid color="#87BBBA" size={24} strokeWidth={1} />
       </div>
+
       <motion.div
         initial="hidden"
         variants={containerVariants}
@@ -68,6 +71,7 @@ const AccountList = () => {
           {renderSide('brideSide', brideSide.title ?? '', brideSide.accounts)}
         </Accordion>
       </motion.div>
+
       <Toaster duration={2000} position="top-center" />
     </>
   );
@@ -104,34 +108,13 @@ const accountListStyle = css`
   }
 `;
 
-const listVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-} as const;
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.4,
-      ease: [0.25, 0.1, 0.25, 1],
-    },
-  },
-} as const;
-
 const containerVariants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 1.0,
+      duration: 0.9,
       ease: [0.25, 0.1, 0.25, 1],
     },
   },
