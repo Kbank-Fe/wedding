@@ -12,6 +12,8 @@ export type Theme = {
   text1?: string;
   text2?: string;
   text3?: string;
+  localImageList: LocalImage[];
+  savedImageList: SavedImage[];
 };
 
 export type ActiveCheckbox = {

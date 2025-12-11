@@ -3,6 +3,7 @@ import type { WeddingInfo } from '@/types/wedding';
 export const FOLDER_CONFIG = {
   gallery: { multiple: true },
   share: { multiple: false },
+  theme: { multiple: true },
 } as const;
 export const FOLDERS = Object.keys(FOLDER_CONFIG) as Folder[];
 

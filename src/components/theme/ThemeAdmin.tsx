@@ -1,3 +1,4 @@
+import BaseImageInputPreview from '@/components//shared/BaseImageInputPreview';
 import BaseRadioButtonScrollGroup from '@/components/shared/BaseRadioButtonScrollGroup';
 import ThemeFields from '@/components/theme/ThemeFields';
 import { useWeddingStore } from '@/stores/useWeddingStore';
@@ -35,6 +36,7 @@ const ThemeAdmin = () => {
         }))}
       />
       <ThemeFields localThemeItem={localThemeItem} />
+      <BaseImageInputPreview multiple={true} />
     </>
   );
 };
