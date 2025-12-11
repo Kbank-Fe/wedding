@@ -9,11 +9,13 @@ import type { LocalImage } from '@/types/wedding';
 
 type BaseImageInputPreviewProps = {
   //   key: string;
+  label: string;
   multiple: boolean;
 };
 
 const BaseImageInputPreview = ({
   //   key,
+  label = '사진',
   multiple = true,
 }: BaseImageInputPreviewProps) => {
   const { localImageList = [] } = useWeddingStore(
@@ -50,7 +52,7 @@ const BaseImageInputPreview = ({
 
   return (
     <>
-      <Field label="사진">
+      <Field label={label}>
         <BaseImageInput multiple={multiple} onChange={handleAddFiles} />
       </Field>
       {localImageList.length > 0 && (

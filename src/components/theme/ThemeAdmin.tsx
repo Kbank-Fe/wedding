@@ -36,7 +36,7 @@ const ThemeAdmin = () => {
         }))}
       />
       <ThemeFields localThemeItem={localThemeItem} />
-      <BaseImageInputPreview multiple={true} />
+      <BaseImageInputPreview label="테마 사진" multiple={true} />
     </>
   );
 };
