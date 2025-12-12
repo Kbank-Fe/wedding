@@ -1,22 +1,27 @@
+import BaseImageInputPreview from '@/components//shared/BaseImageInputPreview';
 import BaseRadioButtonScrollGroup from '@/components/shared/BaseRadioButtonScrollGroup';
-import ThemeFields from '@/components/theme/ThemeFields';
+import ThemeTextFields from '@/components/theme/ThemeTextFields';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { themeList } from '@/utils/themeList';
 
 const ThemeAdmin = () => {
   const setDeep = useWeddingStore((state) => state.setDeep);
 
-  const theme = useWeddingStore((state) => state.values.theme) || {};
+  const { type } = useWeddingStore((state) => state.values.theme);
 
-  const localThemeItem = themeList.find((item) => item.type === theme.type);
+  const localThemeItem = themeList.find((item) => item.type === type);
 
   const handleChangeRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedType = e.target.value;
     setDeep((draft) => {
-      draft.theme.type = selectedType as typeof theme.type;
+      draft.theme.type = selectedType as typeof type;
     });
   };
 
+  /**
+   * @TODO [THEME-ADD] 새로운 테마 추가 시 샘플 이미지 경로와 값을 추가해주세요.
+   * ex) { image: '/images/theme/newtheme.png', value: 'NEWTHEME' }
+   */
   const themeScrollList = [
     { image: '/images/theme/cardslide.png', value: 'CARDSLIDE' },
     { image: '/images/theme/full.png', value: 'FULL' },
@@ -30,11 +35,17 @@ const ThemeAdmin = () => {
       <BaseRadioButtonScrollGroup
         items={themeScrollList.map((item) => ({
           ...item,
-          checked: theme.type === item.value,
+          checked: type === item.value,
           onChange: handleChangeRadio,
         }))}
       />
-      <ThemeFields localThemeItem={localThemeItem} />
+      <ThemeTextFields localThemeItem={localThemeItem} />
+
+      <BaseImageInputPreview
+        label="테마 사진"
+        multiple={localThemeItem?.image.multiple || false}
+        weddingInfoKey="themeImage"
+      />
     </>
   );
 };

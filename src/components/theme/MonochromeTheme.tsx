@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 
-import mainImage from '/images/image7.png';
 import Line from '@/components/shared/Line';
+import { useLocalImagePreviewList } from '@/hooks/useLocalImagePreviewList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { formatToAmPm } from '@/utils/constants/time';
 import { getEnglishMonth } from '@/utils/date';
@@ -15,6 +15,7 @@ const MonochromeTheme = () => {
     (state) => state.values.theme,
   );
   const dateString = new Date(year, month - 1, day, hour, min).toISOString();
+  const imagePreviewList = useLocalImagePreviewList('themeImage');
 
   return (
     <section css={containerStyle}>
@@ -34,7 +35,7 @@ const MonochromeTheme = () => {
         viewport={{ amount: 0.2 }}
         whileInView={{ opacity: 1, y: 0 }}
       >
-        <img alt="Wedding main" css={imageStyle} src={mainImage} />
+        <img alt="Wedding main" css={imageStyle} src={imagePreviewList[0]} />
         <figcaption css={textStyle}>
           <h2>
             {groomEnglishName} <span>and</span> {brideEnglishName}
