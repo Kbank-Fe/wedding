@@ -1,6 +1,6 @@
 import BaseImageInputPreview from '@/components//shared/BaseImageInputPreview';
 import BaseRadioButtonScrollGroup from '@/components/shared/BaseRadioButtonScrollGroup';
-import ThemeFields from '@/components/theme/ThemeFields';
+import ThemeTextFields from '@/components/theme/ThemeTextFields';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { themeList } from '@/utils/themeList';
 
@@ -35,11 +35,11 @@ const ThemeAdmin = () => {
           onChange: handleChangeRadio,
         }))}
       />
-      <ThemeFields localThemeItem={localThemeItem} />
+      <ThemeTextFields localThemeItem={localThemeItem} />
 
       <BaseImageInputPreview
         label="테마 사진"
-        multiple={true}
+        multiple={localThemeItem?.image.multiple || false}
         weddingInfoKey="themeImage"
       />
     </>
