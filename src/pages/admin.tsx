@@ -37,8 +37,8 @@ const AdminPage = () => {
 
   const isMobile = useViewportStore((state) => state.isMobile);
 
-  if (!uid && !userLoading) return <Navigate replace to="/404" />;
-  if (notFound) return <Navigate replace to="/404" />;
+  // if (!uid && !userLoading) return <Navigate replace to="/404" />;
+  // if (notFound) return <Navigate replace to="/404" />;
 
   const handleSave = async () => {
     if (!user || !uid || isSavingRef.current) return;
@@ -100,30 +100,30 @@ const AdminPage = () => {
               <WeddingPreview isPopup shareId={uid ?? ''} />
             </ButtonContentModal>
           )}
-          {infoLoading || userLoading || adminList.length === 0 ? (
+          {/* {infoLoading || userLoading || adminList.length === 0 ? (
             <>
               <LoadingBackdrop open={true} />
               <ListSkeleton count={9} />
             </>
-          ) : (
-            <Accordion>
-              {sortedAdminList.map(
-                ({ title, value, component: Component, showCheckbox }) => (
-                  <div key={value} css={divWrapStyle}>
-                    <div css={accordionItemStyle}>
-                      <AccordionItem
-                        showCheckbox={showCheckbox}
-                        title={title}
-                        value={value}
-                      >
-                        <Component />
-                      </AccordionItem>
-                    </div>
+          ) : ( */}
+          <Accordion>
+            {sortedAdminList.map(
+              ({ title, value, component: Component, showCheckbox }) => (
+                <div key={value} css={divWrapStyle}>
+                  <div css={accordionItemStyle}>
+                    <AccordionItem
+                      showCheckbox={showCheckbox}
+                      title={title}
+                      value={value}
+                    >
+                      <Component />
+                    </AccordionItem>
                   </div>
-                ),
-              )}
-            </Accordion>
-          )}
+                </div>
+              ),
+            )}
+          </Accordion>
+          {/* )} */}
           <button
             css={buttonStyle}
             disabled={isSavingRef.current}
