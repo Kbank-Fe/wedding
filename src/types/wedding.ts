@@ -14,6 +14,11 @@ export type Theme = {
   text3?: string;
 };
 
+export type ThemeImage = {
+  localImageList: LocalImage[];
+  savedImageList: SavedImage[];
+};
+
 export type ActiveCheckbox = {
   theme: boolean;
   intro: boolean;
@@ -138,6 +143,7 @@ export type FooterShare = {
 
 export type WeddingInfo = {
   theme: Theme;
+  themeImage: ThemeImage;
   activeCheckbox: ActiveCheckbox;
   basicInfo: UserBasicInfo;
   intro: Intro;

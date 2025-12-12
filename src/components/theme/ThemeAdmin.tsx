@@ -1,3 +1,4 @@
+import BaseImageInputPreview from '@/components//shared/BaseImageInputPreview';
 import BaseRadioButtonScrollGroup from '@/components/shared/BaseRadioButtonScrollGroup';
 import ThemeFields from '@/components/theme/ThemeFields';
 import { useWeddingStore } from '@/stores/useWeddingStore';
@@ -6,14 +7,14 @@ import { themeList } from '@/utils/themeList';
 const ThemeAdmin = () => {
   const setDeep = useWeddingStore((state) => state.setDeep);
 
-  const theme = useWeddingStore((state) => state.values.theme) || {};
+  const themeText = useWeddingStore((state) => state.values.theme) || {};
 
-  const localThemeItem = themeList.find((item) => item.type === theme.type);
+  const localThemeItem = themeList.find((item) => item.type === themeText.type);
 
   const handleChangeRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedType = e.target.value;
     setDeep((draft) => {
-      draft.theme.type = selectedType as typeof theme.type;
+      draft.theme.type = selectedType as typeof themeText.type;
     });
   };
 
@@ -30,11 +31,13 @@ const ThemeAdmin = () => {
       <BaseRadioButtonScrollGroup
         items={themeScrollList.map((item) => ({
           ...item,
-          checked: theme.type === item.value,
+          checked: themeText.type === item.value,
           onChange: handleChangeRadio,
         }))}
       />
       <ThemeFields localThemeItem={localThemeItem} />
+
+      <BaseImageInputPreview label="테마 사진" multiple={true} />
     </>
   );
 };

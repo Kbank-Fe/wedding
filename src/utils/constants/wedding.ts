@@ -9,6 +9,10 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     text2: 'WEDDING',
     text3: 'DAY',
   },
+  themeImage: {
+    localImageList: [],
+    savedImageList: [],
+  },
   activeCheckbox: {
     theme: true,
     intro: true,
