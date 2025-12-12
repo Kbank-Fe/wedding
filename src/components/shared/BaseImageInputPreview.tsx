@@ -5,21 +5,23 @@ import BaseImageInput from '@/components/shared/BaseImageInput';
 import Field from '@/components/shared/Field';
 import { useImagePreview } from '@/hooks/useImagePreview';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { LocalImage } from '@/types/wedding';
+import type { LocalImage, WeddingInfo } from '@/types/wedding';
+
+type WeddingInfoKeys = keyof WeddingInfo;
 
 type BaseImageInputPreviewProps = {
-  //   key: string;
+  weddingInfoKey: WeddingInfoKeys;
   label: string;
   multiple: boolean;
 };
 
 const BaseImageInputPreview = ({
-  //   key,
+  weddingInfoKey,
   label = '사진',
   multiple = true,
 }: BaseImageInputPreviewProps) => {
   const { localImageList = [] } = useWeddingStore(
-    (state) => state.values.themeImage,
+    (state) => state.values[weddingInfoKey] as { localImageList: LocalImage[] },
   );
   const setDeep = useWeddingStore((state) => state.setDeep);
 
@@ -27,20 +29,21 @@ const BaseImageInputPreview = ({
 
   const handleAddFiles = (files: File[]) => {
     setDeep((draft) => {
-      draft.themeImage.localImageList.push(...files);
+      (
+        draft[weddingInfoKey] as { localImageList: LocalImage[] }
+      ).localImageList.push(...files);
     });
   };
 
   const handleRemoveImage = (target: LocalImage) => {
     setDeep((draft) => {
-      draft.themeImage.localImageList = draft.themeImage.localImageList.filter(
-        (img) => {
-          if (img instanceof File && target instanceof File)
-            return img.name !== target.name || img.size !== target.size;
-          if ('url' in img && 'url' in target) return img.url !== target.url;
-          return true;
-        },
-      );
+      const value = draft[weddingInfoKey] as { localImageList: LocalImage[] };
+      value.localImageList = value.localImageList.filter((img) => {
+        if (img instanceof File && target instanceof File)
+          return img.name !== target.name || img.size !== target.size;
+        if ('url' in img && 'url' in target) return img.url !== target.url;
+        return true;
+      });
     });
   };
 
