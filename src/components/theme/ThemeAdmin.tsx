@@ -18,11 +18,11 @@ const ThemeAdmin = () => {
   };
 
   const themeScrollList = [
-    { image: '/images/theme_cardslide.png', value: 'CARDSLIDE' },
-    { image: '/images/theme_full.png', value: 'FULL' },
-    { image: '/images/theme_monochrome.png', value: 'MONOCHROME' },
-    { image: '/images/theme_polariod.png', value: 'POLAROID' },
-    { image: '/images/theme_roundslide.png', value: 'ROUNDSLIDE' },
+    { image: '/images/theme/cardslide.png', value: 'CARDSLIDE' },
+    { image: '/images/theme/full.png', value: 'FULL' },
+    { image: '/images/theme/monochrome.png', value: 'MONOCHROME' },
+    { image: '/images/theme/polariod.png', value: 'POLAROID' },
+    { image: '/images/theme/roundslide.png', value: 'ROUNDSLIDE' },
   ];
 
   return (

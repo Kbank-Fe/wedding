@@ -63,13 +63,12 @@ const labelWrapperStyle = css`
 `;
 
 const imgStyle = (checked: boolean) => css`
-  width: 80px;
-  height: 100%;
   display: block;
+  width: 90px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 8px;
-  border: ${checked ? '1.5px solid var(--gray8)' : '1px solid var(--gray4)'};
+  border: ${checked ? '1px solid var(--gray11)' : '1px solid var(--gray4)'};
   border-radius: 8px;
 `;
 
@@ -88,22 +87,23 @@ const radioControlBaseStyle = css`
 
 const radioInputStyle = css`
   ${radioControlBaseStyle}
-  border: 1px solid var(--gray6);
-  background: var(--gray4);
+  border: 1px solid var(--gray4);
+  background: var(--gray2);
   z-index: 1;
   appearance: none;
 `;
 
 const checkIconWrapperStyle = css`
   ${radioControlBaseStyle}
-  background: var(--gray10);
-  border: 1px solid var(--gray10);
+  background: var(--gray2);
+  border: 1px solid var(--gray11);
   z-index: 2;
 `;
 
 const checkIconStyle = css`
-  font-size: 10px;
-  color: var(--gray1);
+  font-size: 8px;
+  color: var(--gray11);
+  display: block;
 `;
 
 export default BaseRadioButtonScrollGroup;
