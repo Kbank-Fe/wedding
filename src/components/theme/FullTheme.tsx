@@ -1,6 +1,6 @@
 import { css, keyframes } from '@emotion/react';
 
-import mainImage from '/images/image11.jpg';
+import { useImagePreview } from '@/hooks/useImagePreview';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { getHourTitle, getMinuteTitle } from '@/utils/date';
 
@@ -11,6 +11,13 @@ const FullTheme = () => {
   const { year, month, day, hour, min } = useWeddingStore(
     (state) => state.values.date,
   );
+  const { localImageList } = useWeddingStore((state) => state.values.theme);
+  console.log(`localImageList in FullTheme: ${JSON.stringify(localImageList)}`);
+  const imagePreviewList = useImagePreview(localImageList);
+  console.log(
+    `imagePreviewList in FullTheme: ${JSON.stringify(imagePreviewList)}`,
+  );
+
   const { address } = useWeddingStore((state) => state.values.location);
 
   const header1 = `${year}년 ${month}월 ${day}일`;
@@ -28,7 +35,7 @@ const FullTheme = () => {
         <h3>{header3}</h3>
       </header>
       <figure>
-        <img alt="Wedding main" css={imageStyle} src={mainImage} />
+        <img alt="Wedding main" css={imageStyle} src={imagePreviewList[0]} />
       </figure>
       <p css={fullTitleStyle}>
         <span css={letterStyle(0)}>{text1}</span>
