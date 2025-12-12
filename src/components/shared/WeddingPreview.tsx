@@ -25,11 +25,7 @@ const WeddingPreview = ({
   );
 
   if (loading) {
-    return (
-      <>
-        <LoadingBackdrop open={true} text="저희의 결혼식에 초대합니다" />
-      </>
-    );
+    return <LoadingBackdrop open={true} text="저희의 결혼식에 초대합니다" />;
   }
 
   return (
