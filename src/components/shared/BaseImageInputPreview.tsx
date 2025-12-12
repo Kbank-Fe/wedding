@@ -5,9 +5,7 @@ import BaseImageInput from '@/components/shared/BaseImageInput';
 import Field from '@/components/shared/Field';
 import { useImagePreview } from '@/hooks/useImagePreview';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { LocalImage, WeddingInfo } from '@/types/wedding';
-
-type WeddingInfoKeys = keyof WeddingInfo;
+import type { LocalImage, WeddingInfoKeys } from '@/types/wedding';
 
 type BaseImageInputPreviewProps = {
   weddingInfoKey: WeddingInfoKeys;

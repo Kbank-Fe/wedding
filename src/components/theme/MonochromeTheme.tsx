@@ -15,7 +15,7 @@ const MonochromeTheme = () => {
     (state) => state.values.theme,
   );
   const dateString = new Date(year, month - 1, day, hour, min).toISOString();
-  const imagePreviewList = useLocalImagePreviewList();
+  const imagePreviewList = useLocalImagePreviewList('themeImage');
 
   return (
     <section css={containerStyle}>

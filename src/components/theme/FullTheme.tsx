@@ -13,7 +13,7 @@ const FullTheme = () => {
   );
   const { address } = useWeddingStore((state) => state.values.location);
 
-  const imagePreviewList = useLocalImagePreviewList();
+  const imagePreviewList = useLocalImagePreviewList('themeImage');
 
   const header1 = `${year}년 ${month}월 ${day}일`;
   const header2 = `${getHourTitle(hour)} ${getMinuteTitle(min)}`;

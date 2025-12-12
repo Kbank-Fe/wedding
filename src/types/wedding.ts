@@ -141,6 +141,8 @@ export type FooterShare = {
   savedImageList: SavedImage[];
 };
 
+export type WeddingInfoKeys = keyof WeddingInfo;
+
 export type WeddingInfo = {
   theme: Theme;
   themeImage: ThemeImage;
