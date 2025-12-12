@@ -2,20 +2,18 @@ import { css } from '@emotion/react';
 
 import ImageSlideMotion from '@/components/shared/motion/ImageSlideMotion';
 import Sticker from '@/components/shared/Sticker';
+import { useImagePreview } from '@/hooks/useImagePreview';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-
-const images = [
-  '/images/image1.png',
-  '/images/image2.png',
-  '/images/image3.png',
-  '/images/image4.png',
-  '/images/image5.png',
-];
 
 const RoundSlideTheme = () => {
   const { groomEnglishName, brideEnglishName, text1, text2 } = useWeddingStore(
     (state) => state.values.theme,
   );
+  const { localImageList } = useWeddingStore(
+    (state) => state.values.themeImage,
+  );
+  const imagePreviewList = useImagePreview(localImageList);
+
   return (
     <section css={containerStyle}>
       <header css={headerStyle}>
@@ -27,7 +25,7 @@ const RoundSlideTheme = () => {
       <figure css={figureStyle}>
         <ImageSlideMotion
           height="360px"
-          images={images}
+          images={imagePreviewList}
           radius="170px"
           width="300px"
         />

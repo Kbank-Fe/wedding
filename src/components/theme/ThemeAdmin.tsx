@@ -37,7 +37,11 @@ const ThemeAdmin = () => {
       />
       <ThemeFields localThemeItem={localThemeItem} />
 
-      <BaseImageInputPreview label="테마 사진" multiple={true} />
+      <BaseImageInputPreview
+        label="테마 사진"
+        multiple={true}
+        weddingInfoKey="themeImage"
+      />
     </>
   );
 };

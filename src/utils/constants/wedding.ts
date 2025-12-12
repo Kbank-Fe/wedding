@@ -5,9 +5,9 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     type: 'CARDSLIDE',
     groomEnglishName: 'Kim KKK',
     brideEnglishName: 'Park HHH',
-    text1: 'OUR',
-    text2: 'WEDDING',
-    text3: 'DAY',
+    text1: 'our',
+    text2: 'wedding',
+    text3: 'day',
   },
   themeImage: {
     localImageList: [],

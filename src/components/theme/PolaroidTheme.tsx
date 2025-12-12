@@ -1,13 +1,17 @@
 import { css } from '@emotion/react';
 
-import mainImage from '/images/image2.png';
 import Sticker from '@/components/shared/Sticker';
+import { useImagePreview } from '@/hooks/useImagePreview';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const PolaroidTheme = () => {
   const { groomEnglishName, brideEnglishName, text1, text2 } = useWeddingStore(
     (state) => state.values.theme,
   );
+  const { localImageList } = useWeddingStore(
+    (state) => state.values.themeImage,
+  );
+  const imagePreviewList = useImagePreview(localImageList);
 
   return (
     <div css={containerStyle}>
@@ -20,7 +24,7 @@ const PolaroidTheme = () => {
 
         <figure css={polaroidStyle}>
           <Sticker left="-15px" top="-19px" />
-          <img alt="Wedding main" src={mainImage} />
+          <img alt="Wedding main" src={imagePreviewList[0]} />
           <figcaption css={photoTextStyle}>{text1}</figcaption>
           <p css={photoSubTextStyle}>A day made with love</p>
         </figure>
