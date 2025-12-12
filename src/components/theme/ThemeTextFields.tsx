@@ -1,14 +1,11 @@
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Field from '@/components/shared/Field';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { ThemeList } from '@/utils/themeList';
+import type { TextAllowedKeys, ThemeList } from '@/utils/themeList';
 
 type Props = {
   localThemeItem?: ThemeList;
 };
-
-// 텍스트 입력 key 외 나머지 키 제외하도록 설정
-type TextAllowedKeys = keyof Omit<ThemeList, 'type' | 'image'>;
 
 const ThemeTextFields = ({ localThemeItem }: Props) => {
   const setDeep = useWeddingStore((state) => state.setDeep);

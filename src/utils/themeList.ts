@@ -22,6 +22,9 @@ export type ThemeList = {
   text3?: TextInputOption;
 };
 
+// 'type'와 'image'를 제외한 나머지 키들은 텍스트 입력 필드에 해당, TextAllowedKeys 타입에서 제외
+export type TextAllowedKeys = keyof Omit<ThemeList, 'type' | 'image'>;
+
 export const themeList: ThemeList[] = [
   {
     type: 'CARDSLIDE',

@@ -5,10 +5,10 @@ import BaseImageInput from '@/components/shared/BaseImageInput';
 import Field from '@/components/shared/Field';
 import { useImagePreview } from '@/hooks/useImagePreview';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import type { LocalImage, WeddingInfoKeys } from '@/types/wedding';
+import type { ImageAllowedKeys, LocalImage } from '@/types/wedding';
 
 type BaseImageInputPreviewProps = {
-  weddingInfoKey: WeddingInfoKeys;
+  weddingInfoKey: ImageAllowedKeys;
   label: string;
   multiple: boolean;
 };

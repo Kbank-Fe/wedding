@@ -141,7 +141,11 @@ export type FooterShare = {
   savedImageList: SavedImage[];
 };
 
-export type WeddingInfoKeys = keyof WeddingInfo;
+// image 입력 필드에 해당하는 키들
+export type ImageAllowedKeys = keyof Pick<
+  WeddingInfo,
+  'themeImage' | 'gallery' | 'share'
+>;
 
 export type WeddingInfo = {
   theme: Theme;
