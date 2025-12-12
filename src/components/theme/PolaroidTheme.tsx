@@ -1,17 +1,14 @@
 import { css } from '@emotion/react';
 
 import Sticker from '@/components/shared/Sticker';
-import { useImagePreview } from '@/hooks/useImagePreview';
+import { useLocalImagePreviewList } from '@/hooks/useLocalImagePreviewList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const PolaroidTheme = () => {
   const { groomEnglishName, brideEnglishName, text1, text2 } = useWeddingStore(
     (state) => state.values.theme,
   );
-  const { localImageList } = useWeddingStore(
-    (state) => state.values.themeImage,
-  );
-  const imagePreviewList = useImagePreview(localImageList);
+  const imagePreviewList = useLocalImagePreviewList();
 
   return (
     <div css={containerStyle}>

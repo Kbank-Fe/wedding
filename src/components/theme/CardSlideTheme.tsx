@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
 import ImageSlideMotion from '@/components/shared/motion/ImageSlideMotion';
-import { useImagePreview } from '@/hooks/useImagePreview';
+import { useLocalImagePreviewList } from '@/hooks/useLocalImagePreviewList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { getEnglishMonth } from '@/utils/date';
 
@@ -11,10 +11,7 @@ const CardSlideTheme = () => {
     (state) => state.values.basicInfo,
   );
   const { year, month, day } = useWeddingStore((state) => state.values.date);
-  const { localImageList } = useWeddingStore(
-    (state) => state.values.themeImage,
-  );
-  const imagePreviewList = useImagePreview(localImageList);
+  const imagePreviewList = useLocalImagePreviewList();
 
   return (
     <section css={containerStyle}>

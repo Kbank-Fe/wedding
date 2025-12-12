@@ -1,6 +1,6 @@
 import { css, keyframes } from '@emotion/react';
 
-import { useImagePreview } from '@/hooks/useImagePreview';
+import { useLocalImagePreviewList } from '@/hooks/useLocalImagePreviewList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { getHourTitle, getMinuteTitle } from '@/utils/date';
 
@@ -12,10 +12,8 @@ const FullTheme = () => {
     (state) => state.values.date,
   );
   const { address } = useWeddingStore((state) => state.values.location);
-  const { localImageList } = useWeddingStore(
-    (state) => state.values.themeImage,
-  );
-  const imagePreviewList = useImagePreview(localImageList);
+
+  const imagePreviewList = useLocalImagePreviewList();
 
   const header1 = `${year}년 ${month}월 ${day}일`;
   const header2 = `${getHourTitle(hour)} ${getMinuteTitle(min)}`;

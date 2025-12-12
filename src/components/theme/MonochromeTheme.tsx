@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 
 import Line from '@/components/shared/Line';
-import { useImagePreview } from '@/hooks/useImagePreview';
+import { useLocalImagePreviewList } from '@/hooks/useLocalImagePreviewList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { formatToAmPm } from '@/utils/constants/time';
 import { getEnglishMonth } from '@/utils/date';
@@ -15,10 +15,7 @@ const MonochromeTheme = () => {
     (state) => state.values.theme,
   );
   const dateString = new Date(year, month - 1, day, hour, min).toISOString();
-  const { localImageList } = useWeddingStore(
-    (state) => state.values.themeImage,
-  );
-  const imagePreviewList = useImagePreview(localImageList);
+  const imagePreviewList = useLocalImagePreviewList();
 
   return (
     <section css={containerStyle}>
