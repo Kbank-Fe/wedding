@@ -6,7 +6,7 @@ import { getHourTitle, getMinuteTitle } from '@/utils/date';
 
 const FullTheme = () => {
   const { text1, text2, text3 } = useWeddingStore(
-    (state) => state.values.theme,
+    (state) => state.values.theme.text,
   );
   const { year, month, day, hour, min } = useWeddingStore(
     (state) => state.values.date,

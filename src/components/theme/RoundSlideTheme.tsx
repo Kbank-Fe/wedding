@@ -14,7 +14,7 @@ const images = [
 
 const RoundSlideTheme = () => {
   const { groomEnglishName, brideEnglishName, text1, text2 } = useWeddingStore(
-    (state) => state.values.theme,
+    (state) => state.values.theme.text,
   );
   return (
     <section css={containerStyle}>

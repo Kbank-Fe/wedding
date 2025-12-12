@@ -5,13 +5,17 @@ export type ThemeType =
   | 'POLAROID'
   | 'ROUNDSLIDE';
 
-export type Theme = {
-  type?: ThemeType;
+type ThemeText = {
   groomEnglishName?: string;
   brideEnglishName?: string;
   text1?: string;
   text2?: string;
   text3?: string;
+};
+
+export type Theme = {
+  type: ThemeType;
+  text: ThemeText;
   localImageList: LocalImage[];
   savedImageList: SavedImage[];
 };

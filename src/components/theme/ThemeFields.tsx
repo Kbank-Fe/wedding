@@ -40,10 +40,10 @@ const ThemeFields = ({ localThemeItem }: Props) => {
               <BaseTextInput
                 maxLength={option.maxLength}
                 placeholder={`${option.label} 입력해주세요`}
-                value={theme[typedKey] || ''}
+                value={theme.text[typedKey] || ''}
                 onChange={(e) => {
                   setDeep((draft) => {
-                    draft.theme[typedKey] = e.target.value;
+                    draft.theme.text[typedKey] = e.target.value;
                   });
                 }}
               />

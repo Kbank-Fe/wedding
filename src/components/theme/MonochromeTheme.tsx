@@ -12,7 +12,7 @@ const MonochromeTheme = () => {
     (state) => state.values.date,
   );
   const { groomEnglishName, brideEnglishName } = useWeddingStore(
-    (state) => state.values.theme,
+    (state) => state.values.theme.text,
   );
   const dateString = new Date(year, month - 1, day, hour, min).toISOString();
 

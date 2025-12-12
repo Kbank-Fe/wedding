@@ -13,7 +13,7 @@ const images = [
 ];
 
 const CardSlideTheme = () => {
-  const { text1, text2 } = useWeddingStore((state) => state.values.theme);
+  const { text1, text2 } = useWeddingStore((state) => state.values.theme.text);
   const { maleName, femaleName } = useWeddingStore(
     (state) => state.values.basicInfo,
   );

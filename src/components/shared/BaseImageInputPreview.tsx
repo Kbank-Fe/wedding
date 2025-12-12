@@ -23,18 +23,10 @@ const BaseImageInputPreview = ({
   );
   const setDeep = useWeddingStore((state) => state.setDeep);
 
-  console.log(`localImageList : ${JSON.stringify(localImageList)}`);
-
   const imagePreviewList = useImagePreview(localImageList);
 
   const handleAddFiles = (files: File[]) => {
     setDeep((draft) => {
-      console.log(`draft.theme : ${JSON.stringify(draft.theme)}`);
-      console.log(
-        `draft.theme.localImageList : ${JSON.stringify(draft.theme.localImageList)}`,
-      );
-      console.log(`draft.share : ${JSON.stringify(draft.share)}`);
-      console.log(`draft.gallery : ${JSON.stringify(draft.gallery)}`);
       draft.theme.localImageList.push(...files);
     });
   };
