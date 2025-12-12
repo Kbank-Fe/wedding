@@ -9,7 +9,7 @@ import { useWeddingStore } from '@/stores/useWeddingStore';
 const SharePage = () => {
   const setDeep = useWeddingStore((state) => state.setDeep);
   const { shareId } = useParams<{ shareId: string }>();
-  const { notFound } = useWeddingInfo({ shareId }, setDeep);
+  const { notFound, isLoading } = useWeddingInfo({ shareId }, setDeep);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -21,7 +21,7 @@ const SharePage = () => {
 
   return (
     <Layout viewType="main">
-      <WeddingPreview shareId={shareId ?? ''} />
+      <WeddingPreview loading={isLoading} shareId={shareId ?? ''} />
     </Layout>
   );
 };

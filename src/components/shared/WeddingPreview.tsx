@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 
 import Footer from '@/components/footer/Footer';
 import Layout from '@/components/shared/Layout';
+import LoadingBackdrop from '@/components/shared/LoadingBackdrop';
 import Section from '@/components/shared/Section';
 import Theme from '@/components/theme/Theme';
 import { PreviewModeProvider } from '@/contexts/PreviewModeContext';
@@ -11,15 +12,25 @@ import { mainList } from '@/utils/mainList';
 type WeddingPreviewProps = {
   shareId?: string;
   isPopup?: boolean;
+  loading?: boolean;
 };
 
 const WeddingPreview = ({
   shareId = '',
   isPopup = false,
+  loading = false,
 }: WeddingPreviewProps) => {
   const activeCheckbox = useWeddingStore(
     (state) => state.values.activeCheckbox,
   );
+
+  if (loading) {
+    return (
+      <>
+        <LoadingBackdrop open={true} text="저희의 결혼식에 초대합니다" />
+      </>
+    );
+  }
 
   return (
     <PreviewModeProvider isPopup={isPopup}>
