@@ -7,17 +7,21 @@ import { themeList } from '@/utils/themeList';
 const ThemeAdmin = () => {
   const setDeep = useWeddingStore((state) => state.setDeep);
 
-  const themeText = useWeddingStore((state) => state.values.theme) || {};
+  const { type } = useWeddingStore((state) => state.values.theme);
 
-  const localThemeItem = themeList.find((item) => item.type === themeText.type);
+  const localThemeItem = themeList.find((item) => item.type === type);
 
   const handleChangeRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedType = e.target.value;
     setDeep((draft) => {
-      draft.theme.type = selectedType as typeof themeText.type;
+      draft.theme.type = selectedType as typeof type;
     });
   };
 
+  /**
+   * @TODO [THEME-ADD] 새로운 테마 추가 시 샘플 이미지 경로와 값을 추가해주세요.
+   * ex) { image: '/images/theme/newtheme.png', value: 'NEWTHEME' }
+   */
   const themeScrollList = [
     { image: '/images/theme/cardslide.png', value: 'CARDSLIDE' },
     { image: '/images/theme/full.png', value: 'FULL' },
@@ -31,7 +35,7 @@ const ThemeAdmin = () => {
       <BaseRadioButtonScrollGroup
         items={themeScrollList.map((item) => ({
           ...item,
-          checked: themeText.type === item.value,
+          checked: type === item.value,
           onChange: handleChangeRadio,
         }))}
       />

@@ -1,3 +1,7 @@
+/**
+ * @TODO [THEME-ADD] 새로운 테마 추가 시 타입을 정의해주세요.
+ * ex) 'NEWTHEME'
+ */
 export type ThemeType =
   | 'CARDSLIDE'
   | 'FULL'
@@ -5,6 +9,11 @@ export type ThemeType =
   | 'POLAROID'
   | 'ROUNDSLIDE';
 
+/**
+ * @TODO [THEME-ADD] 새로운 테마 추가 시 타입 입력 항목을 정의해주세요.
+ * ex) newthemeText1, newthemeText2
+ * 이미지 입력 항목은 ThemeImage 타입을 사용하기 때문에 별도 정의 불필요
+ */
 export type Theme = {
   type?: ThemeType;
   groomEnglishName?: string;
@@ -141,7 +150,10 @@ export type FooterShare = {
   savedImageList: SavedImage[];
 };
 
-// image 입력 필드에 해당하는 키들
+/**
+ * @TODO [IMAGE-ADD] 새로운 이미지 입력 key 추가 시 타입을 정의해주세요.
+ * image 입력 필드에 해당하는 키들만 포함
+ */
 export type ImageAllowedKeys = keyof Pick<
   WeddingInfo,
   'themeImage' | 'gallery' | 'share'

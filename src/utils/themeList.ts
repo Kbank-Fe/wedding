@@ -22,9 +22,16 @@ export type ThemeList = {
   text3?: TextInputOption;
 };
 
-// 'type'와 'image'를 제외한 나머지 키들은 텍스트 입력 필드에 해당, TextAllowedKeys 타입에서 제외
+/**
+ * @TODO [THEME-ADD] 새로운 테마 추가 시 텍스트 입력이 아닌 경우 제외 필요합니다.
+ * 'type'와 'image'를 제외한 나머지 키들은 텍스트 입력 필드에 해당, TextAllowedKeys 타입에서 제외
+ */
 export type TextAllowedKeys = keyof Omit<ThemeList, 'type' | 'image'>;
 
+/**
+ * @TODO [THEME-ADD] 새로운 테마 추가 시 입력 옵션을 정의해주세요.
+ * ex) { type: 'NEWTHEME', text1: { type: 'text', label: '첫번째 문구', isShow: true, maxLength: 20 }, image: { type: 'image', multiple: false } }
+ */
 export const themeList: ThemeList[] = [
   {
     type: 'CARDSLIDE',
