@@ -45,14 +45,16 @@ const BaseImageInputPreview = ({
     });
   };
 
+  const displayImages = multiple ? localImageList : localImageList.slice(0, 1);
+
   return (
     <>
       <Field label={label}>
         <BaseImageInput multiple={multiple} onChange={handleAddFiles} />
       </Field>
-      {localImageList.length > 0 && (
+      {displayImages.length > 0 && (
         <div css={previewWrapperStyle}>
-          {localImageList.map((file, index) => (
+          {displayImages.map((file, index) => (
             <div key={index}>
               <div css={previewImageWrapperStyle}>
                 <img
