@@ -1,5 +1,3 @@
-export const config = { runtime: 'edge' };
-
 const BOT_PATTERN =
   /(facebook|twitter|linkedin|bot|crawl|spider|slack|embed|kakaotalk|kakaostory|whatsapp|telegram|discord)/i;
 
@@ -14,34 +12,41 @@ const getBaseUrl = () =>
     ? required('PUBLIC_BASE_URL')
     : 'http://localhost:3000';
 
-export default async function handler(req) {
+const handler = async (req, res) => {
   try {
-    const url = new URL(req.url);
+    const url = new URL(req.url, getBaseUrl());
     const segments = url.pathname.split('/').filter(Boolean);
     const shareId = segments[segments.length - 1];
 
     const BASE_URL = getBaseUrl();
 
     if (!shareId) {
-      return Response.redirect(BASE_URL, 302);
+      res.writeHead(302, { Location: BASE_URL });
+      res.end();
+      return;
     }
 
-    const ua = req.headers.get('user-agent') || '';
+    const ua = req.headers['user-agent'] || '';
     if (!BOT_PATTERN.test(ua)) {
-      return Response.redirect(`${BASE_URL}/${shareId}`, 302);
+      res.writeHead(302, { Location: `${BASE_URL}/${shareId}` });
+      res.end();
+      return;
     }
 
     const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
 
-    const res = await fetch(`${FIREBASE_BASE}/shares/${shareId}/data.json`, {
-      cache: 'no-store',
-    });
+    const dataRes = await fetch(
+      `${FIREBASE_BASE}/shares/${shareId}/data.json`,
+      { cache: 'no-store' },
+    );
 
-    if (!res.ok) {
-      return Response.redirect(`${BASE_URL}/${shareId}`, 302);
+    if (!dataRes.ok) {
+      res.writeHead(302, { Location: `${BASE_URL}/${shareId}` });
+      res.end();
+      return;
     }
 
-    const data = await res.json();
+    const data = await dataRes.json();
 
     const male = data?.basicInfo?.maleName || '신랑';
     const female = data?.basicInfo?.femaleName || '신부';
@@ -58,8 +63,11 @@ export default async function handler(req) {
       img = imageUrl;
     }
 
-    return new Response(
-      `<!doctype html><html lang="ko"><head>
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.setHeader('Vary', 'User-Agent');
+
+    res.status(200).send(`<!doctype html><html lang="ko"><head>
 <meta charset="utf-8" />
 <title>${title}</title>
 <meta property="og:type" content="website" />
@@ -69,17 +77,12 @@ export default async function handler(req) {
 <meta property="og:url" content="${BASE_URL}/${shareId}" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta http-equiv="refresh" content="0; url=${BASE_URL}/${shareId}" />
-</head></html>`,
-      {
-        headers: {
-          'Content-Type': 'text/html; charset=utf-8',
-          'Cache-Control': 'no-store, no-cache, must-revalidate',
-          Vary: 'User-Agent',
-        },
-      },
-    );
+</head></html>`);
   } catch {
     const fallback = process.env.PUBLIC_BASE_URL || 'http://localhost:3000';
-    return Response.redirect(fallback, 302);
+    res.writeHead(302, { Location: fallback });
+    res.end();
   }
-}
+};
+
+export default handler;
