@@ -8,7 +8,7 @@ type Props = {
 };
 
 const ThemeTextFields = ({ localThemeItem }: Props) => {
-  const setDeep = useWeddingStore((state) => state.setDeep);
+  const setField = useWeddingStore((state) => state.setField);
   const theme = useWeddingStore((state) => state.values.theme) || {};
 
   if (!localThemeItem) return null;
@@ -39,9 +39,7 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
               placeholder={`${option.label} 입력해주세요`}
               value={theme[typedKey] || ''}
               onChange={(e) => {
-                setDeep((draft) => {
-                  draft.theme[typedKey] = e.target.value;
-                });
+                setField('theme', typedKey, e.target.value);
               }}
             />
           </Field>
