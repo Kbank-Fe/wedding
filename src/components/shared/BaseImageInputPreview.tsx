@@ -27,9 +27,17 @@ const BaseImageInputPreview = ({
 
   const handleAddFiles = (files: File[]) => {
     setDeep((draft) => {
-      (
-        draft[weddingInfoKey] as { localImageList: LocalImage[] }
-      ).localImageList.push(...files);
+      const target = draft[weddingInfoKey] as { localImageList: LocalImage[] };
+
+      if (target) {
+        if (multiple) {
+          // 다중 선택 모드: 이어 붙이기
+          target.localImageList.push(...files);
+        } else {
+          // 단일 선택 모드: 최신 파일 1개로 교체
+          target.localImageList = [files[0]];
+        }
+      }
     });
   };
 

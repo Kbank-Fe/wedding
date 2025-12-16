@@ -5,17 +5,14 @@ import { useWeddingStore } from '@/stores/useWeddingStore';
 import { themeList } from '@/utils/themeList';
 
 const ThemeAdmin = () => {
-  const setDeep = useWeddingStore((state) => state.setDeep);
+  const setField = useWeddingStore((state) => state.setField);
 
   const { type } = useWeddingStore((state) => state.values.theme);
 
   const localThemeItem = themeList.find((item) => item.type === type);
 
   const handleChangeRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedType = e.target.value;
-    setDeep((draft) => {
-      draft.theme.type = selectedType as typeof type;
-    });
+    setField('theme', 'type', e.target.value as typeof type);
   };
 
   /**
