@@ -25,7 +25,7 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
 
         const option = value; // TextInputOption
 
-        if (!option.isShow) return null;
+        if (!option) return null;
 
         return (
           <Field

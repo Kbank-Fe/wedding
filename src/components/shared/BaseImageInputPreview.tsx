@@ -29,7 +29,7 @@ const BaseImageInputPreview = ({
     setDeep((draft) => {
       const target = draft[weddingInfoKey] as { localImageList: LocalImage[] };
 
-      if (target) {
+      if (target && target.localImageList) {
         if (multiple) {
           // 다중 선택 모드: 이어 붙이기
           target.localImageList.push(...files);

@@ -8,7 +8,7 @@ const PolaroidTheme = () => {
   const { groomEnglishName, brideEnglishName, text1, text2 } = useWeddingStore(
     (state) => state.values.theme,
   );
-  const imagePreviewList = useLocalImagePreviewList('themeImage');
+  const imagePreviewList = useLocalImagePreviewList('themeImage', 'POLAROID');
 
   return (
     <div css={containerStyle}>

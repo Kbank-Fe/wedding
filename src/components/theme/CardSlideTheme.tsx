@@ -11,7 +11,7 @@ const CardSlideTheme = () => {
     (state) => state.values.basicInfo,
   );
   const { year, month, day } = useWeddingStore((state) => state.values.date);
-  const imagePreviewList = useLocalImagePreviewList('themeImage');
+  const imagePreviewList = useLocalImagePreviewList('themeImage', 'CARDSLIDE');
 
   return (
     <section css={containerStyle}>

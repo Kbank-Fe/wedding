@@ -9,7 +9,7 @@ const RoundSlideTheme = () => {
   const { groomEnglishName, brideEnglishName, text1, text2 } = useWeddingStore(
     (state) => state.values.theme,
   );
-  const imagePreviewList = useLocalImagePreviewList('themeImage');
+  const imagePreviewList = useLocalImagePreviewList('themeImage', 'ROUNDSLIDE');
 
   return (
     <section css={containerStyle}>
