@@ -34,7 +34,7 @@ export default async function handler(req, res) {
   try {
     const { shareId } = req.query;
     const ua = req.headers['user-agent'] || '';
-    const BASE_URL = getBaseUrl();
+    const BASE_URL = getBaseUrl().replace(/^http:/, 'https:');
 
     log('U_API_ENTER', { shareId, ua });
 
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
     }
 
     if (!BOT_PATTERN.test(ua)) {
-      res.status(302).setHeader('Location', `${BASE_URL}/${shareId}`).end();
+      res.status(302).setHeader('Location', `${BASE_URL}/u/${shareId}`).end();
       return;
     }
 
@@ -57,7 +57,7 @@ export default async function handler(req, res) {
 
     const data = safeParseJSON(await dataRes.text());
     if (!dataRes.ok || !data) {
-      res.status(302).setHeader('Location', `${BASE_URL}/${shareId}`).end();
+      res.status(302).setHeader('Location', `${BASE_URL}/u/${shareId}`).end();
       return;
     }
 
@@ -79,7 +79,10 @@ export default async function handler(req, res) {
     });
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate, max-age=0',
+    );
     res.setHeader('Vary', 'User-Agent');
 
     res.status(200).send(`<!doctype html>
@@ -93,10 +96,10 @@ export default async function handler(req, res) {
 <meta property="og:image" content="${img}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="${BASE_URL}/${shareId}" />
+<meta property="og:url" content="${BASE_URL}/u/${shareId}" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="theme-color" content="#facc15" />
-<meta http-equiv="refresh" content="0; url=${BASE_URL}/${shareId}" />
+<meta http-equiv="refresh" content="0; url=${BASE_URL}/u/${shareId}" />
 </head>
 </html>`);
   } catch {
