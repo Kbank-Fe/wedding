@@ -1,12 +1,7 @@
 {
-  "rewrites": [
-    {
-      "source": "/u/:shareId",
-      "destination": "/api/u/:shareId"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+  "routes": [
+    { "src": "^/u/([^/]+)$", "dest": "/api/u?shareId=$1" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
