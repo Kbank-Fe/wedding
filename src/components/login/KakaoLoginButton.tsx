@@ -4,7 +4,7 @@ import {
   setPersistence,
   signInWithCustomToken,
 } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import LoadingBackdrop from '@/components/shared/LoadingBackdrop';
@@ -13,54 +13,73 @@ import { openKakaoPopup } from '@/utils/kakaoPopup';
 
 type ExchangeResp = { firebaseCustomToken: string; email: string | null };
 
+const isRedirectError = (e: unknown): e is Error =>
+  e instanceof Error && e.message === 'KAKAO_INAPP_REDIRECT';
+
 const KakaoLoginButton = () => {
-  const [uid, setUid] = useState<string | null>(null);
   const navigate = useNavigate();
   const [loading, setLoadingOpen] = useState(false);
+
+  const exchangeAndLogin = useCallback(
+    async (code: string) => {
+      try {
+        setLoadingOpen(true);
+        await setPersistence(auth, browserLocalPersistence);
+
+        const resp = await fetch('/api/exchange', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code }),
+        });
+
+        if (!resp.ok) throw new Error(await resp.text());
+
+        const { firebaseCustomToken, email } =
+          (await resp.json()) as ExchangeResp;
+
+        const cred = await signInWithCustomToken(auth, firebaseCustomToken);
+        await getOrCreateUser({
+          uid: cred.user.uid,
+          email: email ?? undefined,
+          provider: 'kakao',
+        });
+
+        window.history.replaceState(null, '', '/login');
+        navigate('/admin');
+      } catch (e) {
+        console.error(e);
+        setLoadingOpen(false);
+      }
+    },
+    [navigate],
+  );
+
+  useEffect(() => {
+    const p = new URLSearchParams(location.search);
+    if (p.get('error')) window.history.replaceState(null, '', '/login');
+    const inappCode = p.get('inapp_code');
+    if (inappCode) exchangeAndLogin(inappCode);
+  }, [exchangeAndLogin]);
 
   const handleLogin = async () => {
     if (loading) return;
 
-    setLoadingOpen(true);
     try {
-      await setPersistence(auth, browserLocalPersistence);
       const { code } = await openKakaoPopup();
-
-      const resp = await fetch(`/api/exchange`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code }),
-      });
-      if (!resp.ok) throw new Error(await resp.text());
-      const { firebaseCustomToken, email } =
-        (await resp.json()) as ExchangeResp;
-
-      const cred = await signInWithCustomToken(auth, firebaseCustomToken);
-      await getOrCreateUser({
-        uid: cred.user.uid,
-        email: email ?? undefined,
-        provider: 'kakao',
-      });
-
-      setUid(cred.user.uid);
-    } catch (err) {
-      console.error(err);
-      setLoadingOpen(false);
+      await exchangeAndLogin(code);
+    } catch (e: unknown) {
+      if (!isRedirectError(e)) {
+        console.error(e);
+        setLoadingOpen(false);
+      }
     }
   };
-
-  useEffect(() => {
-    if (uid) {
-      navigate('/admin');
-    }
-  }, [navigate, uid]);
 
   return (
     <div css={wrapperStyle}>
       <button css={buttonStyle} disabled={loading} onClick={handleLogin}>
         <img alt="카카오 로그인" src="/images/icon/kakao_login.png" />
       </button>
-
       <LoadingBackdrop open={loading} />
     </div>
   );
@@ -74,16 +93,11 @@ const wrapperStyle = css`
   position: relative;
 `;
 const buttonStyle = css`
-  transition:
-    opacity 0.2s ease,
-    filter 0.2s ease;
-
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     filter: grayscale(100%) brightness(95%);
   }
-
   img {
     width: 300px;
   }

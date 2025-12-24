@@ -1,5 +1,5 @@
 const BOT_PATTERN =
-  /(facebookexternalhit|twitterbot|slackbot|discordbot|kakaotalk|kakaostory|bot|crawl|spider|embed)/i;
+  /(facebookexternalhit|twitterbot|slackbot|discordbot|kakaotalk|kakaostory|msteams|teams|bot|crawl|spider|embed)/i;
 
 const required = (name) => {
   const v = process.env[name];
@@ -34,45 +34,30 @@ export default async function handler(req, res) {
   try {
     const { shareId } = req.query;
     const ua = req.headers['user-agent'] || '';
-    const BASE_URL = getBaseUrl();
+    const BASE_URL = getBaseUrl().replace(/^http:/, 'https:');
 
-    log('U_API_ENTER', {
-      shareId,
-      ua,
-      path: req.url,
-    });
+    log('U_API_ENTER', { shareId, ua });
 
     if (!shareId) {
-      log('U_API_NO_SHARE_ID');
       res.status(302).setHeader('Location', BASE_URL).end();
       return;
     }
 
     if (!BOT_PATTERN.test(ua)) {
-      log('U_API_USER_REDIRECT', { shareId });
-      res.status(302).setHeader('Location', `${BASE_URL}/${shareId}`).end();
+      res.status(302).setHeader('Location', `${BASE_URL}/u/${shareId}`).end();
       return;
     }
 
-    required('FIREBASE_DATABASE_URL');
-    const FIREBASE_BASE = process.env.FIREBASE_DATABASE_URL;
+    const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
 
-    const fetchUrl = `${FIREBASE_BASE}/shares/${shareId}/data.json`;
-    log('U_API_FETCH_START', { fetchUrl });
+    const dataRes = await fetch(
+      `${FIREBASE_BASE}/shares/${shareId}/data.json`,
+      { cache: 'no-store' },
+    );
 
-    const dataRes = await fetch(fetchUrl, { cache: 'no-store' });
-    const dataText = await dataRes.text();
-    const data = safeParseJSON(dataText);
-
-    log('U_API_FETCH_RESULT', {
-      ok: dataRes.ok,
-      status: dataRes.status,
-      hasData: !!data,
-    });
-
+    const data = safeParseJSON(await dataRes.text());
     if (!dataRes.ok || !data) {
-      log('U_API_FETCH_FAIL', { shareId });
-      res.status(302).setHeader('Location', `${BASE_URL}/${shareId}`).end();
+      res.status(302).setHeader('Location', `${BASE_URL}/u/${shareId}`).end();
       return;
     }
 
@@ -90,13 +75,14 @@ export default async function handler(req, res) {
 
     log('U_API_OG_READY', {
       shareId,
-      title,
-      img,
       elapsed: Date.now() - startedAt,
     });
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate, max-age=0',
+    );
     res.setHeader('Vary', 'User-Agent');
 
     res.status(200).send(`<!doctype html>
@@ -108,18 +94,15 @@ export default async function handler(req, res) {
 <meta property="og:title" content="${title}" />
 <meta property="og:description" content="${desc}" />
 <meta property="og:image" content="${img}" />
-<meta property="og:url" content="${BASE_URL}/${shareId}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="${BASE_URL}/u/${shareId}" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta http-equiv="refresh" content="0; url=${BASE_URL}/${shareId}" />
+<meta name="theme-color" content="#facc15" />
+<meta http-equiv="refresh" content="0; url=${BASE_URL}/u/${shareId}" />
 </head>
 </html>`);
-  } catch (e) {
-    log('U_API_ERROR', {
-      name: e?.name,
-      message: e?.message,
-      stack: e?.stack,
-    });
-
+  } catch {
     const fallback = process.env.PUBLIC_BASE_URL || 'http://localhost:3000';
     res.status(302).setHeader('Location', fallback).end();
   }
