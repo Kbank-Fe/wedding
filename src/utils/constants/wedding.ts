@@ -56,7 +56,7 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
   },
   date: {
     year: new Date().getFullYear(),
-    month: new Date().getMonth() + 2,
+    month: new Date().getMonth() + 1,
     day: new Date().getDate(),
     hour: 12,
     min: 0,
