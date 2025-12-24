@@ -13,6 +13,9 @@ import { openKakaoPopup } from '@/utils/kakaoPopup';
 
 type ExchangeResp = { firebaseCustomToken: string; email: string | null };
 
+const isRedirectError = (e: unknown): e is Error =>
+  e instanceof Error && e.message === 'KAKAO_INAPP_REDIRECT';
+
 const KakaoLoginButton = () => {
   const navigate = useNavigate();
   const [loading, setLoadingOpen] = useState(false);
@@ -97,7 +100,6 @@ const buttonStyle = css`
     cursor: not-allowed;
     filter: grayscale(100%) brightness(95%);
   }
-
   img {
     width: 300px;
   }

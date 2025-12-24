@@ -1,40 +1,36 @@
+import BaseImageInputPreview from '@/components//shared/BaseImageInputPreview';
 import BaseRadioButtonScrollGroup from '@/components/shared/BaseRadioButtonScrollGroup';
-import ThemeFields from '@/components/theme/ThemeFields';
+import ThemeTextFields from '@/components/theme/ThemeTextFields';
 import { useWeddingStore } from '@/stores/useWeddingStore';
-import { themeList } from '@/utils/themeList';
+import { themeList, themeScrollList } from '@/utils/themeList';
 
 const ThemeAdmin = () => {
-  const setDeep = useWeddingStore((state) => state.setDeep);
+  const setField = useWeddingStore((state) => state.setField);
 
-  const theme = useWeddingStore((state) => state.values.theme) || {};
+  const { type } = useWeddingStore((state) => state.values.theme);
 
-  const localThemeItem = themeList.find((item) => item.type === theme.type);
+  const localThemeItem = themeList.find((item) => item.type === type);
 
   const handleChangeRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedType = e.target.value;
-    setDeep((draft) => {
-      draft.theme.type = selectedType as typeof theme.type;
-    });
+    setField('theme', 'type', e.target.value as typeof type);
   };
-
-  const themeScrollList = [
-    { image: '/images/theme/cardslide.png', value: 'CARDSLIDE' },
-    { image: '/images/theme/full.png', value: 'FULL' },
-    { image: '/images/theme/monochrome.png', value: 'MONOCHROME' },
-    { image: '/images/theme/polariod.png', value: 'POLAROID' },
-    { image: '/images/theme/roundslide.png', value: 'ROUNDSLIDE' },
-  ];
 
   return (
     <>
       <BaseRadioButtonScrollGroup
         items={themeScrollList.map((item) => ({
           ...item,
-          checked: theme.type === item.value,
+          checked: type === item.value,
           onChange: handleChangeRadio,
         }))}
       />
-      <ThemeFields localThemeItem={localThemeItem} />
+      <ThemeTextFields localThemeItem={localThemeItem} />
+
+      <BaseImageInputPreview
+        label="테마 사진"
+        multiple={localThemeItem?.image.multiple || false}
+        weddingInfoKey="themeImage"
+      />
     </>
   );
 };

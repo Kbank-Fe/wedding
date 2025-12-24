@@ -12,18 +12,18 @@ export const useImagePreview = (images: LocalImage[]) => {
   );
 
   useEffect(() => {
+    const currentPreviews = imagePreviewList;
+
     return () => {
-      images.forEach((image, index) => {
-        if (image instanceof File) {
-          try {
-            URL.revokeObjectURL(imagePreviewList[index]);
-          } catch (error) {
-            console.warn('revokeObjectURL 실패:', error);
-          }
+      // unmount 시에만 실행되도록 보장
+      currentPreviews.forEach((url) => {
+        if (url.startsWith('blob:')) {
+          // 렌더링 충돌 방지
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
         }
       });
     };
-  }, [images, imagePreviewList]);
+  }, [imagePreviewList]);
 
   return imagePreviewList;
 };

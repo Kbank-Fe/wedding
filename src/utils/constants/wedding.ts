@@ -2,12 +2,16 @@ import type { WeddingInfo } from '@/types/wedding';
 
 export const WEDDING_INITIAL_INFO: WeddingInfo = {
   theme: {
-    type: 'CARDSLIDE',
-    groomEnglishName: 'Kim KKK',
-    brideEnglishName: 'Park HHH',
-    text1: 'OUR',
-    text2: 'WEDDING',
-    text3: 'DAY',
+    type: 'POLAROID',
+    groomEnglishName: 'MINSU',
+    brideEnglishName: 'YOUNGHEE',
+    text1: 'Our Wedding Day',
+    text2: 'The day we become one',
+    text3: '',
+  },
+  themeImage: {
+    localImageList: [],
+    savedImageList: [],
   },
   activeCheckbox: {
     theme: true,
@@ -52,7 +56,7 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
   },
   date: {
     year: new Date().getFullYear(),
-    month: new Date().getMonth() + 2,
+    month: new Date().getMonth() + 1,
     day: new Date().getDate(),
     hour: 12,
     min: 0,
