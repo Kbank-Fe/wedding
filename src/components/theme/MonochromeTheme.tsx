@@ -37,9 +37,9 @@ const MonochromeTheme = () => {
       >
         <img alt="Wedding main" css={imageStyle} src={imagePreviewList[0]} />
         <figcaption css={textStyle}>
-          <h2>
-            {groomEnglishName} <span>and</span> {brideEnglishName}
-          </h2>
+          <h2>{groomEnglishName}</h2>
+          <span>and</span>
+          <h2>{brideEnglishName}</h2>
         </figcaption>
       </motion.figure>
     </section>
@@ -88,10 +88,12 @@ const imageStyle = css`
 
 const textStyle = css`
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  left: 50%;
+  left: 0;
   bottom: 30px;
-  transform: translateX(-50%);
   color: var(--gray2);
   font-size: 22px;
   pointer-events: none;
