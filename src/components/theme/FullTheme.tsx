@@ -29,7 +29,7 @@ const FullTheme = () => {
         </h2>
         <h3>{header3}</h3>
       </header>
-      <figure>
+      <figure css={imageContainerStyle}>
         <img alt="Wedding main" css={imageStyle} src={imagePreviewList[0]} />
       </figure>
       <p css={fullTitleStyle}>
@@ -65,7 +65,12 @@ const headerStyle = css`
   }
 `;
 
+const imageContainerStyle = css`
+  width: 100%;
+`;
+
 const imageStyle = css`
+  width: 100%;
   height: 100vh;
   object-fit: cover;
 `;
