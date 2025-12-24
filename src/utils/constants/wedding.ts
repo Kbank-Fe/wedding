@@ -2,12 +2,12 @@ import type { WeddingInfo } from '@/types/wedding';
 
 export const WEDDING_INITIAL_INFO: WeddingInfo = {
   theme: {
-    type: 'CARDSLIDE',
-    groomEnglishName: 'Kim KKK',
-    brideEnglishName: 'Park HHH',
-    text1: 'our',
-    text2: 'wedding',
-    text3: 'day',
+    type: 'POLAROID',
+    groomEnglishName: 'MINSU',
+    brideEnglishName: 'YOUNGHEE',
+    text1: 'Our Wedding Day',
+    text2: 'The day we become one',
+    text3: '',
   },
   themeImage: {
     localImageList: [],
