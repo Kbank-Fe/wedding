@@ -13,9 +13,6 @@ import { openKakaoPopup } from '@/utils/kakaoPopup';
 
 type ExchangeResp = { firebaseCustomToken: string; email: string | null };
 
-const isRedirectError = (e: unknown): e is Error =>
-  e instanceof Error && e.message === 'KAKAO_INAPP_REDIRECT';
-
 const KakaoLoginButton = () => {
   const navigate = useNavigate();
   const [loading, setLoadingOpen] = useState(false);
@@ -56,23 +53,24 @@ const KakaoLoginButton = () => {
 
   useEffect(() => {
     const p = new URLSearchParams(location.search);
-    if (p.get('error')) window.history.replaceState(null, '', '/login');
     const inappCode = p.get('inapp_code');
-    if (inappCode) exchangeAndLogin(inappCode);
+    if (!inappCode) return;
+
+    window.history.replaceState(null, '', '/login');
+    exchangeAndLogin(inappCode);
   }, [exchangeAndLogin]);
 
   const handleLogin = async () => {
     if (loading) return;
+    setLoadingOpen(true);
 
-    try {
-      const { code } = await openKakaoPopup();
-      await exchangeAndLogin(code);
-    } catch (e: unknown) {
-      if (!isRedirectError(e)) {
-        console.error(e);
-        setLoadingOpen(false);
-      }
+    const result = await openKakaoPopup();
+    if (!result) {
+      setLoadingOpen(false);
+      return;
     }
+
+    await exchangeAndLogin(result.code);
   };
 
   return (
@@ -92,12 +90,14 @@ const wrapperStyle = css`
   padding: 1rem;
   position: relative;
 `;
+
 const buttonStyle = css`
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     filter: grayscale(100%) brightness(95%);
   }
+
   img {
     width: 300px;
   }

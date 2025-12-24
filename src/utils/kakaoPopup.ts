@@ -19,7 +19,10 @@ const buildAuthUrl = (state: string) =>
   `&scope=${encodeURIComponent(SCOPE)}` +
   `&state=${encodeURIComponent(state)}`;
 
-export const openKakaoPopup = (): Promise<{ code: string; state: string }> => {
+export const openKakaoPopup = async (): Promise<{
+  code: string;
+  state: string;
+} | null> => {
   const state = buildState();
   sessionStorage.setItem('kakao_oauth_state', state);
 
@@ -27,8 +30,8 @@ export const openKakaoPopup = (): Promise<{ code: string; state: string }> => {
 
   if (isKakaoInApp()) {
     sessionStorage.setItem('kakao_inapp', '1');
-    location.href = authUrl;
-    throw new Error('KAKAO_INAPP_REDIRECT');
+    location.replace(authUrl);
+    return null;
   }
 
   const left = window.screenX + (window.outerWidth - POPUP_W) / 2;
@@ -45,22 +48,15 @@ export const openKakaoPopup = (): Promise<{ code: string; state: string }> => {
     const expectedState = state;
     const allowedOrigin = location.origin;
 
-    const timer = window.setInterval(() => {
-      if (popup.closed) {
-        cleanup();
-        reject(new Error('popup_closed'));
-      }
-    }, 300);
-
     const cleanup = () => {
-      window.clearInterval(timer);
       window.removeEventListener('message', onMsg);
+      clearInterval(timer);
     };
 
     const onMsg = (ev: MessageEvent) => {
       if (ev.origin !== allowedOrigin) return;
-      const d = ev.data || {};
-      if (d.type !== 'kakao_oauth_result') return;
+      const d = ev.data;
+      if (!d || d.type !== 'kakao_oauth_result') return;
 
       cleanup();
       const { code, state: gotState, error } = d;
@@ -69,6 +65,13 @@ export const openKakaoPopup = (): Promise<{ code: string; state: string }> => {
         reject(new Error(error || 'invalid_state_or_code'));
       else resolve({ code, state: gotState });
     };
+
+    const timer = window.setInterval(() => {
+      if (popup.closed) {
+        cleanup();
+        reject(new Error('popup_closed'));
+      }
+    }, 300);
 
     window.addEventListener('message', onMsg);
   });
