@@ -1,5 +1,5 @@
 const BOT_PATTERN =
-  /(facebook|twitter|linkedin|bot|crawl|spider|slack|embed|kakaotalk|kakaostory|whatsapp|telegram|discord)/i;
+  /(facebookexternalhit|twitterbot|slackbot|discordbot|kakaotalk|kakaostory|bot|crawl|spider|embed)/i;
 
 const required = (name) => {
   const v = process.env[name];
@@ -12,35 +12,69 @@ const getBaseUrl = () =>
     ? required('PUBLIC_BASE_URL')
     : 'http://localhost:3000';
 
+const safeParseJSON = (t) => {
+  try {
+    return JSON.parse(t);
+  } catch {
+    return null;
+  }
+};
+
+const log = (type, payload = {}) => {
+  console.log(JSON.stringify({ type, ...payload }));
+};
+
+/**
+ * @param {import('@vercel/node').VercelRequest} req
+ * @param {import('@vercel/node').VercelResponse} res
+ */
 export default async function handler(req, res) {
+  const startedAt = Date.now();
+
   try {
     const { shareId } = req.query;
+    const ua = req.headers['user-agent'] || '';
     const BASE_URL = getBaseUrl();
 
+    log('U_API_ENTER', {
+      shareId,
+      ua,
+      path: req.url,
+    });
+
     if (!shareId) {
-      res.writeHead(302, { Location: BASE_URL });
-      return res.end();
+      log('U_API_NO_SHARE_ID');
+      res.status(302).setHeader('Location', BASE_URL).end();
+      return;
     }
 
-    const ua = req.headers['user-agent'] || '';
     if (!BOT_PATTERN.test(ua)) {
-      res.writeHead(302, { Location: `${BASE_URL}/${shareId}` });
-      return res.end();
+      log('U_API_USER_REDIRECT', { shareId });
+      res.status(302).setHeader('Location', `${BASE_URL}/${shareId}`).end();
+      return;
     }
 
-    const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
+    required('FIREBASE_DATABASE_URL');
+    const FIREBASE_BASE = process.env.FIREBASE_DATABASE_URL;
 
-    const dataRes = await fetch(
-      `${FIREBASE_BASE}/shares/${shareId}/data.json`,
-      { cache: 'no-store' },
-    );
+    const fetchUrl = `${FIREBASE_BASE}/shares/${shareId}/data.json`;
+    log('U_API_FETCH_START', { fetchUrl });
 
-    if (!dataRes.ok) {
-      res.writeHead(302, { Location: `${BASE_URL}/${shareId}` });
-      return res.end();
+    const dataRes = await fetch(fetchUrl, { cache: 'no-store' });
+    const dataText = await dataRes.text();
+    const data = safeParseJSON(dataText);
+
+    log('U_API_FETCH_RESULT', {
+      ok: dataRes.ok,
+      status: dataRes.status,
+      hasData: !!data,
+    });
+
+    if (!dataRes.ok || !data) {
+      log('U_API_FETCH_FAIL', { shareId });
+      res.status(302).setHeader('Location', `${BASE_URL}/${shareId}`).end();
+      return;
     }
-
-    const data = await dataRes.json();
 
     const male = data?.basicInfo?.maleName || '신랑';
     const female = data?.basicInfo?.femaleName || '신부';
@@ -54,11 +88,20 @@ export default async function handler(req, res) {
     if (typeof imageUrl === 'string' && imageUrl.startsWith('http'))
       img = imageUrl;
 
+    log('U_API_OG_READY', {
+      shareId,
+      title,
+      img,
+      elapsed: Date.now() - startedAt,
+    });
+
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Cache-Control', 'no-store');
     res.setHeader('Vary', 'User-Agent');
 
-    res.status(200).send(`<!doctype html><html lang="ko"><head>
+    res.status(200).send(`<!doctype html>
+<html lang="ko">
+<head>
 <meta charset="utf-8" />
 <title>${title}</title>
 <meta property="og:type" content="website" />
@@ -68,10 +111,16 @@ export default async function handler(req, res) {
 <meta property="og:url" content="${BASE_URL}/${shareId}" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta http-equiv="refresh" content="0; url=${BASE_URL}/${shareId}" />
-</head></html>`);
-  } catch {
+</head>
+</html>`);
+  } catch (e) {
+    log('U_API_ERROR', {
+      name: e?.name,
+      message: e?.message,
+      stack: e?.stack,
+    });
+
     const fallback = process.env.PUBLIC_BASE_URL || 'http://localhost:3000';
-    res.writeHead(302, { Location: fallback });
-    res.end();
+    res.status(302).setHeader('Location', fallback).end();
   }
 }
