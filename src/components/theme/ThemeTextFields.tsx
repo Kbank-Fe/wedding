@@ -15,17 +15,11 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
 
   return (
     <>
-      {Object.entries(localThemeItem).map(([key, value]) => {
-        const typedKey = key as TextAllowedKeys;
-
-        // 타입 예외 처리
-        if (!value || typeof value !== 'object' || value.type !== 'text') {
-          return null;
-        }
-
-        const option = value; // TextInputOption
+      {(Object.keys(localThemeItem) as TextAllowedKeys[]).map((key) => {
+        const option = localThemeItem[key];
 
         if (!option) return null;
+        if (option.type !== 'text') return null;
 
         return (
           <Field
@@ -37,9 +31,9 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
             <BaseTextInput
               maxLength={option.maxLength}
               placeholder={`${option.label} 입력해주세요`}
-              value={theme[typedKey] || ''}
+              value={theme[key] || ''}
               onChange={(e) => {
-                setField('theme', typedKey, e.target.value);
+                setField('theme', key, e.target.value);
               }}
             />
           </Field>

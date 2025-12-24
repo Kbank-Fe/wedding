@@ -30,18 +30,53 @@ export type ThemeList = {
 };
 
 type TextOptionKeys<T> = {
-  [K in keyof T]: T[K] extends TextInputOption ? K : never;
+  [K in keyof T]: NonNullable<T[K]> extends TextInputOption ? K : never;
 }[keyof T];
 
-/**
- * 텍스트 입력 필드로 허용되는 키
- * → TextInputOption인 속성만 자동 추출
- */
-export type TextAllowedKeys = TextOptionKeys<ThemeList>;
+export type TextAllowedKeys = Extract<TextOptionKeys<ThemeList>, string>;
 
 /**
- * @TODO [THEME-ADD] 새로운 테마 추가 시 입력 옵션을 정의해주세요.
- * ex) { type: 'NEWTHEME', text1: { type: 'text', label: '첫번째 문구', maxLength: 20 }, image: { type: 'image', multiple: false } }
+ * @TODO [THEME-ADD]
+ * 새로운 테마 추가 시 아래 형식을 따라 객체를 themeList에 추가해주세요.
+ *
+ * 필수:
+ * - type: ThemeType
+ * - ui: { scrollImage, order }
+ * - image: ImageInputOption
+ *
+ * 선택:
+ * - groomEnglishName, brideEnglishName
+ * - text1, text2, text3 ...
+ *
+ * 예시:
+ *
+ * {
+ *   type: 'NEWTHEME',
+ *   ui: {
+ *     scrollImage: '/images/theme/newtheme.png',
+ *     order: 6,
+ *   },
+ *   groomEnglishName: {
+ *     type: 'text',
+ *     label: '신랑 영문명',
+ *     maxLength: 15,
+ *   },
+ *   brideEnglishName: {
+ *     type: 'text',
+ *     label: '신부 영문명',
+ *     maxLength: 15,
+ *   },
+ *   text1: {
+ *     type: 'text',
+ *     label: '첫번째 문구',
+ *     maxLength: 20,
+ *   },
+ *   image: {
+ *     type: 'image',
+ *     multiple: false,
+ *     defaultImageList: ['/images/theme/newtheme_default.png'],
+ *   },
+ * }
  */
 
 export const themeList = [
