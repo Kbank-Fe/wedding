@@ -12,25 +12,20 @@ const getBaseUrl = () =>
     ? required('PUBLIC_BASE_URL')
     : 'http://localhost:3000';
 
-const handler = async (req, res) => {
+export default async function handler(req, res) {
   try {
-    const url = new URL(req.url, getBaseUrl());
-    const segments = url.pathname.split('/').filter(Boolean);
-    const shareId = segments[segments.length - 1];
-
+    const { shareId } = req.query;
     const BASE_URL = getBaseUrl();
 
     if (!shareId) {
       res.writeHead(302, { Location: BASE_URL });
-      res.end();
-      return;
+      return res.end();
     }
 
     const ua = req.headers['user-agent'] || '';
     if (!BOT_PATTERN.test(ua)) {
       res.writeHead(302, { Location: `${BASE_URL}/${shareId}` });
-      res.end();
-      return;
+      return res.end();
     }
 
     const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
@@ -42,8 +37,7 @@ const handler = async (req, res) => {
 
     if (!dataRes.ok) {
       res.writeHead(302, { Location: `${BASE_URL}/${shareId}` });
-      res.end();
-      return;
+      return res.end();
     }
 
     const data = await dataRes.json();
@@ -56,15 +50,12 @@ const handler = async (req, res) => {
     const desc = `${date.year ?? ''}년 ${date.month ?? ''}월 ${date.day ?? ''}일 결혼식에 초대합니다.`;
 
     let img = `${BASE_URL}/og-image.png`;
-    const item = data?.share?.savedImageList?.[0];
-    const imageUrl = item?.url;
-
-    if (typeof imageUrl === 'string' && imageUrl.startsWith('http')) {
+    const imageUrl = data?.share?.savedImageList?.[0]?.url;
+    if (typeof imageUrl === 'string' && imageUrl.startsWith('http'))
       img = imageUrl;
-    }
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.setHeader('Cache-Control', 'no-store');
     res.setHeader('Vary', 'User-Agent');
 
     res.status(200).send(`<!doctype html><html lang="ko"><head>
@@ -83,6 +74,4 @@ const handler = async (req, res) => {
     res.writeHead(302, { Location: fallback });
     res.end();
   }
-};
-
-export default handler;
+}
