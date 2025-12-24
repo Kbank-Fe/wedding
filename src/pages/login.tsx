@@ -15,12 +15,12 @@ const LoginPage = () => {
       sessionStorage.removeItem('kakao_oauth_state');
 
       if (error) {
-        location.replace('/login?error=' + encodeURIComponent(error));
+        location.replace('/login');
         return;
       }
 
       if (!code || state !== expectedState) {
-        location.replace('/login?error=invalid_state');
+        location.replace('/login');
         return;
       }
 
