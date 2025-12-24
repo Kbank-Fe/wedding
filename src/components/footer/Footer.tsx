@@ -25,7 +25,7 @@ const Footer = ({ shareId }: { shareId: string }) => {
 
   const handleLinkShareClick = () => {
     if (!validateShareId()) return;
-    copyToLink({ text: `${SHARE_URL}/${shareId}` });
+    copyToLink({ text: `${SHARE_URL}/u/${shareId}` });
   };
 
   const handleKakaoShareClick = async () => {
@@ -38,10 +38,10 @@ const Footer = ({ shareId }: { shareId: string }) => {
         title: shareInfo.title ?? '',
         description: shareInfo.description ?? '',
         imageUrl:
-          shareInfo.savedImageList?.[0].url ?? `${SHARE_URL}/${shareId}`,
+          shareInfo.savedImageList?.[0].url ?? `${SHARE_URL}/u/${shareId}`,
         link: {
-          mobileWebUrl: `${SHARE_URL}/${shareId}`,
-          webUrl: `${SHARE_URL}/${shareId}`,
+          mobileWebUrl: `${SHARE_URL}/u/${shareId}`,
+          webUrl: `${SHARE_URL}/u/${shareId}`,
         },
       },
     });
