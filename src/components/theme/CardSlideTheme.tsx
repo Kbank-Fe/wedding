@@ -1,16 +1,9 @@
 import { css } from '@emotion/react';
 
 import ImageSlideMotion from '@/components/shared/motion/ImageSlideMotion';
+import { useLocalImagePreviewList } from '@/hooks/useLocalImagePreviewList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import { getEnglishMonth } from '@/utils/date';
-
-const images = [
-  '/images/image1.png',
-  '/images/image2.png',
-  '/images/image3.png',
-  '/images/image4.png',
-  '/images/image5.png',
-];
 
 const CardSlideTheme = () => {
   const { text1, text2 } = useWeddingStore((state) => state.values.theme);
@@ -18,11 +11,16 @@ const CardSlideTheme = () => {
     (state) => state.values.basicInfo,
   );
   const { year, month, day } = useWeddingStore((state) => state.values.date);
+  const imagePreviewList = useLocalImagePreviewList('themeImage', 'CARDSLIDE');
 
   return (
     <section css={containerStyle}>
       <figure css={figureStyle}>
-        <ImageSlideMotion height="180px" images={images} width="180px" />
+        <ImageSlideMotion
+          height="180px"
+          images={imagePreviewList}
+          width="180px"
+        />
       </figure>
       <header css={nameWrapperStyle}>
         <h2>{maleName}</h2>
