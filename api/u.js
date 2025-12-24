@@ -20,23 +20,11 @@ const safeParseJSON = (t) => {
   }
 };
 
-const log = (type, payload = {}) => {
-  console.log(JSON.stringify({ type, ...payload }));
-};
-
-/**
- * @param {import('@vercel/node').VercelRequest} req
- * @param {import('@vercel/node').VercelResponse} res
- */
 export default async function handler(req, res) {
-  const startedAt = Date.now();
-
   try {
     const { shareId } = req.query;
     const ua = req.headers['user-agent'] || '';
     const BASE_URL = getBaseUrl().replace(/^http:/, 'https:');
-
-    log('U_API_ENTER', { shareId, ua });
 
     if (!shareId) {
       res.status(302).setHeader('Location', BASE_URL).end();
@@ -73,10 +61,7 @@ export default async function handler(req, res) {
     if (typeof imageUrl === 'string' && imageUrl.startsWith('http'))
       img = imageUrl;
 
-    log('U_API_OG_READY', {
-      shareId,
-      elapsed: Date.now() - startedAt,
-    });
+    const isTeams = /msteams|teams/i.test(ua);
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader(
@@ -99,7 +84,7 @@ export default async function handler(req, res) {
 <meta property="og:url" content="${BASE_URL}/u/${shareId}" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="theme-color" content="#facc15" />
-<meta http-equiv="refresh" content="0; url=${BASE_URL}/u/${shareId}" />
+${isTeams ? '' : `<meta http-equiv="refresh" content="0; url=${BASE_URL}/u/${shareId}" />`}
 </head>
 </html>`);
   } catch {
