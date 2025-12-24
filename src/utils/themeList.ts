@@ -54,15 +54,15 @@ export const themeList = [
     groomEnglishName: {
       type: 'text',
       label: '신랑 영문명',
-      maxLength: 15,
+      maxLength: 12,
     },
     brideEnglishName: {
       type: 'text',
       label: '신부 영문명',
-      maxLength: 15,
+      maxLength: 12,
     },
-    text1: { type: 'text', label: '첫번째 문구', maxLength: 10 },
-    text2: { type: 'text', label: '두번째 문구', maxLength: 10 },
+    text1: { type: 'text', label: '첫번째 문구', maxLength: 20 },
+    text2: { type: 'text', label: '두번째 문구', maxLength: 35 },
     image: {
       type: 'image',
       multiple: false,
@@ -93,12 +93,12 @@ export const themeList = [
     groomEnglishName: {
       type: 'text',
       label: '신랑 영문명',
-      maxLength: 15,
+      maxLength: 12,
     },
     brideEnglishName: {
       type: 'text',
       label: '신부 영문명',
-      maxLength: 15,
+      maxLength: 12,
     },
     image: {
       type: 'image',
@@ -132,15 +132,15 @@ export const themeList = [
     groomEnglishName: {
       type: 'text',
       label: '신랑 영문명',
-      maxLength: 15,
+      maxLength: 14,
     },
     brideEnglishName: {
       type: 'text',
       label: '신부 영문명',
-      maxLength: 15,
+      maxLength: 14,
     },
-    text1: { type: 'text', label: '첫번째 문구', maxLength: 10 },
-    text2: { type: 'text', label: '두번째 문구', maxLength: 10 },
+    text1: { type: 'text', label: '첫번째 문구', maxLength: 13 },
+    text2: { type: 'text', label: '두번째 문구', maxLength: 13 },
     image: {
       type: 'image',
       multiple: true,
