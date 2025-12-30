@@ -58,10 +58,9 @@ export default async function handler(req, res) {
 
     let img = `${BASE_URL}/og-image.png`;
     const imageUrl = data?.share?.savedImageList?.[0]?.url;
-    if (typeof imageUrl === 'string' && imageUrl.startsWith('http'))
+    if (typeof imageUrl === 'string' && imageUrl.startsWith('http')) {
       img = imageUrl;
-
-    const isTeams = /msteams|teams/i.test(ua);
+    }
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader(
@@ -84,7 +83,7 @@ export default async function handler(req, res) {
 <meta property="og:url" content="${BASE_URL}/u/${shareId}" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="theme-color" content="#facc15" />
-${isTeams ? '' : `<meta http-equiv="refresh" content="0; url=${BASE_URL}/u/${shareId}" />`}
+<meta http-equiv="refresh" content="0; url=${BASE_URL}/u/${shareId}" />
 </head>
 </html>`);
   } catch {

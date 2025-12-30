@@ -7,30 +7,14 @@ const LoginPage = () => {
     const state = p.get('state');
     const error = p.get('error') || p.get('error_description');
 
-    const isInApp = sessionStorage.getItem('kakao_inapp');
-    const expectedState = sessionStorage.getItem('kakao_oauth_state');
-
-    if (isInApp) {
-      sessionStorage.removeItem('kakao_inapp');
-      sessionStorage.removeItem('kakao_oauth_state');
-
-      if (error) {
-        location.replace('/login');
-        return;
-      }
-
-      if (!code || state !== expectedState) {
-        location.replace('/login');
-        return;
-      }
-
-      location.replace(`/login?inapp_code=${code}`);
+    if (error) {
+      location.replace('/login');
       return;
     }
 
-    if (window.opener) {
+    if (window.opener && code && state) {
       window.opener.postMessage(
-        { type: 'kakao_oauth_result', code, state, error },
+        { type: 'kakao_oauth_result', code, state },
         location.origin,
       );
       setTimeout(() => window.close(), 300);
