@@ -1,6 +1,5 @@
 const KAKAO_AUTH_URL = 'https://kauth.kakao.com/oauth/authorize';
 const CLIENT_ID = import.meta.env.VITE_KAKAO_REST_API_KEY!;
-const REDIRECT_URI = `${location.origin}/login`;
 const SCOPE = 'openid account_email';
 const POPUP_W = 480;
 const POPUP_H = 640;
@@ -12,24 +11,29 @@ const buildState = () => {
   return Array.from(s, (b) => b.toString(16).padStart(2, '0')).join('');
 };
 
-const buildAuthUrl = (state: string) =>
-  `${KAKAO_AUTH_URL}?response_type=code` +
-  `&client_id=${encodeURIComponent(CLIENT_ID)}` +
-  `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
-  `&scope=${encodeURIComponent(SCOPE)}` +
-  `&state=${encodeURIComponent(state)}`;
+const buildAuthUrl = (state: string, inapp: boolean) => {
+  const redirectUri = inapp
+    ? `${location.origin}/login/inapp`
+    : `${location.origin}/login`;
 
-export const openKakaoPopup = async (): Promise<{
-  code: string;
-  state: string;
-} | null> => {
+  return (
+    `${KAKAO_AUTH_URL}?response_type=code` +
+    `&client_id=${encodeURIComponent(CLIENT_ID)}` +
+    `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+    `&scope=${encodeURIComponent(SCOPE)}` +
+    `&state=${encodeURIComponent(state)}`
+  );
+};
+
+export const openKakaoPopup = async (): Promise<{ code: string } | null> => {
   const state = buildState();
-  sessionStorage.setItem('kakao_oauth_state', state);
+  const inapp = isKakaoInApp();
 
-  const authUrl = buildAuthUrl(state);
+  localStorage.setItem('kakao_oauth_state', state);
 
-  if (isKakaoInApp()) {
-    sessionStorage.setItem('kakao_inapp', '1');
+  const authUrl = buildAuthUrl(state, inapp);
+
+  if (inapp) {
     location.replace(authUrl);
     return null;
   }
@@ -45,33 +49,24 @@ export const openKakaoPopup = async (): Promise<{
   if (!popup) throw new Error('popup_blocked');
 
   return new Promise((resolve, reject) => {
-    const expectedState = state;
     const allowedOrigin = location.origin;
-
-    const cleanup = () => {
-      window.removeEventListener('message', onMsg);
-      clearInterval(timer);
-    };
 
     const onMsg = (ev: MessageEvent) => {
       if (ev.origin !== allowedOrigin) return;
       const d = ev.data;
       if (!d || d.type !== 'kakao_oauth_result') return;
 
-      cleanup();
-      const { code, state: gotState, error } = d;
+      window.removeEventListener('message', onMsg);
 
-      if (error || !code || gotState !== expectedState)
-        reject(new Error(error || 'invalid_state_or_code'));
-      else resolve({ code, state: gotState });
-    };
+      const expected = localStorage.getItem('kakao_oauth_state');
+      localStorage.removeItem('kakao_oauth_state');
 
-    const timer = window.setInterval(() => {
-      if (popup.closed) {
-        cleanup();
-        reject(new Error('popup_closed'));
+      if (!d.code || d.state !== expected) {
+        reject(new Error('invalid_state'));
+      } else {
+        resolve({ code: d.code });
       }
-    }, 300);
+    };
 
     window.addEventListener('message', onMsg);
   });
