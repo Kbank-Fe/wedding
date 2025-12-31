@@ -18,6 +18,11 @@ const LoginPage = () => {
         location.origin,
       );
       setTimeout(() => window.close(), 300);
+      return;
+    }
+
+    if (!window.opener && code) {
+      location.replace(`/login?inapp_code=${code}`);
     }
   }, []);
 

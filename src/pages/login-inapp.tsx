@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const KakaoInAppRedirect = () => {
+const LoginInApp = () => {
   useEffect(() => {
     const p = new URLSearchParams(location.search);
     const code = p.get('code');
@@ -17,4 +17,4 @@ const KakaoInAppRedirect = () => {
   return null;
 };
 
-export default KakaoInAppRedirect;
+export default LoginInApp;
