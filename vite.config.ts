@@ -9,7 +9,6 @@ export default defineConfig({
     Pages({
       dirs: 'src/pages',
       extensions: ['tsx'],
-      routeStyle: 'next',
     }),
   ],
   resolve: {

@@ -1,7 +1,6 @@
 {
   "routes": [
     { "src": "^/u/([^/]+)$", "dest": "/api/u?shareId=$1" },
-    { "src": "^/api/u/([^/]+)$", "dest": "/api/u?shareId=$1" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
