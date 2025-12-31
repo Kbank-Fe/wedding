@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     }
 
     if (!BOT_PATTERN.test(ua)) {
-      res.status(302).setHeader('Location', `${BASE_URL}/u/${shareId}`).end();
+      res.status(302).setHeader('Location', `${BASE_URL}/${shareId}`).end();
       return;
     }
 
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 
     const data = safeParseJSON(await dataRes.text());
     if (!dataRes.ok || !data) {
-      res.status(302).setHeader('Location', `${BASE_URL}/u/${shareId}`).end();
+      res.status(302).setHeader('Location', `${BASE_URL}/${shareId}`).end();
       return;
     }
 
@@ -83,7 +83,7 @@ export default async function handler(req, res) {
 <meta property="og:url" content="${BASE_URL}/u/${shareId}" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="theme-color" content="#facc15" />
-<meta http-equiv="refresh" content="0; url=${BASE_URL}/u/${shareId}" />
+<meta http-equiv="refresh" content="0; url=${BASE_URL}/${shareId}" />
 </head>
 </html>`);
   } catch {

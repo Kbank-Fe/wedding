@@ -65,7 +65,7 @@ const AdminPage = () => {
       toast.success('데이터를 저장했어요!');
 
       setTimeout(() => {
-        navigate(`/u/${shareId}`);
+        navigate(`/${shareId}`);
         useWeddingStore.setState((state) => {
           FOLDERS.forEach((folder) => {
             state.values[folder].localImageList = [];
