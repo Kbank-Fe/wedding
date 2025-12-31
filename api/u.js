@@ -25,6 +25,7 @@ export default async function handler(req, res) {
     const { shareId } = req.query;
     const ua = req.headers['user-agent'] || '';
     const BASE_URL = getBaseUrl().replace(/^http:/, 'https:');
+    const isTeams = /msteams|teams/i.test(ua);
 
     if (!shareId) {
       res.status(302).setHeader('Location', BASE_URL).end();
@@ -62,14 +63,12 @@ export default async function handler(req, res) {
       img = imageUrl;
     }
 
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader(
-      'Cache-Control',
-      'no-store, no-cache, must-revalidate, max-age=0',
-    );
-    res.setHeader('Vary', 'User-Agent');
+    const redirectMeta = isTeams
+      ? ''
+      : `<meta http-equiv="refresh" content="0; url=${BASE_URL}/${shareId}" />`;
 
-    res.status(200).send(`<!doctype html>
+    res.status(200).setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(`<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
@@ -82,12 +81,10 @@ export default async function handler(req, res) {
 <meta property="og:image:height" content="630" />
 <meta property="og:url" content="${BASE_URL}/u/${shareId}" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="theme-color" content="#facc15" />
-<meta http-equiv="refresh" content="0; url=${BASE_URL}/${shareId}" />
+${redirectMeta}
 </head>
 </html>`);
   } catch {
-    const fallback = process.env.PUBLIC_BASE_URL || 'http://localhost:3000';
-    res.status(302).setHeader('Location', fallback).end();
+    res.status(302).setHeader('Location', process.env.PUBLIC_BASE_URL).end();
   }
 }

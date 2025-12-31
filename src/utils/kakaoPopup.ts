@@ -13,7 +13,7 @@ const buildState = () => {
 
 const buildAuthUrl = (state: string, inapp: boolean) => {
   const redirectUri = inapp
-    ? `${location.origin}/login/inapp`
+    ? `${location.origin}/login-inapp`
     : `${location.origin}/login`;
 
   return (
@@ -28,10 +28,9 @@ const buildAuthUrl = (state: string, inapp: boolean) => {
 export const openKakaoPopup = async (): Promise<{ code: string } | null> => {
   const state = buildState();
   const inapp = isKakaoInApp();
-
-  localStorage.setItem('kakao_oauth_state', state);
-
   const authUrl = buildAuthUrl(state, inapp);
+
+  sessionStorage.setItem('kakao_oauth_state', state);
 
   if (inapp) {
     location.replace(authUrl);
@@ -58,8 +57,8 @@ export const openKakaoPopup = async (): Promise<{ code: string } | null> => {
 
       window.removeEventListener('message', onMsg);
 
-      const expected = localStorage.getItem('kakao_oauth_state');
-      localStorage.removeItem('kakao_oauth_state');
+      const expected = sessionStorage.getItem('kakao_oauth_state');
+      sessionStorage.removeItem('kakao_oauth_state');
 
       if (!d.code || d.state !== expected) {
         reject(new Error('invalid_state'));
