@@ -14,7 +14,7 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
   const setField = useWeddingStore((state) => state.setField);
   const theme = useWeddingStore((state) => state.values.theme) || {};
 
-  const handleFieldChange = useCallback(
+  const handleChangeField = useCallback(
     (key: TextAllowedKeys) => (e: React.ChangeEvent<HTMLInputElement>) => {
       setField('theme', key, e.target.value);
     },
@@ -46,7 +46,7 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
               maxLength={option.maxLength}
               placeholder={`${option.label} 입력해주세요`}
               value={theme[key] || ''}
-              onChange={handleFieldChange(key)}
+              onChange={handleChangeField(key)}
             />
           </Field>
         );
