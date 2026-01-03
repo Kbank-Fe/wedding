@@ -6,7 +6,7 @@ type BaseEnglishTextInputProps = React.ComponentProps<typeof BaseTextInput>;
 
 /**
  * 영문, 공백만 허용하는 텍스트 인풋 컴포넌트
- * - 비제어 방식으로 브라우저 IME (한글 조합) 개입 최소화
+ * - 비제어 방식 (defaultValue) 으로 브라우저 IME (한글 조합) 개입 최소화
  */
 const BaseEnglishTextInput = ({
   onChange,
