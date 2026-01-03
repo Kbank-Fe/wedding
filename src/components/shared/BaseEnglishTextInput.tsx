@@ -20,13 +20,6 @@ const BaseEnglishTextInput = ({
     // 영문자와 공백을 제외한 모든 문자 제거
     const filteredValue = inputValue.replace(/[^a-zA-Z\s]/g, '');
 
-    console.log(
-      'typing inputValue:',
-      inputValue,
-      'filteredValue:',
-      filteredValue,
-    );
-
     // 한글 입력 발생 여부 확인
     const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(inputValue);
 
@@ -41,7 +34,7 @@ const BaseEnglishTextInput = ({
       return;
     }
 
-    // 한글 외 특수문주 입력 시 DOM 정제
+    // 한글 외 특수문자 입력 시 DOM 정제
     if (inputValue !== filteredValue) {
       target.value = filteredValue;
     }
@@ -50,6 +43,27 @@ const BaseEnglishTextInput = ({
     if (filteredValue !== value) {
       onChange?.(e as React.ChangeEvent<HTMLInputElement>);
     }
+  };
+
+  /**
+   * 한글 입력 직후 IME (한글 조합) 세션을 즉시 종료시키는 핸들러
+   * - input 한글 입력 시 두번 지워야 영문 1개 삭제되는 현상 방지
+   * - onCompositionStart 이벤트 : 한글 등 조합형 문자 입력이 시작되는 즉시 발생
+   * - ex) 'ㄱ' 입력 직후
+   */
+  const handleCompositionStart = (
+    e: React.CompositionEvent<HTMLInputElement>,
+  ) => {
+    const target = e.currentTarget;
+
+    // 임시로 읽기 전용 모드로 변경하여 IME (한글 조합) 세션 종료 유도
+    target.readOnly = true;
+
+    // onCompositionStart 이벤트 종료 직후 읽기 전용 모드 해제
+    setTimeout(() => {
+      // 입력 세션 강제 종료 시 입력 기본값 '영문 모드' 리셋
+      target.readOnly = false;
+    }, 0);
   };
 
   return (
@@ -62,6 +76,7 @@ const BaseEnglishTextInput = ({
       inputMode="email" // 모바일 환경 영문 키보드 유도
       spellCheck={false} // 빨간 줄(맞춤법 검사) 방지
       onChange={() => {}} // React 경고 방지용 더미 함수
+      onCompositionStart={handleCompositionStart} // 한글 입력 시작 시점 감지
       onInput={handleInput} // 모든 입력 단계에서 필터링 실행
     />
   );
