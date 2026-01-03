@@ -59,7 +59,7 @@ const BaseEnglishTextInput = ({
     // 임시로 읽기 전용 모드로 변경하여 IME (한글 조합) 세션 종료 유도
     target.readOnly = true;
 
-    // onCompositionStart 이벤트 종료 직후 읽기 전용 모드 해제
+    // onCompositionStart 이벤트 종료 직후
     setTimeout(() => {
       // 입력 세션 강제 종료 시 입력 기본값 '영문 모드' 리셋
       target.readOnly = false;
