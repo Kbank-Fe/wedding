@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import BaseEnglishTextInput from '@/components/shared/BaseEnglishTextInput';
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Field from '@/components/shared/Field';
@@ -12,6 +14,13 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
   const setField = useWeddingStore((state) => state.setField);
   const theme = useWeddingStore((state) => state.values.theme) || {};
 
+  const handleFieldChange = useCallback(
+    (key: TextAllowedKeys) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setField('theme', key, e.target.value);
+    },
+    [setField],
+  );
+
   if (!localThemeItem) return null;
 
   return (
@@ -22,6 +31,10 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
         if (!option) return null;
         if (option.type !== 'text') return null;
 
+        const InputComponent = option.englishOnly
+          ? BaseEnglishTextInput
+          : BaseTextInput;
+
         return (
           <Field
             key={key}
@@ -29,25 +42,12 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
             label={option.label}
             mode="single"
           >
-            {option.englishOnly ? (
-              <BaseEnglishTextInput
-                maxLength={option.maxLength}
-                placeholder={`${option.label} 입력해주세요`}
-                value={theme[key] || ''}
-                onChange={(e) => {
-                  setField('theme', key, e.target.value);
-                }}
-              />
-            ) : (
-              <BaseTextInput
-                maxLength={option.maxLength}
-                placeholder={`${option.label} 입력해주세요`}
-                value={theme[key] || ''}
-                onChange={(e) => {
-                  setField('theme', key, e.target.value);
-                }}
-              />
-            )}
+            <InputComponent
+              maxLength={option.maxLength}
+              placeholder={`${option.label} 입력해주세요`}
+              value={theme[key] || ''}
+              onChange={handleFieldChange(key)}
+            />
           </Field>
         );
       })}
