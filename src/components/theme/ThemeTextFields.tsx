@@ -1,3 +1,4 @@
+import BaseEnglishTextInput from '@/components/shared/BaseEnglishTextInput';
 import BaseTextInput from '@/components/shared/BaseTextInput';
 import Field from '@/components/shared/Field';
 import { useWeddingStore } from '@/stores/useWeddingStore';
@@ -28,14 +29,25 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
             label={option.label}
             mode="single"
           >
-            <BaseTextInput
-              maxLength={option.maxLength}
-              placeholder={`${option.label} 입력해주세요`}
-              value={theme[key] || ''}
-              onChange={(e) => {
-                setField('theme', key, e.target.value);
-              }}
-            />
+            {option.englishOnly ? (
+              <BaseEnglishTextInput
+                maxLength={option.maxLength}
+                placeholder={`${option.label} 입력해주세요`}
+                value={theme[key] || ''}
+                onChange={(e) => {
+                  setField('theme', key, e.target.value);
+                }}
+              />
+            ) : (
+              <BaseTextInput
+                maxLength={option.maxLength}
+                placeholder={`${option.label} 입력해주세요`}
+                value={theme[key] || ''}
+                onChange={(e) => {
+                  setField('theme', key, e.target.value);
+                }}
+              />
+            )}
           </Field>
         );
       })}
