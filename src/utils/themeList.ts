@@ -4,6 +4,7 @@ export type TextInputOption = {
   type: 'text';
   label: string;
   maxLength: number;
+  englishOnly?: boolean;
 };
 
 export type ImageInputOption = {
@@ -90,11 +91,13 @@ export const themeList = [
       type: 'text',
       label: '신랑 영문명',
       maxLength: 12,
+      englishOnly: true,
     },
     brideEnglishName: {
       type: 'text',
       label: '신부 영문명',
       maxLength: 12,
+      englishOnly: true,
     },
     text1: { type: 'text', label: '첫번째 문구', maxLength: 20 },
     text2: { type: 'text', label: '두번째 문구', maxLength: 35 },
@@ -129,11 +132,13 @@ export const themeList = [
       type: 'text',
       label: '신랑 영문명',
       maxLength: 12,
+      englishOnly: true,
     },
     brideEnglishName: {
       type: 'text',
       label: '신부 영문명',
       maxLength: 12,
+      englishOnly: true,
     },
     image: {
       type: 'image',
@@ -168,11 +173,13 @@ export const themeList = [
       type: 'text',
       label: '신랑 영문명',
       maxLength: 14,
+      englishOnly: true,
     },
     brideEnglishName: {
       type: 'text',
       label: '신부 영문명',
       maxLength: 14,
+      englishOnly: true,
     },
     text1: { type: 'text', label: '첫번째 문구', maxLength: 13 },
     text2: { type: 'text', label: '두번째 문구', maxLength: 13 },
