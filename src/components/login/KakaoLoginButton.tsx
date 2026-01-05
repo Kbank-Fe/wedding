@@ -4,7 +4,7 @@ import {
   setPersistence,
   signInWithCustomToken,
 } from 'firebase/auth';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import LoadingBackdrop from '@/components/shared/LoadingBackdrop';
@@ -16,9 +16,13 @@ type ExchangeResp = { firebaseCustomToken: string; email: string | null };
 const KakaoLoginButton = () => {
   const navigate = useNavigate();
   const [loading, setLoadingOpen] = useState(false);
+  const exchangedRef = useRef(false);
 
   const exchangeAndLogin = useCallback(
     async (code: string) => {
+      if (exchangedRef.current) return;
+      exchangedRef.current = true;
+
       try {
         setLoadingOpen(true);
         await setPersistence(auth, browserLocalPersistence);
@@ -42,9 +46,10 @@ const KakaoLoginButton = () => {
         });
 
         window.history.replaceState(null, '', '/login');
-        navigate('/admin');
+        navigate('/admin', { replace: true });
       } catch (e) {
         console.error(e);
+        exchangedRef.current = false;
         setLoadingOpen(false);
       }
     },
@@ -56,7 +61,6 @@ const KakaoLoginButton = () => {
     const inappCode = p.get('inapp_code');
     if (!inappCode) return;
 
-    window.history.replaceState(null, '', '/login');
     exchangeAndLogin(inappCode);
   }, [exchangeAndLogin]);
 
