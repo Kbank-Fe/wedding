@@ -20,11 +20,19 @@ const safeParseJSON = (t) => {
   }
 };
 
+const esc = (s = '') =>
+  String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
 export default async function handler(req, res) {
   try {
     const { shareId } = req.query;
     const ua = req.headers['user-agent'] || '';
     const BASE_URL = getBaseUrl().replace(/^http:/, 'https:');
+    const isBot = BOT_PATTERN.test(ua);
     const isTeams = /msteams|teams/i.test(ua);
 
     if (!shareId) {
@@ -32,13 +40,12 @@ export default async function handler(req, res) {
       return;
     }
 
-    if (!BOT_PATTERN.test(ua)) {
+    if (!isBot) {
       res.status(302).setHeader('Location', `${BASE_URL}/${shareId}`).end();
       return;
     }
 
     const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
-
     const dataRes = await fetch(
       `${FIREBASE_BASE}/shares/${shareId}/data.json`,
       { cache: 'no-store' },
@@ -72,19 +79,19 @@ export default async function handler(req, res) {
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
-<title>${title}</title>
+<title>${esc(title)}</title>
 <meta property="og:type" content="website" />
-<meta property="og:title" content="${title}" />
-<meta property="og:description" content="${desc}" />
-<meta property="og:image" content="${img}" />
+<meta property="og:title" content="${esc(title)}" />
+<meta property="og:description" content="${esc(desc)}" />
+<meta property="og:image" content="${esc(img)}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="${BASE_URL}/u/${shareId}" />
+<meta property="og:url" content="${esc(`${BASE_URL}/u/${shareId}`)}" />
 <meta name="twitter:card" content="summary_large_image" />
 ${redirectMeta}
 </head>
 </html>`);
   } catch {
-    res.status(302).setHeader('Location', process.env.PUBLIC_BASE_URL).end();
+    res.status(302).setHeader('Location', '/').end();
   }
 }
