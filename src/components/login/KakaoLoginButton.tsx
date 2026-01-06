@@ -79,6 +79,7 @@ const KakaoLoginButton = () => {
     const code = hash.get('inapp_code') || search.get('code');
     if (!code) return;
 
+    usedCodeRef.current = inappCode;
     location.hash = '';
     window.history.replaceState(null, '', '/login');
     exchangeAndLogin(code);
