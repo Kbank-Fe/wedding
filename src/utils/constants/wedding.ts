@@ -1,4 +1,4 @@
-import type { WeddingInfo } from '@/types/wedding';
+import type { Theme, WeddingInfo } from '@/types/wedding';
 
 export const WEDDING_INITIAL_INFO: WeddingInfo = {
   theme: {
@@ -118,4 +118,15 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
     localImageList: [],
     savedImageList: [],
   },
+};
+
+export const THEME_TEXT_DEFAULT: Pick<
+  Theme,
+  'groomEnglishName' | 'brideEnglishName' | 'text1' | 'text2' | 'text3'
+> = {
+  groomEnglishName: '',
+  brideEnglishName: '',
+  text1: '',
+  text2: '',
+  text3: '',
 };
