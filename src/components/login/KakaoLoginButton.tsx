@@ -13,6 +13,8 @@ import { openKakaoPopup } from '@/utils/kakaoPopup';
 
 type ExchangeResp = { firebaseCustomToken: string; email: string | null };
 
+const isKakaoInApp = () => /kakaotalk/i.test(navigator.userAgent);
+
 const KakaoLoginButton = () => {
   const navigate = useNavigate();
   const [loading, setLoadingOpen] = useState(false);
@@ -25,12 +27,21 @@ const KakaoLoginButton = () => {
 
       try {
         setLoadingOpen(true);
-        await setPersistence(auth, browserLocalPersistence);
+
+        try {
+          await setPersistence(auth, browserLocalPersistence);
+        } catch {
+          console.warn('Persistence not supported in this environment');
+        }
+
+        const redirectUri = isKakaoInApp()
+          ? `${location.origin}/login-inapp`
+          : `${location.origin}/login`;
 
         const resp = await fetch('/api/exchange', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({ code, redirectUri }),
         });
 
         if (!resp.ok) throw new Error(await resp.text());
@@ -39,6 +50,7 @@ const KakaoLoginButton = () => {
           (await resp.json()) as ExchangeResp;
 
         const cred = await signInWithCustomToken(auth, firebaseCustomToken);
+
         await getOrCreateUser({
           uid: cred.user.uid,
           email: email ?? undefined,
@@ -48,7 +60,7 @@ const KakaoLoginButton = () => {
         window.history.replaceState(null, '', '/login');
         navigate('/admin', { replace: true });
       } catch (e) {
-        console.error(e);
+        console.error('KAKAO_LOGIN_FAIL', e);
         exchangedRef.current = false;
         setLoadingOpen(false);
       }

@@ -33,6 +33,7 @@ export const openKakaoPopup = async (): Promise<{ code: string } | null> => {
   sessionStorage.setItem('kakao_oauth_state', state);
 
   if (inapp) {
+    sessionStorage.setItem('kakao_oauth_inapp', '1');
     location.href = authUrl;
     return null;
   }
