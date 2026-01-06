@@ -12,15 +12,15 @@ const required = (name) => {
 const privateKey = () => required('FIREBASE_PRIVATE_KEY').replace(/\\n/g, '\n');
 
 const initAdmin = () => {
-  if (!getApps().length) {
-    initializeApp({
-      credential: cert({
-        projectId: required('FIREBASE_PROJECT_ID'),
-        clientEmail: required('FIREBASE_CLIENT_EMAIL'),
-        privateKey: privateKey(),
-      }),
-    });
-  }
+  if (getApps().length) return;
+
+  initializeApp({
+    credential: cert({
+      projectId: required('FIREBASE_PROJECT_ID'),
+      clientEmail: required('FIREBASE_CLIENT_EMAIL'),
+      privateKey: privateKey(),
+    }),
+  });
 };
 
 const applyCors = (res) => {
@@ -42,13 +42,6 @@ const safeParseJSON = (t) => {
     return null;
   }
 };
-
-const ALLOWED_REDIRECTS = () => [
-  `${required('PUBLIC_BASE_URL')}/login`,
-  `${required('PUBLIC_BASE_URL')}/login-inapp`,
-  'http://localhost:3000/login',
-  'http://localhost:3000/login-inapp',
-];
 
 /**
  * @param {import('@vercel/node').VercelRequest} req
@@ -80,18 +73,13 @@ const handler = async (req, res) => {
     const body =
       typeof req.body === 'string' ? safeParseJSON(req.body) : req.body;
 
-    const code = body?.code;
-    const redirectUri = body?.redirectUri;
-
-    if (!code || !redirectUri) {
-      res.status(400).json({ error: 'missing_param' });
+    const code = body && body.code;
+    if (!code) {
+      res.status(400).json({ error: 'missing_code' });
       return;
     }
 
-    if (!ALLOWED_REDIRECTS().includes(redirectUri)) {
-      res.status(400).json({ error: 'invalid_redirect_uri' });
-      return;
-    }
+    const redirectUri = `${required('PUBLIC_BASE_URL')}/login`;
 
     const form = new URLSearchParams();
     form.set('grant_type', 'authorization_code');
@@ -110,7 +98,7 @@ const handler = async (req, res) => {
 
     const tokJson = safeParseJSON(await tokRes.text());
 
-    if (!tokRes.ok || !tokJson?.access_token) {
+    if (!tokRes.ok || !tokJson || !tokJson.access_token) {
       res.status(400).json({ error: 'token_exchange_failed', detail: tokJson });
       return;
     }
@@ -121,20 +109,30 @@ const handler = async (req, res) => {
 
     const meJson = safeParseJSON(await meRes.text());
 
-    if (!meRes.ok || !meJson?.id) {
+    if (!meRes.ok || !meJson || !meJson.id) {
       res.status(400).json({ error: 'me_failed', detail: meJson });
       return;
     }
 
     initAdmin();
+
     const firebaseCustomToken = await getAuth().createCustomToken(
       `kakao:${meJson.id}`,
-      { provider: 'kakao', email: meJson.kakao_account?.email ?? null },
+      {
+        provider: 'kakao',
+        email:
+          meJson.kakao_account && meJson.kakao_account.email
+            ? meJson.kakao_account.email
+            : null,
+      },
     );
 
     res.status(200).json({
       firebaseCustomToken,
-      email: meJson.kakao_account?.email ?? null,
+      email:
+        meJson.kakao_account && meJson.kakao_account.email
+          ? meJson.kakao_account.email
+          : null,
     });
   } catch (e) {
     console.error('EXCHANGE_FATAL', e);
