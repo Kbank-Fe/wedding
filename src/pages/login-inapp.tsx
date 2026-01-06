@@ -7,11 +7,11 @@ const LoginInApp = () => {
     const error = p.get('error');
 
     if (!code || error) {
-      location.replace('/login');
+      location.href = '/login';
       return;
     }
 
-    location.replace(`/login?inapp_code=${encodeURIComponent(code)}`);
+    location.href = `/login#inapp_code=${encodeURIComponent(code)}`;
   }, []);
 
   return null;

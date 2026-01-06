@@ -57,10 +57,12 @@ const KakaoLoginButton = () => {
   );
 
   useEffect(() => {
-    const p = new URLSearchParams(location.search);
-    const inappCode = p.get('inapp_code');
+    const hash = new URLSearchParams(location.hash.replace('#', ''));
+    const inappCode = hash.get('inapp_code');
+
     if (!inappCode) return;
 
+    location.hash = '';
     exchangeAndLogin(inappCode);
   }, [exchangeAndLogin]);
 
