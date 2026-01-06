@@ -19,6 +19,7 @@ const KakaoLoginButton = () => {
   const navigate = useNavigate();
   const [loading, setLoadingOpen] = useState(false);
   const exchangedRef = useRef(false);
+  const usedCodeRef = useRef<string | null>(null);
 
   const exchangeAndLogin = useCallback(
     async (code: string) => {
@@ -31,7 +32,7 @@ const KakaoLoginButton = () => {
         try {
           await setPersistence(auth, browserLocalPersistence);
         } catch {
-          console.warn('Persistence not supported in this environment');
+          console.error('setPersistence Error');
         }
 
         const redirectUri = isKakaoInApp()
@@ -73,7 +74,9 @@ const KakaoLoginButton = () => {
     const inappCode = hash.get('inapp_code');
 
     if (!inappCode) return;
+    if (usedCodeRef.current === inappCode) return;
 
+    usedCodeRef.current = inappCode;
     location.hash = '';
     exchangeAndLogin(inappCode);
   }, [exchangeAndLogin]);
