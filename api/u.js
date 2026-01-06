@@ -34,6 +34,10 @@ export default async function handler(req, res) {
       return;
     }
 
+    const ua = String(req.headers['user-agent'] || '');
+    const isBot = BOT_PATTERN.test(ua);
+    const isTeams = TEAMS_PATTERN.test(ua);
+
     const landingUrl = `${BASE_URL}/${shareId}`;
 
     const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
