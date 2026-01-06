@@ -29,7 +29,7 @@ const createShare = async <T extends object>(
   uid: string,
   data: T,
 ): Promise<string> => {
-  const id = nanoid();
+  const id = nanoid(12);
   const now = serverTimestamp();
 
   const updates: Record<string, unknown> = {};
