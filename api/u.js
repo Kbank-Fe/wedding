@@ -1,7 +1,3 @@
-const BOT_PATTERN =
-  /(facebookexternalhit|twitterbot|slackbot|discordbot|bot|crawl|spider|embed)/i;
-const TEAMS_PATTERN = /(msteams|teams)/i;
-
 const required = (name) => {
   const v = process.env[name];
   if (!v) throw new Error(`Missing env: ${name}`);
@@ -32,23 +28,13 @@ export default async function handler(req, res) {
   const BASE_URL = getBaseUrl().replace(/^http:/, 'https:');
 
   try {
-    const shareId = String(req.query.shareId || '');
+    const shareId = String(req.query.shareId || '').trim();
     if (!shareId) {
       res.status(302).setHeader('Location', BASE_URL).end();
       return;
     }
 
-    const ua = String(req.headers['user-agent'] || '');
-    const isBot = BOT_PATTERN.test(ua);
-    const isTeams = TEAMS_PATTERN.test(ua);
-
     const landingUrl = `${BASE_URL}/${shareId}`;
-
-    // 🔥 일반 브라우저만 리다이렉트
-    if (!isBot && !isTeams) {
-      res.status(302).setHeader('Location', landingUrl).end();
-      return;
-    }
 
     const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
     const dataRes = await fetch(
@@ -72,12 +58,11 @@ export default async function handler(req, res) {
 
     let img = `${BASE_URL}/og-image.png`;
     const imageUrl = data?.share?.savedImageList?.[0]?.url;
-    if (typeof imageUrl === 'string' && imageUrl.startsWith('http'))
+    if (typeof imageUrl === 'string' && imageUrl.startsWith('http')) {
       img = imageUrl;
+    }
 
-    const redirectMeta = isTeams
-      ? ''
-      : `<meta http-equiv="refresh" content="0; url=${esc(landingUrl)}" />`;
+    const redirectMeta = `<meta http-equiv="refresh" content="0; url=${esc(landingUrl)}" />`;
 
     res.status(200).setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(`<!doctype html>
