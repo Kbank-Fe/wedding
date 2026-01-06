@@ -1,5 +1,7 @@
 const BOT_PATTERN =
-  /(facebookexternalhit|twitterbot|slackbot|discordbot|msteams|teams|bot|crawl|spider|embed)/i;
+  /(facebookexternalhit|twitterbot|slackbot|discordbot|bot|crawl|spider|embed)/i;
+
+const TEAMS_PATTERN = /(msteams|teams)/i;
 
 const required = (name) => {
   const v = process.env[name];
@@ -31,17 +33,18 @@ export default async function handler(req, res) {
   const BASE_URL = getBaseUrl().replace(/^http:/, 'https:');
 
   try {
-    const { shareId } = req.query;
-    const ua = req.headers['user-agent'] || '';
+    const shareId = String(req.query.shareId || '');
+    const ua = String(req.headers['user-agent'] || '');
+
     const isBot = BOT_PATTERN.test(ua);
-    const isTeams = /msteams|teams/i.test(ua);
+    const isTeams = TEAMS_PATTERN.test(ua);
 
     if (!shareId) {
       res.status(302).setHeader('Location', BASE_URL).end();
       return;
     }
 
-    const landingUrl = `${BASE_URL}/${encodeURIComponent(String(shareId))}`;
+    const landingUrl = `${BASE_URL}/${shareId}`;
 
     if (!isBot) {
       res.status(302).setHeader('Location', landingUrl).end();
@@ -49,14 +52,14 @@ export default async function handler(req, res) {
     }
 
     const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
-
     const dataRes = await fetch(
-      `${FIREBASE_BASE}/shares/${encodeURIComponent(String(shareId))}/data.json`,
-      { cache: 'no-store' },
+      `${FIREBASE_BASE}/shares/${shareId}/data.json`,
+      {
+        cache: 'no-store',
+      },
     );
 
-    const dataText = await dataRes.text();
-    const data = safeParseJSON(dataText);
+    const data = safeParseJSON(await dataRes.text());
 
     if (!dataRes.ok || !data) {
       res.status(302).setHeader('Location', landingUrl).end();
@@ -68,22 +71,19 @@ export default async function handler(req, res) {
     const date = data?.date || {};
 
     const title = `${male} ❤️ ${female} 결혼합니다!`;
-    const desc = `${date.year ?? ''}년 ${date.month ?? ''}월 ${
-      date.day ?? ''
-    }일 결혼식에 초대합니다.`;
+    const desc = `${date.year ?? ''}년 ${date.month ?? ''}월 ${date.day ?? ''}일 결혼식에 초대합니다.`;
 
     let img = `${BASE_URL}/og-image.png`;
     const imageUrl = data?.share?.savedImageList?.[0]?.url;
-    if (typeof imageUrl === 'string' && imageUrl.startsWith('http')) {
+    if (typeof imageUrl === 'string' && imageUrl.startsWith('http'))
       img = imageUrl;
-    }
 
     const redirectMeta = isTeams
       ? ''
       : `<meta http-equiv="refresh" content="0; url=${esc(landingUrl)}" />`;
 
-    res.status(200).setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.send(`<!doctype html>
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.status(200).send(`<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
