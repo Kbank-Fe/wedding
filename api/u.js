@@ -1,5 +1,5 @@
 const BOT_PATTERN =
-  /(facebookexternalhit|twitterbot|slackbot|discordbot|kakaotalk|kakaostory|msteams|teams|bot|crawl|spider|embed)/i;
+  /(facebookexternalhit|twitterbot|slackbot|discordbot|msteams|teams|bot|crawl|spider|embed)/i;
 
 const required = (name) => {
   const v = process.env[name];
@@ -28,10 +28,11 @@ const esc = (s = '') =>
     .replace(/>/g, '&gt;');
 
 export default async function handler(req, res) {
+  const BASE_URL = getBaseUrl().replace(/^http:/, 'https:');
+
   try {
     const { shareId } = req.query;
     const ua = req.headers['user-agent'] || '';
-    const BASE_URL = getBaseUrl().replace(/^http:/, 'https:');
     const isBot = BOT_PATTERN.test(ua);
     const isTeams = /msteams|teams/i.test(ua);
 
@@ -40,20 +41,25 @@ export default async function handler(req, res) {
       return;
     }
 
+    const landingUrl = `${BASE_URL}/${encodeURIComponent(String(shareId))}`;
+
     if (!isBot) {
-      res.status(302).setHeader('Location', `${BASE_URL}/${shareId}`).end();
+      res.status(302).setHeader('Location', landingUrl).end();
       return;
     }
 
     const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
+
     const dataRes = await fetch(
-      `${FIREBASE_BASE}/shares/${shareId}/data.json`,
+      `${FIREBASE_BASE}/shares/${encodeURIComponent(String(shareId))}/data.json`,
       { cache: 'no-store' },
     );
 
-    const data = safeParseJSON(await dataRes.text());
+    const dataText = await dataRes.text();
+    const data = safeParseJSON(dataText);
+
     if (!dataRes.ok || !data) {
-      res.status(302).setHeader('Location', `${BASE_URL}/${shareId}`).end();
+      res.status(302).setHeader('Location', landingUrl).end();
       return;
     }
 
@@ -62,7 +68,9 @@ export default async function handler(req, res) {
     const date = data?.date || {};
 
     const title = `${male} ❤️ ${female} 결혼합니다!`;
-    const desc = `${date.year ?? ''}년 ${date.month ?? ''}월 ${date.day ?? ''}일 결혼식에 초대합니다.`;
+    const desc = `${date.year ?? ''}년 ${date.month ?? ''}월 ${
+      date.day ?? ''
+    }일 결혼식에 초대합니다.`;
 
     let img = `${BASE_URL}/og-image.png`;
     const imageUrl = data?.share?.savedImageList?.[0]?.url;
@@ -72,7 +80,7 @@ export default async function handler(req, res) {
 
     const redirectMeta = isTeams
       ? ''
-      : `<meta http-equiv="refresh" content="0; url=${BASE_URL}/${shareId}" />`;
+      : `<meta http-equiv="refresh" content="0; url=${esc(landingUrl)}" />`;
 
     res.status(200).setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(`<!doctype html>
@@ -90,8 +98,9 @@ export default async function handler(req, res) {
 <meta name="twitter:card" content="summary_large_image" />
 ${redirectMeta}
 </head>
+<body></body>
 </html>`);
   } catch {
-    res.status(302).setHeader('Location', '/').end();
+    res.status(302).setHeader('Location', BASE_URL).end();
   }
 }
