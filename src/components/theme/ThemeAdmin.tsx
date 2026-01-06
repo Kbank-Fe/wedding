@@ -2,17 +2,30 @@ import BaseImageInputPreview from '@/components//shared/BaseImageInputPreview';
 import BaseRadioButtonScrollGroup from '@/components/shared/BaseRadioButtonScrollGroup';
 import ThemeTextFields from '@/components/theme/ThemeTextFields';
 import { useWeddingStore } from '@/stores/useWeddingStore';
+import type { ThemeType } from '@/types/wedding';
+import { THEME_TEXT_DEFAULT } from '@/utils/constants/wedding';
 import { themeList, themeScrollList } from '@/utils/themeList';
 
 const ThemeAdmin = () => {
-  const setField = useWeddingStore((state) => state.setField);
+  const setDeep = useWeddingStore((state) => state.setDeep);
 
   const { type } = useWeddingStore((state) => state.values.theme);
 
   const localThemeItem = themeList.find((item) => item.type === type);
 
   const handleChangeRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setField('theme', 'type', e.target.value as typeof type);
+    const nextType = e.target.value as ThemeType;
+
+    setDeep((draft) => {
+      draft.theme.type = nextType;
+
+      Object.assign(draft.theme, THEME_TEXT_DEFAULT);
+
+      draft.themeImage = {
+        localImageList: [],
+        savedImageList: [],
+      };
+    });
   };
 
   return (
