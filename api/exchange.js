@@ -43,6 +43,13 @@ const safeParseJSON = (t) => {
   }
 };
 
+const ALLOWED_REDIRECTS = () => [
+  `${required('PUBLIC_BASE_URL')}/login`,
+  `${required('PUBLIC_BASE_URL')}/login-inapp`,
+  'http://localhost:3000/login',
+  'http://localhost:3000/login-inapp',
+];
+
 /**
  * @param {import('@vercel/node').VercelRequest} req
  * @param {import('@vercel/node').VercelResponse} res
@@ -56,10 +63,7 @@ const handler = async (req, res) => {
     }
 
     if (req.method !== 'POST') {
-      res.status(405).json({
-        error: 'method_not_allowed',
-        message: 'Only POST is allowed',
-      });
+      res.status(405).json({ error: 'method_not_allowed' });
       return;
     }
 
@@ -73,15 +77,19 @@ const handler = async (req, res) => {
       'FIREBASE_PRIVATE_KEY',
     ].forEach(required);
 
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const body =
+      typeof req.body === 'string' ? safeParseJSON(req.body) : req.body;
+
     const code = body?.code;
     const redirectUri = body?.redirectUri;
 
     if (!code || !redirectUri) {
-      res.status(400).json({
-        error: 'missing_param',
-        message: 'code 또는 redirectUri 누락',
-      });
+      res.status(400).json({ error: 'missing_param' });
+      return;
+    }
+
+    if (!ALLOWED_REDIRECTS().includes(redirectUri)) {
+      res.status(400).json({ error: 'invalid_redirect_uri' });
       return;
     }
 
@@ -100,54 +108,37 @@ const handler = async (req, res) => {
       body: form,
     });
 
-    const tokText = await tokRes.text();
-    const tokJson = safeParseJSON(tokText);
+    const tokJson = safeParseJSON(await tokRes.text());
 
     if (!tokRes.ok || !tokJson?.access_token) {
-      res.status(400).json({
-        error: 'token_exchange_failed',
-        message: '카카오 토큰 교환 실패',
-        detail: tokJson ?? tokText,
-      });
+      res.status(400).json({ error: 'token_exchange_failed', detail: tokJson });
       return;
     }
-
-    const access_token = tokJson.access_token;
 
     const meRes = await fetch('https://kapi.kakao.com/v2/user/me', {
-      headers: { Authorization: `Bearer ${access_token}` },
+      headers: { Authorization: `Bearer ${tokJson.access_token}` },
     });
 
-    const meText = await meRes.text();
-    const meJson = safeParseJSON(meText);
+    const meJson = safeParseJSON(await meRes.text());
 
     if (!meRes.ok || !meJson?.id) {
-      res.status(400).json({
-        error: 'me_failed',
-        message: '카카오 사용자 정보 요청 실패',
-        detail: meJson ?? meText,
-      });
+      res.status(400).json({ error: 'me_failed', detail: meJson });
       return;
     }
-
-    const kakaoId = String(meJson.id);
-    const email = meJson.kakao_account?.email ?? null;
 
     initAdmin();
     const firebaseCustomToken = await getAuth().createCustomToken(
-      `kakao:${kakaoId}`,
-      { provider: 'kakao', email },
+      `kakao:${meJson.id}`,
+      { provider: 'kakao', email: meJson.kakao_account?.email ?? null },
     );
 
-    res.status(200).json({ firebaseCustomToken, email });
-  } catch (e) {
-    console.error('EXCHANGE_ERROR', e);
-    res.status(500).json({
-      error: 'server_error',
-      name: e?.name ?? 'unknown',
-      message: e?.message ?? String(e),
-      stack: e?.stack ?? null,
+    res.status(200).json({
+      firebaseCustomToken,
+      email: meJson.kakao_account?.email ?? null,
     });
+  } catch (e) {
+    console.error('EXCHANGE_FATAL', e);
+    res.status(500).json({ error: 'server_error' });
   }
 };
 

@@ -33,13 +33,14 @@ export default async function handler(req, res) {
   const BASE_URL = getBaseUrl().replace(/^http:/, 'https:');
 
   try {
-    const shareId = String(req.query.shareId || '');
+    const shareIdRaw = String(req.query.shareId || '');
+    const shareId = encodeURIComponent(shareIdRaw);
     const ua = String(req.headers['user-agent'] || '');
 
     const isBot = BOT_PATTERN.test(ua);
     const isTeams = TEAMS_PATTERN.test(ua);
 
-    if (!shareId) {
+    if (!shareIdRaw) {
       res.status(302).setHeader('Location', BASE_URL).end();
       return;
     }
@@ -54,9 +55,7 @@ export default async function handler(req, res) {
     const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
     const dataRes = await fetch(
       `${FIREBASE_BASE}/shares/${shareId}/data.json`,
-      {
-        cache: 'no-store',
-      },
+      { cache: 'no-store' },
     );
 
     const data = safeParseJSON(await dataRes.text());
@@ -82,8 +81,8 @@ export default async function handler(req, res) {
       ? ''
       : `<meta http-equiv="refresh" content="0; url=${esc(landingUrl)}" />`;
 
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.status(200).send(`<!doctype html>
+    res.status(200).setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(`<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8" />

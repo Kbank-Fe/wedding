@@ -2,23 +2,25 @@ import { useEffect } from 'react';
 
 const LoginPage = () => {
   useEffect(() => {
-    const search = new URLSearchParams(location.search);
-    const hash = new URLSearchParams(location.hash.replace('#', ''));
+    const search = new URLSearchParams(window.location.search);
+    const hash = new URLSearchParams(window.location.hash.replace('#', ''));
 
     const code = search.get('code');
     const state = search.get('state');
     const error = search.get('error') || search.get('error_description');
+
     const inappCode = hash.get('inapp_code');
     const isInAppFlow = sessionStorage.getItem('kakao_oauth_inapp') === '1';
 
     if (inappCode) {
-      location.hash = '';
-      location.replace(`/login?code=${encodeURIComponent(inappCode)}`);
+      window.location.hash = '';
+      window.location.replace(`/login?code=${encodeURIComponent(inappCode)}`);
       return;
     }
 
     if (error) {
-      location.replace('/login');
+      sessionStorage.removeItem('kakao_oauth_inapp');
+      window.location.replace('/');
       return;
     }
 
@@ -29,7 +31,7 @@ const LoginPage = () => {
       if (expected && state === expected) {
         window.opener.postMessage(
           { type: 'kakao_oauth_result', code, state },
-          location.origin,
+          window.location.origin,
         );
       }
 
@@ -37,7 +39,9 @@ const LoginPage = () => {
       return;
     }
 
-    sessionStorage.removeItem('kakao_oauth_inapp');
+    if (isInAppFlow && code) {
+      sessionStorage.removeItem('kakao_oauth_inapp');
+    }
   }, []);
 
   return null;

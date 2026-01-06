@@ -34,7 +34,7 @@ export const openKakaoPopup = async (): Promise<{ code: string } | null> => {
 
   if (inapp) {
     sessionStorage.setItem('kakao_oauth_inapp', '1');
-    location.replace(authUrl);
+    location.href = authUrl;
     return null;
   }
 
@@ -54,15 +54,7 @@ export const openKakaoPopup = async (): Promise<{ code: string } | null> => {
       if (!ev.data || ev.data.type !== 'kakao_oauth_result') return;
 
       cleanup();
-
-      const expected = sessionStorage.getItem('kakao_oauth_state');
-      sessionStorage.removeItem('kakao_oauth_state');
-
-      if (ev.data.state === expected && ev.data.code) {
-        resolve({ code: ev.data.code });
-      } else {
-        resolve(null);
-      }
+      resolve({ code: ev.data.code });
     };
 
     const cleanup = () => {
