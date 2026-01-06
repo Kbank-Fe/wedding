@@ -9,22 +9,36 @@ export const useCurrentUser = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
+
     const unsubscribe = onAuthStateChanged(
       auth,
       (u) => {
-        setUser(u);
-        setUid(u ? u.uid : null);
+        if (!mounted) return;
+
+        if (u) {
+          setUser(u);
+          setUid(u.uid);
+        } else {
+          setUser(null);
+          setUid(null);
+        }
+
         setIsLoading(false);
       },
       (err) => {
         console.error('useCurrentUser error:', err);
+        if (!mounted) return;
         setUser(null);
         setUid(null);
         setIsLoading(false);
       },
     );
 
-    return () => unsubscribe();
+    return () => {
+      mounted = false;
+      unsubscribe();
+    };
   }, []);
 
   return { user, uid, isLoading };
