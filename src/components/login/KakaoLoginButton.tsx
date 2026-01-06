@@ -18,13 +18,16 @@ const isKakaoInApp = () => /kakaotalk/i.test(navigator.userAgent);
 const KakaoLoginButton = () => {
   const navigate = useNavigate();
   const [loading, setLoadingOpen] = useState(false);
-  const exchangedRef = useRef(false);
+
   const usedCodeRef = useRef<string | null>(null);
+  const inFlightRef = useRef(false);
 
   const exchangeAndLogin = useCallback(
     async (code: string) => {
-      if (exchangedRef.current) return;
-      exchangedRef.current = true;
+      if (inFlightRef.current || usedCodeRef.current === code) return;
+
+      inFlightRef.current = true;
+      usedCodeRef.current = code;
 
       try {
         setLoadingOpen(true);
@@ -32,7 +35,7 @@ const KakaoLoginButton = () => {
         try {
           await setPersistence(auth, browserLocalPersistence);
         } catch {
-          console.error('setPersistence Error');
+          console.warn('Persistence not supported');
         }
 
         const redirectUri = isKakaoInApp()
@@ -62,7 +65,7 @@ const KakaoLoginButton = () => {
         navigate('/admin', { replace: true });
       } catch (e) {
         console.error('KAKAO_LOGIN_FAIL', e);
-        exchangedRef.current = false;
+        inFlightRef.current = false;
         setLoadingOpen(false);
       }
     },
@@ -70,19 +73,20 @@ const KakaoLoginButton = () => {
   );
 
   useEffect(() => {
+    const search = new URLSearchParams(location.search);
     const hash = new URLSearchParams(location.hash.replace('#', ''));
-    const inappCode = hash.get('inapp_code');
 
-    if (!inappCode) return;
-    if (usedCodeRef.current === inappCode) return;
+    const code = hash.get('inapp_code') || search.get('code');
+    if (!code) return;
 
-    usedCodeRef.current = inappCode;
     location.hash = '';
-    exchangeAndLogin(inappCode);
+    window.history.replaceState(null, '', '/login');
+    exchangeAndLogin(code);
   }, [exchangeAndLogin]);
 
   const handleLogin = async () => {
-    if (loading) return;
+    if (loading || inFlightRef.current) return;
+
     setLoadingOpen(true);
 
     const result = await openKakaoPopup();
