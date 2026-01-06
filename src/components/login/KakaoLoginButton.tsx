@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import {
   browserLocalPersistence,
+  inMemoryPersistence,
   setPersistence,
   signInWithCustomToken,
 } from 'firebase/auth';
@@ -19,8 +20,20 @@ const KakaoLoginButton = () => {
   const navigate = useNavigate();
   const [loading, setLoadingOpen] = useState(false);
 
-  const usedCodeRef = useRef<string | null>(null);
   const inFlightRef = useRef(false);
+  const usedCodeRef = useRef<string | null>(null);
+
+  const ensurePersistence = async () => {
+    try {
+      await setPersistence(auth, browserLocalPersistence);
+    } catch {
+      try {
+        await setPersistence(auth, inMemoryPersistence);
+      } catch {
+        console.warn('Firebase persistence unavailable');
+      }
+    }
+  };
 
   const exchangeAndLogin = useCallback(
     async (code: string) => {
@@ -31,12 +44,7 @@ const KakaoLoginButton = () => {
 
       try {
         setLoadingOpen(true);
-
-        try {
-          await setPersistence(auth, browserLocalPersistence);
-        } catch {
-          console.warn('Persistence not supported');
-        }
+        await ensurePersistence();
 
         const redirectUri = isKakaoInApp()
           ? `${location.origin}/login-inapp`
@@ -54,6 +62,7 @@ const KakaoLoginButton = () => {
           (await resp.json()) as ExchangeResp;
 
         const cred = await signInWithCustomToken(auth, firebaseCustomToken);
+        if (!cred.user) throw new Error('Firebase sign-in failed');
 
         await getOrCreateUser({
           uid: cred.user.uid,
@@ -64,7 +73,7 @@ const KakaoLoginButton = () => {
         window.history.replaceState(null, '', '/login');
         navigate('/admin', { replace: true });
       } catch (e) {
-        console.error('KAKAO_LOGIN_FAIL', e);
+        console.error('KAKAO_LOGIN_FATAL', e);
         inFlightRef.current = false;
         setLoadingOpen(false);
       }
@@ -79,7 +88,6 @@ const KakaoLoginButton = () => {
     const code = hash.get('inapp_code') || search.get('code');
     if (!code) return;
 
-    usedCodeRef.current = inappCode;
     location.hash = '';
     window.history.replaceState(null, '', '/login');
     exchangeAndLogin(code);
