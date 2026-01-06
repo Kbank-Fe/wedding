@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 
 import BaseEnglishTextInput from '@/components/shared/BaseEnglishTextInput';
-import BaseTextInput from '@/components/shared/BaseTextInput';
 import Field from '@/components/shared/Field';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { TextAllowedKeys, ThemeList } from '@/utils/themeList';
@@ -31,10 +30,6 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
         if (!option) return null;
         if (option.type !== 'text') return null;
 
-        const InputComponent = option.englishOnly
-          ? BaseEnglishTextInput
-          : BaseTextInput;
-
         return (
           <Field
             key={key}
@@ -42,7 +37,7 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
             label={option.label}
             mode="single"
           >
-            <InputComponent
+            <BaseEnglishTextInput
               maxLength={option.maxLength}
               placeholder={`${option.label} 입력해주세요`}
               value={theme[key] || ''}
