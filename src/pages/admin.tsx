@@ -29,19 +29,31 @@ const AdminPage = () => {
   const [loading, setLoadingOpen] = useState(false);
   const isSavingRef = useRef(false);
 
-  const shouldFetch = !!uid;
+  const isMobile = useViewportStore((state) => state.isMobile);
+
+  const shouldFetch = !!uid && !userLoading;
   const { isLoading: infoLoading, notFound } = useWeddingInfo(
     shouldFetch ? { uid } : { uid: null },
     shouldFetch ? setDeep : undefined,
   );
 
-  const isMobile = useViewportStore((state) => state.isMobile);
+  if (userLoading) {
+    return (
+      <Layout viewType="admin">
+        <LoadingBackdrop open={true} />
+        <ListSkeleton count={9} />
+        <Toaster duration={2000} position="top-center" />
+      </Layout>
+    );
+  }
 
-  if (!uid && !userLoading) return <Navigate replace to="/404" />;
-  if (notFound) return <Navigate replace to="/404" />;
+  if (!uid) return <Navigate replace to="/" />;
+
+  if (!infoLoading && notFound) return <Navigate replace to="/404" />;
 
   const handleSave = async () => {
     if (!user || !uid || isSavingRef.current) return;
+
     isSavingRef.current = true;
     setLoadingOpen(true);
 
@@ -51,7 +63,6 @@ const AdminPage = () => {
       if (!result.isValid) {
         const label = result.invalidLabels[0];
         toast.error(`${label}${getObjectParticle(label)} 입력해주세요.`);
-
         setLoadingOpen(false);
         return;
       }
@@ -59,6 +70,7 @@ const AdminPage = () => {
       await Promise.all(
         FOLDERS.map((f) => processFolderImages(uid, f, setDeep)),
       );
+
       const values = useWeddingStore.getState().values;
       const shareId = await saveUserShare(uid, values);
 
@@ -86,21 +98,25 @@ const AdminPage = () => {
     ...adminList.filter((item) => item.showCheckbox),
   ];
 
+  const showSkeleton = infoLoading || adminList.length === 0;
+
   return (
     <Layout viewType="admin">
       <div css={adminLayoutStyle({ isMobile })}>
         {!isMobile && (
           <div css={previewAreaStyle}>
-            <WeddingPreview shareId={uid ?? ''} />
+            <WeddingPreview shareId={uid} />
           </div>
         )}
+
         <div css={adminPanelStyle({ isMobile })}>
           {isMobile && (
             <ButtonContentModal buttonText="미리보기" title="미리보기">
-              <WeddingPreview isPopup shareId={uid ?? ''} />
+              <WeddingPreview isPopup shareId={uid} />
             </ButtonContentModal>
           )}
-          {infoLoading || userLoading || adminList.length === 0 ? (
+
+          {showSkeleton ? (
             <>
               <LoadingBackdrop open={true} />
               <ListSkeleton count={9} />
@@ -124,6 +140,7 @@ const AdminPage = () => {
               )}
             </Accordion>
           )}
+
           <button
             css={buttonStyle}
             disabled={isSavingRef.current}

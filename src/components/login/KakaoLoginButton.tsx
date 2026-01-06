@@ -12,48 +12,43 @@ import LoadingBackdrop from '@/components/shared/LoadingBackdrop';
 import { auth, getOrCreateUser } from '@/utils/firebase';
 import { openKakaoPopup } from '@/utils/kakaoPopup';
 
-type ExchangeResp = { firebaseCustomToken: string; email: string | null };
+type ExchangeResp = {
+  firebaseCustomToken: string;
+  email: string | null;
+};
 
-const isKakaoInApp = () => /kakaotalk/i.test(navigator.userAgent);
+const ensurePersistence = async () => {
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+  } catch {
+    try {
+      await setPersistence(auth, inMemoryPersistence);
+    } catch {
+      console.warn('[kakao] persistence unavailable');
+    }
+  }
+};
 
 const KakaoLoginButton = () => {
   const navigate = useNavigate();
-  const [loading, setLoadingOpen] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const inFlightRef = useRef(false);
   const usedCodeRef = useRef<string | null>(null);
-
-  const ensurePersistence = async () => {
-    try {
-      await setPersistence(auth, browserLocalPersistence);
-    } catch {
-      try {
-        await setPersistence(auth, inMemoryPersistence);
-      } catch {
-        console.warn('Firebase persistence unavailable');
-      }
-    }
-  };
 
   const exchangeAndLogin = useCallback(
     async (code: string) => {
       if (inFlightRef.current || usedCodeRef.current === code) return;
-
       inFlightRef.current = true;
       usedCodeRef.current = code;
 
       try {
-        setLoadingOpen(true);
+        setLoading(true);
         await ensurePersistence();
-
-        const redirectUri = isKakaoInApp()
-          ? `${location.origin}/login-inapp`
-          : `${location.origin}/login`;
 
         const resp = await fetch('/api/exchange', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code, redirectUri }),
+          body: JSON.stringify({ code }),
         });
 
         if (!resp.ok) throw new Error(await resp.text());
@@ -62,7 +57,7 @@ const KakaoLoginButton = () => {
           (await resp.json()) as ExchangeResp;
 
         const cred = await signInWithCustomToken(auth, firebaseCustomToken);
-        if (!cred.user) throw new Error('Firebase sign-in failed');
+        if (!cred.user) throw new Error('firebase sign-in failed');
 
         await getOrCreateUser({
           uid: cred.user.uid,
@@ -70,12 +65,12 @@ const KakaoLoginButton = () => {
           provider: 'kakao',
         });
 
-        window.history.replaceState(null, '', '/login');
+        window.history.replaceState(null, '', '/');
         navigate('/admin', { replace: true });
       } catch (e) {
-        console.error('KAKAO_LOGIN_FATAL', e);
+        console.error('[kakao] login failed', e);
         inFlightRef.current = false;
-        setLoadingOpen(false);
+        setLoading(false);
       }
     },
     [navigate],
@@ -89,18 +84,18 @@ const KakaoLoginButton = () => {
     if (!code) return;
 
     location.hash = '';
-    window.history.replaceState(null, '', '/login');
+    window.history.replaceState(null, '', '/');
     exchangeAndLogin(code);
   }, [exchangeAndLogin]);
 
   const handleLogin = async () => {
     if (loading || inFlightRef.current) return;
 
-    setLoadingOpen(true);
-
+    setLoading(true);
     const result = await openKakaoPopup();
+
     if (!result) {
-      setLoadingOpen(false);
+      setLoading(false);
       return;
     }
 
@@ -119,10 +114,8 @@ const KakaoLoginButton = () => {
 
 const wrapperStyle = css`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   padding: 1rem;
-  position: relative;
 `;
 
 const buttonStyle = css`
