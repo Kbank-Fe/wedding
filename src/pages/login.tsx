@@ -12,6 +12,7 @@ const LoginPage = () => {
     const error = search.get('error') || search.get('error_description');
     const inappCode = hash.get('inapp_code');
     const inapp = isKakaoInApp();
+    const isInAppFlow = sessionStorage.getItem('kakao_oauth_inapp') === '1';
 
     if (inappCode) {
       location.hash = '';
@@ -24,7 +25,7 @@ const LoginPage = () => {
       return;
     }
 
-    if (window.opener) {
+    if (window.opener && !isInAppFlow) {
       const expected = sessionStorage.getItem('kakao_oauth_state');
       sessionStorage.removeItem('kakao_oauth_state');
 
@@ -42,6 +43,8 @@ const LoginPage = () => {
       return;
     }
 
+    sessionStorage.removeItem('kakao_oauth_inapp');
+
     if (code) {
       location.href = `/login?code=${encodeURIComponent(code)}`;
     }
@@ -51,4 +54,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-// 수정

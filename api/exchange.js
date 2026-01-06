@@ -28,6 +28,7 @@ const applyCors = (res) => {
     process.env.NODE_ENV === 'production'
       ? required('PUBLIC_BASE_URL')
       : 'http://localhost:3000';
+
   res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -74,18 +75,15 @@ const handler = async (req, res) => {
 
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     const code = body?.code;
-    if (!code) {
+    const redirectUri = body?.redirectUri;
+
+    if (!code || !redirectUri) {
       res.status(400).json({
-        error: 'missing_code',
-        message: '카카오 인가 코드(code)가 누락되었습니다.',
+        error: 'missing_param',
+        message: 'code 또는 redirectUri 누락',
       });
       return;
     }
-
-    const redirectUri =
-      process.env.NODE_ENV === 'production'
-        ? `${required('PUBLIC_BASE_URL')}/login`
-        : 'http://localhost:3000/login';
 
     const form = new URLSearchParams();
     form.set('grant_type', 'authorization_code');
