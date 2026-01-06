@@ -7,12 +7,20 @@ const LoginPage = () => {
     const state = p.get('state');
     const error = p.get('error') || p.get('error_description');
 
-    if (error) {
+    if (error || !code) {
       location.replace('/login');
       return;
     }
 
-    if (window.opener && code && state) {
+    if (window.opener) {
+      const expected = sessionStorage.getItem('kakao_oauth_state');
+      sessionStorage.removeItem('kakao_oauth_state');
+
+      if (!expected || !state || state !== expected) {
+        location.replace('/login');
+        return;
+      }
+
       window.opener.postMessage(
         { type: 'kakao_oauth_result', code, state },
         location.origin,
@@ -21,9 +29,7 @@ const LoginPage = () => {
       return;
     }
 
-    if (!window.opener && code) {
-      location.replace(`/login?inapp_code=${code}`);
-    }
+    location.replace(`/login?inapp_code=${encodeURIComponent(code)}`);
   }, []);
 
   return null;

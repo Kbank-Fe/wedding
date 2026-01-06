@@ -6,10 +6,10 @@ const POPUP_H = 640;
 
 const isKakaoInApp = () => /kakaotalk/i.test(navigator.userAgent);
 
-const buildState = () => {
-  const s = crypto.getRandomValues(new Uint8Array(16));
-  return Array.from(s, (b) => b.toString(16).padStart(2, '0')).join('');
-};
+const buildState = () =>
+  Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) =>
+    b.toString(16).padStart(2, '0'),
+  ).join('');
 
 const buildAuthUrl = (state: string, inapp: boolean) => {
   const redirectUri = inapp
@@ -45,27 +45,36 @@ export const openKakaoPopup = async (): Promise<{ code: string } | null> => {
     'kakao_oauth',
     `width=${POPUP_W},height=${POPUP_H},left=${left},top=${top}`,
   );
-  if (!popup) throw new Error('popup_blocked');
+  if (!popup) return null;
 
-  return new Promise((resolve, reject) => {
-    const allowedOrigin = location.origin;
-
+  return new Promise((resolve) => {
     const onMsg = (ev: MessageEvent) => {
-      if (ev.origin !== allowedOrigin) return;
-      const d = ev.data;
-      if (!d || d.type !== 'kakao_oauth_result') return;
+      if (ev.origin !== location.origin) return;
+      if (!ev.data || ev.data.type !== 'kakao_oauth_result') return;
 
-      window.removeEventListener('message', onMsg);
+      cleanup();
 
       const expected = sessionStorage.getItem('kakao_oauth_state');
       sessionStorage.removeItem('kakao_oauth_state');
 
-      if (!d.code || d.state !== expected) {
-        reject(new Error('invalid_state'));
+      if (ev.data.state === expected && ev.data.code) {
+        resolve({ code: ev.data.code });
       } else {
-        resolve({ code: d.code });
+        resolve(null);
       }
     };
+
+    const cleanup = () => {
+      window.removeEventListener('message', onMsg);
+      clearInterval(timer);
+    };
+
+    const timer = window.setInterval(() => {
+      if (popup.closed) {
+        cleanup();
+        resolve(null);
+      }
+    }, 400);
 
     window.addEventListener('message', onMsg);
   });

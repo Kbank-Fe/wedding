@@ -11,7 +11,7 @@ const LoginInApp = () => {
       return;
     }
 
-    location.replace(`/login?inapp_code=${code}`);
+    location.replace(`/login?inapp_code=${encodeURIComponent(code)}`);
   }, []);
 
   return null;
