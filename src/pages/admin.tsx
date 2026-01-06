@@ -49,7 +49,8 @@ const AdminPage = () => {
 
   if (!uid) return <Navigate replace to="/" />;
 
-  if (!infoLoading && notFound) return <Navigate replace to="/404" />;
+  if (shouldFetch && !infoLoading && notFound)
+    return <Navigate replace to="/404" />;
 
   const handleSave = async () => {
     if (!user || !uid || isSavingRef.current) return;
@@ -63,7 +64,6 @@ const AdminPage = () => {
       if (!result.isValid) {
         const label = result.invalidLabels[0];
         toast.error(`${label}${getObjectParticle(label)} 입력해주세요.`);
-        setLoadingOpen(false);
         return;
       }
 
@@ -87,9 +87,9 @@ const AdminPage = () => {
     } catch (error) {
       console.error(error);
       toast.error('데이터 저장을 실패했어요.');
-      setLoadingOpen(false);
     } finally {
       isSavingRef.current = false;
+      setLoadingOpen(false);
     }
   };
 
@@ -98,7 +98,7 @@ const AdminPage = () => {
     ...adminList.filter((item) => item.showCheckbox),
   ];
 
-  const showSkeleton = infoLoading || adminList.length === 0;
+  const showSkeleton = shouldFetch && infoLoading;
 
   return (
     <Layout viewType="admin">

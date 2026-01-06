@@ -4,17 +4,13 @@ const SCOPE = 'openid account_email';
 const POPUP_W = 480;
 const POPUP_H = 640;
 
-const isKakaoInApp = () => /kakaotalk/i.test(navigator.userAgent);
-
 const buildState = () =>
   Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) =>
     b.toString(16).padStart(2, '0'),
   ).join('');
 
-const buildAuthUrl = (state: string, inapp: boolean) => {
-  const redirectUri = inapp
-    ? `${location.origin}/login-inapp`
-    : `${location.origin}/login`;
+const buildAuthUrl = (state: string) => {
+  const redirectUri = `${location.origin}/login`;
 
   return (
     `${KAKAO_AUTH_URL}?response_type=code` +
@@ -27,16 +23,9 @@ const buildAuthUrl = (state: string, inapp: boolean) => {
 
 export const openKakaoPopup = async (): Promise<{ code: string } | null> => {
   const state = buildState();
-  const inapp = isKakaoInApp();
-  const authUrl = buildAuthUrl(state, inapp);
+  const authUrl = buildAuthUrl(state);
 
   sessionStorage.setItem('kakao_oauth_state', state);
-
-  if (inapp) {
-    sessionStorage.setItem('kakao_oauth_inapp', '1');
-    location.href = authUrl;
-    return null;
-  }
 
   const left = window.screenX + (window.outerWidth - POPUP_W) / 2;
   const top = window.screenY + (window.outerHeight - POPUP_H) / 2;

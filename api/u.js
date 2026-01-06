@@ -1,6 +1,5 @@
 const BOT_PATTERN =
   /(facebookexternalhit|twitterbot|slackbot|discordbot|bot|crawl|spider|embed)/i;
-
 const TEAMS_PATTERN = /(msteams|teams)/i;
 
 const required = (name) => {
@@ -33,21 +32,20 @@ export default async function handler(req, res) {
   const BASE_URL = getBaseUrl().replace(/^http:/, 'https:');
 
   try {
-    const shareIdRaw = String(req.query.shareId || '');
-    const shareId = encodeURIComponent(shareIdRaw);
-    const ua = String(req.headers['user-agent'] || '');
-
-    const isBot = BOT_PATTERN.test(ua);
-    const isTeams = TEAMS_PATTERN.test(ua);
-
-    if (!shareIdRaw) {
+    const shareId = String(req.query.shareId || '');
+    if (!shareId) {
       res.status(302).setHeader('Location', BASE_URL).end();
       return;
     }
 
+    const ua = String(req.headers['user-agent'] || '');
+    const isBot = BOT_PATTERN.test(ua);
+    const isTeams = TEAMS_PATTERN.test(ua);
+
     const landingUrl = `${BASE_URL}/${shareId}`;
 
-    if (!isBot) {
+    // 🔥 일반 브라우저만 리다이렉트
+    if (!isBot && !isTeams) {
       res.status(302).setHeader('Location', landingUrl).end();
       return;
     }
