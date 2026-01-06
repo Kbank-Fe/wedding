@@ -1,4 +1,6 @@
-import BaseTextInput from '@/components/shared/BaseTextInput';
+import { useCallback } from 'react';
+
+import BaseEnglishTextInput from '@/components/shared/BaseEnglishTextInput';
 import Field from '@/components/shared/Field';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 import type { TextAllowedKeys, ThemeList } from '@/utils/themeList';
@@ -10,6 +12,13 @@ type Props = {
 const ThemeTextFields = ({ localThemeItem }: Props) => {
   const setField = useWeddingStore((state) => state.setField);
   const theme = useWeddingStore((state) => state.values.theme) || {};
+
+  const handleChangeField = useCallback(
+    (key: TextAllowedKeys) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setField('theme', key, e.target.value);
+    },
+    [setField],
+  );
 
   if (!localThemeItem) return null;
 
@@ -28,13 +37,11 @@ const ThemeTextFields = ({ localThemeItem }: Props) => {
             label={option.label}
             mode="single"
           >
-            <BaseTextInput
+            <BaseEnglishTextInput
               maxLength={option.maxLength}
               placeholder={`${option.label} 입력해주세요`}
               value={theme[key] || ''}
-              onChange={(e) => {
-                setField('theme', key, e.target.value);
-              }}
+              onChange={handleChangeField(key)}
             />
           </Field>
         );

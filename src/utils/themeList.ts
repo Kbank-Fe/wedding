@@ -96,8 +96,16 @@ export const themeList = [
       label: '신부 영문명',
       maxLength: 12,
     },
-    text1: { type: 'text', label: '첫번째 문구', maxLength: 20 },
-    text2: { type: 'text', label: '두번째 문구', maxLength: 35 },
+    text1: {
+      type: 'text',
+      label: '첫번째 문구',
+      maxLength: 20,
+    },
+    text2: {
+      type: 'text',
+      label: '두번째 문구',
+      maxLength: 35,
+    },
     image: {
       type: 'image',
       multiple: false,
@@ -110,9 +118,21 @@ export const themeList = [
       scrollImage: '/images/theme/full.png',
       order: 2,
     },
-    text1: { type: 'text', label: '첫번째 문구', maxLength: 10 },
-    text2: { type: 'text', label: '두번째 문구', maxLength: 10 },
-    text3: { type: 'text', label: '세번째 문구', maxLength: 10 },
+    text1: {
+      type: 'text',
+      label: '첫번째 문구',
+      maxLength: 10,
+    },
+    text2: {
+      type: 'text',
+      label: '두번째 문구',
+      maxLength: 10,
+    },
+    text3: {
+      type: 'text',
+      label: '세번째 문구',
+      maxLength: 10,
+    },
     image: {
       type: 'image',
       multiple: false,
@@ -147,8 +167,16 @@ export const themeList = [
       scrollImage: '/images/theme/cardslide.png',
       order: 4,
     },
-    text1: { type: 'text', label: '첫번째 문구', maxLength: 45 },
-    text2: { type: 'text', label: '두번째 문구', maxLength: 45 },
+    text1: {
+      type: 'text',
+      label: '첫번째 문구',
+      maxLength: 45,
+    },
+    text2: {
+      type: 'text',
+      label: '두번째 문구',
+      maxLength: 45,
+    },
     image: {
       type: 'image',
       multiple: true,
@@ -174,8 +202,16 @@ export const themeList = [
       label: '신부 영문명',
       maxLength: 14,
     },
-    text1: { type: 'text', label: '첫번째 문구', maxLength: 13 },
-    text2: { type: 'text', label: '두번째 문구', maxLength: 13 },
+    text1: {
+      type: 'text',
+      label: '첫번째 문구',
+      maxLength: 13,
+    },
+    text2: {
+      type: 'text',
+      label: '두번째 문구',
+      maxLength: 13,
+    },
     image: {
       type: 'image',
       multiple: true,
