@@ -29,15 +29,19 @@ const ensurePersistence = async () => {
   }
 };
 
+const isKakaoInApp = () => /kakaotalk/i.test(navigator.userAgent);
+
 const KakaoLoginButton = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
   const inFlightRef = useRef(false);
   const usedCodeRef = useRef<string | null>(null);
 
   const exchangeAndLogin = useCallback(
     async (code: string) => {
       if (inFlightRef.current || usedCodeRef.current === code) return;
+
       inFlightRef.current = true;
       usedCodeRef.current = code;
 
@@ -45,10 +49,14 @@ const KakaoLoginButton = () => {
         setLoading(true);
         await ensurePersistence();
 
+        const redirectUri = isKakaoInApp()
+          ? `${location.origin}/login-inapp`
+          : `${location.origin}/login`;
+
         const resp = await fetch('/api/exchange', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({ code, redirectUri }),
         });
 
         if (!resp.ok) throw new Error(await resp.text());
@@ -77,14 +85,15 @@ const KakaoLoginButton = () => {
   );
 
   useEffect(() => {
-    const search = new URLSearchParams(location.search);
-    const hash = new URLSearchParams(location.hash.replace('#', ''));
+    const search = new URLSearchParams(window.location.search);
+    const hash = new URLSearchParams(window.location.hash.replace('#', ''));
 
     const code = hash.get('inapp_code') || search.get('code');
     if (!code) return;
 
-    location.hash = '';
+    window.location.hash = '';
     window.history.replaceState(null, '', '/');
+
     exchangeAndLogin(code);
   }, [exchangeAndLogin]);
 
@@ -92,8 +101,8 @@ const KakaoLoginButton = () => {
     if (loading || inFlightRef.current) return;
 
     setLoading(true);
-    const result = await openKakaoPopup();
 
+    const result = await openKakaoPopup();
     if (!result) {
       setLoading(false);
       return;
