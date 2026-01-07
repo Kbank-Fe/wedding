@@ -35,6 +35,7 @@ export default async function handler(req, res) {
     }
 
     const landingUrl = `${BASE_URL}/${shareId}`;
+    const ogUrl = `${BASE_URL}/u/${shareId}`;
 
     const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
     const dataRes = await fetch(
@@ -57,26 +58,31 @@ export default async function handler(req, res) {
 
     let img = `${BASE_URL}/og-image.png`;
     const imageUrl = data?.share?.savedImageList?.[0]?.url;
-    if (typeof imageUrl === 'string' && imageUrl.startsWith('http')) {
+    if (typeof imageUrl === 'string' && imageUrl.startsWith('http'))
       img = imageUrl;
-    }
 
-    res.status(200).setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.status(200);
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-store, max-age=0');
+    res.setHeader('Vary', 'User-Agent');
+
     res.send(`<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
 <title>${esc(title)}</title>
+
 <meta property="og:type" content="website" />
 <meta property="og:title" content="${esc(title)}" />
 <meta property="og:description" content="${esc(desc)}" />
 <meta property="og:image" content="${esc(img)}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="${esc(`${BASE_URL}/u/${shareId}`)}" />
+<meta property="og:url" content="${esc(ogUrl)}" />
 <meta name="twitter:card" content="summary_large_image" />
+
 <script>
-  if (!/bot|crawl|spider|facebook|twitter|slack|discord|kakaotalk|msteams|preview/i.test(navigator.userAgent)) {
+  if (!/bot|crawl|spider|facebook|twitter|slack|discord|preview|msteams/i.test(navigator.userAgent)) {
     location.replace(${JSON.stringify(landingUrl)});
   }
 </script>
