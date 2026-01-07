@@ -34,10 +34,6 @@ export default async function handler(req, res) {
       return;
     }
 
-    const ua = String(req.headers['user-agent'] || '');
-    const isBot = BOT_PATTERN.test(ua);
-    const isTeams = TEAMS_PATTERN.test(ua);
-
     const landingUrl = `${BASE_URL}/${shareId}`;
 
     const FIREBASE_BASE = required('FIREBASE_DATABASE_URL');
@@ -47,7 +43,6 @@ export default async function handler(req, res) {
     );
 
     const data = safeParseJSON(await dataRes.text());
-
     if (!dataRes.ok || !data) {
       res.status(302).setHeader('Location', landingUrl).end();
       return;
@@ -66,8 +61,6 @@ export default async function handler(req, res) {
       img = imageUrl;
     }
 
-    const redirectMeta = `<meta http-equiv="refresh" content="0; url=${esc(landingUrl)}" />`;
-
     res.status(200).setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(`<!doctype html>
 <html lang="ko">
@@ -82,7 +75,11 @@ export default async function handler(req, res) {
 <meta property="og:image:height" content="630" />
 <meta property="og:url" content="${esc(`${BASE_URL}/u/${shareId}`)}" />
 <meta name="twitter:card" content="summary_large_image" />
-${redirectMeta}
+<script>
+  if (!/bot|crawl|spider|facebook|twitter|slack|discord|kakaotalk|msteams|preview/i.test(navigator.userAgent)) {
+    location.replace(${JSON.stringify(landingUrl)});
+  }
+</script>
 </head>
 <body></body>
 </html>`);
