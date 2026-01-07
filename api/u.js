@@ -59,7 +59,7 @@ export default async function handler(req, res) {
     let img = `${BASE_URL}/og-image.png`;
     const imageUrl = data?.share?.savedImageList?.[0]?.url;
     if (typeof imageUrl === 'string' && imageUrl.startsWith('http'))
-      img = imageUrl;
+      img = `${BASE_URL}/api/og?src=${encodeURIComponent(imageUrl)}`;
 
     res.status(200);
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
