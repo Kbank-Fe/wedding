@@ -10,8 +10,8 @@ export default async function handler(req, res) {
 
     const input = Buffer.from(await r.arrayBuffer());
 
-    const W = 1200;
-    const H = 900;
+    const W = 2400;
+    const H = 1800;
 
     const output = await sharp(input)
       .resize(W, H, {
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         position: 'centre',
       })
       .jpeg({
-        quality: 88,
+        quality: 92,
         mozjpeg: true,
         chromaSubsampling: '4:4:4',
       })
