@@ -1,17 +1,30 @@
+import sharp from 'sharp';
+
 export default async function handler(req, res) {
   try {
     const src = req.query.src;
-    if (!src) {
-      res.status(400).end();
-      return;
-    }
+    if (!src) return res.status(400).end();
 
     const r = await fetch(src);
-    const buf = Buffer.from(await r.arrayBuffer());
+    if (!r.ok) return res.status(404).end();
+
+    const input = Buffer.from(await r.arrayBuffer());
+
+    const output = await sharp(input)
+      .resize(1200, 630, {
+        fit: 'cover',
+        position: 'centre',
+      })
+      .jpeg({
+        quality: 88,
+        mozjpeg: true,
+        chromaSubsampling: '4:4:4',
+      })
+      .toBuffer();
 
     res.setHeader('Content-Type', 'image/jpeg');
     res.setHeader('Cache-Control', 'public, max-age=86400');
-    res.status(200).send(buf);
+    res.status(200).send(output);
   } catch {
     res.status(404).end();
   }
