@@ -10,8 +10,11 @@ export default async function handler(req, res) {
 
     const input = Buffer.from(await r.arrayBuffer());
 
+    const W = 1200;
+    const H = 900;
+
     const output = await sharp(input)
-      .resize(1200, 630, {
+      .resize(W, H, {
         fit: 'cover',
         position: 'centre',
       })
