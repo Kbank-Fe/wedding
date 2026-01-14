@@ -38,13 +38,7 @@ const AdminPage = () => {
   );
 
   if (userLoading) {
-    return (
-      <Layout viewType="admin">
-        <LoadingBackdrop open={true} />
-        <ListSkeleton count={9} />
-        <Toaster duration={2000} position="top-center" />
-      </Layout>
-    );
+    return <LoadingBackdrop open={true} />;
   }
 
   if (!uid) return <Navigate replace to="/" />;
@@ -118,7 +112,6 @@ const AdminPage = () => {
 
           {showSkeleton ? (
             <>
-              <LoadingBackdrop open={true} />
               <ListSkeleton count={9} />
             </>
           ) : (
