@@ -23,7 +23,7 @@ const FadeMotion = ({
     className={className}
     initial={{ opacity: 0, y: directionMap[motionDirection] }}
     transition={{ duration: 1.5, ease: 'easeOut' }}
-    viewport={{ amount: 0.5 }}
+    viewport={{ amount: 0.5, once: true }}
     whileInView={{ opacity: 1, y: 0 }}
   >
     {children}

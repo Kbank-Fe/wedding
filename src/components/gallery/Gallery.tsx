@@ -28,7 +28,7 @@ const Gallery = () => {
         css={wrapperStyle}
         initial={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.6, ease: 'easeInOut' }}
-        viewport={{ amount: 0.2 }}
+        viewport={{ amount: 0.2, once: true }}
         whileInView={{ opacity: 1, y: 0 }}
       >
         <div css={gridStyle}>

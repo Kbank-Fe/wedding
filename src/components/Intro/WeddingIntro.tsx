@@ -19,7 +19,7 @@ const WeddingIntro = () => {
         css={introContainerStyle}
         initial="hidden"
         variants={fadeUp}
-        viewport={{ amount: 0.5 }}
+        viewport={{ amount: 0.5, once: true }}
         whileInView="visible"
       >
         <motion.p css={titleStyle} variants={fadeUp}>
