@@ -25,7 +25,6 @@ const PolaroidTheme = () => {
         <figure css={polaroidStyle}>
           <Sticker left="-15px" top="-19px" />
           <div css={imageWrapperStyle}>
-            {/* <img alt="Wedding main" src={imagePreviewList[0]} /> */}
             <RevealImage alt="Wedding main" src={imagePreviewList[0]} />
           </div>
           <figcaption css={photoTextStyle}>{text1}</figcaption>
