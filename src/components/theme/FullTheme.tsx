@@ -29,9 +29,7 @@ const FullTheme = () => {
         </h2>
         <h3>{header3}</h3>
       </header>
-      <figure css={imageContainerStyle}>
-        <img alt="Wedding main" css={imageStyle} src={imagePreviewList[0]} />
-      </figure>
+      <figure css={imageContainerStyle(imagePreviewList[0])} />
       <p css={fullTitleStyle}>
         <span css={letterStyle(0)}>{text1}</span>
         <span css={letterStyle(1)}>{text2}</span>
@@ -65,15 +63,21 @@ const headerStyle = css`
   }
 `;
 
-const imageContainerStyle = css`
-  width: 100%;
-`;
-
-const imageStyle = css`
+const imageContainerStyle = (src?: string) => css`
   width: 100%;
   height: 100vh;
-  object-fit: cover;
+  background-image: url(${src});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 `;
+
+// const imageStyle = css`
+//   width: 100%;
+//   height: 100%;
+//   object-fit: cover;
+//   display: block;
+// `;
 
 const smoothTyping = keyframes`
   from {
