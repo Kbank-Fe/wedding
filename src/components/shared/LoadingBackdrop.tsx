@@ -2,8 +2,6 @@ import { css } from '@emotion/react';
 import { Portal } from '@radix-ui/react-portal';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import LoadingSpinner from '@/components/shared/LoadingSpinner';
-
 type LoadingBackdropProps = {
   open: boolean;
   blur?: boolean;
@@ -29,7 +27,18 @@ const LoadingBackdrop = ({
             transition={{ duration: 0.25 }}
           >
             <div css={contentStyle}>
-              <LoadingSpinner />
+              <motion.img
+                alt="Us Day Logo"
+                animate={{ opacity: [0.5, 0.9, 0.5] }}
+                css={imageStyle}
+                src="/images/logo_smile.png"
+                transition={{
+                  duration: 1.6,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              />
+
               {text && <p css={textStyle}>{text}</p>}
             </div>
           </motion.div>
@@ -40,7 +49,14 @@ const LoadingBackdrop = ({
 };
 
 const textStyle = css`
-  color: var(--gray3);
+  color: var(--gray10);
+  font-family: 'Wedding', cursive;
+  font-size: 15px;
+  margin-top: 0.8rem;
+`;
+
+const imageStyle = css`
+  width: 90px;
 `;
 
 const contentStyle = css`
@@ -58,7 +74,7 @@ const backdropStyle = ({
 }) => css`
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.8);
   ${blur && `backdrop-filter: blur(4px);`}
   display: flex;
   align-items: center;
