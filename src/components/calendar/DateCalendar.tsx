@@ -183,7 +183,7 @@ const dateStyle = css`
 
 const dateTimeStyle = css`
   color: var(--gray11);
-  font-size: 14px;
+  font-size: 15px;
   margin-bottom: 1.8rem;
   display: flex;
   flex-direction: column;

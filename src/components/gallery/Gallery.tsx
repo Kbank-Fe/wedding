@@ -94,7 +94,7 @@ const Gallery = () => {
 
 const iconStyle = css`
   color: var(--gray6);
-  margin: 0 auto 6.5rem;
+  margin: 0 auto 5rem;
 `;
 
 const wrapperStyle = css`
