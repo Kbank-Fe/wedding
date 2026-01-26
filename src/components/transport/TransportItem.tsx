@@ -13,7 +13,7 @@ const TransportItem = ({ title, description }: TransportProps) => {
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      viewport={{ amount: 0.2 }}
+      viewport={{ amount: 0.2, once: true }}
       whileInView={{ opacity: 1, y: 0 }}
     >
       {title && (
@@ -46,14 +46,14 @@ const titleContainerStyle = css`
 
 const titleStyle = css`
   color: var(--gray11);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   margin-left: 0.4rem;
 `;
 
 const descriptionStyle = css`
   color: var(--gray10);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.6rem;
 `;

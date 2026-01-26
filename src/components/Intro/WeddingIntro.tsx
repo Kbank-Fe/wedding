@@ -19,7 +19,7 @@ const WeddingIntro = () => {
         css={introContainerStyle}
         initial="hidden"
         variants={fadeUp}
-        viewport={{ amount: 0.5 }}
+        viewport={{ amount: 0.5, once: true }}
         whileInView="visible"
       >
         <motion.p css={titleStyle} variants={fadeUp}>
@@ -52,14 +52,14 @@ const WeddingIntro = () => {
 };
 
 const introContainerStyle = css`
-  padding: 0 1rem;
+  padding: 1rem 1rem;
   text-align: center;
 `;
 
 const titleStyle = css`
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
-  margin-bottom: 2.3rem;
+  margin-bottom: 3rem;
 `;
 
 const contentStyle = css`

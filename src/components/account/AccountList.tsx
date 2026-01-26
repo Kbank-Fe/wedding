@@ -55,7 +55,7 @@ const AccountList = () => {
       <motion.div
         initial="hidden"
         variants={containerVariants}
-        viewport={{ amount: 0.5 }}
+        viewport={{ amount: 0.5, once: true }}
         whileInView="visible"
       >
         <h3 css={titleStyle}>{accountListTitle}</h3>

@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 
+import RevealImage from '@/components/shared/RevealImage';
 import Sticker from '@/components/shared/Sticker';
 import { useLocalImagePreviewList } from '@/hooks/useLocalImagePreviewList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
@@ -15,13 +16,17 @@ const PolaroidTheme = () => {
       <section css={sectionStyle}>
         <header css={headerStyle}>
           <h1>
-            {groomEnglishName} <span>and</span> {brideEnglishName}
+            <span css={nameStyle}>{groomEnglishName}</span>
+            <span css={subNameStyle}>and</span>
+            <span css={nameStyle}>{brideEnglishName}</span>
           </h1>
         </header>
 
         <figure css={polaroidStyle}>
           <Sticker left="-15px" top="-19px" />
-          <img alt="Wedding main" src={imagePreviewList[0]} />
+          <div css={imageWrapperStyle}>
+            <RevealImage alt="Wedding main" src={imagePreviewList[0]} />
+          </div>
           <figcaption css={photoTextStyle}>{text1}</figcaption>
           <p css={photoSubTextStyle}>A day made with love</p>
         </figure>
@@ -48,18 +53,19 @@ const headerStyle = css`
   text-align: center;
   font-weight: 400;
   font-style: normal;
+`;
 
-  h1 {
-    font-size: 55px;
-    font-family: 'Instrument Serif', serif;
-  }
+const subNameStyle = css`
+  display: block;
+  font-size: 40px;
+  font-family: 'Kristi', cursive;
+  opacity: 0.8;
+`;
 
-  span {
-    display: block;
-    font-size: 40px;
-    font-family: 'Kristi', cursive;
-    opacity: 0.8;
-  }
+const nameStyle = css`
+  text-transform: uppercase;
+  font-size: 55px;
+  font-family: 'Instrument Serif', serif;
 `;
 
 const polaroidStyle = css`
@@ -68,6 +74,20 @@ const polaroidStyle = css`
   padding: 2.2rem;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   position: relative;
+`;
+
+const imageWrapperStyle = css`
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 `;
 
 const photoTextStyle = css`

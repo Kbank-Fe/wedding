@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
-import { TbFlowerFilled } from "react-icons/tb";
+import { TbFlowerFilled } from 'react-icons/tb';
 
 import type { TextAlignment, UserBasicInfo } from '@/types/wedding';
 
@@ -54,7 +54,7 @@ const UserInfo = ({
 
 const containerStyle = (alignment: TextAlignment) => css`
   text-align: ${alignment};
-  font-size: 14px;
+  font-size: 15px;
   color: var(--gray11);
   display: flex;
   flex-direction: column;
