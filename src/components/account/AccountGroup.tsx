@@ -63,7 +63,7 @@ const AccountGroup = ({
             maxLength={10}
             placeholder="예금주명을 입력해주세요"
             value={acc.accountHolder}
-            onChange={handleChange(index, 'accountHolder', 'kor')}
+            onChange={handleChange(index, 'accountHolder', 'all')}
           />
         </Field>
 

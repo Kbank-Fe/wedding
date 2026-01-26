@@ -60,17 +60,21 @@ const Account = ({
         )}
       </div>
 
-      <div css={accountRowStyle}>
-        <p>
+      <button
+        aria-label={`${bankName} ${accountNumber} 계좌번호 복사`}
+        css={accountButtonStyle}
+        type="button"
+        onClick={handleClickCopyButton}
+      >
+        <span>
           {bankName} {accountNumber}
-        </p>
+        </span>
         <MdOutlineContentCopy
-          aria-label="계좌번호 복사"
+          aria-hidden="true"
           css={copyIconStyle}
           size={12}
-          onClick={handleClickCopyButton}
         />
-      </div>
+      </button>
     </div>
   );
 };
@@ -81,27 +85,43 @@ const accountStyle = css`
   justify-content: space-between;
 `;
 
-const accountRowStyle = css`
+const flexCenterStyle = css`
   display: flex;
   align-items: center;
   gap: 6px;
+`;
 
-  h4 {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--gray11);
-  }
+const accountButtonStyle = css`
+  /* 버튼 기본 스타일 제거 */
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
 
-  p {
+  ${flexCenterStyle}
+
+  span {
     font-size: 11px;
     margin-bottom: 2px;
     color: var(--gray10);
   }
 `;
 
+const accountRowStyle = css`
+  ${flexCenterStyle}
+
+  h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray11);
+  }
+`;
+
 const copyIconStyle = css`
   color: var(--gray10);
-  cursor: pointer;
 `;
 
 const kakaoButtonStyle = css`
