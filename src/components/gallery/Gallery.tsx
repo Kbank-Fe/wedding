@@ -15,6 +15,8 @@ import { useWeddingStore } from '@/stores/useWeddingStore';
 const galleryWrapperOptions: PhotoSwipeOptions = {
   // 화면에 딱 맞게(fit) 시작하도록 설정
   initialZoomLevel: 'fit',
+  // 돋보기를 누르거나 더블탭했을 때 가는 '다음 배율'도 1배로 고정
+  secondaryZoomLevel: 1,
   // 최대 확대를 1배로 제한 (이미지 원본보다 커지지 않음)
   maxZoomLevel: 1,
   // 두 손가락으로 확대/축소하는 제스처 자체를 무효화
@@ -189,6 +191,7 @@ const pswpCustomStyle = css`
     touch-action: pan-x !important; /* 오직 좌우 스와이프만 허용 */
     -webkit-user-drag: none; /* 이미지 드래그 방지 */
     user-select: none; /* 텍스트/이미지 선택 방지 */
+    object-fit: contain; /* 비율 유지하며 화면 안에 안착 */
   }
 
   /* 3. 확대 시도 시 레이아웃이 어긋나지 않도록 강제 고정 */
