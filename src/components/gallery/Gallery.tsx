@@ -11,6 +11,11 @@ import { usePreviewMode } from '@/contexts/PreviewModeContext';
 import { usePhotoList } from '@/hooks/usePhotoList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
+const galleryWrapperOptions = {
+  allowPanToNext: false, // 이미지를 당겨서 다음으로 넘어가는 동작 제어
+  maxZoomLevel: 1, // 최대 확대 배율을 1로 고정
+};
+
 const Gallery = () => {
   const [expanded, setExpanded] = useState(false);
   const isPopup = usePreviewMode();
@@ -87,7 +92,13 @@ const Gallery = () => {
   return (
     <>
       <ImHeart color="#87BBBA" css={iconStyle} size={16} />
-      {isPopup ? galleryList : <GalleryWrapper>{galleryList}</GalleryWrapper>}
+      {isPopup ? (
+        galleryList
+      ) : (
+        <GalleryWrapper options={galleryWrapperOptions}>
+          {galleryList}
+        </GalleryWrapper>
+      )}
     </>
   );
 };
