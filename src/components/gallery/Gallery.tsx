@@ -1,6 +1,6 @@
 import 'photoswipe/style.css';
 
-import { css } from '@emotion/react';
+import { css, Global } from '@emotion/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { PhotoSwipeOptions } from 'photoswipe';
 import { useState } from 'react';
@@ -21,8 +21,12 @@ const galleryWrapperOptions: PhotoSwipeOptions = {
   pinchToClose: false,
   // 더블 탭 확대 방지 (타입 오류 방지를 위해 false 명시)
   doubleTapAction: false,
-  // 이미지를 당겨서 다음 사진으로 넘어가는 동작 방지 (필요시)
+  // 이미지를 당겨서 다음 사진으로 넘어가는 동작 방지
   allowPanToNext: false,
+  // 수직 드래그로 닫기 비활성화 (사진 위아래 움직이는 현상 방지)
+  closeOnVerticalDrag: false,
+  // 확대/축소 및 이동 시 발생하는 탄성(Bounce) 효과 제거
+  zoomAnimationDuration: 0,
 };
 
 const Gallery = () => {
@@ -100,6 +104,8 @@ const Gallery = () => {
 
   return (
     <>
+      <Global styles={pswpCustomStyle} />
+
       <ImHeart color="#87BBBA" css={iconStyle} size={16} />
       {isPopup ? (
         galleryList
@@ -154,6 +160,17 @@ const moreButtonStyle = css`
   color: var(--gray8);
   font-family: 'Wedding';
   font-size: 12px;
+`;
+
+const pswpCustomStyle = css`
+  /* 좌우 스크롤만 허용 */
+  .pswp__img {
+    touch-action: pan-x !important;
+  }
+  /* 줌 제스처 시 발생하는 탄성 효과 강제 제거 */
+  .pswp--zoomed-in .pswp__img {
+    pointer-events: none;
+  }
 `;
 
 export default Gallery;
