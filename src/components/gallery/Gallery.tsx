@@ -21,12 +21,15 @@ const galleryWrapperOptions: PhotoSwipeOptions = {
   pinchToClose: false,
   // 더블 탭 확대 방지 (타입 오류 방지를 위해 false 명시)
   doubleTapAction: false,
-  // 좌우 스와이프 허요
+  // 좌우 스와이프 허용
   allowPanToNext: true,
+  wheelToZoom: false,
   // 수직 드래그로 닫기 비활성화 (사진 위아래 움직이는 현상 방지)
   closeOnVerticalDrag: false,
   // 확대/축소 및 이동 시 발생하는 탄성(Bounce) 효과 제거
   zoomAnimationDuration: 0,
+  // 우측 상단 돋보기 버튼 제거
+  zoom: false,
 };
 
 const Gallery = () => {
@@ -174,11 +177,23 @@ const moreButtonStyle = css`
 `;
 
 const pswpCustomStyle = css`
-  /* 갤러리 내부의 모든 요소에서 핀치 줌 제스처를 무시하고 좌우 이동만 허용 */
-  .pswp__img,
-  .pswp__container,
-  .pswp__zoom-container {
-    touch-action: pan-x !important;
+  /* 1. 돋보기 버튼 숨기기 */
+  .pswp__button--zoom {
+    display: none !important;
+  }
+
+  /* 2. 줌 컨테이너의 움직임을 물리적으로 고정 */
+  /* 수평(좌우) 이동은 PhotoSwipe 내부 로직에 맡기고, 
+     그 외의 자유로운 드래그나 떨림을 CSS로 억제합니다. */
+  .pswp__img {
+    touch-action: pan-x !important; /* 오직 좌우 스와이프만 허용 */
+    -webkit-user-drag: none; /* 이미지 드래그 방지 */
+    user-select: none; /* 텍스트/이미지 선택 방지 */
+  }
+
+  /* 3. 확대 시도 시 레이아웃이 어긋나지 않도록 강제 고정 */
+  .pswp--zoomed-in .pswp__zoom-container {
+    transform: translate3d(0, 0, 0) !important;
   }
 `;
 
