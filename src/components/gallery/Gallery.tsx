@@ -21,8 +21,8 @@ const galleryWrapperOptions: PhotoSwipeOptions = {
   pinchToClose: false,
   // 더블 탭 확대 방지 (타입 오류 방지를 위해 false 명시)
   doubleTapAction: false,
-  // 이미지를 당겨서 다음 사진으로 넘어가는 동작 방지
-  allowPanToNext: false,
+  // 좌우 스와이프 허요
+  allowPanToNext: true,
   // 수직 드래그로 닫기 비활성화 (사진 위아래 움직이는 현상 방지)
   closeOnVerticalDrag: false,
   // 확대/축소 및 이동 시 발생하는 탄성(Bounce) 효과 제거
@@ -110,7 +110,18 @@ const Gallery = () => {
       {isPopup ? (
         galleryList
       ) : (
-        <GalleryWrapper options={galleryWrapperOptions}>
+        <GalleryWrapper
+          options={galleryWrapperOptions}
+          onBeforeOpen={(pswpInstance) => {
+            // 줌 동작이 시작되기 직전에 발생하는 이벤트
+            pswpInstance.on('beforeZoomTo', (e) => {
+              // 목적지 줌 레벨이 1보다 크면 확대를 시도하는 것이므로 차단
+              if (e.destZoomLevel > 1) {
+                e.preventDefault();
+              }
+            });
+          }}
+        >
           {galleryList}
         </GalleryWrapper>
       )}
@@ -163,13 +174,11 @@ const moreButtonStyle = css`
 `;
 
 const pswpCustomStyle = css`
-  /* 좌우 스크롤만 허용 */
-  .pswp__img {
+  /* 갤러리 내부의 모든 요소에서 핀치 줌 제스처를 무시하고 좌우 이동만 허용 */
+  .pswp__img,
+  .pswp__container,
+  .pswp__zoom-container {
     touch-action: pan-x !important;
-  }
-  /* 줌 제스처 시 발생하는 탄성 효과 강제 제거 */
-  .pswp--zoomed-in .pswp__img {
-    pointer-events: none;
   }
 `;
 
