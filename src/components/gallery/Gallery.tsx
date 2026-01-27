@@ -2,6 +2,7 @@ import 'photoswipe/style.css';
 
 import { css } from '@emotion/react';
 import { AnimatePresence, motion } from 'framer-motion';
+import type { PhotoSwipeOptions } from 'photoswipe';
 import { useState } from 'react';
 import { ImHeart } from 'react-icons/im';
 import { Gallery as GalleryWrapper, Item } from 'react-photoswipe-gallery';
@@ -11,9 +12,17 @@ import { usePreviewMode } from '@/contexts/PreviewModeContext';
 import { usePhotoList } from '@/hooks/usePhotoList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
-const galleryWrapperOptions = {
-  allowPanToNext: false, // 이미지를 당겨서 다음으로 넘어가는 동작 제어
-  maxZoomLevel: 1, // 최대 확대 배율을 1로 고정
+const galleryWrapperOptions: PhotoSwipeOptions = {
+  // 화면에 딱 맞게(fit) 시작하도록 설정
+  initialZoomLevel: 'fit',
+  // 최대 확대를 1배로 제한 (이미지 원본보다 커지지 않음)
+  maxZoomLevel: 1,
+  // 두 손가락으로 확대/축소하는 제스처 자체를 무효화
+  pinchToClose: false,
+  // 더블 탭 확대 방지 (타입 오류 방지를 위해 false 명시)
+  doubleTapAction: false,
+  // 이미지를 당겨서 다음 사진으로 넘어가는 동작 방지 (필요시)
+  allowPanToNext: false,
 };
 
 const Gallery = () => {
