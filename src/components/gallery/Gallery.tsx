@@ -21,8 +21,9 @@ const galleryWrapperOptions: PhotoSwipeOptions = {
   maxZoomLevel: 1,
   // 두 손가락으로 확대/축소하는 제스처 자체를 무효화
   pinchToClose: false,
-  // 확대, 이동 불가, 슬라이드만 허용
-  allowPanToNext: false,
+  // 좌우 슬라이드 허용
+  allowPanToNext: true,
+  // 마우스 휠 확대/축소 비활성화
   wheelToZoom: false,
   // 수직 드래그로 닫기 비활성화 (사진 위아래 움직이는 현상 방지)
   closeOnVerticalDrag: false,
@@ -32,9 +33,6 @@ const galleryWrapperOptions: PhotoSwipeOptions = {
   zoom: false,
   // 더블 탭 확대 방지 (타입 오류 방지를 위해 false 명시)
   doubleTapAction: false,
-  // 이미지 조작 대상 아님 명시 pan 계산 제한
-  imageClickAction: 'close',
-  tapAction: 'close',
 };
 
 const Gallery = () => {
@@ -128,12 +126,14 @@ const Gallery = () => {
             });
 
             pswp.on('change', () => {
-              const currSlide = pswp.currSlide;
-              if (!currSlide) return;
+              const slide = pswp.currSlide;
+              if (!slide) return;
 
-              // 이동 강제 고정
-              currSlide.pan = { x: 0, y: 0 };
-              currSlide.applyCurrentZoomPan();
+              // 실제로 zoom 상태일 때만 pan 고정
+              if (slide.currZoomLevel > slide.zoomLevels.fit) {
+                slide.pan = { x: 0, y: 0 };
+                slide.applyCurrentZoomPan();
+              }
             });
           }}
         >
