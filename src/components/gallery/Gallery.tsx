@@ -165,6 +165,20 @@ const pswpCustomStyle = css`
   .pswp__container {
     touch-action: pan-x !important;
   }
+
+  .pswp__zoom-wrap {
+    position: relative;
+  }
+
+  .pswp__zoom-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: transparent;
+
+    pointer-events: auto;
+    touch-action: none;
+  }
 `;
 
 export default Gallery;
