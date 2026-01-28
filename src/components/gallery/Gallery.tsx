@@ -13,26 +13,17 @@ import { usePhotoList } from '@/hooks/usePhotoList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const galleryWrapperOptions: PhotoSwipeOptions = {
-  // 화면에 딱 맞게(fit) 시작하도록 설정
-  initialZoomLevel: 'fit',
-  // 돋보기를 누르거나 더블탭했을 때 가는 '다음 배율'도 1배로 고정
+  initialZoomLevel: 1,
   secondaryZoomLevel: 1,
-  // 최대 확대를 1배로 제한 (이미지 원본보다 커지지 않음)
   maxZoomLevel: 1,
-  // 두 손가락으로 확대/축소하는 제스처 자체를 무효화
-  pinchToClose: false,
-  // 좌우 슬라이드 허용
+
   allowPanToNext: true,
-  // 마우스 휠 확대/축소 비활성화
+  pinchToClose: false,
   wheelToZoom: false,
-  // 수직 드래그로 닫기 비활성화 (사진 위아래 움직이는 현상 방지)
   closeOnVerticalDrag: false,
-  // 확대/축소 및 이동 시 발생하는 탄성(Bounce) 효과 제거
-  zoomAnimationDuration: 0,
-  // 우측 상단 돋보기 버튼 제거
   zoom: false,
-  // 더블 탭 확대 방지 (타입 오류 방지를 위해 false 명시)
   doubleTapAction: false,
+  zoomAnimationDuration: 0,
 };
 
 const Gallery = () => {
@@ -120,20 +111,7 @@ const Gallery = () => {
           options={galleryWrapperOptions}
           onBeforeOpen={(pswp) => {
             pswp.on('beforeZoomTo', (e) => {
-              if (e.destZoomLevel > 1) {
-                e.preventDefault();
-              }
-            });
-
-            pswp.on('change', () => {
-              const slide = pswp.currSlide;
-              if (!slide) return;
-
-              // 실제로 zoom 상태일 때만 pan 고정
-              if (slide.currZoomLevel > slide.zoomLevels.fit) {
-                slide.pan = { x: 0, y: 0 };
-                slide.applyCurrentZoomPan();
-              }
+              e.preventDefault();
             });
           }}
         >
@@ -191,8 +169,7 @@ const moreButtonStyle = css`
 const pswpCustomStyle = css`
   .pswp,
   .pswp__scroll-wrap,
-  .pswp__container,
-  .pswp__zoom-wrap {
+  .pswp__container {
     touch-action: pan-x !important;
   }
 `;
