@@ -13,9 +13,9 @@ import { usePhotoList } from '@/hooks/usePhotoList';
 import { useWeddingStore } from '@/stores/useWeddingStore';
 
 const galleryWrapperOptions: PhotoSwipeOptions = {
-  initialZoomLevel: 1,
-  secondaryZoomLevel: 1,
-  maxZoomLevel: 1,
+  initialZoomLevel: 'fit',
+  secondaryZoomLevel: 'fit',
+  maxZoomLevel: 'fit',
 
   allowPanToNext: true,
   pinchToClose: false,
@@ -107,14 +107,7 @@ const Gallery = () => {
       {isPopup ? (
         galleryList
       ) : (
-        <GalleryWrapper
-          options={galleryWrapperOptions}
-          onBeforeOpen={(pswp) => {
-            pswp.on('beforeZoomTo', (e) => {
-              e.preventDefault();
-            });
-          }}
-        >
+        <GalleryWrapper options={galleryWrapperOptions} onBeforeOpen={() => {}}>
           {galleryList}
         </GalleryWrapper>
       )}
