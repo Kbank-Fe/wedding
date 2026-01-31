@@ -5,30 +5,34 @@ import { useWeddingStore } from '@/stores/useWeddingStore';
 import { getHourTitle, getMinuteTitle } from '@/utils/date';
 
 const FullTheme = () => {
-  const { text1, text2, text3 } = useWeddingStore(
+  const { text1, text2, text3, checkbox1 } = useWeddingStore(
     (state) => state.values.theme,
   );
   const { year, month, day, hour, min } = useWeddingStore(
     (state) => state.values.date,
   );
-  const { address } = useWeddingStore((state) => state.values.location);
+  const { venueName, venueDetail } = useWeddingStore(
+    (state) => state.values.location,
+  );
 
   const imagePreviewList = useLocalImagePreviewList('themeImage', 'FULL');
 
   const header1 = `${year}년 ${month}월 ${day}일`;
   const header2 = `${getHourTitle(hour)} ${getMinuteTitle(min)}`;
-  const header3 = address;
+  const header3 = venueName + (venueDetail ? ` ${venueDetail}` : '');
 
   return (
     <section css={containerStyle}>
-      <header css={headerStyle}>
-        <h2>
-          {header1}
-          <br />
-          {header2}
-        </h2>
-        <h3>{header3}</h3>
-      </header>
+      {checkbox1 && (
+        <header css={headerStyle}>
+          <h2>
+            {header1}
+            <br />
+            {header2}
+          </h2>
+          <h3>{header3}</h3>
+        </header>
+      )}
       <figure css={imageContainerStyle(imagePreviewList[0])} />
       <p css={fullTitleStyle}>
         <span css={letterStyle(0)}>{text1}</span>
@@ -71,13 +75,6 @@ const imageContainerStyle = (src?: string) => css`
   background-position: center;
   background-repeat: no-repeat;
 `;
-
-// const imageStyle = css`
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover;
-//   display: block;
-// `;
 
 const smoothTyping = keyframes`
   from {
