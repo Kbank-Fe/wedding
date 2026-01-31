@@ -6,6 +6,13 @@ export type TextInputOption = {
   maxLength: number;
 };
 
+export type CheckboxInputOption = {
+  type: 'checkbox';
+  label: string;
+  checkboxLabel: string;
+  checked: boolean;
+};
+
 export type ImageInputOption = {
   type: 'image';
   multiple: boolean;
@@ -27,6 +34,8 @@ export type ThemeList = {
   text1?: TextInputOption;
   text2?: TextInputOption;
   text3?: TextInputOption;
+
+  checkbox1?: CheckboxInputOption;
 };
 
 type TextOptionKeys<T> = {
@@ -34,6 +43,15 @@ type TextOptionKeys<T> = {
 }[keyof T];
 
 export type TextAllowedKeys = Extract<TextOptionKeys<ThemeList>, string>;
+
+type CheckboxOptionKeys<T> = {
+  [K in keyof T]: NonNullable<T[K]> extends CheckboxInputOption ? K : never;
+}[keyof T];
+
+export type CheckboxAllowedKeys = Extract<
+  CheckboxOptionKeys<ThemeList>,
+  string
+>;
 
 /**
  * @TODO [THEME-ADD]
@@ -137,6 +155,12 @@ export const themeList = [
       type: 'image',
       multiple: false,
       defaultImageList: ['/images/theme/full_default.png'],
+    },
+    checkbox1: {
+      type: 'checkbox',
+      label: '문구 노출',
+      checkboxLabel: '예식일자와 식장홀 정보를 노출합니다.',
+      checked: false,
     },
   },
   {

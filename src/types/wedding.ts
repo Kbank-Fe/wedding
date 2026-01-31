@@ -21,6 +21,7 @@ export type Theme = {
   text1?: string;
   text2?: string;
   text3?: string;
+  checkbox1?: boolean;
 };
 
 export type ThemeImage = {
