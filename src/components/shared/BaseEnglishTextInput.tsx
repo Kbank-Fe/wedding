@@ -1,69 +1,85 @@
-import React, { forwardRef, useCallback } from 'react';
+import React from 'react';
 
 import BaseTextInput from '@/components/shared/BaseTextInput';
 
 type BaseEnglishTextInputProps = React.ComponentProps<typeof BaseTextInput>;
 
 /**
- * React Hook Form과 호환되는 영문 전용 인풋 컴포넌트
+ * 영문, 공백만 허용하는 텍스트 인풋 컴포넌트
+ * - 비제어 방식 (defaultValue) 으로 브라우저 IME (한글 조합) 개입 최소화
  */
-const BaseEnglishTextInput = forwardRef<
-  HTMLInputElement,
-  BaseEnglishTextInputProps
->(({ onChange, value, ...rest }, ref) => {
-  const handleInput = useCallback(
-    (e: React.FormEvent<HTMLInputElement>) => {
-      const target = e.currentTarget;
-      // 영문과 공백만 허용하는 정규식 적용
-      const originalValue = target.value;
-      const filteredValue = originalValue.replace(/[^a-zA-Z\s]/g, '');
+const BaseEnglishTextInput = ({
+  onChange,
+  value,
+  ...rest
+}: BaseEnglishTextInputProps) => {
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+    const target = e.currentTarget;
+    const inputValue = target.value;
 
-      // 한글(IME 조합)이 포함되어 있는지 확인
-      const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(originalValue);
+    // 영문자와 공백을 제외한 모든 문자 제거
+    const filteredValue = inputValue.replace(/[^a-zA-Z\s]/g, '');
 
-      if (hasKorean) {
-        // 한글이 들어오는 즉시 DOM 값을 정제된 값으로 덮어씌워 조합을 깨뜨림
+    // 한글 입력 발생 여부 확인
+    const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(inputValue);
+
+    if (hasKorean) {
+      // 한글 입력 시 영문 사라지는 현상 방지
+      window.requestAnimationFrame(() => {
+        // 브라우저의 렌더링 사이클이 끝난 직후에 원복 (Lock 방지)
         target.value = filteredValue;
-      }
+      });
 
-      // 한글 외 특수문자 입력 시 DOM 정제
-      if (originalValue !== filteredValue) {
-        target.value = filteredValue;
-      }
+      // 한글 조합 중 부모 상태 (zustand) 변경 및 데이터 오염 방지
+      return;
+    }
 
-      // 부모(RHF) 상태 업데이트
-      // 이벤트 객체를 그대로 전달하여 RHF의 onChange가 정상 동작하게 함
-      onChange?.(e as unknown as React.ChangeEvent<HTMLInputElement>);
-    },
-    [onChange],
-  );
+    // 한글 외 특수문자 입력 시 DOM 정제
+    if (inputValue !== filteredValue) {
+      target.value = filteredValue;
+    }
 
+    // 필터링 값이 기존 값과 다를 때만 onChange 호출
+    if (filteredValue !== value) {
+      onChange?.(e as React.ChangeEvent<HTMLInputElement>);
+    }
+  };
+
+  /**
+   * 한글 입력 직후 IME (한글 조합) 세션을 즉시 종료시키는 핸들러
+   * - input 한글 입력 시 두번 지워야 영문 1개 삭제되는 현상 방지
+   * - onCompositionStart 이벤트 : 한글 등 조합형 문자 입력이 시작되는 즉시 발생
+   * - ex) 'ㄱ' 입력 직후
+   */
   const handleCompositionStart = (
     e: React.CompositionEvent<HTMLInputElement>,
   ) => {
     const target = e.currentTarget;
-    // 한글 입력 시작 시점에 blur/focus 효과를 주어 IME 세션을 강제 종료
-    target.blur();
 
-    // 모웹 안드로이드 한글 변경 시 키패드 사라지는 문제 해결을 위해 포커스는 다음 이벤트 루프에서 재설정
-    setTimeout(() => target.focus(), 0);
+    // 임시로 읽기 전용 모드로 변경하여 IME (한글 조합) 세션 종료 유도
+    target.readOnly = true;
+
+    // onCompositionStart 이벤트 종료 직후
+    setTimeout(() => {
+      // 입력 세션 강제 종료 시 입력 기본값 '영문 모드' 리셋
+      target.readOnly = false;
+    }, 0);
   };
 
   return (
     <BaseTextInput
       {...rest}
-      ref={ref}
-      autoCapitalize="none"
-      autoComplete="off"
-      inputMode="email" // 모바일 영문 키보드 우선 노출
-      spellCheck={false}
-      value={value} // RHF Controller로부터 전달받은 제어값
-      onCompositionStart={handleCompositionStart}
-      onInput={handleInput}
+      autoCapitalize="none" // 첫 글자 자동 대문자 변환 방지
+      autoComplete="off" // 브라우저 자동완성 팝업 차단
+      autoCorrect="off" // 브라우저 영문 오타 교정 기능 차단
+      defaultValue={value} // React의 제어권보다 브라우저의 입력 속도를 우선시 (비제어 방식)
+      inputMode="email" // 모바일 환경 영문 키보드 유도
+      spellCheck={false} // 빨간 줄(맞춤법 검사) 방지
+      onChange={() => {}} // React 경고 방지용 더미 함수
+      onCompositionStart={handleCompositionStart} // 한글 입력 시작 시점 감지
+      onInput={handleInput} // 모든 입력 단계에서 필터링 실행
     />
   );
-});
-
-BaseEnglishTextInput.displayName = 'BaseEnglishTextInput';
+};
 
 export default BaseEnglishTextInput;
