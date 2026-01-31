@@ -62,7 +62,7 @@ const AccountList = () => {
         <p css={subtitleStyle}>{accountListSubTitle}</p>
 
         <Accordion
-          defaultValue={[
+          value={[
             groomSide.isExpand ? 'groomSide' : '',
             brideSide.isExpand ? 'brideSide' : '',
           ].filter(Boolean)}
