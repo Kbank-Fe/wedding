@@ -34,7 +34,6 @@ const Gallery = () => {
   const { photoList } = usePhotoList(localImageList, 'actual');
 
   const showMoreButton = photoList.length > 9 && !expanded;
-  const visiblePhotos = expanded ? photoList : photoList.slice(0, 9);
 
   const galleryList = (
     <>
@@ -47,7 +46,7 @@ const Gallery = () => {
         whileInView={{ opacity: 1, y: 0 }}
       >
         <div css={gridStyle}>
-          {visiblePhotos.map((photo, index) => (
+          {photoList.map((photo, index) => (
             <Item
               key={index}
               height={photo.height}
