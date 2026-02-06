@@ -4,11 +4,15 @@ import type { ReactNode } from 'react';
 
 type AccordionProps = {
   children: ReactNode;
-  value?: string[];
+  defaultValue?: string[];
 };
 
-export const Accordion = ({ children, value }: AccordionProps) => (
-  <RadixAccordion.Root css={rootStyle} type="multiple" value={value}>
+export const Accordion = ({ children, defaultValue }: AccordionProps) => (
+  <RadixAccordion.Root
+    css={rootStyle}
+    defaultValue={defaultValue}
+    type="multiple"
+  >
     {children}
   </RadixAccordion.Root>
 );

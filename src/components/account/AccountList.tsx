@@ -19,6 +19,13 @@ const AccountList = () => {
     brideSideAccounts: brideSide = { title: '', isExpand: false, accounts: [] },
   } = accountInfo;
 
+  const updateKey =
+    groomSide.accounts[0]?.accountHolder + brideSide.accounts[0]?.accountHolder;
+
+  const initialOpenItems = [];
+  if (groomSide.isExpand) initialOpenItems.push('groomSide');
+  if (brideSide.isExpand) initialOpenItems.push('brideSide');
+
   const renderSide = (
     value: string,
     title: string,
@@ -62,10 +69,8 @@ const AccountList = () => {
         <p css={subtitleStyle}>{accountListSubTitle}</p>
 
         <Accordion
-          value={[
-            groomSide.isExpand ? 'groomSide' : '',
-            brideSide.isExpand ? 'brideSide' : '',
-          ].filter(Boolean)}
+          key={`account-accordion-${updateKey}`}
+          defaultValue={initialOpenItems}
         >
           {renderSide('groomSide', groomSide.title ?? '', groomSide.accounts)}
           {renderSide('brideSide', brideSide.title ?? '', brideSide.accounts)}

@@ -107,7 +107,7 @@ export const WEDDING_INITIAL_INFO: WeddingInfo = {
           kakaopayUrl: '',
         },
       ],
-      isExpand: true,
+      isExpand: false,
     },
   },
   share: {
